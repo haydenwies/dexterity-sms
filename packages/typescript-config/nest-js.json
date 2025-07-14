@@ -1,0 +1,12 @@
+{
+	"extends": "./base.json",
+	"compilerOptions": {
+		"strictBindCallApply": false,
+
+		"removeComments": true,
+
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"allowSyntheticDefaultImports": true
+	}
+}
