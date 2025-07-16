@@ -8,7 +8,7 @@ import Link from "next/link"
 
 import useSignUp from "~/features/auth/hooks/use-sign-up"
 import { routes } from "~/lib/routes"
-import { placeholders } from "~/constants/placeholders"
+import { Placeholders } from "~/constants/placeholders"
 
 export const SignUpForm = ({ className }: { className?: string }) => {
 	const { signUpForm, handleSubmit } = useSignUp()
@@ -30,7 +30,7 @@ export const SignUpForm = ({ className }: { className?: string }) => {
 							<FormLabel>Email</FormLabel>
 							<FormControl>
 								<Input
-									placeholder={placeholders.EMAIL}
+									placeholder={Placeholders.EMAIL}
 									{...field}
 								/>
 							</FormControl>
@@ -46,7 +46,7 @@ export const SignUpForm = ({ className }: { className?: string }) => {
 							<FormLabel>Password</FormLabel>
 							<FormControl>
 								<Input
-									placeholder={placeholders.PASSWORD}
+									placeholder={Placeholders.PASSWORD}
 									type="password"
 									{...field}
 								/>
@@ -63,7 +63,7 @@ export const SignUpForm = ({ className }: { className?: string }) => {
 							<FormLabel>Confirm password</FormLabel>
 							<FormControl>
 								<Input
-									placeholder={placeholders.PASSWORD}
+									placeholder={Placeholders.PASSWORD}
 									type="password"
 									{...field}
 								/>

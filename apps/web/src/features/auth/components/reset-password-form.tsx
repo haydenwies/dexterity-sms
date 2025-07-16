@@ -6,7 +6,7 @@ import { Button } from "@repo/ui/components/button"
 import { cn } from "@repo/ui/lib/utils"
 
 import { useResetPassword } from "~/features/auth/hooks/use-reset-password"
-import { placeholders } from "~/constants/placeholders"
+import { Placeholders } from "~/constants/placeholders"
 
 const ResetPasswordForm = ({ className }: { className?: string }) => {
 	const { resetPasswordForm, handleSubmit } = useResetPassword()
@@ -28,7 +28,7 @@ const ResetPasswordForm = ({ className }: { className?: string }) => {
 							<FormLabel>New password</FormLabel>
 							<FormControl>
 								<Input
-									placeholder={placeholders.PASSWORD}
+									placeholder={Placeholders.PASSWORD}
 									{...field}
 								/>
 							</FormControl>
@@ -44,7 +44,7 @@ const ResetPasswordForm = ({ className }: { className?: string }) => {
 							<FormLabel>Confirm new password</FormLabel>
 							<FormControl>
 								<Input
-									placeholder={placeholders.PASSWORD}
+									placeholder={Placeholders.PASSWORD}
 									{...field}
 								/>
 							</FormControl>

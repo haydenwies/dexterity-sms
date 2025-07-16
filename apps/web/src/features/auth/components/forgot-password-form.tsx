@@ -6,7 +6,7 @@ import { Button } from "@repo/ui/components/button"
 import { cn } from "@repo/ui/lib/utils"
 
 import { useForgotPassword } from "~/features/auth/hooks/use-forgot-password"
-import { placeholders } from "~/constants/placeholders"
+import { Placeholders } from "~/constants/placeholders"
 
 export const ForgotPasswordForm = ({ className }: { className?: string }) => {
 	const { forgotPasswordForm, handleSubmit } = useForgotPassword()
@@ -28,7 +28,7 @@ export const ForgotPasswordForm = ({ className }: { className?: string }) => {
 							<FormLabel>Email</FormLabel>
 							<FormControl>
 								<Input
-									placeholder={placeholders.EMAIL}
+									placeholder={Placeholders.EMAIL}
 									{...field}
 								/>
 							</FormControl>

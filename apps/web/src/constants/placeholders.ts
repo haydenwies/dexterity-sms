@@ -1,4 +1,4 @@
-export const placeholders = {
+export const Placeholders = {
 	EMAIL: "contact@acmeinc.com",
 	PASSWORD: "••••••••"
 }

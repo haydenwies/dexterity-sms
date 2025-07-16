@@ -8,7 +8,7 @@ import Link from "next/link"
 
 import { useSignIn } from "~/features/auth/hooks/use-sign-in"
 import { routes } from "~/lib/routes"
-import { placeholders } from "~/constants/placeholders"
+import { Placeholders } from "~/constants/placeholders"
 
 export const SignInForm = ({ className }: { className?: string }) => {
 	const { signInForm, handleSubmit } = useSignIn()
@@ -30,7 +30,7 @@ export const SignInForm = ({ className }: { className?: string }) => {
 							<FormLabel>Email</FormLabel>
 							<FormControl>
 								<Input
-									placeholder={placeholders.EMAIL}
+									placeholder={Placeholders.EMAIL}
 									{...field}
 								/>
 							</FormControl>
@@ -50,7 +50,7 @@ export const SignInForm = ({ className }: { className?: string }) => {
 
 							<FormControl>
 								<Input
-									placeholder={placeholders.PASSWORD}
+									placeholder={Placeholders.PASSWORD}
 									type="password"
 									{...field}
 								/>
