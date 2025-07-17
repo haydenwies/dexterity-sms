@@ -1,7 +1,14 @@
 import { Button } from "@repo/ui/components/button"
 import { Page, PageContent, PageHeader, PageHeaderRow } from "@repo/ui/components/page"
+import { Suspense } from "react"
+
+import { getAllForms } from "~/data/form/get-all-forms"
+import { AllFormsTable } from "~/features/form/all-forms-table/components/table"
+import { AllFormsTableSkeleton } from "~/features/form/all-forms-table/components/table-skeleton"
 
 const AllFormsPage = () => {
+	const allFormsPromise = getAllForms()
+
 	return (
 		<Page className="container">
 			<PageHeader>
@@ -10,7 +17,11 @@ const AllFormsPage = () => {
 					<Button>Create Form</Button>
 				</PageHeaderRow>
 			</PageHeader>
-			<PageContent>content</PageContent>
+			<PageContent>
+				<Suspense fallback={<AllFormsTableSkeleton />}>
+					<AllFormsTable allFormsPromise={allFormsPromise} />
+				</Suspense>
+			</PageContent>
 		</Page>
 	)
 }

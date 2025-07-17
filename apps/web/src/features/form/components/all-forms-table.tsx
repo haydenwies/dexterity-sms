@@ -1,3 +1,0 @@
-const AllFormsTable = () => {}
-
-export { AllFormsTable }

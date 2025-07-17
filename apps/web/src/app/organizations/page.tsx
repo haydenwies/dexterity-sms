@@ -1,7 +1,7 @@
 import { Button } from "@repo/ui/components/button"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
 
-import { OrganizationCard } from "~/features/organization/components/organization-card"
+import { OrganizationCard } from "~/features/organization/all-organizations/components/organization-card"
 import { OrganizationModel } from "~/types/organization.types"
 
 // Mock data for demonstration - in a real app this would come from an API
