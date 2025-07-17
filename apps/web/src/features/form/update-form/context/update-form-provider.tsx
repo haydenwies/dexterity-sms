@@ -2,9 +2,10 @@
 
 import { createContext, useContext } from "react"
 import { useFieldArray, type UseFieldArrayReturn, useForm, type UseFormReturn } from "react-hook-form"
-import { type UpdateFormSchema, updateFormSchema } from "../schema/update-form.schema"
-import { Form } from "~/types/form.types"
 import { zodResolver } from "@hookform/resolvers/zod"
+
+import { type UpdateFormSchema, updateFormSchema } from "~/types/dtos/form/update-form.dto"
+import { Form } from "~/types/form.types"
 
 type UpdateFormContextType = {
 	updateFormForm: UseFormReturn<UpdateFormSchema>

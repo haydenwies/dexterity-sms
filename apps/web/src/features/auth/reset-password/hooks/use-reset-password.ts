@@ -1,10 +1,7 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-import {
-	type ResetPasswordSchema,
-	resetPasswordSchema
-} from "~/features/auth/reset-password/schema/reset-password.schema"
+import { type ResetPasswordSchema, resetPasswordSchema } from "~/types/dtos/auth/reset-password.dto"
 
 const useResetPassword = () => {
 	const resetPasswordForm = useForm<ResetPasswordSchema>({

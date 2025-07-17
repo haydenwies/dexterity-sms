@@ -3,7 +3,7 @@ import { Label } from "@repo/ui/components/label"
 import { Input } from "@repo/ui/components/input"
 import { Textarea } from "@repo/ui/components/textarea"
 
-import { type UpdateFormSchema } from "~/features/form/update-form/schema/update-form.schema"
+import { type UpdateFormSchema } from "~/types/dtos/form/update-form.dto"
 import { FormFieldType } from "~/types/form.types"
 
 type Props = {
