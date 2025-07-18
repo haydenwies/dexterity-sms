@@ -25,7 +25,7 @@ const AddFormFieldButton = ({ index }: Props) => {
 			<DropdownMenuTrigger asChild>
 				<Button
 					variant="outline"
-					size="icon"
+					size="sm"
 				>
 					<Icon name={IconName.PLUS} />
 				</Button>
@@ -34,7 +34,7 @@ const AddFormFieldButton = ({ index }: Props) => {
 				{Object.entries(formFieldOptions).map(([key, value]) => (
 					<DropdownMenuItem
 						key={key}
-						onClick={() => handleAddFormField(index + 1, key as FormFieldType)}
+						onClick={() => handleAddFormField(index, key as FormFieldType)}
 					>
 						<Icon name={value.iconName} />
 						<p>{value.label}</p>
