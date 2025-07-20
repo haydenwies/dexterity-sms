@@ -44,10 +44,10 @@ const PageHeaderGroup = ({ className, type = "row", ...props }: PageHeaderGroupP
 
 // #region PageContent
 
-type PageContentProps = React.ComponentProps<"div">
-const PageContent = ({ className, ...props }: PageContentProps) => (
+type PageContentProps = React.ComponentProps<"div"> & { disableScroll?: boolean }
+const PageContent = ({ className, disableScroll = false, ...props }: PageContentProps) => (
 	<div
-		className={cn("flex flex-1 flex-col overflow-y-auto p-8", className)}
+		className={cn("flex flex-1 flex-col p-8", { "overflow-y-hidden": disableScroll }, className)}
 		{...props}
 	/>
 )

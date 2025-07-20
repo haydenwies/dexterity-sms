@@ -1,0 +1,3 @@
+const formSubmissionsTableColumns = []
+
+export { formSubmissionsTableColumns }

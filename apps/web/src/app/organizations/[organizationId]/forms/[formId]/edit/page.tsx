@@ -7,25 +7,28 @@ import { FormSettingsForm } from "~/features/form/update-form/components/form-se
 import { UpdateFormProvider } from "~/features/form/update-form/context/update-form-provider"
 import { PreviewFormButton } from "~/features/form/preview-form/components/preview-form-button"
 import { FormFieldBlockList } from "~/features/form/update-form/components/form-field-block-list"
+import Link from "next/link"
+import { routes } from "~/lib/routes"
 
 const EditFormPage = async ({ params }: { params: Promise<{ organizationId: string; formId: string }> }) => {
-	const { formId } = await params
+	const { organizationId, formId } = await params
 
 	const form = await getForm(formId)
 
 	return (
 		<UpdateFormProvider form={form}>
 			<Page>
-				<PageHeader>
+				<PageHeader className="p-4 pb-0">
 					<PageHeaderRow>
 						<PageHeaderGroup>
 							<Button
 								size="icon"
-								variant="ghost"
+								variant="link"
 							>
-								<Icon name={IconName.CHEVRON_LEFT} />
+								<Link href={routes.FORM(organizationId, formId)}>
+									<Icon name={IconName.CHEVRON_LEFT} />
+								</Link>
 							</Button>
-
 							<h1>Edit Form</h1>
 						</PageHeaderGroup>
 						<PreviewFormButton
@@ -34,11 +37,14 @@ const EditFormPage = async ({ params }: { params: Promise<{ organizationId: stri
 						/>
 					</PageHeaderRow>
 				</PageHeader>
-				<PageContent className="grid grid-cols-[1fr_2fr] gap-4 p-0">
-					<div className="border-border m-4 mr-0 rounded-md border p-4">
+				<PageContent
+					className="grid grid-cols-[1fr_2fr] gap-4 p-0"
+					disableScroll={true}
+				>
+					<div className="border-border m-4 mr-0 overflow-y-auto rounded-md border p-4">
 						<FormSettingsForm />
 					</div>
-					<div className="bg-muted m-4 ml-0 flex flex-col items-center rounded-md p-4">
+					<div className="bg-muted m-4 ml-0 flex flex-col items-center overflow-y-auto rounded-md p-4">
 						<FormFieldBlockList className="w-full max-w-md" />
 					</div>
 				</PageContent>

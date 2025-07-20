@@ -13,7 +13,7 @@ const PreviewFormButton = ({ organizationId, formId }: Props) => {
 	return (
 		<Button variant="outline">
 			<Icon name={IconName.EYE} />
-			<Link href={routes.FORM_PREVIEW(organizationId, formId)}>Preview Form</Link>
+			<Link href={routes.FORM_PREVIEW(organizationId, formId)}>Preview</Link>
 		</Button>
 	)
 }
