@@ -109,6 +109,7 @@ const FormSettingsForm = () => {
 									</SelectContent>
 								</Select>
 							</FormControl>
+							<FormMessage />
 						</FormItem>
 					)}
 				/>

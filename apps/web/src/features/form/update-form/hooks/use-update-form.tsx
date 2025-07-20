@@ -34,11 +34,16 @@ const useUpdateForm = () => {
 		syncFieldOrders()
 	}
 
+	const handleSave = updateFormForm.handleSubmit((data) => {
+		console.log(data)
+	})
+
 	return {
 		updateFormForm,
 		updateFormFormValues,
 		handleAddFormField,
-		handleDeleteFormField
+		handleDeleteFormField,
+		handleSave
 	}
 }
 

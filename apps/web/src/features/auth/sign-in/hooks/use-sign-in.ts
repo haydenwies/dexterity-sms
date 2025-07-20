@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-import { SignInSchema, signInSchema } from "~/features/auth/sign-in/schema/sign-in.schema"
+import { SignInSchema, signInSchema } from "~/types/dtos/auth/sign-in.dto"
 
 const useSignIn = () => {
 	const signInForm = useForm({

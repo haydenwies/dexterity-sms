@@ -12,10 +12,7 @@ type Props = {
 const PreviewFormButton = ({ organizationId, formId }: Props) => {
 	return (
 		<Button variant="outline">
-			<Icon
-				name={IconName.EYE}
-				className="size-4"
-			/>
+			<Icon name={IconName.EYE} />
 			<Link href={routes.FORM_PREVIEW(organizationId, formId)}>Preview Form</Link>
 		</Button>
 	)

@@ -10,7 +10,7 @@ type Props = {
 	className?: string
 }
 
-const FormFieldList = ({ className }: Props) => {
+const FormFieldBlockList = ({ className }: Props) => {
 	const { updateFormFormValues } = useUpdateForm()
 
 	return (
@@ -32,4 +32,4 @@ const FormFieldList = ({ className }: Props) => {
 	)
 }
 
-export { FormFieldList }
+export { FormFieldBlockList }

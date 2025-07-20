@@ -4,6 +4,7 @@ import { cn } from "@repo/ui/lib/utils"
 enum IconName {
 	BUILDING = "building",
 	CALENDAR = "calendar",
+	CHEVRON_LEFT = "chevron-left",
 	CHEVRON_RIGHT = "chevron-right",
 	CHEVRONS_UP_DOWN = "chevrons-up-down",
 	EMAIL = "mail",
@@ -26,6 +27,7 @@ enum IconName {
 const iconVariants = {
 	[IconName.BUILDING]: IconsPrimitive.Building,
 	[IconName.CALENDAR]: IconsPrimitive.Calendar,
+	[IconName.CHEVRON_LEFT]: IconsPrimitive.ChevronLeft,
 	[IconName.CHEVRON_RIGHT]: IconsPrimitive.ChevronRight,
 	[IconName.CHEVRONS_UP_DOWN]: IconsPrimitive.ChevronsUpDown,
 	[IconName.EMAIL]: IconsPrimitive.Mail,
