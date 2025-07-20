@@ -9,6 +9,7 @@ import { Form } from "~/types/form.types"
 
 type UpdateFormContextType = {
 	updateFormForm: UseFormReturn<UpdateFormSchema>
+	updateFormFormValues: UpdateFormSchema
 	updateFormFieldArray: UseFieldArrayReturn<UpdateFormSchema, "fields", "id">
 }
 const UpdateFormContext = createContext<UpdateFormContextType | null>(null)
@@ -30,20 +31,22 @@ const UpdateFormProvider = ({ children, form }: UpdateFormProviderProps) => {
 				type: formField.type,
 				label: formField.label,
 				placeholder: formField.placeholder,
-				required: formField.required
+				required: formField.required,
+				order: formField.order
 			})),
 			submissionSettings: form.submissionSettings
 		}
 	})
 
+	const updateFormFormValues = updateFormForm.watch()
+
 	const updateFormFieldArray = useFieldArray({
 		name: "fields",
-		control: updateFormForm.control,
-		keyName: "id"
+		control: updateFormForm.control
 	})
 
 	return (
-		<UpdateFormContext.Provider value={{ updateFormForm, updateFormFieldArray }}>
+		<UpdateFormContext.Provider value={{ updateFormForm, updateFormFormValues, updateFormFieldArray }}>
 			{children}
 		</UpdateFormContext.Provider>
 	)

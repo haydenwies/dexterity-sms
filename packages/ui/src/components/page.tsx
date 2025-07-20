@@ -37,7 +37,7 @@ const PageHeaderRow = ({ className, ...props }: PageHeaderRowProps) => (
 type PageHeaderGroupProps = React.ComponentProps<"div"> & { type?: "row" | "column" }
 const PageHeaderGroup = ({ className, type = "row", ...props }: PageHeaderGroupProps) => (
 	<div
-		className={cn("flex flex-row items-start gap-2", { "flex-col": type === "column" }, className)}
+		className={cn("flex flex-row items-center gap-2", { "flex-col": type === "column" }, className)}
 		{...props}
 	/>
 )

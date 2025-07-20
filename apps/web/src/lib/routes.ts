@@ -11,5 +11,6 @@ export const routes = {
 
 	ALL_FORMS: (organizationId: string) => `/organizations/${organizationId}/forms`,
 	FORM: (organizationId: string, formId: string) => `/organizations/${organizationId}/forms/${formId}`,
-	EDIT_FORM: (organizationId: string, formId: string) => `/organizations/${organizationId}/forms/${formId}/edit`
+	FORM_EDIT: (organizationId: string, formId: string) => `/organizations/${organizationId}/forms/${formId}/edit`,
+	FORM_PREVIEW: (organizationId: string, formId: string) => `/organizations/${organizationId}/forms/${formId}/preview`
 }

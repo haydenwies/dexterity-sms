@@ -13,7 +13,8 @@ const updateFormSchema = z
 					type: z.enum(FormFieldType),
 					label: z.string().min(1, "Label is required"),
 					placeholder: z.string().optional(),
-					required: z.boolean().optional()
+					required: z.boolean().optional(),
+					order: z.number()
 				})
 			)
 			.min(1, "At least one field is required")

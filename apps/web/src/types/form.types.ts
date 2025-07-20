@@ -1,5 +1,5 @@
 enum FormFieldType {
-	SHORT_TEXT = "text",
+	SHORT_TEXT = "short-text",
 	LONG_TEXT = "long-text",
 	EMAIL = "email",
 	PHONE = "phone",
@@ -12,6 +12,7 @@ type FormField = {
 	label: string
 	placeholder?: string
 	required?: boolean
+	order: number
 }
 
 type FormSubmissionSettings = {

@@ -1,10 +1,12 @@
+import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
 import { Button } from "@repo/ui/components/button"
-import { Page, PageContent, PageHeader, PageHeaderRow } from "@repo/ui/components/page"
+import { Icon, IconName } from "@repo/ui/components/icon"
 
 import { getForm } from "~/data/form/get-form"
 import { FormSettingsForm } from "~/features/form/update-form/components/form-settings-form"
-import { FormFieldList } from "~/features/form/update-form/components/form-field-list"
 import { UpdateFormProvider } from "~/features/form/update-form/context/update-form-provider"
+import { PreviewFormButton } from "~/features/form/preview-form/components/preview-form-button"
+import { FormFieldBlockList } from "~/features/form/update-form/components/form-field-block-list"
 
 const EditFormPage = async ({ params }: { params: Promise<{ organizationId: string; formId: string }> }) => {
 	const { formId } = await params
@@ -16,8 +18,20 @@ const EditFormPage = async ({ params }: { params: Promise<{ organizationId: stri
 			<Page>
 				<PageHeader>
 					<PageHeaderRow>
-						<h1>Edit Form</h1>
-						<Button>Save Changes</Button>
+						<PageHeaderGroup>
+							<Button
+								size="icon"
+								variant="ghost"
+							>
+								<Icon name={IconName.CHEVRON_LEFT} />
+							</Button>
+
+							<h1>Edit Form</h1>
+						</PageHeaderGroup>
+						<PreviewFormButton
+							organizationId={"123"}
+							formId={formId}
+						/>
 					</PageHeaderRow>
 				</PageHeader>
 				<PageContent className="grid grid-cols-[1fr_2fr] gap-4 p-0">
@@ -25,7 +39,7 @@ const EditFormPage = async ({ params }: { params: Promise<{ organizationId: stri
 						<FormSettingsForm />
 					</div>
 					<div className="bg-muted m-4 ml-0 flex flex-col items-center rounded-md p-4">
-						<FormFieldList className="w-full" />
+						<FormFieldBlockList className="w-full max-w-md" />
 					</div>
 				</PageContent>
 			</Page>
