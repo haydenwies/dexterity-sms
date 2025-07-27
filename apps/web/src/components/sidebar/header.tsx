@@ -1,6 +1,5 @@
 "use client"
 
-import * as SidebarPrimitive from "@repo/ui/components/sidebar"
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -10,6 +9,7 @@ import {
 	DropdownMenuTrigger
 } from "@repo/ui/components/dropdown-menu"
 import { Icon, IconName } from "@repo/ui/components/icon"
+import * as SidebarPrimitive from "@repo/ui/components/sidebar"
 import Link from "next/link"
 import { routes } from "~/lib/routes"
 
@@ -47,7 +47,7 @@ const SidebarHeader = () => {
 							<DropdownMenuItem>Organization 3</DropdownMenuItem>
 							<DropdownMenuSeparator />
 							<DropdownMenuItem asChild>
-								<Link href={routes.ALL_ORGANIZATIONS}>View all organizations</Link>
+								<Link href={routes.ORGANIZATIONS}>View all organizations</Link>
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
