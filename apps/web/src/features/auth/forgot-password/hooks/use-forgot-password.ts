@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-import { type ForgotPasswordSchema, forgotPasswordSchema } from "~/types/dtos/auth/forgot-password.dto"
+import { type ForgotPasswordDto, forgotPasswordDtoSchema } from "~/types/auth/dtos/forgot-password.dto"
 
 const useForgotPassword = () => {
-	const forgotPasswordForm = useForm<ForgotPasswordSchema>({
-		resolver: zodResolver(forgotPasswordSchema),
+	const forgotPasswordForm = useForm<ForgotPasswordDto>({
+		resolver: zodResolver(forgotPasswordDtoSchema),
 		defaultValues: {
 			email: ""
 		}

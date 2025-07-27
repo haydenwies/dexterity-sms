@@ -1,6 +1,11 @@
 import z from "zod"
 
-const resetPasswordSchema = z
+type ResetPasswordDto = {
+	password: string
+	confirmPassword: string
+}
+
+const resetPasswordDtoSchema = z
 	.object({
 		password: z.string().min(8, "Password must be at least 8 characters long"),
 		confirmPassword: z.string().min(8, "Confirm password must be at least 8 characters long")
@@ -10,6 +15,4 @@ const resetPasswordSchema = z
 		path: ["confirmPassword"]
 	})
 
-type ResetPasswordSchema = z.infer<typeof resetPasswordSchema>
-
-export { resetPasswordSchema, type ResetPasswordSchema }
+export { type ResetPasswordDto, resetPasswordDtoSchema }

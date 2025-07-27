@@ -1,6 +1,6 @@
 import { Button } from "@repo/ui/components/button"
 import { Card, CardHeader, CardTitle, CardAction } from "@repo/ui/components/card"
-import { OrganizationModel } from "~/types/organization.types"
+import { OrganizationModel } from "~/types/organization/organization.types"
 
 type Props = {
 	className?: string

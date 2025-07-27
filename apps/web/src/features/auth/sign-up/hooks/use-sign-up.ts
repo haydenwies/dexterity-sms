@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-import { type SignUpSchema, signUpSchema } from "~/types/dtos/auth/sign-up.dto"
+import { type SignUpDto, signUpDtoSchema } from "~/types/auth/dtos/sign-up.dto"
 
 const useSignUp = () => {
-	const signUpForm = useForm<SignUpSchema>({
-		resolver: zodResolver(signUpSchema),
+	const signUpForm = useForm<SignUpDto>({
+		resolver: zodResolver(signUpDtoSchema),
 		defaultValues: {
 			email: "",
 			password: "",
