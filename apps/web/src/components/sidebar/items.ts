@@ -40,12 +40,6 @@ const getSidebarItems = (): (SidebarItemLink | SidebarItemFolder)[] => {
 					href: routes.ALL_CONTACTS("123")
 				}
 			]
-		},
-		{
-			type: SidebarItemType.LINK,
-			title: "Forms",
-			icon: IconName.FORM,
-			href: routes.ALL_FORMS("123")
 		}
 	]
 }

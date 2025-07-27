@@ -7,10 +7,5 @@ export const routes = {
 
 	DASHBOARD: (organizationId: string) => `/organizations/${organizationId}`,
 
-	ALL_CONTACTS: (organizationId: string) => `/organizations/${organizationId}/contacts`,
-
-	ALL_FORMS: (organizationId: string) => `/organizations/${organizationId}/forms`,
-	FORM: (organizationId: string, formId: string) => `/organizations/${organizationId}/forms/${formId}`,
-	FORM_EDIT: (organizationId: string, formId: string) => `/organizations/${organizationId}/forms/${formId}/edit`,
-	FORM_PREVIEW: (organizationId: string, formId: string) => `/organizations/${organizationId}/forms/${formId}/preview`
+	ALL_CONTACTS: (organizationId: string) => `/organizations/${organizationId}/contacts`
 }
