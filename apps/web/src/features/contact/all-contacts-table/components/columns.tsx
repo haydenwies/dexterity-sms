@@ -1,13 +1,17 @@
 import { type ColumnDef } from "@tanstack/react-table"
 
-import { type ContactModel } from "@repo/types/contact"
+import { type ContactModel, type ContactTagModel } from "@repo/types/contact"
 import { Badge } from "@repo/ui/components/badge"
 import { Checkbox } from "@repo/ui/components/checkbox"
 
 import { AllContactsTableCellActions } from "~/features/contact/all-contacts-table/components/actions-cell"
 import { AllContactsTableHeaderActions } from "~/features/contact/all-contacts-table/components/actions-header"
 
-const getAllContactsColumns = (): ColumnDef<ContactModel>[] => {
+type Props = {
+	contactTags: ContactTagModel[]
+}
+
+const getAllContactsColumns = ({ contactTags }: Props): ColumnDef<ContactModel>[] => {
 	return [
 		{
 			id: "select",
@@ -55,7 +59,10 @@ const getAllContactsColumns = (): ColumnDef<ContactModel>[] => {
 			header: "Tags",
 			cell: ({ row }) => {
 				const contact = row.original
-				return contact.tags?.map((tag) => <Badge key={tag.id}>{tag.name}</Badge>)
+				return contact.tagIds?.map((tagId) => {
+					const tag = contactTags.find((tag) => tag.id === tagId)
+					return tag ? <Badge key={tag.id}>{tag.name}</Badge> : null
+				})
 			}
 		},
 		{

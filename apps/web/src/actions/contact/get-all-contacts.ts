@@ -7,20 +7,11 @@ const getAllContacts = async (): Promise<ContactModel[]> => {
 		{
 			id: "1",
 			organizationId: "1",
+			tagIds: ["1"],
 			firstName: "John",
 			lastName: "Doe",
 			email: "john.doe@example.com",
 			phone: "+12345678906",
-			tags: [
-				{
-					id: "1",
-					organizationId: "1",
-					name: "Test Tag",
-					color: "#000000",
-					createdAt: new Date(),
-					updatedAt: new Date()
-				}
-			],
 			createdAt: new Date(),
 			updatedAt: new Date()
 		},

@@ -1,11 +1,11 @@
 type ContactModel = {
 	id: string
 	organizationId: string
+	tagIds?: string[]
 	firstName?: string
 	lastName?: string
 	email?: string
 	phone?: string
-	tags?: ContactTagModel[]
 	createdAt: Date
 	updatedAt: Date
 }
