@@ -1,50 +1,50 @@
-import * as IconsPrimitive from "lucide-react"
 import { cn } from "@repo/ui/lib/utils"
+import * as IconsPrimitive from "lucide-react"
 
 enum IconName {
 	BUILDING = "building",
-	CALENDAR = "calendar",
-	CHEVRON_LEFT = "chevron-left",
 	CHEVRON_RIGHT = "chevron-right",
 	CHEVRONS_UP_DOWN = "chevrons-up-down",
-	EMAIL = "mail",
-	EYE = "eye",
-	FORM = "notebook-pen",
+	CONTACTS = "users",
+	CREATE = "create",
+	EDIT = "edit",
+	ELLIPSIS = "ellipsis",
+	FILE_UPLOAD = "file-upload",
 	HOME = "home",
 	LOG_OUT = "log-out",
-	LONG_TEXT = "long-text",
-	PHONE = "phone",
+	MEGAPHONE = "megaphone",
+	MESSAGE = "message-circle",
 	PLUS = "plus",
+	RESET = "reset",
+	SAVE = "save",
 	SETTINGS = "settings",
 	SPINNER = "spinner",
-	SHORT_TEXT = "short-text",
 	SQUIRREL = "squirrel",
 	TRASH = "trash",
-	USER = "user",
-	USERS = "users"
+	USER = "user"
 }
 
 const iconVariants = {
 	[IconName.BUILDING]: IconsPrimitive.Building,
-	[IconName.CALENDAR]: IconsPrimitive.Calendar,
-	[IconName.CHEVRON_LEFT]: IconsPrimitive.ChevronLeft,
 	[IconName.CHEVRON_RIGHT]: IconsPrimitive.ChevronRight,
 	[IconName.CHEVRONS_UP_DOWN]: IconsPrimitive.ChevronsUpDown,
-	[IconName.EMAIL]: IconsPrimitive.Mail,
-	[IconName.EYE]: IconsPrimitive.Eye,
-	[IconName.FORM]: IconsPrimitive.NotebookPen,
+	[IconName.CONTACTS]: IconsPrimitive.Users,
+	[IconName.CREATE]: IconsPrimitive.Pen,
+	[IconName.EDIT]: IconsPrimitive.SquarePen,
+	[IconName.ELLIPSIS]: IconsPrimitive.Ellipsis,
+	[IconName.FILE_UPLOAD]: IconsPrimitive.FileUp,
 	[IconName.HOME]: IconsPrimitive.Home,
 	[IconName.LOG_OUT]: IconsPrimitive.LogOut,
-	[IconName.LONG_TEXT]: IconsPrimitive.Text,
-	[IconName.PHONE]: IconsPrimitive.Phone,
+	[IconName.MEGAPHONE]: IconsPrimitive.Megaphone,
+	[IconName.MESSAGE]: IconsPrimitive.MessageCircle,
 	[IconName.PLUS]: IconsPrimitive.Plus,
+	[IconName.RESET]: IconsPrimitive.RotateCcw,
+	[IconName.SAVE]: IconsPrimitive.Save,
 	[IconName.SETTINGS]: IconsPrimitive.Settings,
-	[IconName.SHORT_TEXT]: IconsPrimitive.Type,
 	[IconName.SPINNER]: IconsPrimitive.LoaderCircle,
 	[IconName.SQUIRREL]: IconsPrimitive.Squirrel,
 	[IconName.TRASH]: IconsPrimitive.Trash2,
-	[IconName.USER]: IconsPrimitive.User,
-	[IconName.USERS]: IconsPrimitive.Users
+	[IconName.USER]: IconsPrimitive.User
 }
 
 type IconProps = React.ComponentProps<"svg"> & { name: IconName }

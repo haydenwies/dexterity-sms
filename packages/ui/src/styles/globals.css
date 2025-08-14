@@ -128,7 +128,7 @@
 		@apply text-2xl font-bold;
 	}
 	a {
-		@apply text-sm hover:underline;
+		@apply hover:underline;
 	}
 	p {
 		@apply text-sm;

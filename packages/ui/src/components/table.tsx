@@ -82,7 +82,7 @@ const TableHead = ({ className, ...props }: TableHeadProps) => {
 		<th
 			data-slot="table-head"
 			className={cn(
-				"text-foreground h-10 whitespace-nowrap px-2 text-left align-middle font-medium [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+				"text-foreground whitespace-nowrap p-2 text-left align-middle font-medium [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
 				className
 			)}
 			{...props}
@@ -119,4 +119,4 @@ const TableCaption = ({ className, ...props }: TableCaptionProps) => {
 	)
 }
 
-export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption }
+export { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow }
