@@ -1,0 +1,20 @@
+{
+	"name": "@repo/types",
+	"version": "1.0.0",
+	"private": true,
+	"dependencies": {
+		"zod": "^4.0.5"
+	},
+	"devDependencies": {
+		"@repo/typescript-config": "workspace:*",
+		"typescript": "^5.9.2"
+	},
+	"exports": {
+		"./auth/dto/*": "./src/auth/dto/*.ts",
+		"./organization": "./src/organization/organization.type.ts",
+		"./contact": "./src/contact/contact.type.ts",
+		"./contact/dto/*": "./src/contact/dto/*.ts",
+		"./campaign": "./src/campaign/campaign.type.ts",
+		"./campaign/enums": "./src/campaign/campaign.enum.ts"
+	}
+}

@@ -29,19 +29,59 @@ const getSidebarItems = (): (SidebarItemLink | SidebarItemFolder)[] => {
 			href: routes.DASHBOARD("123"),
 			icon: IconName.HOME
 		},
+
+		{
+			type: SidebarItemType.FOLDER,
+			title: "Campaigns",
+			icon: IconName.MEGAPHONE,
+			items: [
+				{
+					type: SidebarItemType.LINK,
+					title: "All Campaigns",
+					href: routes.ALL_CAMPAIGNS("123")
+				},
+				{
+					type: SidebarItemType.LINK,
+					title: "Templates",
+					href: routes.ALL_CAMPAIGN_TEMPLATES("123")
+				},
+				{
+					type: SidebarItemType.LINK,
+					title: "Settings",
+					href: routes.ALL_CAMPAIGN_SETTINGS("123")
+				}
+			]
+		},
+
 		{
 			type: SidebarItemType.FOLDER,
 			title: "Contacts",
-			icon: IconName.USERS,
+			icon: IconName.CONTACTS,
 			items: [
 				{
 					type: SidebarItemType.LINK,
 					title: "All Contacts",
 					href: routes.ALL_CONTACTS("123")
+				},
+				{
+					type: SidebarItemType.LINK,
+					title: "Tags",
+					href: routes.ALL_CONTACT_TAGS("123")
+				},
+				{
+					type: SidebarItemType.LINK,
+					title: "Forms",
+					href: routes.ALL_CONTACT_FORMS("123")
 				}
 			]
+		},
+		{
+			type: SidebarItemType.LINK,
+			title: "Messages",
+			href: routes.ALL_MESSAGES("123"),
+			icon: IconName.MESSAGE
 		}
 	]
 }
 
-export { getSidebarItems, SidebarItemType, type SidebarItemLink, type SidebarItemFolder }
+export { getSidebarItems, SidebarItemType, type SidebarItemFolder, type SidebarItemLink }

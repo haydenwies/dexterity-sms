@@ -1,0 +1,15 @@
+{
+	"name": "@repo/csv",
+	"version": "1.0.0",
+	"private": true,
+	"dependencies": {
+		"papaparse": "^5.5.3"
+	},
+	"devDependencies": {
+		"@repo/typescript-config": "workspace:*",
+		"@types/papaparse": "^5.3.16"
+	},
+	"exports": {
+		".": "./src/parser.ts"
+	}
+}

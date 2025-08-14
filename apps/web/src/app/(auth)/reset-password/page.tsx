@@ -1,4 +1,4 @@
-import { ResetPasswordForm } from "~/features/auth/reset-password/components/reset-password-form"
+import { ResetPasswordForm } from "~/features/auth/reset-password"
 
 const ResetPasswordPage = () => {
 	return (

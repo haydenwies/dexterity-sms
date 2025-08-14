@@ -10,6 +10,8 @@
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^5.1.1",
+		"@repo/csv": "workspace:*",
+		"@repo/types": "workspace:*",
 		"@repo/ui": "workspace:*",
 		"@tanstack/react-table": "^8.21.3",
 		"next": "15.3.5",

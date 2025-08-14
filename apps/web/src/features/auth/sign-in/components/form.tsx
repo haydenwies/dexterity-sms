@@ -1,0 +1,80 @@
+"use client"
+
+import Link from "next/link"
+
+import { Button } from "@repo/ui/components/button"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
+import { Input } from "@repo/ui/components/input"
+import { cn } from "@repo/ui/lib/utils"
+
+import { useSignIn } from "~/features/auth/sign-in/hooks/use-sign-in"
+import { placeholders } from "~/lib/placeholders"
+import { routes } from "~/lib/routes"
+
+const SignInForm = ({ className }: { className?: string }) => {
+	const { signInForm, handleSubmit } = useSignIn()
+
+	return (
+		<form
+			className={cn("flex flex-col gap-6", className)}
+			onSubmit={(e) => {
+				e.preventDefault()
+				handleSubmit()
+			}}
+		>
+			<Form {...signInForm}>
+				<FormField
+					control={signInForm.control}
+					name="email"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Email</FormLabel>
+							<FormControl>
+								<Input
+									placeholder={placeholders.EMAIL}
+									{...field}
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={signInForm.control}
+					name="password"
+					render={({ field }) => (
+						<FormItem>
+							<div className="flex items-center justify-between">
+								<FormLabel>Password</FormLabel>
+								<Link href={routes.FORGOT_PASSWORD}>
+									<p>Forgot your password?</p>
+								</Link>
+							</div>
+
+							<FormControl>
+								<Input
+									placeholder={placeholders.PASSWORD}
+									type="password"
+									{...field}
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+			</Form>
+			<Button>Sign in</Button>
+			<p className="text-muted-foreground text-center">
+				Don&apos;t have an account?{" "}
+				<Link
+					className="underline"
+					href={routes.SIGN_UP}
+				>
+					Sign up
+				</Link>
+			</p>
+		</form>
+	)
+}
+
+export { SignInForm }

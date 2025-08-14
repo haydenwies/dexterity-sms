@@ -47,7 +47,7 @@ const SidebarHeader = () => {
 							<DropdownMenuItem>Organization 3</DropdownMenuItem>
 							<DropdownMenuSeparator />
 							<DropdownMenuItem asChild>
-								<Link href={routes.ORGANIZATIONS}>View all organizations</Link>
+								<Link href={routes.ALL_ORGANIZATIONS}>View all organizations</Link>
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>
