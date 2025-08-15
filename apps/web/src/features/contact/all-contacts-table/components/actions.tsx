@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 
-import { type ContactModel } from "@repo/types/contact"
+import { type ContactModel, type ContactTagModel } from "@repo/types/contact"
 import { Button } from "@repo/ui/components/button"
 import {
 	DropdownMenu,
@@ -15,12 +15,13 @@ import { Icon, IconName } from "@repo/ui/components/icon"
 
 import { AllContactsTableDeleteDialog } from "~/features/contact/all-contacts-table/components/delete-dialog"
 import { AllContactsTableUpdateDialog } from "~/features/contact/all-contacts-table/components/update-dialog"
+import { ManageContactTagsDialog } from "./manage-tags-dialog"
 
-type Props = {
-	contact: ContactModel
-}
+type Props =
+	| { type: "header"; data: { contacts: ContactModel[]; contactTags: ContactTagModel[] } }
+	| { type: "cell"; data: { contact: ContactModel; contactTags: ContactTagModel[] } }
 
-const AllContactsTableCellActions = ({ contact }: Props) => {
+const AllContactsTableActions = ({ type, data }: Props) => {
 	const [updateOpen, setUpdateOpen] = useState<boolean>(false)
 	const [deleteOpen, setDeleteOpen] = useState<boolean>(false)
 
@@ -28,6 +29,7 @@ const AllContactsTableCellActions = ({ contact }: Props) => {
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
 				<Button
+					disabled={type === "header" && data.contacts.length === 0}
 					variant="ghost"
 					size="icon"
 				>
@@ -35,10 +37,12 @@ const AllContactsTableCellActions = ({ contact }: Props) => {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end">
-				<DropdownMenuItem onClick={() => setUpdateOpen(true)}>
-					<Icon name={IconName.EDIT} />
-					Edit
-				</DropdownMenuItem>
+				{type === "cell" && (
+					<DropdownMenuItem onClick={() => setUpdateOpen(true)}>
+						<Icon name={IconName.EDIT} />
+						Edit
+					</DropdownMenuItem>
+				)}
 				<DropdownMenuSeparator />
 				<DropdownMenuItem
 					onClick={() => setDeleteOpen(true)}
@@ -48,13 +52,19 @@ const AllContactsTableCellActions = ({ contact }: Props) => {
 					Delete
 				</DropdownMenuItem>
 			</DropdownMenuContent>
-			<AllContactsTableUpdateDialog
-				contact={contact}
-				open={updateOpen}
-				setOpen={setUpdateOpen}
+			{type === "cell" && (
+				<AllContactsTableUpdateDialog
+					contact={data.contact}
+					open={updateOpen}
+					setOpen={setUpdateOpen}
+				/>
+			)}
+			<ManageContactTagsDialog
+				contacts={type === "header" ? data.contacts : [data.contact]}
+				contactTags={data.contactTags}
 			/>
 			<AllContactsTableDeleteDialog
-				contacts={[contact]}
+				contacts={type === "header" ? data.contacts : [data.contact]}
 				open={deleteOpen}
 				setOpen={setDeleteOpen}
 			/>
@@ -62,4 +72,4 @@ const AllContactsTableCellActions = ({ contact }: Props) => {
 	)
 }
 
-export { AllContactsTableCellActions }
+export { AllContactsTableActions }
