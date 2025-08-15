@@ -3,6 +3,7 @@ import * as IconsPrimitive from "lucide-react"
 
 enum IconName {
 	BUILDING = "building",
+	CHEVRON_DOWN = "chevron-down",
 	CHEVRON_RIGHT = "chevron-right",
 	CHEVRONS_UP_DOWN = "chevrons-up-down",
 	CONTACTS = "users",
@@ -14,18 +15,22 @@ enum IconName {
 	LOG_OUT = "log-out",
 	MEGAPHONE = "megaphone",
 	MESSAGE = "message-circle",
+	MINUS = "minus",
 	PLUS = "plus",
 	RESET = "reset",
 	SAVE = "save",
 	SETTINGS = "settings",
 	SPINNER = "spinner",
 	SQUIRREL = "squirrel",
+	TAG = "tag",
 	TRASH = "trash",
-	USER = "user"
+	USER = "user",
+	X = "x"
 }
 
 const iconVariants = {
 	[IconName.BUILDING]: IconsPrimitive.Building,
+	[IconName.CHEVRON_DOWN]: IconsPrimitive.ChevronDown,
 	[IconName.CHEVRON_RIGHT]: IconsPrimitive.ChevronRight,
 	[IconName.CHEVRONS_UP_DOWN]: IconsPrimitive.ChevronsUpDown,
 	[IconName.CONTACTS]: IconsPrimitive.Users,
@@ -37,14 +42,17 @@ const iconVariants = {
 	[IconName.LOG_OUT]: IconsPrimitive.LogOut,
 	[IconName.MEGAPHONE]: IconsPrimitive.Megaphone,
 	[IconName.MESSAGE]: IconsPrimitive.MessageCircle,
+	[IconName.MINUS]: IconsPrimitive.Minus,
 	[IconName.PLUS]: IconsPrimitive.Plus,
 	[IconName.RESET]: IconsPrimitive.RotateCcw,
 	[IconName.SAVE]: IconsPrimitive.Save,
 	[IconName.SETTINGS]: IconsPrimitive.Settings,
 	[IconName.SPINNER]: IconsPrimitive.LoaderCircle,
 	[IconName.SQUIRREL]: IconsPrimitive.Squirrel,
+	[IconName.TAG]: IconsPrimitive.Tag,
 	[IconName.TRASH]: IconsPrimitive.Trash2,
-	[IconName.USER]: IconsPrimitive.User
+	[IconName.USER]: IconsPrimitive.User,
+	[IconName.X]: IconsPrimitive.X
 }
 
 type IconProps = React.ComponentProps<"svg"> & { name: IconName }
