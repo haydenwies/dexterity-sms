@@ -13,6 +13,8 @@ import {
 	CommandEmpty,
 	CommandGroup,
 	CommandInput,
+	CommandInputIcon,
+	CommandInputWrapper,
 	CommandItem,
 	CommandList
 } from "@repo/ui/components/command"
@@ -102,21 +104,24 @@ const CountrySelect = ({ disabled, value: selectedCountry, options: countryList,
 			</PopoverTrigger>
 			<PopoverContent className="w-[300px] p-0">
 				<Command>
-					<CommandInput
-						value={searchValue}
-						onValueChange={(value) => {
-							setSearchValue(value)
-							setTimeout(() => {
-								if (scrollAreaRef.current) {
-									const viewportElement = scrollAreaRef.current.querySelector(
-										"[data-radix-scroll-area-viewport]"
-									)
-									if (viewportElement) viewportElement.scrollTop = 0
-								}
-							}, 0)
-						}}
-						placeholder="Search country..."
-					/>
+					<CommandInputWrapper>
+						<CommandInputIcon />
+						<CommandInput
+							value={searchValue}
+							onValueChange={(value) => {
+								setSearchValue(value)
+								setTimeout(() => {
+									if (scrollAreaRef.current) {
+										const viewportElement = scrollAreaRef.current.querySelector(
+											"[data-radix-scroll-area-viewport]"
+										)
+										if (viewportElement) viewportElement.scrollTop = 0
+									}
+								}, 0)
+							}}
+							placeholder="Search country..."
+						/>
+					</CommandInputWrapper>
 					<CommandList>
 						<ScrollArea
 							ref={scrollAreaRef}

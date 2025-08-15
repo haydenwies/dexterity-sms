@@ -51,24 +51,56 @@ function CommandDialog({
 	)
 }
 
-function CommandInput({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.Input>) {
+const CommandInputWrapper = ({ className, ...props }: React.ComponentProps<"div">) => {
 	return (
 		<div
 			data-slot="command-input-wrapper"
-			className="flex h-9 items-center gap-2 border-b px-3"
-		>
-			<SearchIcon className="size-4 shrink-0 opacity-50" />
-			<CommandPrimitive.Input
-				data-slot="command-input"
-				className={cn(
-					"placeholder:text-muted-foreground outline-hidden flex h-10 w-full rounded-md bg-transparent py-3 text-sm disabled:cursor-not-allowed disabled:opacity-50",
-					className
-				)}
-				{...props}
-			/>
-		</div>
+			className={cn("flex h-9 items-center gap-2 border-b px-3 [&_svg]:size-4 [&_svg]:shrink-0", className)}
+			{...props}
+		/>
 	)
 }
+
+const CommandInputIcon = ({ className, ...props }: React.ComponentProps<"svg">) => {
+	return (
+		<SearchIcon
+			className={cn("size-4 shrink-0 opacity-50", className)}
+			{...props}
+		/>
+	)
+}
+
+const CommandInput = ({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.Input>) => {
+	return (
+		<CommandPrimitive.Input
+			data-slot="command-input"
+			className={cn(
+				"placeholder:text-muted-foreground outline-hidden flex h-10 w-full rounded-md bg-transparent py-3 text-sm disabled:cursor-not-allowed disabled:opacity-50",
+				className
+			)}
+			{...props}
+		/>
+	)
+}
+
+// function CommandInput({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.Input>) {
+// 	return (
+// 		<div
+// 			data-slot="command-input-wrapper"
+// 			className="flex h-9 items-center gap-2 border-b px-3"
+// 		>
+// 			<SearchIcon className="size-4 shrink-0 opacity-50" />
+// 			<CommandPrimitive.Input
+// 				data-slot="command-input"
+// 				className={cn(
+// 					"placeholder:text-muted-foreground outline-hidden flex h-10 w-full rounded-md bg-transparent py-3 text-sm disabled:cursor-not-allowed disabled:opacity-50",
+// 					className
+// 				)}
+// 				{...props}
+// 			/>
+// 		</div>
+// 	)
+// }
 
 function CommandList({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.List>) {
 	return (
@@ -142,6 +174,8 @@ export {
 	CommandEmpty,
 	CommandGroup,
 	CommandInput,
+	CommandInputIcon,
+	CommandInputWrapper,
 	CommandItem,
 	CommandList,
 	CommandSeparator,

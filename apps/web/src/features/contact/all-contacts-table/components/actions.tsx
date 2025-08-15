@@ -43,11 +43,13 @@ const AllContactsTableActions = ({ type, data }: Props) => {
 						Edit
 					</DropdownMenuItem>
 				)}
-				<DropdownMenuItem onClick={() => setManageTagsOpen(true)}>
-					<Icon name={IconName.TAG} />
-					Manage Tags
-				</DropdownMenuItem>
-				<DropdownMenuSeparator />
+				{type === "cell" && (
+					<DropdownMenuItem onClick={() => setManageTagsOpen(true)}>
+						<Icon name={IconName.TAG} />
+						Manage Tags
+					</DropdownMenuItem>
+				)}
+				{type === "cell" && <DropdownMenuSeparator />}
 				<DropdownMenuItem
 					onClick={() => setDeleteOpen(true)}
 					variant="destructive"
@@ -63,12 +65,14 @@ const AllContactsTableActions = ({ type, data }: Props) => {
 					setOpen={setUpdateOpen}
 				/>
 			)}
-			<ManageContactTagsDialog
-				open={manageTagsOpen}
-				setOpen={setManageTagsOpen}
-				contacts={type === "header" ? data.contacts : [data.contact]}
-				contactTags={data.contactTags}
-			/>
+			{type === "cell" && (
+				<ManageContactTagsDialog
+					open={manageTagsOpen}
+					setOpen={setManageTagsOpen}
+					contact={data.contact}
+					contactTags={data.contactTags}
+				/>
+			)}
 			<AllContactsTableDeleteDialog
 				contacts={type === "header" ? data.contacts : [data.contact]}
 				open={deleteOpen}

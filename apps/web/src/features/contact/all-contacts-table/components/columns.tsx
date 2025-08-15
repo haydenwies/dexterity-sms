@@ -3,8 +3,8 @@ import { type ColumnDef } from "@tanstack/react-table"
 import { type ContactModel, type ContactTagModel } from "@repo/types/contact"
 import { Checkbox } from "@repo/ui/components/checkbox"
 
-import { Badge } from "@repo/ui/components/badge"
 import { AllContactsTableActions } from "~/features/contact/all-contacts-table/components/actions"
+import { ContactTagBadge } from "~/features/contact/all-contacts-table/components/tag-badge"
 
 type Props = {
 	contactTags: ContactTagModel[]
@@ -62,17 +62,10 @@ const getAllContactsColumns = ({ contactTags }: Props): ColumnDef<ContactModel>[
 				return (
 					<div className="flex flex-wrap gap-2">
 						{tags.map((tag) => (
-							<Badge
-								className="text-foreground"
+							<ContactTagBadge
 								key={tag.id}
-								style={{ backgroundColor: `${tag.color}40` }}
-							>
-								<div
-									style={{ backgroundColor: tag.color }}
-									className="size-2 rounded-full"
-								/>
-								{tag.name}
-							</Badge>
+								tag={tag}
+							/>
 						))}
 					</div>
 				)
