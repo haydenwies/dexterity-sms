@@ -7,7 +7,7 @@ const getAllContacts = async (): Promise<ContactModel[]> => {
 		{
 			id: "1",
 			organizationId: "1",
-			tagIds: ["1"],
+			tagIds: ["1", "2"],
 			firstName: "John",
 			lastName: "Doe",
 			email: "john.doe@example.com",
@@ -18,6 +18,7 @@ const getAllContacts = async (): Promise<ContactModel[]> => {
 		{
 			id: "2",
 			organizationId: "1",
+			tagIds: ["2", "3"],
 			firstName: "Jane",
 			lastName: "Smith",
 			email: "jane.smith@example.com",
@@ -27,7 +28,8 @@ const getAllContacts = async (): Promise<ContactModel[]> => {
 		},
 		{
 			id: "3",
-			organizationId: "2",
+			organizationId: "1",
+			tagIds: ["4"],
 			firstName: "Alice",
 			lastName: "Johnson",
 			email: "alice.johnson@example.com",
@@ -37,11 +39,23 @@ const getAllContacts = async (): Promise<ContactModel[]> => {
 		},
 		{
 			id: "4",
-			organizationId: "2",
+			organizationId: "1",
+			tagIds: ["5"],
 			firstName: "Bob",
 			lastName: "Williams",
 			email: "bob.williams@example.com",
 			phone: "+12223334446",
+			createdAt: new Date(),
+			updatedAt: new Date()
+		},
+		{
+			id: "5",
+			organizationId: "1",
+			tagIds: [],
+			firstName: "Charlie",
+			lastName: "Brown",
+			email: "charlie.brown@example.com",
+			phone: "+15556667778",
 			createdAt: new Date(),
 			updatedAt: new Date()
 		}

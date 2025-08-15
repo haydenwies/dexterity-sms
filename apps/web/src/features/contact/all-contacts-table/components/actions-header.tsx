@@ -11,7 +11,8 @@ import {
 	DropdownMenuTrigger
 } from "@repo/ui/components/dropdown-menu"
 import { Icon, IconName } from "@repo/ui/components/icon"
-import { AllContactsTableDeleteDialog } from "./delete-dialog"
+
+import { AllContactsTableDeleteDialog } from "~/features/contact/all-contacts-table/components/delete-dialog"
 
 type Props = {
 	contacts: ContactModel[]

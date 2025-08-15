@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 
-import { ContactModel } from "@repo/types/contact"
+import { type ContactModel } from "@repo/types/contact"
 import { Button } from "@repo/ui/components/button"
 import {
 	DropdownMenu,
