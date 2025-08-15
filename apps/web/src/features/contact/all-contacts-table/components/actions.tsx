@@ -23,8 +23,8 @@ type Props =
 
 const AllContactsTableActions = ({ type, data }: Props) => {
 	const [updateOpen, setUpdateOpen] = useState<boolean>(false)
+	const [manageTagsOpen, setManageTagsOpen] = useState<boolean>(false)
 	const [deleteOpen, setDeleteOpen] = useState<boolean>(false)
-
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -43,6 +43,10 @@ const AllContactsTableActions = ({ type, data }: Props) => {
 						Edit
 					</DropdownMenuItem>
 				)}
+				<DropdownMenuItem onClick={() => setManageTagsOpen(true)}>
+					<Icon name={IconName.TAG} />
+					Manage Tags
+				</DropdownMenuItem>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem
 					onClick={() => setDeleteOpen(true)}
@@ -60,6 +64,8 @@ const AllContactsTableActions = ({ type, data }: Props) => {
 				/>
 			)}
 			<ManageContactTagsDialog
+				open={manageTagsOpen}
+				setOpen={setManageTagsOpen}
 				contacts={type === "header" ? data.contacts : [data.contact]}
 				contactTags={data.contactTags}
 			/>
