@@ -13,6 +13,7 @@ import {
 	DialogHeader,
 	DialogTitle
 } from "@repo/ui/components/dialog"
+import { Icon, IconName } from "@repo/ui/components/icon"
 
 import { ContactTagBadge } from "~/features/contact/all-contacts-table/components/tag-badge"
 import { useManageContactTags } from "~/features/contact/all-contacts-table/hooks/use-manage-contact-tags"
@@ -29,10 +30,11 @@ const ManageContactTagsDialog = ({ contact, contactTags, open, setOpen }: Props)
 	const [searchValue, setSearchValue] = useState<string>("")
 	const inputRef = useRef<HTMLInputElement>(null)
 
-	const { selectedTags, selectableTags, handleAddTag, handleRemoveTag, handleCreateTag } = useManageContactTags({
-		contact,
-		contactTags
-	})
+	const { selectedTags, selectableTags, handleAddTag, handleRemoveTag, handleCreateTag, handleSubmit } =
+		useManageContactTags({
+			contact,
+			contactTags
+		})
 
 	const handleKeyDown = useCallback(
 		(e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -40,7 +42,6 @@ const ManageContactTagsDialog = ({ contact, contactTags, open, setOpen }: Props)
 			if (!input) return
 
 			if (e.key === "Delete" || e.key === "Backspace") if (input.value === "") handleRemoveTag()
-
 			if (e.key === "Escape") input.blur()
 		},
 		[handleRemoveTag]
@@ -121,7 +122,10 @@ const ManageContactTagsDialog = ({ contact, contactTags, open, setOpen }: Props)
 					</div>
 				</Command>
 				<DialogFooter>
-					<Button>Save</Button>
+					<Button onClick={handleSubmit}>
+						<Icon name={IconName.SAVE} />
+						Save
+					</Button>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>
