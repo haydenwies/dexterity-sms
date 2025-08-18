@@ -1,5 +1,7 @@
 "use client"
 
+import { useState } from "react"
+
 import { CampaignModel } from "@repo/types/campaign"
 import { Button } from "@repo/ui/components/button"
 import {
@@ -9,8 +11,8 @@ import {
 	DropdownMenuTrigger
 } from "@repo/ui/components/dropdown-menu"
 import { Icon, IconName } from "@repo/ui/components/icon"
-import { useState } from "react"
-import { AllCampaignsTableDeleteDialog } from "./delete-dialog"
+
+import { AllCampaignsTableDeleteDialog } from "~/features/campaign/all-campaigns-table/components/delete-dialog"
 
 type Props =
 	| { type: "header"; data: { campaigns: CampaignModel[] } }
