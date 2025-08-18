@@ -15,8 +15,6 @@ const routes = {
 
 	// Contacts
 	ALL_CONTACTS: (organizationId: string) => `/organizations/${organizationId}/contacts`,
-	ALL_CONTACT_TAGS: (organizationId: string) => `/organizations/${organizationId}/contacts/tags`,
-	ALL_CONTACT_FORMS: (organizationId: string) => `/organizations/${organizationId}/contacts/forms`,
 
 	// Campaigns
 	ALL_CAMPAIGNS: (organizationId: string) => `/organizations/${organizationId}/campaigns`,

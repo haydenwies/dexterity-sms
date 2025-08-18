@@ -54,21 +54,10 @@ const getSidebarItems = (): (SidebarItemLink | SidebarItemFolder)[] => {
 		},
 
 		{
-			type: SidebarItemType.FOLDER,
+			type: SidebarItemType.LINK,
 			title: "Contacts",
 			icon: IconName.CONTACTS,
-			items: [
-				{
-					type: SidebarItemType.LINK,
-					title: "All Contacts",
-					href: routes.ALL_CONTACTS("123")
-				},
-				{
-					type: SidebarItemType.LINK,
-					title: "Forms",
-					href: routes.ALL_CONTACT_FORMS("123")
-				}
-			]
+			href: routes.ALL_CONTACTS("123")
 		},
 		{
 			type: SidebarItemType.LINK,

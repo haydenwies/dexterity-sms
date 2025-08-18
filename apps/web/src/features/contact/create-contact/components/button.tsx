@@ -29,7 +29,7 @@ const CreateContactButton = () => {
 			<DropdownMenuContent align="end">
 				<DropdownMenuItem onClick={() => setManualOpen(true)}>
 					<Icon name={IconName.CREATE} />
-					From Scratch
+					Manual
 				</DropdownMenuItem>
 				<DropdownMenuItem onClick={() => setCsvOpen(true)}>
 					<Icon name={IconName.FILE_UPLOAD} />
