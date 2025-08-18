@@ -3,14 +3,14 @@
 import { flexRender, getCoreRowModel, useReactTable, type RowSelectionState } from "@tanstack/react-table"
 import { use, useState } from "react"
 
-import { ContactTagModel, type ContactModel } from "@repo/types/contact"
+import { type ContactModel, type TagModel } from "@repo/types/contact"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/components/table"
 
 import { getAllContactsColumns } from "~/features/contact/all-contacts-table/components/columns"
 
 type Props = {
 	contactsPromise: Promise<ContactModel[]>
-	contactTagsPromise: Promise<ContactTagModel[]>
+	contactTagsPromise: Promise<TagModel[]>
 }
 
 const AllContactsTable = ({ contactsPromise, contactTagsPromise }: Props) => {

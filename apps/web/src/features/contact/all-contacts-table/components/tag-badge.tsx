@@ -1,11 +1,11 @@
 "use client"
 
-import { ContactTagModel } from "@repo/types/contact"
+import { TagModel } from "@repo/types/contact"
 import { Badge } from "@repo/ui/components/badge"
 import { Icon, IconName } from "@repo/ui/components/icon"
 
 type Props = {
-	tag: ContactTagModel
+	tag: TagModel
 	removable?: boolean
 	onRemove?: () => void
 }

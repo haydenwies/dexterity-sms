@@ -2,7 +2,7 @@
 
 import { useCallback, useRef, useState } from "react"
 
-import { type ContactModel, type ContactTagModel } from "@repo/types/contact"
+import { type ContactModel, type TagModel } from "@repo/types/contact"
 import { Button } from "@repo/ui/components/button"
 import { Command, CommandInput, CommandItem, CommandList } from "@repo/ui/components/command"
 import {
@@ -20,7 +20,7 @@ import { useManageContactTags } from "~/features/contact/all-contacts-table/hook
 
 type Props = {
 	contact: ContactModel
-	contactTags: ContactTagModel[]
+	contactTags: TagModel[]
 	open: boolean
 	setOpen: (open: boolean) => void
 }

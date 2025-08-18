@@ -1,8 +1,8 @@
 "use server"
 
-import { ContactTagModel } from "@repo/types/contact"
+import { TagModel } from "@repo/types/contact"
 
-const getAllContactTags = async (): Promise<ContactTagModel[]> => {
+const getAllTags = async (): Promise<TagModel[]> => {
 	return [
 		{
 			id: "1",
@@ -47,4 +47,4 @@ const getAllContactTags = async (): Promise<ContactTagModel[]> => {
 	]
 }
 
-export { getAllContactTags }
+export { getAllTags }

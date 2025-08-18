@@ -1,13 +1,13 @@
 import { type ColumnDef } from "@tanstack/react-table"
 
-import { type ContactModel, type ContactTagModel } from "@repo/types/contact"
+import { type ContactModel, type TagModel } from "@repo/types/contact"
 import { Checkbox } from "@repo/ui/components/checkbox"
 
 import { AllContactsTableActions } from "~/features/contact/all-contacts-table/components/actions"
 import { ContactTagBadge } from "~/features/contact/all-contacts-table/components/tag-badge"
 
 type Props = {
-	contactTags: ContactTagModel[]
+	contactTags: TagModel[]
 }
 
 const getAllContactsColumns = ({ contactTags }: Props): ColumnDef<ContactModel>[] => {

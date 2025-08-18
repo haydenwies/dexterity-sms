@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 
-import { type ContactModel, type ContactTagModel } from "@repo/types/contact"
+import { type ContactModel, type TagModel } from "@repo/types/contact"
 import { Button } from "@repo/ui/components/button"
 import {
 	DropdownMenu,
@@ -18,8 +18,8 @@ import { AllContactsTableUpdateDialog } from "~/features/contact/all-contacts-ta
 import { ManageContactTagsDialog } from "./manage-tags-dialog"
 
 type Props =
-	| { type: "header"; data: { contacts: ContactModel[]; contactTags: ContactTagModel[] } }
-	| { type: "cell"; data: { contact: ContactModel; contactTags: ContactTagModel[] } }
+	| { type: "header"; data: { contacts: ContactModel[]; contactTags: TagModel[] } }
+	| { type: "cell"; data: { contact: ContactModel; contactTags: TagModel[] } }
 
 const AllContactsTableActions = ({ type, data }: Props) => {
 	const [updateOpen, setUpdateOpen] = useState<boolean>(false)

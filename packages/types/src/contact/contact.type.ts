@@ -10,7 +10,7 @@ type ContactModel = {
 	updatedAt: Date
 }
 
-type ContactTagModel = {
+type TagModel = {
 	id: string
 	organizationId: string
 	name: string
@@ -19,4 +19,4 @@ type ContactTagModel = {
 	updatedAt: Date
 }
 
-export type { ContactModel, ContactTagModel }
+export type { ContactModel, TagModel }
