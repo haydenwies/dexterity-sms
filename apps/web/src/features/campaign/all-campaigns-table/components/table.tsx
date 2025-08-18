@@ -1,7 +1,7 @@
 "use client"
 
-import { flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table"
-import { use } from "react"
+import { flexRender, getCoreRowModel, RowSelectionState, useReactTable } from "@tanstack/react-table"
+import { use, useState } from "react"
 
 import { CampaignModel } from "@repo/types/campaign"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/components/table"
@@ -16,10 +16,16 @@ const AllCampaignsTable = ({ campaignsPromise }: Props) => {
 	const data = use(campaignsPromise)
 	const columns = getAllCampaignsTableColumns()
 
+	const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+
 	const table = useReactTable({
 		data,
 		columns,
-		getCoreRowModel: getCoreRowModel()
+		getCoreRowModel: getCoreRowModel(),
+		onRowSelectionChange: setRowSelection,
+		state: {
+			rowSelection
+		}
 	})
 
 	return (

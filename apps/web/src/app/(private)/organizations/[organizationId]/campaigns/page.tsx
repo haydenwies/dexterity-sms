@@ -1,7 +1,8 @@
-import { Page, PageContent, PageHeader } from "@repo/ui/components/page"
+import { Page, PageContent, PageHeader, PageHeaderRow } from "@repo/ui/components/page"
 
 import { getAllCampaigns } from "~/actions/campaign/get-all-campaigns"
 import { AllCampaignsTable } from "~/features/campaign/all-campaigns-table"
+import { CreateCampaignButton } from "~/features/campaign/create-campaign"
 
 const AllCampaignsPage = () => {
 	const campaignsPromise = getAllCampaigns()
@@ -9,7 +10,10 @@ const AllCampaignsPage = () => {
 	return (
 		<Page>
 			<PageHeader>
-				<h1>All Campaigns</h1>
+				<PageHeaderRow>
+					<h1>All Campaigns</h1>
+					<CreateCampaignButton />
+				</PageHeaderRow>
 			</PageHeader>
 			<PageContent>
 				<AllCampaignsTable campaignsPromise={campaignsPromise} />

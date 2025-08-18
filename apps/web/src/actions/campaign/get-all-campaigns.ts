@@ -8,27 +8,27 @@ const getAllCampaigns = async (): Promise<CampaignModel[]> => {
 		{
 			id: "1",
 			organizationId: "1",
-			templateId: "1",
 			status: CampaignStatus.DRAFT,
 			name: "Spring Launch",
+			body: "This is a test body",
 			createdAt: new Date(),
 			updatedAt: new Date()
 		},
 		{
 			id: "2",
 			organizationId: "1",
-			templateId: "1",
 			status: CampaignStatus.CANCELLED,
 			name: "Summer Sale",
+			body: "This is a test body",
 			createdAt: new Date(),
 			updatedAt: new Date()
 		},
 		{
 			id: "3",
 			organizationId: "1",
-			templateId: "1",
 			status: CampaignStatus.DELIVERED,
 			name: "Winter Clearance",
+			body: "This is a test body",
 			createdAt: new Date(),
 			updatedAt: new Date()
 		}

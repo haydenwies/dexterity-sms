@@ -1,19 +1,72 @@
 import { ColumnDef } from "@tanstack/react-table"
 
 import { type CampaignModel } from "@repo/types/campaign"
+import { Badge } from "@repo/ui/components/badge"
+import { Checkbox } from "@repo/ui/components/checkbox"
+
+import { AllCampaignsTableActions } from "~/features/campaign/all-campaigns-table/components/actions"
 
 const getAllCampaignsTableColumns = (): ColumnDef<CampaignModel>[] => [
 	{
+		id: "select",
+		enableHiding: false,
+		enableSorting: false,
+		header: ({ table }) => (
+			<Checkbox
+				checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+				onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+				aria-label="Select all"
+			/>
+		),
+		cell: ({ row }) => (
+			<Checkbox
+				checked={row.getIsSelected()}
+				onCheckedChange={(value) => row.toggleSelected(!!value)}
+				aria-label="Select row"
+			/>
+		)
+	},
+	{
 		accessorKey: "name",
+		enableHiding: true,
+		enableSorting: true,
 		header: "Name"
 	},
 	{
-		accessorKey: "status",
-		header: "Status"
+		accessorKey: "body",
+		enableHiding: true,
+		enableSorting: true,
+		header: "Body"
 	},
 	{
-		accessorKey: "createdAt",
-		header: "Created At"
+		accessorKey: "status",
+		enableHiding: true,
+		enableSorting: true,
+		header: "Status",
+		cell: ({ row }) => <Badge>{row.original.status}</Badge>
+	},
+	{
+		id: "actions",
+		enableHiding: false,
+		enableSorting: false,
+		header: ({ table }) => {
+			const campaigns = table.getSelectedRowModel().rows.map((row) => row.original)
+			return (
+				<AllCampaignsTableActions
+					type="header"
+					data={{ campaigns: campaigns }}
+				/>
+			)
+		},
+		cell: ({ row }) => {
+			const campaign = row.original
+			return (
+				<AllCampaignsTableActions
+					type="cell"
+					data={{ campaign }}
+				/>
+			)
+		}
 	}
 ]
 
