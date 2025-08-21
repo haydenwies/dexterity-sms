@@ -2,6 +2,7 @@ import { cn } from "@repo/ui/lib/utils"
 import * as IconsPrimitive from "lucide-react"
 
 enum IconName {
+	ARROW_RIGHT = "arrow-right",
 	BUILDING = "building",
 	CHEVRON_DOWN = "chevron-down",
 	CHEVRON_RIGHT = "chevron-right",
@@ -19,16 +20,19 @@ enum IconName {
 	PLUS = "plus",
 	RESET = "reset",
 	SAVE = "save",
+	SEND = "send",
 	SETTINGS = "settings",
 	SPINNER = "spinner",
 	SQUIRREL = "squirrel",
 	TAG = "tag",
+	TEST_TUBE = "test-tube",
 	TRASH = "trash",
 	USER = "user",
 	X = "x"
 }
 
 const iconVariants = {
+	[IconName.ARROW_RIGHT]: IconsPrimitive.ArrowRight,
 	[IconName.BUILDING]: IconsPrimitive.Building,
 	[IconName.CHEVRON_DOWN]: IconsPrimitive.ChevronDown,
 	[IconName.CHEVRON_RIGHT]: IconsPrimitive.ChevronRight,
@@ -46,10 +50,12 @@ const iconVariants = {
 	[IconName.PLUS]: IconsPrimitive.Plus,
 	[IconName.RESET]: IconsPrimitive.RotateCcw,
 	[IconName.SAVE]: IconsPrimitive.Save,
+	[IconName.SEND]: IconsPrimitive.Send,
 	[IconName.SETTINGS]: IconsPrimitive.Settings,
 	[IconName.SPINNER]: IconsPrimitive.LoaderCircle,
 	[IconName.SQUIRREL]: IconsPrimitive.Squirrel,
 	[IconName.TAG]: IconsPrimitive.Tag,
+	[IconName.TEST_TUBE]: IconsPrimitive.TestTubeDiagonal,
 	[IconName.TRASH]: IconsPrimitive.Trash2,
 	[IconName.USER]: IconsPrimitive.User,
 	[IconName.X]: IconsPrimitive.X

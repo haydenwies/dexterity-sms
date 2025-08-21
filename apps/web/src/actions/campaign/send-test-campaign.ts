@@ -1,0 +1,15 @@
+"use server"
+
+import { SendTestCampaignDto } from "@repo/types/campaign/dto/send-test-campaign"
+
+import { ActionResponse, actionSuccess } from "~/actions/actions"
+
+const sendTestCampaign = async (dto: SendTestCampaignDto): Promise<ActionResponse<void>> => {
+	await new Promise((resolve) => setTimeout(resolve, 1000))
+
+	console.log(dto)
+
+	return actionSuccess(undefined)
+}
+
+export { sendTestCampaign }

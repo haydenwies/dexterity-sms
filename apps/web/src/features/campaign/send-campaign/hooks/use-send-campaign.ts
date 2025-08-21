@@ -1,0 +1,3 @@
+const useSendCampaign = () => {}
+
+export { useSendCampaign }
