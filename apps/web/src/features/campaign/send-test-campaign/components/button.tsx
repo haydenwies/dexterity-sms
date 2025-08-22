@@ -25,7 +25,7 @@ const SendTestCampaignButton = ({ campaignId }: Props) => {
 			</Button>
 			<SendTestCampaignDialog
 				campaignId={campaignId}
-				onOpenChange={setOpen}
+				setOpen={setOpen}
 				open={open}
 			/>
 		</>

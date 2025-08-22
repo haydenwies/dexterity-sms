@@ -19,15 +19,15 @@ import { placeholders } from "~/lib/placeholders"
 type Props = {
 	campaignId: string
 	open: boolean
-	onOpenChange: (open: boolean) => void
+	setOpen: (open: boolean) => void
 }
 
-const SendTestCampaignDialog = ({ campaignId, open, onOpenChange }: Props) => {
+const SendTestCampaignDialog = ({ campaignId, open, setOpen }: Props) => {
 	const { form, handleSendTestCampaign } = useSendTestCampaign(campaignId)
 
 	return (
 		<Dialog
-			onOpenChange={onOpenChange}
+			onOpenChange={setOpen}
 			open={open}
 		>
 			<DialogContent>
@@ -53,6 +53,12 @@ const SendTestCampaignDialog = ({ campaignId, open, onOpenChange }: Props) => {
 					/>
 				</Form>
 				<DialogFooter>
+					<Button
+						onClick={() => setOpen(false)}
+						variant="ghost"
+					>
+						Cancel
+					</Button>
 					<Button onClick={handleSendTestCampaign}>
 						<Icon name={IconName.SEND} />
 						Send Test

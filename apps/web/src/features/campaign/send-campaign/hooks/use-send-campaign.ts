@@ -19,6 +19,8 @@ const useSendCampaign = (campaignId: string) => {
 		}
 	})
 
+	const formValues = form.watch()
+
 	const handleSendCampaign = form.handleSubmit(async (data) => {
 		setLoading(true)
 
@@ -35,7 +37,7 @@ const useSendCampaign = (campaignId: string) => {
 		}
 	})
 
-	return { loading, error, form, handleSendCampaign }
+	return { loading, error, form, formValues, handleSendCampaign }
 }
 
 export { useSendCampaign }

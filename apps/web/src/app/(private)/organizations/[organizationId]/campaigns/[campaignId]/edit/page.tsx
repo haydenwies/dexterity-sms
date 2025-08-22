@@ -29,7 +29,7 @@ const EditCampaignPage = async ({ params }: { params: Promise<{ organizationId: 
 								size="icon"
 								variant="link"
 							>
-								<Link href={routes.CAMPAIGN(organizationId, campaignId)}>
+								<Link href={routes.ALL_CAMPAIGNS(organizationId)}>
 									<Icon name={IconName.ARROW_LEFT} />
 								</Link>
 							</Button>

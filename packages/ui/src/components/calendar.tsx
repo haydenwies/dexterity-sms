@@ -10,7 +10,7 @@ import { cn } from "@repo/ui/lib/utils"
 type CalendarProps = React.ComponentProps<typeof DayPicker> & {
 	buttonVariant?: React.ComponentProps<typeof Button>["variant"]
 }
-function Calendar({
+const Calendar = ({
 	className,
 	classNames,
 	showOutsideDays = true,
@@ -19,7 +19,7 @@ function Calendar({
 	formatters,
 	components,
 	...props
-}: CalendarProps) {
+}: CalendarProps) => {
 	const defaultClassNames = getDefaultClassNames()
 
 	return (
@@ -100,6 +100,7 @@ function Calendar({
 				...classNames
 			}}
 			components={{
+				// eslint-disable-next-line react/prop-types
 				Root: ({ className, rootRef, ...props }) => {
 					return (
 						<div
@@ -110,6 +111,7 @@ function Calendar({
 						/>
 					)
 				},
+				// eslint-disable-next-line react/prop-types
 				Chevron: ({ className, orientation, ...props }) => {
 					if (orientation === "left") {
 						return (
