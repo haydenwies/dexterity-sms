@@ -1,18 +1,13 @@
 "use client"
 
-import { CampaignModel } from "@repo/types/campaign"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
 import { Input } from "@repo/ui/components/input"
 import { Textarea } from "@repo/ui/components/textarea"
 
 import { useUpdateCampaign } from "~/features/campaign/update-campaign/hooks/use-update-campaign"
 
-type Props = {
-	campaign: CampaignModel
-}
-
-const UpdateCampaignInterface = ({ campaign }: Props) => {
-	const { form } = useUpdateCampaign(campaign)
+const UpdateCampaignInterface = () => {
+	const { form } = useUpdateCampaign()
 
 	return (
 		<Form {...form}>

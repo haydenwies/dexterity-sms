@@ -2,11 +2,15 @@ import { cn } from "@repo/ui/lib/utils"
 import * as IconsPrimitive from "lucide-react"
 
 enum IconName {
+	ARROW_LEFT = "arrow-left",
 	ARROW_RIGHT = "arrow-right",
 	BUILDING = "building",
+	CALENDAR = "calendar",
 	CHEVRON_DOWN = "chevron-down",
 	CHEVRON_RIGHT = "chevron-right",
 	CHEVRONS_UP_DOWN = "chevrons-up-down",
+	CLOUD_ALERT = "cloud-alert",
+	CLOUD_CHECK = "cloud-check",
 	CONTACTS = "users",
 	CREATE = "create",
 	EDIT = "edit",
@@ -32,11 +36,15 @@ enum IconName {
 }
 
 const iconVariants = {
+	[IconName.ARROW_LEFT]: IconsPrimitive.ArrowLeft,
 	[IconName.ARROW_RIGHT]: IconsPrimitive.ArrowRight,
 	[IconName.BUILDING]: IconsPrimitive.Building,
+	[IconName.CALENDAR]: IconsPrimitive.Calendar,
 	[IconName.CHEVRON_DOWN]: IconsPrimitive.ChevronDown,
 	[IconName.CHEVRON_RIGHT]: IconsPrimitive.ChevronRight,
 	[IconName.CHEVRONS_UP_DOWN]: IconsPrimitive.ChevronsUpDown,
+	[IconName.CLOUD_ALERT]: IconsPrimitive.CloudAlert,
+	[IconName.CLOUD_CHECK]: IconsPrimitive.CloudCheck,
 	[IconName.CONTACTS]: IconsPrimitive.Users,
 	[IconName.CREATE]: IconsPrimitive.Pen,
 	[IconName.EDIT]: IconsPrimitive.SquarePen,

@@ -7,7 +7,11 @@ import { Icon, IconName } from "@repo/ui/components/icon"
 
 import { SendCampaignDialog } from "~/features/campaign/send-campaign/components/dialog"
 
-const SendCampaignButton = () => {
+type Props = {
+	campaignId: string
+}
+
+const SendCampaignButton = ({ campaignId }: Props) => {
 	const [open, setOpen] = useState<boolean>(false)
 
 	return (
@@ -19,6 +23,7 @@ const SendCampaignButton = () => {
 			<SendCampaignDialog
 				open={open}
 				onOpenChange={setOpen}
+				campaignId={campaignId}
 			/>
 		</>
 	)

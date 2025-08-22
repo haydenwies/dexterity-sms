@@ -10,6 +10,7 @@ import {
 	DialogTitle
 } from "@repo/ui/components/dialog"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@repo/ui/components/form"
+import { Icon, IconName } from "@repo/ui/components/icon"
 import { PhoneInput } from "@repo/ui/components/phone-input"
 
 import { useSendTestCampaign } from "~/features/campaign/send-test-campaign/hooks/use-send-test-campaign"
@@ -31,8 +32,8 @@ const SendTestCampaignDialog = ({ campaignId, open, onOpenChange }: Props) => {
 		>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Send Test</DialogTitle>
-					<DialogDescription>Provide a phone number to test this campaign</DialogDescription>
+					<DialogTitle>Test Campaign</DialogTitle>
+					<DialogDescription>Provide a phone number to send a test message</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
 					<FormField
@@ -52,7 +53,10 @@ const SendTestCampaignDialog = ({ campaignId, open, onOpenChange }: Props) => {
 					/>
 				</Form>
 				<DialogFooter>
-					<Button onClick={handleSendTestCampaign}>Send</Button>
+					<Button onClick={handleSendTestCampaign}>
+						<Icon name={IconName.SEND} />
+						Send Test
+					</Button>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>
