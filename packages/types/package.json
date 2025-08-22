@@ -16,6 +16,9 @@
 		"./contact/dto/*": "./src/contact/dto/*.ts",
 		"./campaign": "./src/campaign/campaign.type.ts",
 		"./campaign/enums": "./src/campaign/campaign.enum.ts",
-		"./campaign/dto/*": "./src/campaign/dto/*.ts"
+		"./campaign/dto/*": "./src/campaign/dto/*.ts",
+		"./message": "./src/message/message.type.ts",
+		"./message/enums": "./src/message/message.enum.ts",
+		"./message/dto/*": "./src/message/dto/*.ts"
 	}
 }

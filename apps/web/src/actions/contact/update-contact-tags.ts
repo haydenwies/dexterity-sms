@@ -2,7 +2,7 @@
 
 import { type UpdateContactTagsDto } from "@repo/types/contact/dto/update-contact-tags"
 
-import { type ActionResponse, actionSuccess } from "~/actions/actions"
+import { type ActionResponse, actionSuccess } from "~/lib/actions"
 
 const updateContactTags = async (dto: UpdateContactTagsDto): Promise<ActionResponse<void>> => {
 	await new Promise((resolve) => setTimeout(resolve, 1000))

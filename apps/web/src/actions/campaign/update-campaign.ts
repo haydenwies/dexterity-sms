@@ -2,7 +2,7 @@
 
 import { UpdateCampaignDto } from "@repo/types/campaign/dto/update-campaign"
 
-import { ActionResponse, actionSuccess } from "~/actions/actions"
+import { ActionResponse, actionSuccess } from "~/lib/actions"
 
 const updateCampaign = async (campaignId: string, dto: UpdateCampaignDto): Promise<ActionResponse<void>> => {
 	await new Promise((resolve) => setTimeout(resolve, 1000))

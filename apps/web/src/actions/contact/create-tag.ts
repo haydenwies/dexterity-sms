@@ -1,9 +1,9 @@
 "use server"
 
-import { TagModel } from "@repo/types/contact"
+import { type TagModel } from "@repo/types/contact"
 import { type CreateTagDto } from "@repo/types/contact/dto/create-tag"
 
-import { type ActionResponse, actionSuccess } from "~/actions/actions"
+import { type ActionResponse, actionSuccess } from "~/lib/actions"
 
 const createTag = async (dto: CreateTagDto): Promise<ActionResponse<TagModel>> => {
 	await new Promise((resolve) => setTimeout(resolve, 1000))

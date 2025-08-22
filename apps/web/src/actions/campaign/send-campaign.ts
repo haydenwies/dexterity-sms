@@ -2,7 +2,7 @@
 
 import { type SendCampaignDto } from "@repo/types/campaign/dto/send-campaign"
 
-import { type ActionResponse, actionSuccess } from "~/actions/actions"
+import { type ActionResponse, actionSuccess } from "~/lib/actions"
 
 const sendCampaign = async (dto: SendCampaignDto): Promise<ActionResponse<void>> => {
 	await new Promise((resolve) => setTimeout(resolve, 1000))
