@@ -6,7 +6,7 @@ type ConversationModel = {
 	contactId?: string
 	recipient: string
 	lastMessageAt?: Date
-	lastMessagePreview?: string | null
+	lastMessagePreview?: string
 	unreadCount: number
 	createdAt: Date
 	updatedAt: Date

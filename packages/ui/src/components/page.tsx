@@ -17,7 +17,7 @@ const Page = ({ className, ...props }: PageProps) => {
 type PageHeaderProps = React.ComponentProps<"div">
 const PageHeader = ({ className, ...props }: PageHeaderProps) => (
 	<div
-		className={cn("sticky top-0 p-8 pb-0", className)}
+		className={cn("sticky top-0", className)}
 		{...props}
 	/>
 )
@@ -27,7 +27,7 @@ const PageHeader = ({ className, ...props }: PageHeaderProps) => (
 type PageHeaderRowProps = React.ComponentProps<"div">
 const PageHeaderRow = ({ className, ...props }: PageHeaderRowProps) => (
 	<div
-		className={cn("relative flex flex-row items-start justify-between gap-4", className)}
+		className={cn("relative flex h-16 flex-row items-center justify-between gap-4 px-6", className)}
 		{...props}
 	/>
 )
@@ -47,9 +47,9 @@ const PageHeaderGroup = ({ className, type = "row", ...props }: PageHeaderGroupP
 type PageContentProps = React.ComponentProps<"div"> & { disableScroll?: boolean }
 const PageContent = ({ className, disableScroll = false, ...props }: PageContentProps) => (
 	<div
-		className={cn("flex flex-1 flex-col p-8", { "overflow-y-hidden": disableScroll }, className)}
+		className={cn("flex flex-1 flex-col px-6 py-4", { "overflow-y-hidden": disableScroll }, className)}
 		{...props}
 	/>
 )
 
-export { Page, PageHeader, PageHeaderRow, PageHeaderGroup, PageContent }
+export { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow }

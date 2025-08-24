@@ -1,19 +1,34 @@
 "use client"
 
+import { use, useMemo } from "react"
+
 import { type ContactModel } from "@repo/types/contact"
-import { type MessageModel } from "@repo/types/message"
+import { type ConversationModel } from "@repo/types/message"
+import { cn } from "@repo/ui/lib/utils"
 
-type Props = {
-	conversationId: string
-	messages: MessageModel[]
-	contacts: ContactModel[]
+type ConversationHeaderProps = {
+	conversationPromise: Promise<ConversationModel>
+	contactsPromise: Promise<ContactModel[]>
+	className?: string
+}
+const ConversationHeader = ({ conversationPromise, contactsPromise, className }: ConversationHeaderProps) => {
+	const conversation = use(conversationPromise)
+	const contacts = use(contactsPromise)
+
+	const displayName = useMemo((): string | undefined => {
+		const contact = contacts.find((contact) => contact.id === conversation.contactId)
+		if (!contact) return undefined
+		if (!contact.firstName && !contact.lastName) return undefined
+
+		return `${contact.firstName || ""} ${contact.lastName || ""}`.trim()
+	}, [conversation, contacts])
+
+	return (
+		<div className={cn("flex h-16 items-center px-6 py-4", className)}>
+			<h2 className="text-lg font-semibold">{displayName || conversation.recipient}</h2>
+			{displayName && <p className="text-muted-foreground">{conversation.recipient}</p>}
+		</div>
+	)
 }
 
-/**
- * This will display the header of a conversation with the contact name, etc
- */
-const ChatHeader = ({ conversationId, messages, contacts }: Props) => {
-	return <></>
-}
-
-export { ChatHeader }
+export { ConversationHeader }

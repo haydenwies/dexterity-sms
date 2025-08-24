@@ -1,4 +1,4 @@
-import { SidebarProvider, Sidebar } from "~/components/sidebar"
+import { Sidebar, SidebarProvider } from "~/components/sidebar"
 
 const OrganizationLayout = ({ children }: { children: React.ReactNode }) => {
 	return (

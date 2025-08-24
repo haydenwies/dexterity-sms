@@ -1,7 +1,7 @@
 import { Page, PageContent, PageHeader, PageHeaderRow } from "@repo/ui/components/page"
-import { getAllTags } from "~/actions/contact/get-all-tags"
 
 import { getAllContacts } from "~/actions/contact/get-all-contacts"
+import { getAllTags } from "~/actions/contact/get-all-tags"
 import { AllContactsTable } from "~/features/contact/all-contacts-table"
 import { CreateContactButton } from "~/features/contact/create-contact"
 
