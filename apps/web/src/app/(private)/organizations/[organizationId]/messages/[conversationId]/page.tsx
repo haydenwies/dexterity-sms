@@ -1,5 +1,12 @@
-const MessageThreadPage = () => {
-	return <div>MessageThreadPage</div>
+type Props = {
+	params: Promise<{
+		organizationId: string
+		conversationId: string
+	}>
 }
 
-export default MessageThreadPage
+const ConversationPage = async ({ params }: Props) => {
+	return <div></div>
+}
+
+export default ConversationPage
