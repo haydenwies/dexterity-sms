@@ -31,7 +31,7 @@ export const OrganizationCard = ({ organization }: Props) => {
 			className="transition-shadow hover:shadow-md"
 		>
 			<CardHeader>
-				<Link href={routes.HOME(organization.id)}>
+				<Link href={routes.ORGANIZATION_HOME(organization.id)}>
 					<CardTitle>{organization.name}</CardTitle>
 				</Link>
 				<DropdownMenu>

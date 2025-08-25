@@ -11,7 +11,7 @@ const AllCampaignsPage = () => {
 		<Page>
 			<PageHeader>
 				<PageHeaderRow>
-					<h1>All Campaigns</h1>
+					<h1>Campaigns</h1>
 					<CreateCampaignButton />
 				</PageHeaderRow>
 			</PageHeader>

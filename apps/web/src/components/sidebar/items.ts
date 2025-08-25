@@ -26,7 +26,7 @@ const getSidebarItems = (): (SidebarItemLink | SidebarItemFolder)[] => {
 		{
 			type: SidebarItemType.LINK,
 			title: "Home",
-			href: routes.HOME("123"),
+			href: routes.ORGANIZATION_HOME("123"),
 			icon: IconName.HOME
 		},
 		{
@@ -49,9 +49,9 @@ const getSidebarItems = (): (SidebarItemLink | SidebarItemFolder)[] => {
 		},
 		{
 			type: SidebarItemType.LINK,
-			title: "Organization",
-			href: routes.ORGANIZATION("123"),
-			icon: IconName.BUILDING
+			title: "Settings",
+			href: routes.ORGANIZATION_SETTINGS("123"),
+			icon: IconName.SETTINGS
 		}
 	]
 }

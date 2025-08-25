@@ -4,26 +4,20 @@ const routes = {
 	SIGN_UP: "/sign-up",
 	FORGOT_PASSWORD: "/forgot-password",
 
-	// Account
-	ACCOUNT: "/account",
-
 	// Organizations
 	ALL_ORGANIZATIONS: "/organizations",
 
 	// Dashboard
-	HOME: (organizationId: string) => `/organizations/${organizationId}/dashboard`,
+	ORGANIZATION_HOME: (organizationId: string) => `/organizations/${organizationId}/home`,
 
 	// Organization
-	ORGANIZATION: (organizationId: string) => `/organizations/${organizationId}`,
-	ORGANIZATION_BILLING: (organizationId: string) => `/organizations/${organizationId}/billing`,
+	ORGANIZATION_SETTINGS: (organizationId: string) => `/organizations/${organizationId}/settings`,
 
 	// Contacts
 	ALL_CONTACTS: (organizationId: string) => `/organizations/${organizationId}/contacts`,
 
 	// Campaigns
 	ALL_CAMPAIGNS: (organizationId: string) => `/organizations/${organizationId}/campaigns`,
-	CAMPAIGN: (organizationId: string, campaignId: string) =>
-		`/organizations/${organizationId}/campaigns/${campaignId}`,
 	EDIT_CAMPAIGN: (organizationId: string, campaignId: string) =>
 		`/organizations/${organizationId}/campaigns/${campaignId}/edit`,
 
@@ -33,7 +27,7 @@ const routes = {
 		`/organizations/${organizationId}/messages/${messageThreadId}`,
 
 	// Phone numbers
-	PHONE_NUMBERS: (organizationId: string) => `/organizations/${organizationId}/phone-numbers`
+	SENDERS: (organizationId: string) => `/organizations/${organizationId}/phone-numbers`
 }
 
 export { routes }

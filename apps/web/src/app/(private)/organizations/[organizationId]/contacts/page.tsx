@@ -13,7 +13,7 @@ const AllContactsPage = async () => {
 		<Page>
 			<PageHeader>
 				<PageHeaderRow>
-					<h1>All Contacts</h1>
+					<h1>Contacts</h1>
 					<CreateContactButton />
 				</PageHeaderRow>
 			</PageHeader>
