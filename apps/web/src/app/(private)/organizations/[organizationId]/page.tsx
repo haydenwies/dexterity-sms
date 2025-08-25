@@ -1,16 +1,28 @@
-import { Icon, IconName } from "@repo/ui/components/icon"
+import { Page, PageContent, PageHeader, PageHeaderRow } from "@repo/ui/components/page"
 
-const OrganizationPage = () => {
+import { getOrganization } from "~/actions/organization/get-organization"
+import { UpdateOrganizationForm } from "~/features/organization/organization-settings"
+
+type Props = {
+	params: Promise<{ organizationId: string }>
+}
+
+const OrganizationPage = async ({ params }: Props) => {
+	const { organizationId } = await params
+
+	const organizationPromise = getOrganization(organizationId)
+
 	return (
-		<div className="flex h-svh w-full items-center justify-center">
-			<div className="text-muted-foreground flex items-center justify-center gap-2">
-				<Icon
-					name={IconName.SQUIRREL}
-					className="size-4"
-				/>
-				<p className="font-medium">Coming soon</p>
-			</div>
-		</div>
+		<Page>
+			<PageHeader>
+				<PageHeaderRow>
+					<h1>Organization</h1>
+				</PageHeaderRow>
+			</PageHeader>
+			<PageContent>
+				<UpdateOrganizationForm organizationPromise={organizationPromise} />
+			</PageContent>
+		</Page>
 	)
 }
 

@@ -14,7 +14,7 @@ import {
 } from "@repo/ui/components/dropdown-menu"
 import { Icon, IconName } from "@repo/ui/components/icon"
 
-import { DeleteOrganizationDialog } from "~/features/organization/all-organizations/components/delete-dialog"
+import { DeleteOrganizationDialog } from "~/features/organization/all-organizations-list/components/delete-dialog"
 import { routes } from "~/lib/routes"
 
 type Props = {
@@ -31,7 +31,7 @@ export const OrganizationCard = ({ organization }: Props) => {
 			className="transition-shadow hover:shadow-md"
 		>
 			<CardHeader>
-				<Link href={routes.DASHBOARD(organization.id)}>
+				<Link href={routes.HOME(organization.id)}>
 					<CardTitle>{organization.name}</CardTitle>
 				</Link>
 				<DropdownMenu>

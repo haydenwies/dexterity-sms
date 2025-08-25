@@ -25,34 +25,22 @@ const getSidebarItems = (): (SidebarItemLink | SidebarItemFolder)[] => {
 	return [
 		{
 			type: SidebarItemType.LINK,
-			title: "Dashboard",
-			href: routes.DASHBOARD("123"),
+			title: "Home",
+			href: routes.HOME("123"),
 			icon: IconName.HOME
 		},
-
 		{
-			type: SidebarItemType.FOLDER,
+			type: SidebarItemType.LINK,
 			title: "Campaigns",
-			icon: IconName.MEGAPHONE,
-			items: [
-				{
-					type: SidebarItemType.LINK,
-					title: "All Campaigns",
-					href: routes.ALL_CAMPAIGNS("123")
-				},
-				{
-					type: SidebarItemType.LINK,
-					title: "Templates",
-					href: routes.ALL_CAMPAIGN_TEMPLATES("123")
-				},
-				{
-					type: SidebarItemType.LINK,
-					title: "Settings",
-					href: routes.ALL_CAMPAIGN_SETTINGS("123")
-				}
-			]
+			href: routes.ALL_CAMPAIGNS("123"),
+			icon: IconName.MEGAPHONE
 		},
-
+		{
+			type: SidebarItemType.LINK,
+			title: "Messages",
+			href: routes.ALL_MESSAGES("123"),
+			icon: IconName.MESSAGE
+		},
 		{
 			type: SidebarItemType.LINK,
 			title: "Contacts",
@@ -61,9 +49,9 @@ const getSidebarItems = (): (SidebarItemLink | SidebarItemFolder)[] => {
 		},
 		{
 			type: SidebarItemType.LINK,
-			title: "Messages",
-			href: routes.ALL_MESSAGES("123"),
-			icon: IconName.MESSAGE
+			title: "Organization",
+			href: routes.ORGANIZATION("123"),
+			icon: IconName.BUILDING
 		}
 	]
 }

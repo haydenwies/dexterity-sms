@@ -6,7 +6,7 @@ const getConversation = async (conversationId: string): Promise<ConversationMode
 	const conversation = {
 		id: conversationId,
 		organizationId: "mock-org",
-		contactId: "mock-contact",
+		contactId: "1",
 		recipient: "+1234567890",
 		lastMessageAt: new Date(),
 		lastMessagePreview: "Hello there!",

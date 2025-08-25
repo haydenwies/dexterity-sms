@@ -5,11 +5,8 @@ import { useState } from "react"
 import { Button } from "@repo/ui/components/button"
 import { Icon, IconName } from "@repo/ui/components/icon"
 
-import { NewMessageDialog } from "./dialog"
+import { NewMessageDialog } from "~/features/message/new-message/components/dialog"
 
-/**
- * This will display a button to open the new message dialog
- */
 const NewMessageButton = () => {
 	const [open, setOpen] = useState(false)
 
@@ -17,7 +14,7 @@ const NewMessageButton = () => {
 		<>
 			<Button onClick={() => setOpen(true)}>
 				<Icon name={IconName.PLUS} />
-				New
+				New Conversation
 			</Button>
 			<NewMessageDialog
 				open={open}
