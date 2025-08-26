@@ -8,7 +8,7 @@ const SidebarProvider = SidebarPrimitive.SidebarProvider
 
 const Sidebar = () => {
 	return (
-		<SidebarPrimitive.Sidebar>
+		<SidebarPrimitive.Sidebar collapsible="icon">
 			<SidebarHeader />
 			<SidebarContent />
 			<SidebarFooter />

@@ -8,13 +8,7 @@ const routes = {
 	ALL_ORGANIZATIONS: "/organizations",
 
 	// Dashboard
-	ORGANIZATION_HOME: (organizationId: string) => `/organizations/${organizationId}/home`,
-
-	// Organization
-	ORGANIZATION_SETTINGS: (organizationId: string) => `/organizations/${organizationId}/settings`,
-
-	// Contacts
-	ALL_CONTACTS: (organizationId: string) => `/organizations/${organizationId}/contacts`,
+	HOME: (organizationId: string) => `/organizations/${organizationId}/home`,
 
 	// Campaigns
 	ALL_CAMPAIGNS: (organizationId: string) => `/organizations/${organizationId}/campaigns`,
@@ -26,8 +20,11 @@ const routes = {
 	MESSAGE: (organizationId: string, messageThreadId: string) =>
 		`/organizations/${organizationId}/messages/${messageThreadId}`,
 
-	// Phone numbers
-	SENDERS: (organizationId: string) => `/organizations/${organizationId}/phone-numbers`
+	// Contacts
+	ALL_CONTACTS: (organizationId: string) => `/organizations/${organizationId}/contacts`,
+
+	// Settings
+	SETTINGS: (organizationId: string) => `/organizations/${organizationId}/settings`
 }
 
 export { routes }

@@ -1,6 +1,6 @@
-import * as SidebarPrimitive from "@repo/ui/components/sidebar"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@repo/ui/components/collapsible"
 import { Icon, IconName } from "@repo/ui/components/icon"
+import * as SidebarPrimitive from "@repo/ui/components/sidebar"
 import Link from "next/link"
 
 import {
@@ -13,7 +13,10 @@ import {
 const SidebarItemLink = (item: SidebarItemLinkType) => {
 	return (
 		<SidebarPrimitive.SidebarMenuItem key={item.title}>
-			<SidebarPrimitive.SidebarMenuButton asChild>
+			<SidebarPrimitive.SidebarMenuButton
+				asChild
+				tooltip={item.title}
+			>
 				<Link href={item.href}>
 					{item.icon && <Icon name={item.icon} />}
 					{item.title}

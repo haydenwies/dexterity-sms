@@ -1,7 +1,6 @@
-import { Page, PageContent, PageHeader, PageHeaderRow } from "@repo/ui/components/page"
+import { redirect } from "next/navigation"
 
-import { getOrganization } from "~/actions/organization/get-organization"
-import { UpdateOrganizationForm } from "~/features/organization/organization-settings"
+import { routes } from "~/lib/routes"
 
 type Props = {
 	params: Promise<{ organizationId: string }>
@@ -10,20 +9,7 @@ type Props = {
 const OrganizationPage = async ({ params }: Props) => {
 	const { organizationId } = await params
 
-	const organizationPromise = getOrganization(organizationId)
-
-	return (
-		<Page>
-			<PageHeader>
-				<PageHeaderRow>
-					<h1>Organization</h1>
-				</PageHeaderRow>
-			</PageHeader>
-			<PageContent>
-				<UpdateOrganizationForm organizationPromise={organizationPromise} />
-			</PageContent>
-		</Page>
-	)
+	return redirect(routes.HOME(organizationId))
 }
 
 export default OrganizationPage

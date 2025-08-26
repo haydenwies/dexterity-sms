@@ -8,13 +8,35 @@ import {
 } from "@repo/ui/components/dropdown-menu"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import * as SidebarPrimitive from "@repo/ui/components/sidebar"
+import Link from "next/link"
+import { routes } from "~/lib/routes"
 
 const SidebarFooter = () => {
-	const { isMobile } = SidebarPrimitive.useSidebar()
+	const { isMobile, open, toggleSidebar } = SidebarPrimitive.useSidebar()
 
 	return (
 		<SidebarPrimitive.SidebarFooter>
 			<SidebarPrimitive.SidebarMenu>
+				<SidebarPrimitive.SidebarMenuItem>
+					<SidebarPrimitive.SidebarMenuButton
+						asChild
+						tooltip="Settings"
+					>
+						<Link href={routes.SETTINGS("123")}>
+							<Icon name={IconName.SETTINGS} />
+							Settings
+						</Link>
+					</SidebarPrimitive.SidebarMenuButton>
+				</SidebarPrimitive.SidebarMenuItem>
+				<SidebarPrimitive.SidebarMenuItem>
+					<SidebarPrimitive.SidebarMenuButton
+						onClick={toggleSidebar}
+						tooltip={open ? "Collapse sidebar" : "Expand sidebar"}
+					>
+						<Icon name={IconName.PANEL_LEFT} />
+						{open && "Collapse sidebar"}
+					</SidebarPrimitive.SidebarMenuButton>
+				</SidebarPrimitive.SidebarMenuItem>
 				<SidebarPrimitive.SidebarMenuItem>
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
