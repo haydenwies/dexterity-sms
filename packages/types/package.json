@@ -20,6 +20,8 @@
 		"./campaign/dto/*": "./src/campaign/dto/*.ts",
 		"./message": "./src/message/message.type.ts",
 		"./message/enums": "./src/message/message.enum.ts",
-		"./message/dto/*": "./src/message/dto/*.ts"
+		"./message/dto/*": "./src/message/dto/*.ts",
+		"./sender": "./src/sender/sender.type.ts",
+		"./sender/dto/*": "./src/sender/dto/*.ts"
 	}
 }

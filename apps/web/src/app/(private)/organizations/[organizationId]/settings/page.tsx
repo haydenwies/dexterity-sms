@@ -9,8 +9,11 @@ import {
 import { Card, CardContent } from "@repo/ui/components/card"
 import { Page, PageContent, PageHeader, PageHeaderRow } from "@repo/ui/components/page"
 import { Separator } from "@repo/ui/components/separator"
+
 import { getOrganization } from "~/actions/organization/get-organization"
+import { getSender } from "~/actions/sender/get-sender"
 import { UpdateOrganizationForm } from "~/features/organization/organization-settings/components/form"
+import { ManageSenderInterface } from "~/features/sender/manage-sender"
 
 type Props = {
 	params: Promise<{ organizationId: string }>
@@ -20,6 +23,7 @@ const OrganizationSettingsPage = async ({ params }: Props) => {
 	const { organizationId } = await params
 
 	const organizationPromise = getOrganization(organizationId)
+	const senderPromise = getSender()
 
 	return (
 		<Page>
@@ -51,7 +55,9 @@ const OrganizationSettingsPage = async ({ params }: Props) => {
 						</AnnotatedHeader>
 						<AnnotatedContent>
 							<Card>
-								<CardContent></CardContent>
+								<CardContent>
+									<ManageSenderInterface senderPromise={senderPromise} />
+								</CardContent>
 							</Card>
 						</AnnotatedContent>
 					</AnnotatedSection>
