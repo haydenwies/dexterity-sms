@@ -1,4 +1,5 @@
-import { Page, PageContent, PageHeader, PageHeaderRow } from "@repo/ui/components/page"
+import { Icon, IconName } from "@repo/ui/components/icon"
+import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
 
 import { getAllCampaigns } from "~/actions/campaign/get-all-campaigns"
 import { AllCampaignsTable } from "~/features/campaign/all-campaigns-table"
@@ -11,7 +12,13 @@ const AllCampaignsPage = () => {
 		<Page>
 			<PageHeader>
 				<PageHeaderRow>
-					<h1>Campaigns</h1>
+					<PageHeaderGroup>
+						<Icon
+							className="size-6"
+							name={IconName.MEGAPHONE}
+						/>
+						<h1>Campaigns</h1>
+					</PageHeaderGroup>
 					<CreateCampaignButton />
 				</PageHeaderRow>
 			</PageHeader>

@@ -44,7 +44,7 @@ const getSidebarItems = (): (SidebarItemLink | SidebarItemFolder)[] => {
 		{
 			type: SidebarItemType.LINK,
 			title: "Contacts",
-			icon: IconName.CONTACTS,
+			icon: IconName.USERS,
 			href: routes.ALL_CONTACTS("123")
 		}
 	]

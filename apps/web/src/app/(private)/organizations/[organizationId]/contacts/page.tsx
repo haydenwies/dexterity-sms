@@ -1,4 +1,5 @@
-import { Page, PageContent, PageHeader, PageHeaderRow } from "@repo/ui/components/page"
+import { Icon, IconName } from "@repo/ui/components/icon"
+import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
 
 import { getAllContacts } from "~/actions/contact/get-all-contacts"
 import { getAllTags } from "~/actions/contact/get-all-tags"
@@ -13,7 +14,13 @@ const AllContactsPage = async () => {
 		<Page>
 			<PageHeader>
 				<PageHeaderRow>
-					<h1>Contacts</h1>
+					<PageHeaderGroup>
+						<Icon
+							className="size-6"
+							name={IconName.USERS}
+						/>
+						<h1>Contacts</h1>
+					</PageHeaderGroup>
 					<CreateContactButton />
 				</PageHeaderRow>
 			</PageHeader>

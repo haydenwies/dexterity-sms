@@ -1,3 +1,4 @@
+import { Icon, IconName } from "@repo/ui/components/icon"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
 import { Separator } from "@repo/ui/components/separator"
 
@@ -22,6 +23,10 @@ const AllMessagesLayout = async ({ children, params }: Props) => {
 			<PageHeader>
 				<PageHeaderRow>
 					<PageHeaderGroup>
+						<Icon
+							className="size-6"
+							name={IconName.MESSAGE}
+						/>
 						<h1>Messages</h1>
 					</PageHeaderGroup>
 					<PageHeaderGroup>

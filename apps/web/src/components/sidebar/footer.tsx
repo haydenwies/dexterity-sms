@@ -31,10 +31,10 @@ const SidebarFooter = () => {
 				<SidebarPrimitive.SidebarMenuItem>
 					<SidebarPrimitive.SidebarMenuButton
 						onClick={toggleSidebar}
-						tooltip={open ? "Collapse sidebar" : "Expand sidebar"}
+						tooltip={open ? "Collapse" : "Expand"}
 					>
-						<Icon name={IconName.PANEL_LEFT} />
-						{open && "Collapse sidebar"}
+						<Icon name={open ? IconName.PANEL_LEFT_CLOSE : IconName.PANEL_LEFT_OPEN} />
+						{open && "Collapse"}
 					</SidebarPrimitive.SidebarMenuButton>
 				</SidebarPrimitive.SidebarMenuItem>
 				<SidebarPrimitive.SidebarMenuItem>

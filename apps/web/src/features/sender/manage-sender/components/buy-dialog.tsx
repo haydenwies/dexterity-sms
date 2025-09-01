@@ -48,7 +48,7 @@ const BuySenderDialog = ({ open, setOpen }: BuySenderDialogProps) => {
 					<div className="text-muted-foreground flex items-center justify-center gap-2">
 						<Icon
 							className="animate-spin"
-							name={IconName.LOADING}
+							name={IconName.SPINNER}
 						/>
 						<p>Loading...</p>
 					</div>
