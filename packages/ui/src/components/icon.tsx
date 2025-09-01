@@ -2,8 +2,11 @@ import { cn } from "@repo/ui/lib/utils"
 import * as IconsPrimitive from "lucide-react"
 
 enum IconName {
+	ALERT_CIRCLE = "alert-circle",
 	ARROW_LEFT = "arrow-left",
+	ARROW_LEFT_RIGHT = "arrow-left-right",
 	ARROW_RIGHT = "arrow-right",
+	ARROW_SQUARE_OUT_UP_RIGHT = "arrow-square-out-up-right",
 	BUILDING = "building",
 	CALENDAR = "calendar",
 	CHECK = "check",
@@ -16,10 +19,12 @@ enum IconName {
 	CLOUD_CHECK = "cloud-check",
 	CONTACTS = "users",
 	CREATE = "create",
+	CREDIT_CARD = "credit-card",
 	EDIT = "edit",
 	ELLIPSIS = "ellipsis",
 	FILE_UPLOAD = "file-upload",
 	HOME = "home",
+	LINK = "link",
 	LOADING = "loading",
 	LOG_OUT = "log-out",
 	MEGAPHONE = "megaphone",
@@ -42,8 +47,11 @@ enum IconName {
 }
 
 const iconVariants = {
+	[IconName.ALERT_CIRCLE]: IconsPrimitive.CircleAlert,
 	[IconName.ARROW_LEFT]: IconsPrimitive.ArrowLeft,
+	[IconName.ARROW_LEFT_RIGHT]: IconsPrimitive.ArrowLeftRight,
 	[IconName.ARROW_RIGHT]: IconsPrimitive.ArrowRight,
+	[IconName.ARROW_SQUARE_OUT_UP_RIGHT]: IconsPrimitive.SquareArrowOutUpRight,
 	[IconName.BUILDING]: IconsPrimitive.Building,
 	[IconName.CALENDAR]: IconsPrimitive.Calendar,
 	[IconName.CHECK]: IconsPrimitive.Check,
@@ -56,10 +64,12 @@ const iconVariants = {
 	[IconName.CLOUD_CHECK]: IconsPrimitive.CloudCheck,
 	[IconName.CONTACTS]: IconsPrimitive.Users,
 	[IconName.CREATE]: IconsPrimitive.Pen,
+	[IconName.CREDIT_CARD]: IconsPrimitive.CreditCard,
 	[IconName.EDIT]: IconsPrimitive.SquarePen,
 	[IconName.ELLIPSIS]: IconsPrimitive.Ellipsis,
 	[IconName.FILE_UPLOAD]: IconsPrimitive.FileUp,
 	[IconName.HOME]: IconsPrimitive.Home,
+	[IconName.LINK]: IconsPrimitive.Link,
 	[IconName.LOADING]: IconsPrimitive.LoaderCircle,
 	[IconName.LOG_OUT]: IconsPrimitive.LogOut,
 	[IconName.MEGAPHONE]: IconsPrimitive.Megaphone,

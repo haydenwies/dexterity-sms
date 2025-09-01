@@ -15,7 +15,6 @@ type Props = {
 
 const ManageSenderInterface = ({ senderPromise }: Props) => {
 	const sender = use(senderPromise)
-	// const sender = undefined
 
 	const [buySenderDialogOpen, setBuySenderDialogOpen] = useState<boolean>(false)
 	const [releaseSenderDialogOpen, setReleaseSenderDialogOpen] = useState<boolean>(false)

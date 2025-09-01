@@ -9,7 +9,10 @@ const getOrganization = async (organizationId: string): Promise<OrganizationMode
 
 	return {
 		id: "123",
-		name: "Test Organization"
+		name: "Test Organization",
+		billingAccountId: "1",
+		createdAt: new Date(),
+		updatedAt: new Date()
 	}
 }
 

@@ -10,9 +10,12 @@ import { Card, CardContent } from "@repo/ui/components/card"
 import { Page, PageContent, PageHeader, PageHeaderRow } from "@repo/ui/components/page"
 import { Separator } from "@repo/ui/components/separator"
 
+import { getAllSubscriptions } from "~/actions/billing/get-all-subscriptions"
+import { getBillingAccount } from "~/actions/billing/get-billing-account"
 import { getOrganization } from "~/actions/organization/get-organization"
 import { getSender } from "~/actions/sender/get-sender"
-import { UpdateOrganizationForm } from "~/features/organization/organization-settings/components/form"
+import { ManageBillingLinkButton, ManageSubscriptionInterface } from "~/features/billing/manage-billing"
+import { UpdateOrganizationForm } from "~/features/organization/organization-settings"
 import { ManageSenderInterface } from "~/features/sender/manage-sender"
 
 type Props = {
@@ -24,6 +27,8 @@ const OrganizationSettingsPage = async ({ params }: Props) => {
 
 	const organizationPromise = getOrganization(organizationId)
 	const senderPromise = getSender()
+	const allSubscriptionsPromise = getAllSubscriptions()
+	const billingAccountPromise = getBillingAccount()
 
 	return (
 		<Page>
@@ -69,7 +74,14 @@ const OrganizationSettingsPage = async ({ params }: Props) => {
 						</AnnotatedHeader>
 						<AnnotatedContent>
 							<Card>
-								<CardContent></CardContent>
+								<CardContent className="flex flex-col items-center gap-4">
+									<ManageSubscriptionInterface
+										allSubscriptionsPromise={allSubscriptionsPromise}
+										billingAccountPromise={billingAccountPromise}
+										className="w-full"
+									/>
+									<ManageBillingLinkButton />
+								</CardContent>
 							</Card>
 						</AnnotatedContent>
 					</AnnotatedSection>

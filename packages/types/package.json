@@ -13,6 +13,8 @@
 		"./auth/dto/*": "./src/auth/dto/*.ts",
 		"./organization": "./src/organization/organization.type.ts",
 		"./organization/dto/*": "./src/organization/dto/*.ts",
+		"./billing": "./src/billing/billing.type.ts",
+		"./billing/dto/*": "./src/billing/dto/*.ts",
 		"./contact": "./src/contact/contact.type.ts",
 		"./contact/dto/*": "./src/contact/dto/*.ts",
 		"./campaign": "./src/campaign/campaign.type.ts",
