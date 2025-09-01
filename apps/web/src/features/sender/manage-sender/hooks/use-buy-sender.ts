@@ -13,7 +13,7 @@ const useBuySender = () => {
 		setLoading(true)
 
 		try {
-			const res = await buySender(availableSenderId)
+			const res = await buySender({ availableSenderId })
 			if (!res.success) throw new Error(res.message)
 
 			return res.data

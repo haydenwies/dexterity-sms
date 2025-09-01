@@ -1,3 +1,3 @@
-import { OrganizationCardList } from "~/features/organization/all-organizations/components/card-list"
+import { OrganizationCardList } from "~/features/organization/all-organizations-list/components/card-list"
 
 export { OrganizationCardList }

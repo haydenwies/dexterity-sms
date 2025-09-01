@@ -1,9 +1,14 @@
 import { Injectable } from "@nestjs/common"
 
+import { Session } from "./session/session.entity"
+import { SessionService } from "./session/session.service"
+
 @Injectable()
 class AuthService {
-	async getSession(): Promise<void> {
-		return
+	constructor(private readonly sessionService: SessionService) {}
+
+	async getSession(id: string): Promise<Session | undefined> {
+		return this.sessionService.find(id)
 	}
 
 	async signIn(): Promise<void> {

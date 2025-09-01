@@ -26,9 +26,6 @@ importers:
       '@nestjs/core':
         specifier: ^11.0.1
         version: 11.1.6(@nestjs/common@11.1.6(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.6)(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      '@nestjs/mapped-types':
-        specifier: '*'
-        version: 2.1.0(@nestjs/common@11.1.6(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)
       '@nestjs/platform-express':
         specifier: ^11.0.1
         version: 11.1.6(@nestjs/common@11.1.6(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.6)
@@ -104,7 +101,7 @@ importers:
     dependencies:
       '@hookform/resolvers':
         specifier: ^5.1.1
-        version: 5.2.1(react-hook-form@7.62.0(react@19.1.1))
+        version: 5.2.1(react-hook-form@7.60.0(react@19.1.1))
       '@repo/csv':
         specifier: workspace:*
         version: link:../../packages/csv
@@ -130,8 +127,8 @@ importers:
         specifier: ^19.0.0
         version: 19.1.1(react@19.1.1)
       react-hook-form:
-        specifier: ^7.60.0
-        version: 7.62.0(react@19.1.1)
+        specifier: 7.60.0
+        version: 7.60.0(react@19.1.1)
       server-only:
         specifier: ^0.0.1
         version: 0.0.1
@@ -1144,19 +1141,6 @@ packages:
       '@nestjs/platform-express':
         optional: true
       '@nestjs/websockets':
-        optional: true
-
-  '@nestjs/mapped-types@2.1.0':
-    resolution: {integrity: sha512-W+n+rM69XsFdwORF11UqJahn4J3xi4g/ZEOlJNL6KoW5ygWSmBB2p0S2BZ4FQeS/NDH72e6xIcu35SfJnE8bXw==}
-    peerDependencies:
-      '@nestjs/common': ^10.0.0 || ^11.0.0
-      class-transformer: ^0.4.0 || ^0.5.0
-      class-validator: ^0.13.0 || ^0.14.0
-      reflect-metadata: ^0.1.12 || ^0.2.0
-    peerDependenciesMeta:
-      class-transformer:
-        optional: true
-      class-validator:
         optional: true
 
   '@nestjs/platform-express@11.1.6':
@@ -4298,12 +4282,6 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18 || ^19
 
-  react-hook-form@7.62.0:
-    resolution: {integrity: sha512-7KWFejc98xqG/F4bAxpL41NB3o1nnvQO1RWZT3TqRZYL8RryQETGfEdVnJN2fy1crCiBLLjkRBVK05j24FxJGA==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      react: ^16.8.0 || ^17 || ^18 || ^19
-
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -5444,10 +5422,10 @@ snapshots:
 
   '@floating-ui/utils@0.2.10': {}
 
-  '@hookform/resolvers@5.2.1(react-hook-form@7.62.0(react@19.1.1))':
+  '@hookform/resolvers@5.2.1(react-hook-form@7.60.0(react@19.1.1))':
     dependencies:
       '@standard-schema/utils': 0.3.0
-      react-hook-form: 7.62.0(react@19.1.1)
+      react-hook-form: 7.60.0(react@19.1.1)
 
   '@humanfs/core@0.19.1': {}
 
@@ -6035,11 +6013,6 @@ snapshots:
       uid: 2.0.2
     optionalDependencies:
       '@nestjs/platform-express': 11.1.6(@nestjs/common@11.1.6(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.6)
-
-  '@nestjs/mapped-types@2.1.0(@nestjs/common@11.1.6(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)':
-    dependencies:
-      '@nestjs/common': 11.1.6(reflect-metadata@0.2.2)(rxjs@7.8.2)
-      reflect-metadata: 0.2.2
 
   '@nestjs/platform-express@11.1.6(@nestjs/common@11.1.6(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.6)':
     dependencies:
@@ -9528,10 +9501,6 @@ snapshots:
       scheduler: 0.26.0
 
   react-hook-form@7.60.0(react@19.1.1):
-    dependencies:
-      react: 19.1.1
-
-  react-hook-form@7.62.0(react@19.1.1):
     dependencies:
       react: 19.1.1
 

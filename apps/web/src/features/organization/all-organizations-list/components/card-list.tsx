@@ -3,7 +3,7 @@ import { use } from "react"
 import { type OrganizationModel } from "@repo/types/organization"
 import { Button } from "@repo/ui/components/button"
 
-import { OrganizationCard } from "~/features/organization/all-organizations/components/card"
+import { OrganizationCard } from "~/features/organization/all-organizations-list/components/card"
 
 type Props = {
 	organizationsPromise: Promise<OrganizationModel[]>

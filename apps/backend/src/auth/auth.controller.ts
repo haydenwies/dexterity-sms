@@ -1,14 +1,15 @@
 import { Controller, Get, Post } from "@nestjs/common"
 
 import { AuthService } from "~/auth/auth.service"
+import { Session } from "~/auth/session/session.entity"
 
 @Controller("auth")
 class AuthController {
 	constructor(private readonly authService: AuthService) {}
 
 	@Get("session")
-	getSession(): Promise<void> {
-		return this.authService.getSession()
+	getSession(): Promise<Session | undefined> {
+		return this.authService.getSession("123")
 	}
 
 	@Post("sign-in")
