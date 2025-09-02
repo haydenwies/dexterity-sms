@@ -9,6 +9,7 @@ import {
 import { Icon, IconName } from "@repo/ui/components/icon"
 import * as SidebarPrimitive from "@repo/ui/components/sidebar"
 import Link from "next/link"
+import { signOut } from "~/actions/auth/sign-out"
 import { routes } from "~/lib/routes"
 
 const SidebarFooter = () => {
@@ -65,7 +66,7 @@ const SidebarFooter = () => {
 							align="end"
 							side={isMobile ? "bottom" : "right"}
 						>
-							<DropdownMenuItem>
+							<DropdownMenuItem onClick={signOut}>
 								<Icon name={IconName.LOG_OUT} />
 								Log out
 							</DropdownMenuItem>

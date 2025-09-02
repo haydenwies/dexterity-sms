@@ -6,7 +6,7 @@ type ActionSuccess<T> = {
 type ActionError = {
 	success: false
 	message: string
-	code: string
+	code?: string
 }
 
 type ActionResponse<T> = ActionSuccess<T> | ActionError
@@ -16,7 +16,7 @@ const actionSuccess = <T>(data: T): ActionSuccess<T> => ({
 	data
 })
 
-const actionError = (message: string, code: string): ActionError => ({
+const actionError = (message: string, code?: string): ActionError => ({
 	success: false,
 	message,
 	code
