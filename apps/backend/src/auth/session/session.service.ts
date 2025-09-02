@@ -1,6 +1,8 @@
-import { Injectable } from "@nestjs/common"
+import { Injectable, NotFoundException } from "@nestjs/common"
 
-import { Session } from "~/auth/session/session.entity"
+import { type SessionDto } from "@repo/types/auth"
+
+import { Session, SessionCreateParams } from "~/auth/session/session.entity"
 import { SessionRepository } from "~/auth/session/session.repository"
 
 @Injectable()
@@ -11,7 +13,7 @@ class SessionService {
 		const session = await this.sessionRepository.find(id)
 		if (!session) return undefined
 
-		if (session.expiresAt < new Date()) {
+		if (session.isExpired()) {
 			await this.delete(session)
 			return undefined
 		}
@@ -19,12 +21,35 @@ class SessionService {
 		return session
 	}
 
-	async delete(session: Session): Promise<void> {
+	async get(id: string): Promise<Session> {
+		const session = await this.find(id)
+		if (!session) throw new NotFoundException("Session not found")
+
+		return session
+	}
+
+	async create(params: SessionCreateParams): Promise<Session> {
+		const session = Session.create(params)
+		const createdSession = await this.sessionRepository.create(session)
+
+		return createdSession
+	}
+
+	async delete(
+		session: Session,
+		config: { allMatchingUserId?: boolean; allMatchingOrganizationId?: boolean } = {}
+	): Promise<void> {
 		return
 	}
 
-	async deleteAllByUserId(userId: string): Promise<void> {
-		return
+	toDto(session: Session): SessionDto {
+		return {
+			id: session.id,
+			userId: session.userId,
+			organizationId: session.organizationId,
+			createdAt: session.createdAt,
+			updatedAt: session.updatedAt
+		}
 	}
 }
 

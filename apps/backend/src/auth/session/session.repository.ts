@@ -7,6 +7,10 @@ class SessionRepository {
 	async find(id: string): Promise<Session | undefined> {
 		return undefined
 	}
+
+	async create(session: Session): Promise<Session> {
+		return session
+	}
 }
 
 export { SessionRepository }

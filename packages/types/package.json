@@ -2,6 +2,9 @@
 	"name": "@repo/types",
 	"version": "1.0.0",
 	"private": true,
+	"scripts": {
+		"build": "tsc"
+	},
 	"dependencies": {
 		"zod": "^4.0.5"
 	},
@@ -10,20 +13,69 @@
 		"typescript": "^5.9.2"
 	},
 	"exports": {
-		"./auth/dto/*": "./src/auth/dto/*.ts",
-		"./organization": "./src/organization/organization.type.ts",
-		"./organization/dto/*": "./src/organization/dto/*.ts",
-		"./billing": "./src/billing/billing.type.ts",
-		"./billing/dto/*": "./src/billing/dto/*.ts",
-		"./contact": "./src/contact/contact.type.ts",
-		"./contact/dto/*": "./src/contact/dto/*.ts",
-		"./campaign": "./src/campaign/campaign.type.ts",
-		"./campaign/enums": "./src/campaign/campaign.enum.ts",
-		"./campaign/dto/*": "./src/campaign/dto/*.ts",
-		"./message": "./src/message/message.type.ts",
-		"./message/enums": "./src/message/message.enum.ts",
-		"./message/dto/*": "./src/message/dto/*.ts",
-		"./sender": "./src/sender/sender.type.ts",
-		"./sender/dto/*": "./src/sender/dto/*.ts"
+		"./auth": {
+			"types": "./src/auth/auth.type.ts",
+			"default": "./dist/auth/auth.js"
+		},
+		"./auth/dto/*": {
+			"types": "./src/auth/dto/*.ts",
+			"default": "./dist/auth/dto/*.js"
+		},
+		"./organization": {
+			"types": "./src/organization/organization.type.ts",
+			"default": "./dist/organization/organization.js"
+		},
+		"./organization/dto/*": {
+			"types": "./src/organization/dto/*.ts",
+			"default": "./dist/organization/dto/*.js"
+		},
+		"./billing": {
+			"types": "./src/billing/billing.type.ts",
+			"default": "./dist/billing/billing.js"
+		},
+		"./billing/dto/*": {
+			"types": "./src/billing/dto/*.ts",
+			"default": "./dist/billing/dto/*.js"
+		},
+		"./contact": {
+			"types": "./src/contact/contact.type.ts",
+			"default": "./dist/contact/contact.js"
+		},
+		"./contact/dto/*": {
+			"types": "./src/contact/dto/*.ts",
+			"default": "./dist/contact/dto/*.js"
+		},
+		"./campaign": {
+			"types": "./src/campaign/campaign.type.ts",
+			"default": "./dist/campaign/campaign.js"
+		},
+		"./campaign/enums": {
+			"types": "./src/campaign/campaign.enum.ts",
+			"default": "./dist/campaign/campaign.enum.js"
+		},
+		"./campaign/dto/*": {
+			"types": "./src/campaign/dto/*.ts",
+			"default": "./dist/campaign/dto/*.js"
+		},
+		"./message": {
+			"types": "./src/message/message.type.ts",
+			"default": "./dist/message/message.js"
+		},
+		"./message/enums": {
+			"types": "./src/message/message.enum.ts",
+			"default": "./dist/message/message.enum.js"
+		},
+		"./message/dto/*": {
+			"types": "./src/message/dto/*.ts",
+			"default": "./dist/message/dto/*.js"
+		},
+		"./sender": {
+			"types": "./src/sender/sender.type.ts",
+			"default": "./dist/sender/sender.js"
+		},
+		"./sender/dto/*": {
+			"types": "./src/sender/dto/*.ts",
+			"default": "./dist/sender/dto/*.js"
+		}
 	}
 }
