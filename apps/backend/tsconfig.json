@@ -1,6 +1,7 @@
 {
 	"extends": "@repo/typescript-config/nest-js.json",
 	"compilerOptions": {
+		"jsx": "react-jsx", // Needed for email templates
 		"baseUrl": ".",
 		"outDir": "dist",
 		"rootDir": "src",

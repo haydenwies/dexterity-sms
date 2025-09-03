@@ -5,10 +5,12 @@ import {
 	NotFoundException,
 	UnauthorizedException
 } from "@nestjs/common"
+import { ConfigService } from "@nestjs/config"
 
+import { routes } from "@repo/routes"
 import { type SessionDto } from "@repo/types/auth"
-import { ForgotPasswordDto } from "@repo/types/auth/dto/forgot-password"
-import { ResetPasswordDto } from "@repo/types/auth/dto/reset-password"
+import { type ForgotPasswordDto } from "@repo/types/auth/dto/forgot-password"
+import { type ResetPasswordDto } from "@repo/types/auth/dto/reset-password"
 import { type SignInDto } from "@repo/types/auth/dto/sign-in"
 import { type SignUpDto } from "@repo/types/auth/dto/sign-up"
 
@@ -20,6 +22,7 @@ import { EmailService } from "~/email/email.service"
 @Injectable()
 class AuthService {
 	constructor(
+		private readonly configService: ConfigService,
 		private readonly sessionService: SessionService,
 		private readonly userService: UserService,
 		private readonly verificationTokenService: VerificationTokenService,
@@ -78,8 +81,13 @@ class AuthService {
 			expiresAt: new Date(Date.now() + 1000 * 60 * 60)
 		})
 
-		// TODO Send email with verification token id
-		await this.emailService.sendForgotPassword(user.email)
+		const url =
+			this.configService.getOrThrow<string>("router.webUrl") +
+			routes.web.FORGOT_PASSWORD({
+				searchParams: { token: verificationToken.id }
+			})
+
+		await this.emailService.sendForgotPassword(user.email, { url })
 	}
 
 	async resetPassword(dto: ResetPasswordDto): Promise<void> {
