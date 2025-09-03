@@ -16,7 +16,7 @@ class UserService {
 		return this.userRepository.findByEmail(email)
 	}
 
-	async get(id: string) {
+	async get(id: string): Promise<User> {
 		const user = await this.find(id)
 		if (!user) throw new NotFoundException("User not found")
 

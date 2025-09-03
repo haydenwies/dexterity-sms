@@ -1,10 +1,4 @@
-import {
-	BadRequestException,
-	ConflictException,
-	Injectable,
-	NotFoundException,
-	UnauthorizedException
-} from "@nestjs/common"
+import { BadRequestException, ConflictException, Injectable, UnauthorizedException } from "@nestjs/common"
 import { ConfigService } from "@nestjs/config"
 
 import { routes } from "@repo/routes"
@@ -72,8 +66,7 @@ class AuthService {
 	}
 
 	async forgotPassword(dto: ForgotPasswordDto): Promise<void> {
-		const user = await this.userService.findByEmail(dto.email)
-		if (!user) throw new NotFoundException("User not found")
+		const user = await this.userService.getByEmail(dto.email)
 
 		const verificationToken = await this.verificationTokenService.create({
 			type: "forgot-password",
@@ -81,6 +74,7 @@ class AuthService {
 			expiresAt: new Date(Date.now() + 1000 * 60 * 60)
 		})
 
+		// TODO: Better config service and router
 		const url =
 			this.configService.getOrThrow<string>("router.webUrl") +
 			routes.web.FORGOT_PASSWORD({

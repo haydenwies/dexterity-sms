@@ -1,0 +1,24 @@
+{
+	"name": "@repo/email",
+	"version": "1.0.0",
+	"private": true,
+	"scripts": {
+		"build": "tsc"
+	},
+	"dependencies": {
+		"@sendgrid/mail": "^8.1.5"
+	},
+	"devDependencies": {
+		"@repo/typescript-config": "workspace:*"
+	},
+	"exports": {
+		".": {
+			"types": "./src/types.ts",
+			"default": "./dist/types.js"
+		},
+		"./sendgrid": {
+			"types": "./src/providers/sendgrid.ts",
+			"default": "./dist/providers/sendgrid.js"
+		}
+	}
+}
