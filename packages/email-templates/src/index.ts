@@ -1,22 +1,15 @@
-import ForgotPassword from "./emails/forgot-password"
-import { convertHtmlToText, renderHtml } from "./lib/render"
+import { render, toPlainText } from "@react-email/render"
 
-type EmailTemplateReturn = {
-	html: string
-	text: string
-}
+import ForgotPassword, { type ForgotPasswordProps } from "./emails/forgot-password"
+import { type EmailTemplateReturn } from "./types"
 
-type ForgotPasswordParams = {
-	url: string
-}
+const forgotPassword = async (params: ForgotPasswordProps): Promise<EmailTemplateReturn> => {
+	const Comp = ForgotPassword(params)
 
-const forgotPassword = async (params: ForgotPasswordParams): Promise<EmailTemplateReturn> => {
-	const html = await renderHtml(ForgotPassword, {
-		url: params.url
-	})
-	const text = convertHtmlToText(html)
+	const html = await render(Comp)
+	const text = toPlainText(html)
 
 	return { html, text }
 }
 
-export { forgotPassword, type ForgotPasswordParams }
+export { forgotPassword }

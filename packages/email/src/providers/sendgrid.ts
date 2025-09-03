@@ -15,13 +15,15 @@ class SendGridProvider implements EmailProvider {
 	}
 
 	async send(payload: EmailPayload): Promise<void> {
-		await this.client.send({
+		const [res] = await this.client.send({
 			to: payload.to,
 			from: payload.from,
 			subject: payload.subject,
 			text: payload.text,
 			html: payload.html
 		})
+
+		console.log(res)
 	}
 }
 
