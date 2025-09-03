@@ -19,7 +19,7 @@ const useSignUp = () => {
 		}
 	})
 
-	const handleSubmit = signUpForm.handleSubmit(async (data) => {
+	const handleSignUp = signUpForm.handleSubmit(async (data) => {
 		setLoading(true)
 
 		try {
@@ -35,7 +35,7 @@ const useSignUp = () => {
 		}
 	})
 
-	return { loading, error, signUpForm, handleSubmit }
+	return { loading, error, signUpForm, handleSignUp }
 }
 
 export { useSignUp }

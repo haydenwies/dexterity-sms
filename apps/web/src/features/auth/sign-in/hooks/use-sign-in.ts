@@ -18,7 +18,7 @@ const useSignIn = () => {
 		}
 	})
 
-	const handleSubmit = signInForm.handleSubmit(async (data: SignInDto) => {
+	const handleSignIn = signInForm.handleSubmit(async (data: SignInDto) => {
 		setLoading(true)
 
 		try {
@@ -34,7 +34,7 @@ const useSignIn = () => {
 		}
 	})
 
-	return { loading, error, signInForm, handleSubmit }
+	return { loading, error, signInForm, handleSignIn }
 }
 
 export { useSignIn }

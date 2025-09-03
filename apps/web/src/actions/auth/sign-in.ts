@@ -9,16 +9,19 @@ import { Cookie, setCookie } from "~/lib/cookies"
 const signIn = async (dto: SignInDto): Promise<ActionResponse<undefined>> => {
 	const backendUrl = getBackendUrl()
 
-	const response = await fetch(`${backendUrl}/auth/sign-in`, {
+	const res = await fetch(`${backendUrl}/auth/sign-in`, {
 		method: "POST",
 		body: JSON.stringify(dto),
 		headers: {
 			"Content-Type": "application/json"
 		}
 	})
-	if (!response.ok) return actionError(response.statusText)
+	if (!res.ok) {
+		const errData = await res.json()
+		return actionError(errData.message)
+	}
 
-	const sessionToken = await response.text()
+	const sessionToken = await res.text()
 	await setCookie(Cookie.SESSION_TOKEN, sessionToken)
 
 	return actionSuccess(undefined)

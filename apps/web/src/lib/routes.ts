@@ -3,6 +3,7 @@ const routes = {
 	SIGN_IN: "/sign-in",
 	SIGN_UP: "/sign-up",
 	FORGOT_PASSWORD: "/forgot-password",
+	RESET_PASSWORD: (token: string) => `/reset-password?token=${token}`,
 
 	// Organizations
 	ALL_ORGANIZATIONS: "/organizations",

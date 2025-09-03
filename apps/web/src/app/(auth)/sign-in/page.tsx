@@ -4,9 +4,9 @@ const SignInPage = () => {
 	return (
 		<div className="flex items-center justify-center p-6">
 			<div className="flex w-full max-w-xs flex-col gap-6">
-				<div className="flex flex-col gap-2 text-center">
+				<div className="text-center">
 					<h1>Sign in to your account</h1>
-					<p className="text-muted-foreground text-balance text-sm">
+					<p className="text-muted-foreground text-balance">
 						Enter your email below to sign in to your account
 					</p>
 				</div>

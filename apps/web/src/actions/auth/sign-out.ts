@@ -15,7 +15,10 @@ const signOut = async (): Promise<ActionResponse<undefined>> => {
 			"Authorization": `Bearer ${sessionToken}`
 		}
 	})
-	if (!res.ok) return actionError(res.statusText)
+	if (!res.ok) {
+		const errData = await res.json()
+		return actionError(errData.message)
+	}
 
 	await deleteCookie(Cookie.SESSION_TOKEN)
 

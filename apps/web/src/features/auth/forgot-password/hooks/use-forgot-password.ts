@@ -8,6 +8,7 @@ import { forgotPassword } from "~/actions/auth/forgot-password"
 const useForgotPassword = () => {
 	const [loading, setLoading] = useState<boolean>(false)
 	const [error, setError] = useState<string | null>(null)
+	const [submitted, setSubmitted] = useState<boolean>(false)
 
 	const forgotPasswordForm = useForm<ForgotPasswordDto>({
 		resolver: zodResolver(forgotPasswordDtoSchema),
@@ -16,7 +17,7 @@ const useForgotPassword = () => {
 		}
 	})
 
-	const handleSubmit = forgotPasswordForm.handleSubmit(async (data) => {
+	const handleForgotPassword = forgotPasswordForm.handleSubmit(async (data) => {
 		setLoading(true)
 
 		try {
@@ -25,6 +26,8 @@ const useForgotPassword = () => {
 				setError(res.message)
 				return
 			}
+
+			setSubmitted(true)
 		} catch {
 			setError("An unknown error occurred")
 		} finally {
@@ -32,7 +35,7 @@ const useForgotPassword = () => {
 		}
 	})
 
-	return { loading, error, forgotPasswordForm, handleSubmit }
+	return { loading, error, submitted, forgotPasswordForm, handleForgotPassword }
 }
 
 export { useForgotPassword }

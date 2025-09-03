@@ -1,24 +1,37 @@
 "use client"
 
+import { Alert, AlertTitle } from "@repo/ui/components/alert"
 import { Button } from "@repo/ui/components/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
+import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
 import { cn } from "@repo/ui/lib/utils"
 
 import { useResetPassword } from "~/features/auth/reset-password/hooks/use-reset-password"
 import { placeholders } from "~/lib/placeholders"
 
-const ResetPasswordForm = ({ className }: { className?: string }) => {
-	const { resetPasswordForm, handleSubmit } = useResetPassword()
+type ResetPasswordFormProps = {
+	token: string
+	className?: string
+}
+
+const ResetPasswordForm = ({ token, className }: ResetPasswordFormProps) => {
+	const { error, resetPasswordForm, handleResetPassword } = useResetPassword(token)
 
 	return (
 		<form
 			className={cn("flex flex-col gap-6", className)}
 			onSubmit={(e) => {
 				e.preventDefault()
-				handleSubmit()
+				handleResetPassword()
 			}}
 		>
+			{error && (
+				<Alert variant="destructive">
+					<Icon name={IconName.ALERT_CIRCLE} />
+					<AlertTitle>{error}</AlertTitle>
+				</Alert>
+			)}
 			<Form {...resetPasswordForm}>
 				<FormField
 					control={resetPasswordForm.control}

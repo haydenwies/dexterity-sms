@@ -2,8 +2,10 @@
 
 import Link from "next/link"
 
+import { Alert, AlertTitle } from "@repo/ui/components/alert"
 import { Button } from "@repo/ui/components/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
+import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
 import { cn } from "@repo/ui/lib/utils"
 
@@ -12,16 +14,22 @@ import { placeholders } from "~/lib/placeholders"
 import { routes } from "~/lib/routes"
 
 const SignUpForm = ({ className }: { className?: string }) => {
-	const { signUpForm, handleSubmit } = useSignUp()
+	const { error, signUpForm, handleSignUp } = useSignUp()
 
 	return (
 		<form
 			className={cn("flex flex-col gap-6", className)}
 			onSubmit={(e) => {
 				e.preventDefault()
-				handleSubmit()
+				handleSignUp()
 			}}
 		>
+			{error && (
+				<Alert variant="destructive">
+					<Icon name={IconName.ALERT_CIRCLE} />
+					<AlertTitle>{error}</AlertTitle>
+				</Alert>
+			)}
 			<Form {...signUpForm}>
 				<FormField
 					control={signUpForm.control}

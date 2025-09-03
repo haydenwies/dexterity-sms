@@ -1,4 +1,10 @@
-import { BadRequestException, ConflictException, Injectable, UnauthorizedException } from "@nestjs/common"
+import {
+	BadRequestException,
+	ConflictException,
+	Injectable,
+	NotFoundException,
+	UnauthorizedException
+} from "@nestjs/common"
 
 import { type SessionDto } from "@repo/types/auth"
 import { ForgotPasswordDto } from "@repo/types/auth/dto/forgot-password"
@@ -63,7 +69,8 @@ class AuthService {
 	}
 
 	async forgotPassword(dto: ForgotPasswordDto): Promise<void> {
-		const user = await this.userService.getByEmail(dto.email)
+		const user = await this.userService.findByEmail(dto.email)
+		if (!user) throw new NotFoundException("User not found")
 
 		const verificationToken = await this.verificationTokenService.create({
 			type: "forgot-password",
@@ -72,14 +79,14 @@ class AuthService {
 		})
 
 		// TODO Send email with verification token id
-		await this.emailService.send()
+		await this.emailService.sendForgotPassword(user.email)
 	}
 
 	async resetPassword(dto: ResetPasswordDto): Promise<void> {
 		const verificationToken = await this.verificationTokenService.get(dto.token)
 		if (verificationToken.type !== "forgot-password") {
 			await this.verificationTokenService.delete(verificationToken)
-			throw new BadRequestException("Invalid or missing verification token")
+			throw new BadRequestException("Verification failed")
 		}
 
 		await this.userService.updatePassword(verificationToken.value, dto.password)

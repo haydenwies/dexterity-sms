@@ -6,19 +6,20 @@ import { type ResetPasswordDto, resetPasswordDtoSchema } from "@repo/types/auth/
 
 import { resetPassword } from "~/actions/auth/reset-password"
 
-const useResetPassword = () => {
+const useResetPassword = (token: string) => {
 	const [loading, setLoading] = useState<boolean>(false)
 	const [error, setError] = useState<string | null>(null)
 
 	const resetPasswordForm = useForm<ResetPasswordDto>({
 		resolver: zodResolver(resetPasswordDtoSchema),
 		defaultValues: {
+			token,
 			password: "",
 			confirmPassword: ""
 		}
 	})
 
-	const handleSubmit = resetPasswordForm.handleSubmit(async (data) => {
+	const handleResetPassword = resetPasswordForm.handleSubmit(async (data) => {
 		setLoading(true)
 
 		try {
@@ -34,7 +35,7 @@ const useResetPassword = () => {
 		}
 	})
 
-	return { loading, error, resetPasswordForm, handleSubmit }
+	return { loading, error, resetPasswordForm, handleResetPassword }
 }
 
 export { useResetPassword }
