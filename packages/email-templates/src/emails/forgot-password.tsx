@@ -1,9 +1,10 @@
 import { Button, Html } from "@react-email/components"
-import * as React from "react"
 
-type ForgotPasswordParams = {}
+type ForgotPasswordProps = {
+	url: string
+}
 
-const ForgotPassword = ({}: ForgotPasswordParams) => {
+const ForgotPassword = ({ url }: ForgotPasswordProps) => {
 	return (
 		<Html>
 			<Button
@@ -16,5 +17,5 @@ const ForgotPassword = ({}: ForgotPasswordParams) => {
 	)
 }
 
-export type { ForgotPasswordParams }
+export type { ForgotPasswordProps }
 export default ForgotPassword

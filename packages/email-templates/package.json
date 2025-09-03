@@ -3,7 +3,8 @@
 	"version": "1.0.0",
 	"private": true,
 	"scripts": {
-		"preview": "email dev --port 3005"
+		"preview": "email dev --port 3005 --dir src/emails",
+		"build": "tsc"
 	},
 	"dependencies": {
 		"@react-email/components": "^0.5.1",
@@ -13,8 +14,16 @@
 	},
 	"devDependencies": {
 		"@react-email/preview-server": "4.2.8",
+		"@repo/typescript-config": "workspace:*",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
-		"react-email": "^4.2.8"
+		"react-email": "^4.2.8",
+		"typescript": "^5.9.2"
+	},
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"default": "./dist/index.js"
+		}
 	}
 }
