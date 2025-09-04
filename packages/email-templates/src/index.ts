@@ -3,6 +3,7 @@ import { render, toPlainText } from "@react-email/render"
 import ForgotPassword, { type ForgotPasswordProps } from "./emails/forgot-password"
 import { type EmailTemplateReturn } from "./types"
 
+type ForgotPasswordParams = ForgotPasswordProps
 const forgotPassword = async (params: ForgotPasswordProps): Promise<EmailTemplateReturn> => {
 	const Comp = ForgotPassword(params)
 
@@ -12,4 +13,4 @@ const forgotPassword = async (params: ForgotPasswordProps): Promise<EmailTemplat
 	return { html, text }
 }
 
-export { forgotPassword }
+export { forgotPassword, type ForgotPasswordParams }

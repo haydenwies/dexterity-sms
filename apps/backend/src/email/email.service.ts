@@ -6,6 +6,8 @@ import { forgotPassword, type ForgotPasswordParams } from "@repo/email-templates
 class EmailService {
 	async sendForgotPassword(to: string, params: ForgotPasswordParams): Promise<void> {
 		const { html, text } = await forgotPassword(params)
+
+		// TODO Add email provider
 		console.log("Sending email to", to, "\n", html, "\n", text)
 	}
 }
