@@ -8,8 +8,16 @@ class SessionRepository {
 		return undefined
 	}
 
+	async findAllByUserId(userId: string): Promise<Session[]> {
+		return []
+	}
+
 	async create(session: Session): Promise<Session> {
 		return session
+	}
+
+	async deleteMany(sessions: Session[]): Promise<void> {
+		return
 	}
 }
 

@@ -35,18 +35,21 @@ class SessionService {
 		return createdSession
 	}
 
-	async delete(
-		session: Session,
-		config: { allMatchingUserId?: boolean; allMatchingOrganizationId?: boolean } = {}
-	): Promise<void> {
-		return
+	async delete(session: Session, config: { allMatchingUserId?: boolean } = {}): Promise<void> {
+		const sessions = [session]
+
+		if (config.allMatchingUserId) {
+			const matchingSessions = await this.sessionRepository.findAllByUserId(session.userId)
+			sessions.push(...matchingSessions)
+		}
+
+		await this.sessionRepository.deleteMany(sessions)
 	}
 
 	toDto(session: Session): SessionDto {
 		return {
 			id: session.id,
 			userId: session.userId,
-			organizationId: session.organizationId,
 			createdAt: session.createdAt,
 			updatedAt: session.updatedAt
 		}

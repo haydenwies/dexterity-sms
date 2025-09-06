@@ -1,6 +1,5 @@
-import { Body, Controller, Get, Post } from "@nestjs/common"
+import { Body, Controller, Post } from "@nestjs/common"
 
-import { type SessionDto } from "@repo/types/auth"
 import { type ForgotPasswordDto, forgotPasswordDtoSchema } from "@repo/types/auth/dto/forgot-password"
 import { type ResetPasswordDto, resetPasswordDtoSchema } from "@repo/types/auth/dto/reset-password"
 import { type SignInDto, signInDtoSchema } from "@repo/types/auth/dto/sign-in"
@@ -14,11 +13,6 @@ import { ZodValidationPipe } from "~/common/zod-validation.pipe"
 @Controller("auth")
 class AuthController {
 	constructor(private readonly authService: AuthService) {}
-
-	@Get("session")
-	getSession(@Session() session: SessionEntity): Promise<SessionDto> {
-		return this.authService.getSession(session.id)
-	}
 
 	@Post("sign-up")
 	signUp(@Body(new ZodValidationPipe(signUpDtoSchema)) body: SignUpDto): Promise<string> {

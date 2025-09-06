@@ -10,21 +10,14 @@ import { VerificationTokenRepository } from "~/auth/verification-token/verificat
 class VerificationTokenService {
 	constructor(private readonly verificationTokenRepository: VerificationTokenRepository) {}
 
-	async find(id: string): Promise<VerificationToken | undefined> {
+	async get(id: string): Promise<VerificationToken> {
 		const verificationToken = await this.verificationTokenRepository.find(id)
-		if (!verificationToken) return undefined
+		if (!verificationToken) throw new NotFoundException("Verification token not found")
 
 		if (verificationToken.isExpired()) {
 			await this.delete(verificationToken)
-			return undefined
+			throw new NotFoundException("Verification token not found")
 		}
-
-		return verificationToken
-	}
-
-	async get(id: string): Promise<VerificationToken> {
-		const verificationToken = await this.find(id)
-		if (!verificationToken) throw new NotFoundException("Verification token not found")
 
 		return verificationToken
 	}
