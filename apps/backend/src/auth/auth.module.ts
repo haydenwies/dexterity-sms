@@ -8,9 +8,10 @@ import { VerificationTokenModule } from "~/auth/verification-token/verification-
 import { EmailModule } from "~/email/email.module"
 
 @Module({
-	imports: [SessionModule, UserModule, VerificationTokenModule, EmailModule],
+	imports: [EmailModule, SessionModule, UserModule, VerificationTokenModule],
 	controllers: [AuthController],
-	providers: [AuthService]
+	providers: [AuthService],
+	exports: [SessionModule, UserModule] // Exports needed for AuthGuard
 })
 class AuthModule {}
 
