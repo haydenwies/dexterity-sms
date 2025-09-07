@@ -32,6 +32,7 @@ const sessionTable = pgTable("session", {
 	userId: uuid("user_id")
 		.references(() => userTable.id, { onUpdate: "cascade", onDelete: "cascade" })
 		.notNull(),
+	expiresAt: timestamp("expires_at", { mode: "date" }).notNull(),
 	createdAt: timestamp("created_at", { mode: "date" }).notNull(),
 	updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
 })
@@ -56,10 +57,10 @@ const organizationTable = pgTable("organization", {
 	updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
 })
 
-// #region organization_user
+// #region member
 
-const organizationUserTable = pgTable(
-	"organization_user",
+const memberTable = pgTable(
+	"member",
 	{
 		userId: uuid("user_id")
 			.references(() => userTable.id, { onUpdate: "cascade", onDelete: "cascade" })
@@ -77,4 +78,4 @@ const organizationUserTable = pgTable(
 	]
 )
 
-export { accountTable, organizationTable, organizationUserTable, sessionTable, userTable, verificationTokenTable }
+export { accountTable, memberTable, organizationTable, sessionTable, userTable, verificationTokenTable }

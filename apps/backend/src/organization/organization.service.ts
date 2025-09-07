@@ -4,7 +4,7 @@ import { type OrganizationModel } from "@repo/types/organization"
 import { type CreateOrganizationDto } from "@repo/types/organization/dto/create-organization"
 import { type UpdateOrganizationDto } from "@repo/types/organization/dto/update-organization"
 
-import { OrganizationUserService } from "~/organization/organization-user/organization-user.service"
+import { MemberService } from "~/organization/member/member.service"
 import { Organization } from "~/organization/organization.entity"
 import { OrganizationRepository } from "~/organization/organization.repository"
 
@@ -12,13 +12,13 @@ import { OrganizationRepository } from "~/organization/organization.repository"
 class OrganizationService {
 	constructor(
 		private readonly organizationRepository: OrganizationRepository,
-		private readonly organizationUserService: OrganizationUserService
+		private readonly memberService: MemberService
 	) {}
 
 	async getAll(userId: string): Promise<Organization[]> {
 		// Get all organization users
-		const organizationUsers = await this.organizationUserService.getAllByUserId(userId)
-		const organizationIds = organizationUsers.map((organizationUser) => organizationUser.organizationId)
+		const members = await this.memberService.getAllByUserId(userId)
+		const organizationIds = members.map((member) => member.organizationId)
 		if (organizationIds.length === 0) return []
 
 		// Get all organizations
@@ -29,10 +29,10 @@ class OrganizationService {
 
 	async get(userId: string, id: string): Promise<Organization> {
 		// Get organization user
-		const organizationUser = await this.organizationUserService.get(userId, id)
+		const member = await this.memberService.get(userId, id)
 
 		// Get organization
-		const organization = await this.organizationRepository.find(organizationUser.organizationId)
+		const organization = await this.organizationRepository.find(member.organizationId)
 		if (!organization) throw new NotFoundException("Organization not found")
 
 		return organization
@@ -44,17 +44,17 @@ class OrganizationService {
 		const createdOrganization = await this.organizationRepository.create(organization)
 
 		// Create organization user
-		await this.organizationUserService.create(userId, createdOrganization.id)
+		await this.memberService.create(userId, createdOrganization.id)
 
 		return createdOrganization
 	}
 
 	async update(userId: string, id: string, dto: UpdateOrganizationDto): Promise<Organization> {
 		// Get organization user
-		const organizationUser = await this.organizationUserService.get(userId, id)
+		const member = await this.memberService.get(userId, id)
 
 		// Get organization
-		const organization = await this.organizationRepository.find(organizationUser.organizationId)
+		const organization = await this.organizationRepository.find(member.organizationId)
 		if (!organization) throw new NotFoundException("Organization not found")
 
 		// Update organization

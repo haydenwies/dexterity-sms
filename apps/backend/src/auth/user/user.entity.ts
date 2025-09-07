@@ -1,7 +1,7 @@
 type UserConstructorParams = {
 	id: string
-	firstName?: string
-	lastName?: string
+	firstName?: string | null
+	lastName?: string | null
 	email: string
 	createdAt: Date
 	updatedAt: Date
@@ -23,8 +23,8 @@ class User {
 
 	constructor(params: UserConstructorParams) {
 		this.id = params.id
-		this.firstName = params.firstName
-		this.lastName = params.lastName
+		this.firstName = params.firstName || undefined
+		this.lastName = params.lastName || undefined
 		this.email = params.email
 		this.createdAt = params.createdAt
 		this.updatedAt = params.updatedAt

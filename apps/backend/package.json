@@ -25,6 +25,7 @@
 		"@repo/email-templates": "workspace:*",
 		"@repo/routes": "workspace:*",
 		"@repo/types": "workspace:*",
+		"@repo/utils": "workspace:^",
 		"bcrypt": "^6.0.0",
 		"drizzle-orm": "^0.44.5",
 		"pg": "^8.16.3",

@@ -1,23 +1,79 @@
-import { Injectable } from "@nestjs/common"
+import { Inject, Injectable } from "@nestjs/common"
+import { eq, inArray } from "drizzle-orm"
 
+import { DATABASE_PROVIDER, type DatabaseProvider } from "~/database/database.module"
+import { organizationTable } from "~/database/database.schema"
 import { Organization } from "~/organization/organization.entity"
 
 @Injectable()
 class OrganizationRepository {
+	constructor(@Inject(DATABASE_PROVIDER) private readonly db: DatabaseProvider) {}
+
 	async find(id: string): Promise<Organization | undefined> {
-		return undefined
+		const [row] = await this.db.select().from(organizationTable).where(eq(organizationTable.id, id)).limit(1)
+		if (!row) return undefined
+
+		return new Organization({
+			id: row.id,
+			name: row.name,
+			createdAt: row.createdAt,
+			updatedAt: row.updatedAt
+		})
 	}
 
 	async findAll(ids: string[]): Promise<Organization[]> {
-		return []
+		if (ids.length === 0) return []
+
+		const rows = await this.db.select().from(organizationTable).where(inArray(organizationTable.id, ids))
+
+		return rows.map(
+			(row) =>
+				new Organization({
+					id: row.id,
+					name: row.name,
+					createdAt: row.createdAt,
+					updatedAt: row.updatedAt
+				})
+		)
 	}
 
 	async create(organization: Organization): Promise<Organization> {
-		return organization
+		const [row] = await this.db
+			.insert(organizationTable)
+			.values({
+				id: organization.id,
+				name: organization.name,
+				createdAt: organization.createdAt,
+				updatedAt: organization.updatedAt
+			})
+			.returning()
+		if (!row) throw new Error("Failed to create organization")
+
+		return new Organization({
+			id: row.id,
+			name: row.name,
+			createdAt: row.createdAt,
+			updatedAt: row.updatedAt
+		})
 	}
 
 	async update(organization: Organization): Promise<Organization> {
-		return organization
+		const [row] = await this.db
+			.update(organizationTable)
+			.set({
+				name: organization.name,
+				updatedAt: new Date()
+			})
+			.where(eq(organizationTable.id, organization.id))
+			.returning()
+		if (!row) throw new Error("Failed to update organization")
+
+		return new Organization({
+			id: row.id,
+			name: row.name,
+			createdAt: row.createdAt,
+			updatedAt: row.updatedAt
+		})
 	}
 }
 

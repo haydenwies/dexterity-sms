@@ -1,30 +1,30 @@
-type OrganizationUserConstructorParams = {
+type MemberConstructorParams = {
 	userId: string
 	organizationId: string
 	createdAt: Date
 	updatedAt: Date
 }
 
-type OrganizationUserCreateParams = {
+type MemberCreateParams = {
 	userId: string
 	organizationId: string
 }
 
-class OrganizationUser {
+class Member {
 	public readonly userId: string
 	public readonly organizationId: string
 	public readonly createdAt: Date
 	public readonly updatedAt: Date
 
-	constructor(params: OrganizationUserConstructorParams) {
+	constructor(params: MemberConstructorParams) {
 		this.userId = params.userId
 		this.organizationId = params.organizationId
 		this.createdAt = params.createdAt
 		this.updatedAt = params.updatedAt
 	}
 
-	static create(params: OrganizationUserCreateParams): OrganizationUser {
-		return new OrganizationUser({
+	static create(params: MemberCreateParams): Member {
+		return new Member({
 			userId: params.userId,
 			organizationId: params.organizationId,
 			createdAt: new Date(),
@@ -33,4 +33,4 @@ class OrganizationUser {
 	}
 }
 
-export { OrganizationUser }
+export { Member }

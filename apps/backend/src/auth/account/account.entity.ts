@@ -1,12 +1,13 @@
 import { AccountProvider } from "@repo/types/auth/enum"
+import { isEnumValue } from "@repo/utils"
 import { compare, hash } from "bcrypt"
 
 type AccountConstructorParams = {
 	id: string
 	userId: string
-	provider: AccountProvider
+	provider: AccountProvider | string
 	providerAccountId: string
-	password?: string
+	password?: string | null
 	createdAt: Date
 	updatedAt: Date
 }
@@ -28,13 +29,19 @@ class Account {
 	private _updatedAt: Date
 
 	constructor(params: AccountConstructorParams) {
+		if (!isEnumValue(AccountProvider, params.provider)) throw new Error("Invalid account provider")
+
 		this.id = params.id
 		this.userId = params.userId
 		this.provider = params.provider
 		this.providerAccountId = params.providerAccountId
-		this._password = params.password
+		this._password = params.password || undefined
 		this.createdAt = params.createdAt
 		this._updatedAt = params.updatedAt
+	}
+
+	get password(): string | undefined {
+		return this._password
 	}
 
 	get updatedAt(): Date {

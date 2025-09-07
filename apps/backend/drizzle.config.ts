@@ -6,11 +6,10 @@ if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is not set")
 
 const config = defineConfig({
 	dialect: "postgresql",
-	dbCredentials: {
-		url: process.env.DATABASE_URL
-	},
+	dbCredentials: { url: process.env.DATABASE_URL },
 	schema: "./src/database/database.schema.ts",
-	out: "./src/database/migrations"
+	out: "./src/database/migrations",
+	migrations: { prefix: "timestamp" }
 })
 
 export default config
