@@ -2,14 +2,12 @@ import z from "zod"
 
 type OrganizationConstructorParams = {
 	id: string
-	billingAccountId?: string
 	name: string
 	createdAt: Date
 	updatedAt: Date
 }
 
 type OrganizationCreateParams = {
-	billingAccountId?: string
 	name: string
 }
 
@@ -19,14 +17,12 @@ type OrganizationUpdateParams = {
 
 class Organization {
 	public readonly id: string
-	public readonly billingAccountId?: string
 	private _name: string
 	public readonly createdAt: Date
 	private _updatedAt: Date
 
 	constructor(params: OrganizationConstructorParams) {
 		this.id = params.id
-		this.billingAccountId = params.billingAccountId
 		this._name = params.name
 		this.createdAt = params.createdAt
 		this._updatedAt = params.updatedAt
@@ -43,8 +39,7 @@ class Organization {
 	static create(params: OrganizationCreateParams): Organization {
 		return new Organization({
 			id: crypto.randomUUID(),
-			billingAccountId: params.billingAccountId,
-			name: params.name,
+			name: Organization.validateName(params.name),
 			createdAt: new Date(),
 			updatedAt: new Date()
 		})
@@ -55,7 +50,7 @@ class Organization {
 		this._updatedAt = new Date()
 	}
 
-	private validateName(name: string): string {
+	private static validateName(name: string): string {
 		const parseRes = z.string().min(1).safeParse(name)
 		if (!parseRes.success) throw new Error("Invalid organization name")
 

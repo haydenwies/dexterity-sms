@@ -68,7 +68,7 @@ class OrganizationService {
 		return {
 			id: organization.id,
 			name: organization.name,
-			billingAccountId: organization.billingAccountId,
+			billingAccountId: undefined, // TODO: Remove this from DTO
 			createdAt: organization.createdAt,
 			updatedAt: organization.updatedAt
 		}

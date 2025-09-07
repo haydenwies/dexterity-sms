@@ -17,6 +17,10 @@
 			"types": "./src/auth/auth.type.ts",
 			"default": "./dist/auth/auth.js"
 		},
+		"./auth/enum": {
+			"types": "./src/auth/auth.enum.ts",
+			"default": "./dist/auth/auth.enum.js"
+		},
 		"./auth/dto/*": {
 			"types": "./src/auth/dto/*.ts",
 			"default": "./dist/auth/dto/*.js"

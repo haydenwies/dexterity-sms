@@ -2,41 +2,48 @@ import { BadRequestException, ConflictException, Injectable, UnauthorizedExcepti
 import { ConfigService } from "@nestjs/config"
 
 import { routes } from "@repo/routes"
-import { type SessionDto } from "@repo/types/auth"
 import { type ForgotPasswordDto } from "@repo/types/auth/dto/forgot-password"
 import { type ResetPasswordDto } from "@repo/types/auth/dto/reset-password"
 import { type SignInDto } from "@repo/types/auth/dto/sign-in"
 import { type SignUpDto } from "@repo/types/auth/dto/sign-up"
 
+import { AccountProvider } from "@repo/types/auth/enum"
 import { SessionService } from "~/auth/session/session.service"
 import { UserService } from "~/auth/user/user.service"
 import { VerificationTokenService } from "~/auth/verification-token/verification-token.service"
 import { EmailService } from "~/email/email.service"
+import { AccountService } from "./account/account.service"
 
 @Injectable()
 class AuthService {
 	constructor(
 		private readonly configService: ConfigService,
+		private readonly accountService: AccountService,
 		private readonly sessionService: SessionService,
 		private readonly userService: UserService,
 		private readonly verificationTokenService: VerificationTokenService,
 		private readonly emailService: EmailService
 	) {}
 
-	async getSession(sessionId: string): Promise<SessionDto> {
-		const session = await this.sessionService.get(sessionId)
-		return this.sessionService.toDto(session)
-	}
-
 	async signUp(dto: SignUpDto): Promise<string> {
+		// Check for existing user
 		const user = await this.userService.findByEmail(dto.email)
 		if (user) throw new ConflictException("A user with this email already exists")
 
+		// Create user
 		const createdUser = await this.userService.create({
-			email: dto.email,
+			email: dto.email
+		})
+
+		// Create account
+		await this.accountService.create({
+			userId: createdUser.id,
+			provider: AccountProvider.CREDENTIALS,
+			providerAccountId: createdUser.id,
 			password: dto.password
 		})
 
+		// Create session
 		const createdSession = await this.sessionService.create({
 			userId: createdUser.id
 		})
@@ -48,7 +55,10 @@ class AuthService {
 		const user = await this.userService.findByEmail(dto.email)
 		if (!user) throw new UnauthorizedException("Invalid email or password")
 
-		const isVerified = await user.verifyPassword(dto.password)
+		const account = await this.accountService.findByUserIdAndProvider(user.id, AccountProvider.CREDENTIALS)
+		if (!account) throw new UnauthorizedException("Invalid email or password")
+
+		const isVerified = await account.verifyPassword(dto.password)
 		if (!isVerified) throw new UnauthorizedException("Invalid email or password")
 
 		const createdSession = await this.sessionService.create({
@@ -91,7 +101,7 @@ class AuthService {
 			throw new BadRequestException("Verification failed")
 		}
 
-		await this.userService.updatePassword(verificationToken.value, dto.password)
+		await this.accountService.updatePassword(verificationToken.value, dto.password)
 	}
 }
 

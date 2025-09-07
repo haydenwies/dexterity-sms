@@ -37,14 +37,6 @@ class UserService {
 		return createdUser
 	}
 
-	async updatePassword(id: string, password: string): Promise<User> {
-		const user = await this.get(id)
-		await user.updatePassword(password)
-		const updatedUser = await this.userRepository.update(user)
-
-		return updatedUser
-	}
-
 	toDto(user: User): UserDto {
 		return {
 			id: user.id,
