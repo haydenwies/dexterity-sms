@@ -78,4 +78,19 @@ const memberTable = pgTable(
 	]
 )
 
-export { accountTable, memberTable, organizationTable, sessionTable, userTable, verificationTokenTable }
+// #region contact
+
+const contactTable = pgTable("contact", {
+	id: uuid("id").primaryKey(),
+	organizationId: uuid("organization_id")
+		.references(() => organizationTable.id, { onUpdate: "cascade", onDelete: "cascade" })
+		.notNull(),
+	firstName: text("first_name"),
+	lastName: text("last_name"),
+	email: text("email"),
+	phone: text("phone"),
+	createdAt: timestamp("created_at", { mode: "date" }).notNull(),
+	updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
+})
+
+export { accountTable, contactTable, memberTable, organizationTable, sessionTable, userTable, verificationTokenTable }
