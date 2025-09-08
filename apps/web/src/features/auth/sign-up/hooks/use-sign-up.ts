@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { type SignUpDto, signUpDtoSchema } from "@repo/types/auth/dto/sign-up"
+import { type SignUpDto, signUpDtoSchema } from "@repo/types/auth/dto"
 
 import { signUp } from "~/actions/auth/sign-up"
 

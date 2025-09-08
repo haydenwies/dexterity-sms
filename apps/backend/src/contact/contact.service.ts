@@ -4,6 +4,7 @@ import { ContactModel } from "@repo/types/contact"
 import { CreateContactDto } from "@repo/types/contact/dto/create-contact"
 import { DeleteManyContactsDto } from "@repo/types/contact/dto/delete-many-contacts"
 import { UpdateContactDto } from "@repo/types/contact/dto/update-contact"
+import { UploadContactCsvDto } from "@repo/types/contact/dto/upload-contact-csv"
 
 import { Contact } from "~/contact/contact.entity"
 import { ContactRepository } from "~/contact/contact.repository"
@@ -32,6 +33,10 @@ class ContactService {
 			phone: dto.phone
 		})
 		await this.contactRepository.create(contact)
+	}
+
+	async createFromCsv(organizationId: string, file: Express.Multer.File, dto: UploadContactCsvDto): Promise<void> {
+		console.log(file.mimetype)
 	}
 
 	async update(organizationId: string, id: string, dto: UpdateContactDto): Promise<void> {

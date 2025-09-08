@@ -2,12 +2,9 @@ import { BadRequestException, ConflictException, Injectable, UnauthorizedExcepti
 import { ConfigService } from "@nestjs/config"
 
 import { routes } from "@repo/routes"
-import { type ForgotPasswordDto } from "@repo/types/auth/dto/forgot-password"
-import { type ResetPasswordDto } from "@repo/types/auth/dto/reset-password"
-import { type SignInDto } from "@repo/types/auth/dto/sign-in"
-import { type SignUpDto } from "@repo/types/auth/dto/sign-up"
-
+import { type ForgotPasswordDto, type ResetPasswordDto, type SignInDto, type SignUpDto } from "@repo/types/auth/dto"
 import { AccountProvider } from "@repo/types/auth/enum"
+
 import { SessionService } from "~/auth/session/session.service"
 import { UserService } from "~/auth/user/user.service"
 import { VerificationTokenService } from "~/auth/verification-token/verification-token.service"
@@ -87,7 +84,7 @@ class AuthService {
 		// TODO: Better config service and router
 		const url =
 			this.configService.getOrThrow<string>("router.webUrl") +
-			routes.web.FORGOT_PASSWORD({
+			routes.web.RESET_PASSWORD({
 				searchParams: { token: verificationToken.id }
 			})
 

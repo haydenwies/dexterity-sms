@@ -1,9 +1,22 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards } from "@nestjs/common"
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Param,
+	Post,
+	Put,
+	UploadedFile,
+	UseGuards,
+	UseInterceptors
+} from "@nestjs/common"
+import { FileInterceptor } from "@nestjs/platform-express"
 
 import { type ContactModel } from "@repo/types/contact"
 import { createContactDtoSchema, type CreateContactDto } from "@repo/types/contact/dto/create-contact"
 import { deleteManyContactsDtoSchema, type DeleteManyContactsDto } from "@repo/types/contact/dto/delete-many-contacts"
 import { updateContactDtoSchema, type UpdateContactDto } from "@repo/types/contact/dto/update-contact"
+import { uploadContactCsvDtoSchema, type UploadContactCsvDto } from "@repo/types/contact/dto/upload-contact-csv"
 
 import { AuthGuard } from "~/auth/auth.guard"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
@@ -29,7 +42,6 @@ class ContactController {
 	}
 
 	@Post()
-	@HttpCode(HttpStatus.NO_CONTENT)
 	async create(
 		@Param("organizationId") organizationId: string,
 		@Body(new ZodValidationPipe(createContactDtoSchema)) body: CreateContactDto
@@ -37,8 +49,17 @@ class ContactController {
 		await this.contactService.create(organizationId, body)
 	}
 
+	@Post("csv")
+	@UseInterceptors(FileInterceptor("file"))
+	async createFromCsv(
+		@Param("organizationId") organizationId: string,
+		@UploadedFile() file: Express.Multer.File,
+		@Body(new ZodValidationPipe(uploadContactCsvDtoSchema)) body: UploadContactCsvDto
+	): Promise<void> {
+		await this.contactService.createFromCsv(organizationId, file, body)
+	}
+
 	@Put(":id")
-	@HttpCode(HttpStatus.NO_CONTENT)
 	async update(
 		@Param("organizationId") organizationId: string,
 		@Param("id") id: string,
@@ -48,7 +69,6 @@ class ContactController {
 	}
 
 	@Delete()
-	@HttpCode(HttpStatus.NO_CONTENT)
 	async deleteMany(
 		@Param("organizationId") organizationId: string,
 		@Body(new ZodValidationPipe(deleteManyContactsDtoSchema)) body: DeleteManyContactsDto
@@ -57,7 +77,6 @@ class ContactController {
 	}
 
 	@Delete(":id")
-	@HttpCode(HttpStatus.NO_CONTENT)
 	async delete(@Param("organizationId") organizationId: string, @Param("id") id: string): Promise<void> {
 		await this.contactService.delete(organizationId, id)
 	}

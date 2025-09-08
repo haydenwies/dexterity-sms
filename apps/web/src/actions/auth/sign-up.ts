@@ -1,6 +1,7 @@
 "use server"
 
-import { type SignUpDto } from "@repo/types/auth/dto/sign-up"
+import { routes } from "@repo/routes"
+import { type SignUpDto } from "@repo/types/auth/dto"
 
 import { actionError, type ActionResponse, actionSuccess } from "~/lib/actions"
 import { getBackendUrl } from "~/lib/backend"
@@ -9,7 +10,7 @@ import { Cookie, setCookie } from "~/lib/cookies"
 const signUp = async (dto: SignUpDto): Promise<ActionResponse<undefined>> => {
 	const backendUrl = getBackendUrl()
 
-	const res = await fetch(`${backendUrl}/auth/sign-up`, {
+	const res = await fetch(`${backendUrl}${routes.backend.SIGN_UP}`, {
 		method: "POST",
 		body: JSON.stringify(dto),
 		headers: {

@@ -1,11 +1,18 @@
-import { Body, Controller, Post } from "@nestjs/common"
+import { Body, Controller, Post, UseGuards } from "@nestjs/common"
 
-import { type ForgotPasswordDto, forgotPasswordDtoSchema } from "@repo/types/auth/dto/forgot-password"
-import { type ResetPasswordDto, resetPasswordDtoSchema } from "@repo/types/auth/dto/reset-password"
-import { type SignInDto, signInDtoSchema } from "@repo/types/auth/dto/sign-in"
-import { type SignUpDto, signUpDtoSchema } from "@repo/types/auth/dto/sign-up"
+import {
+	type ForgotPasswordDto,
+	forgotPasswordDtoSchema,
+	type ResetPasswordDto,
+	resetPasswordDtoSchema,
+	type SignInDto,
+	signInDtoSchema,
+	type SignUpDto,
+	signUpDtoSchema
+} from "@repo/types/auth/dto"
 
 import { Session } from "~/auth/auth.decorator"
+import { AuthGuard } from "~/auth/auth.guard"
 import { AuthService } from "~/auth/auth.service"
 import { type Session as SessionEntity } from "~/auth/session/session.entity"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
@@ -24,6 +31,7 @@ class AuthController {
 		return this.authService.signIn(body)
 	}
 
+	@UseGuards(AuthGuard)
 	@Post("sign-out")
 	signOut(@Session() session: SessionEntity): Promise<void> {
 		return this.authService.signOut(session.id)

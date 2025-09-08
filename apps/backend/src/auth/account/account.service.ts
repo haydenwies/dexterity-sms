@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException } from "@nestjs/common"
 
 import { AccountProvider } from "@repo/types/auth/enum"
+
+import { Account, type AccountCreateParams } from "~/auth/account/account.entity"
 import { AccountRepository } from "~/auth/account/account.repository"
-import { Account, AccountCreateParams } from "./account.entity"
 
 @Injectable()
 class AccountService {

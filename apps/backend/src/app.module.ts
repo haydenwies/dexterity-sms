@@ -6,6 +6,7 @@ import { AuthModule } from "~/auth/auth.module"
 import { databaseConfig, databaseConfigSchema } from "~/config/database.config"
 import { routerConfig, routerConfigSchema } from "~/config/router.config"
 import { OrganizationModule } from "~/organization/organization.module"
+import { ContactModule } from "./contact/contact.module"
 
 @Module({
 	imports: [
@@ -16,6 +17,7 @@ import { OrganizationModule } from "~/organization/organization.module"
 			load: [routerConfig, databaseConfig]
 		}),
 		AuthModule,
+		ContactModule,
 		OrganizationModule
 	],
 	controllers: [],

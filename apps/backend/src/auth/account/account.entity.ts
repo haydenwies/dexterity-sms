@@ -1,6 +1,7 @@
+import { compare, hash } from "bcrypt"
+
 import { AccountProvider } from "@repo/types/auth/enum"
 import { isEnumValue } from "@repo/utils"
-import { compare, hash } from "bcrypt"
 
 type AccountConstructorParams = {
 	id: string

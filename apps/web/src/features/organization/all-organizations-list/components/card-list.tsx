@@ -5,11 +5,11 @@ import { Button } from "@repo/ui/components/button"
 
 import { OrganizationCard } from "~/features/organization/all-organizations-list/components/card"
 
-type Props = {
+type OrganizationCardListProps = {
 	organizationsPromise: Promise<OrganizationModel[]>
 }
 
-const OrganizationCardList = ({ organizationsPromise }: Props) => {
+const OrganizationCardList = ({ organizationsPromise }: OrganizationCardListProps) => {
 	const organizations = use(organizationsPromise)
 
 	if (organizations.length === 0)

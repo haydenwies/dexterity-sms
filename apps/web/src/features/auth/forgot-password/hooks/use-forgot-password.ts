@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 
-import { type ForgotPasswordDto, forgotPasswordDtoSchema } from "@repo/types/auth/dto/forgot-password"
+import { type ForgotPasswordDto, forgotPasswordDtoSchema } from "@repo/types/auth/dto"
 import { useState } from "react"
 import { forgotPassword } from "~/actions/auth/forgot-password"
 
