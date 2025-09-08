@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common"
-import { and, eq } from "drizzle-orm"
+import { and, eq, inArray } from "drizzle-orm"
 
 import { Contact } from "~/contact/contact.entity"
 import { DATABASE_PROVIDER, type DatabaseProvider } from "~/database/database.module"
@@ -11,6 +11,28 @@ class ContactRepository {
 
 	async findAll(organizationId: string): Promise<Contact[]> {
 		const rows = await this.db.select().from(contactTable).where(eq(contactTable.organizationId, organizationId))
+
+		return rows.map(
+			(row) =>
+				new Contact({
+					id: row.id,
+					organizationId: row.organizationId,
+					firstName: row.firstName,
+					lastName: row.lastName,
+					email: row.email,
+					phone: row.phone,
+					createdAt: row.createdAt,
+					updatedAt: row.updatedAt
+				})
+		)
+	}
+
+	async findMany(organizationId: string, ids: string[]): Promise<Contact[]> {
+		const rows = await this.db
+			.select()
+			.from(contactTable)
+			.where(and(eq(contactTable.organizationId, organizationId), inArray(contactTable.id, ids)))
+		if (!rows) return []
 
 		return rows.map(
 			(row) =>
@@ -88,6 +110,43 @@ class ContactRepository {
 			.where(eq(contactTable.id, contact.id))
 			.returning()
 		if (!row) throw new Error("Failed to update contact")
+
+		return new Contact({
+			id: row.id,
+			organizationId: row.organizationId,
+			firstName: row.firstName,
+			lastName: row.lastName,
+			email: row.email,
+			phone: row.phone,
+			createdAt: row.createdAt,
+			updatedAt: row.updatedAt
+		})
+	}
+
+	async deleteMany(contacts: Contact[]): Promise<Contact[]> {
+		if (contacts.length === 0) return []
+
+		const contactIds = contacts.map((contact) => contact.id)
+		const rows = await this.db.delete(contactTable).where(inArray(contactTable.id, contactIds)).returning()
+
+		return rows.map(
+			(row) =>
+				new Contact({
+					id: row.id,
+					organizationId: row.organizationId,
+					firstName: row.firstName,
+					lastName: row.lastName,
+					email: row.email,
+					phone: row.phone,
+					createdAt: row.createdAt,
+					updatedAt: row.updatedAt
+				})
+		)
+	}
+
+	async delete(contact: Contact): Promise<Contact> {
+		const [row] = await this.db.delete(contactTable).where(eq(contactTable.id, contact.id)).returning()
+		if (!row) throw new Error("Failed to delete contact")
 
 		return new Contact({
 			id: row.id,

@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from "@nestjs/common"
 
 import { ContactModel } from "@repo/types/contact"
 import { CreateContactDto } from "@repo/types/contact/dto/create-contact"
+import { DeleteManyContactsDto } from "@repo/types/contact/dto/delete-many-contacts"
 import { UpdateContactDto } from "@repo/types/contact/dto/update-contact"
 
 import { Contact } from "~/contact/contact.entity"
@@ -22,7 +23,7 @@ class ContactService {
 		return contact
 	}
 
-	async create(organizationId: string, dto: CreateContactDto): Promise<Contact> {
+	async create(organizationId: string, dto: CreateContactDto): Promise<void> {
 		const contact = Contact.create({
 			organizationId,
 			firstName: dto.firstName,
@@ -30,12 +31,10 @@ class ContactService {
 			email: dto.email,
 			phone: dto.phone
 		})
-		const createdContact = await this.contactRepository.create(contact)
-
-		return createdContact
+		await this.contactRepository.create(contact)
 	}
 
-	async update(organizationId: string, id: string, dto: UpdateContactDto): Promise<Contact> {
+	async update(organizationId: string, id: string, dto: UpdateContactDto): Promise<void> {
 		const contact = await this.contactRepository.find(organizationId, id)
 		if (!contact) throw new NotFoundException("Contact not found")
 
@@ -45,9 +44,21 @@ class ContactService {
 			email: dto.email,
 			phone: dto.phone
 		})
-		const updatedContact = await this.contactRepository.update(contact)
+		await this.contactRepository.update(contact)
+	}
 
-		return updatedContact
+	async deleteMany(organizationId: string, dto: DeleteManyContactsDto): Promise<void> {
+		const contacts = await this.contactRepository.findMany(organizationId, dto.ids)
+		if (!contacts) throw new NotFoundException("Contacts not found")
+
+		await this.contactRepository.deleteMany(contacts)
+	}
+
+	async delete(organizationId: string, id: string): Promise<void> {
+		const contact = await this.contactRepository.find(organizationId, id)
+		if (!contact) throw new NotFoundException("Contact not found")
+
+		await this.contactRepository.delete(contact)
 	}
 
 	toDto(contact: Contact): ContactModel {

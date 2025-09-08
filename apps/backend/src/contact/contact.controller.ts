@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards } from "@nestjs/common"
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards } from "@nestjs/common"
 
-import { ContactModel } from "@repo/types/contact"
+import { type ContactModel } from "@repo/types/contact"
 import { createContactDtoSchema, type CreateContactDto } from "@repo/types/contact/dto/create-contact"
+import { deleteManyContactsDtoSchema, type DeleteManyContactsDto } from "@repo/types/contact/dto/delete-many-contacts"
 import { updateContactDtoSchema, type UpdateContactDto } from "@repo/types/contact/dto/update-contact"
 
 import { AuthGuard } from "~/auth/auth.guard"
@@ -28,24 +29,37 @@ class ContactController {
 	}
 
 	@Post()
+	@HttpCode(HttpStatus.NO_CONTENT)
 	async create(
 		@Param("organizationId") organizationId: string,
 		@Body(new ZodValidationPipe(createContactDtoSchema)) body: CreateContactDto
-	): Promise<ContactModel> {
-		const contact = await this.contactService.create(organizationId, body)
-
-		return this.contactService.toDto(contact)
+	): Promise<void> {
+		await this.contactService.create(organizationId, body)
 	}
 
 	@Put(":id")
+	@HttpCode(HttpStatus.NO_CONTENT)
 	async update(
 		@Param("organizationId") organizationId: string,
 		@Param("id") id: string,
 		@Body(new ZodValidationPipe(updateContactDtoSchema)) body: UpdateContactDto
-	): Promise<ContactModel> {
-		const contact = await this.contactService.update(organizationId, id, body)
+	): Promise<void> {
+		await this.contactService.update(organizationId, id, body)
+	}
 
-		return this.contactService.toDto(contact)
+	@Delete()
+	@HttpCode(HttpStatus.NO_CONTENT)
+	async deleteMany(
+		@Param("organizationId") organizationId: string,
+		@Body(new ZodValidationPipe(deleteManyContactsDtoSchema)) body: DeleteManyContactsDto
+	): Promise<void> {
+		await this.contactService.deleteMany(organizationId, body)
+	}
+
+	@Delete(":id")
+	@HttpCode(HttpStatus.NO_CONTENT)
+	async delete(@Param("organizationId") organizationId: string, @Param("id") id: string): Promise<void> {
+		await this.contactService.delete(organizationId, id)
 	}
 }
 
