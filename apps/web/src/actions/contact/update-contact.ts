@@ -1,15 +1,27 @@
 "use server"
 
+import { routes } from "@repo/routes"
 import { type UpdateContactDto } from "@repo/types/contact/dto/update-contact"
 
-import { type ActionResponse, actionSuccess } from "~/lib/actions"
+import { sessionMiddleware } from "~/actions/utils"
+import { getBackendUrl } from "~/lib/backend"
 
-const updateContact = async (contactId: string, dto: UpdateContactDto): Promise<ActionResponse<undefined>> => {
-	await new Promise((resolve) => setTimeout(resolve, 1000))
+const updateContact = async (organizationId: string, contactId: string, dto: UpdateContactDto): Promise<void> => {
+	const sessionToken = await sessionMiddleware()
 
-	console.log(dto)
-
-	return actionSuccess(undefined)
+	const backendUrl = getBackendUrl()
+	const res = await fetch(`${backendUrl}${routes.backend.UPDATE_CONTACT(organizationId, contactId)}`, {
+		method: "PUT",
+		body: JSON.stringify(dto),
+		headers: {
+			"Authorization": `Bearer ${sessionToken}`,
+			"Content-Type": "application/json"
+		}
+	})
+	if (!res.ok) {
+		const errData = await res.json()
+		throw new Error(errData.message)
+	}
 }
 
 export { updateContact }

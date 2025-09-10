@@ -1,15 +1,16 @@
 "use server"
 
+import { redirect } from "next/navigation"
+
 import { routes } from "@repo/routes"
 import { type SignInDto } from "@repo/types/auth/dto"
 
-import { actionError, type ActionResponse, actionSuccess } from "~/lib/actions"
+import { type ActionResponse } from "~/lib/actions"
 import { getBackendUrl } from "~/lib/backend"
 import { Cookie, setCookie } from "~/lib/cookies"
 
 const signIn = async (dto: SignInDto): Promise<ActionResponse<undefined>> => {
 	const backendUrl = getBackendUrl()
-
 	const res = await fetch(`${backendUrl}${routes.backend.SIGN_IN}`, {
 		method: "POST",
 		body: JSON.stringify(dto),
@@ -19,13 +20,13 @@ const signIn = async (dto: SignInDto): Promise<ActionResponse<undefined>> => {
 	})
 	if (!res.ok) {
 		const errData = await res.json()
-		return actionError(errData.message)
+		throw new Error(errData.message)
 	}
 
 	const sessionToken = await res.text()
 	await setCookie(Cookie.SESSION_TOKEN, sessionToken)
 
-	return actionSuccess(undefined)
+	return redirect(routes.web.ALL_ORGANIZATIONS)
 }
 
 export { signIn }

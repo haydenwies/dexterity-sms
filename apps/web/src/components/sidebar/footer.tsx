@@ -1,5 +1,6 @@
 "use client"
 
+import { Avatar, AvatarFallback } from "@repo/ui/components/avatar"
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -12,7 +13,10 @@ import Link from "next/link"
 import { signOut } from "~/actions/auth/sign-out"
 import { routes } from "~/lib/routes"
 
-const SidebarFooter = () => {
+type SidebarFooterProps = {
+	organizationId: string
+}
+const SidebarFooter = ({ organizationId }: SidebarFooterProps) => {
 	const { isMobile, open, toggleSidebar } = SidebarPrimitive.useSidebar()
 
 	return (
@@ -23,7 +27,7 @@ const SidebarFooter = () => {
 						asChild
 						tooltip="Settings"
 					>
-						<Link href={routes.SETTINGS("123")}>
+						<Link href={routes.SETTINGS(organizationId)}>
 							<Icon name={IconName.SETTINGS} />
 							Settings
 						</Link>
@@ -45,12 +49,11 @@ const SidebarFooter = () => {
 								className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 								size="lg"
 							>
-								<div className="border-sidebar-border flex aspect-square size-8 items-center justify-center rounded-lg border">
-									<Icon
-										name={IconName.USER}
-										className="size-4"
-									/>
-								</div>
+								<Avatar>
+									<AvatarFallback className="bg-sidebar-background">
+										<Icon name={IconName.USER} />
+									</AvatarFallback>
+								</Avatar>
 								<div className="grid flex-1 text-left leading-tight">
 									<span className="truncate font-medium">User name</span>
 									<span className="truncate text-xs">user@example.com</span>

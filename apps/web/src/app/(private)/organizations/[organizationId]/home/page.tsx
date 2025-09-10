@@ -14,14 +14,11 @@ const DashboardPage = async ({ params }: Props) => {
 
 	return (
 		<Page>
-			<PageHeader>
+			<PageHeader className="border-border border-b">
 				<PageHeaderRow>
 					<PageHeaderGroup>
-						<Icon
-							className="size-6"
-							name={IconName.HOME}
-						/>
-						<h1>Home</h1>
+						<Icon name={IconName.HOME} />
+						<p className="font-bold">Home</p>
 					</PageHeaderGroup>
 				</PageHeaderRow>
 			</PageHeader>

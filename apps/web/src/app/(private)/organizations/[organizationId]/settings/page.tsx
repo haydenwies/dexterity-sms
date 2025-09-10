@@ -7,7 +7,8 @@ import {
 	AnnotatedTitle
 } from "@repo/ui/components/annotated"
 import { Card, CardContent } from "@repo/ui/components/card"
-import { Page, PageContent, PageHeader, PageHeaderRow } from "@repo/ui/components/page"
+import { Icon, IconName } from "@repo/ui/components/icon"
+import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
 import { Separator } from "@repo/ui/components/separator"
 
 import { getAllSubscriptions } from "~/actions/billing/get-all-subscriptions"
@@ -15,7 +16,7 @@ import { getBillingAccount } from "~/actions/billing/get-billing-account"
 import { getOrganization } from "~/actions/organization/get-organization"
 import { getSender } from "~/actions/sender/get-sender"
 import { ManageBillingLinkButton, ManageSubscriptionInterface } from "~/features/billing/manage-billing"
-import { UpdateOrganizationForm } from "~/features/organization/organization-settings"
+import { UpdateOrganizationForm } from "~/features/organization/components/update-organization-form"
 import { ManageSenderInterface } from "~/features/sender/manage-sender"
 
 type Props = {
@@ -32,9 +33,12 @@ const OrganizationSettingsPage = async ({ params }: Props) => {
 
 	return (
 		<Page>
-			<PageHeader>
+			<PageHeader className="border-border border-b">
 				<PageHeaderRow>
-					<h1>Settings</h1>
+					<PageHeaderGroup>
+						<Icon name={IconName.SETTINGS} />
+						<p className="font-bold">Settings</p>
+					</PageHeaderGroup>
 				</PageHeaderRow>
 			</PageHeader>
 			<PageContent>

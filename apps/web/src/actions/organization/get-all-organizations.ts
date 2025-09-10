@@ -1,20 +1,17 @@
 "use server"
 
-import { redirect } from "next/navigation"
-
 import { routes } from "@repo/routes"
 import { OrganizationModel } from "@repo/types/organization"
 
+import { sessionMiddleware } from "~/actions/utils"
 import { getBackendUrl } from "~/lib/backend"
-import { Cookie, getCookie } from "~/lib/cookies"
 
 const getAllOrganizations = async (): Promise<OrganizationModel[]> => {
-	const backendUrl = getBackendUrl()
-	const sessionToken = await getCookie(Cookie.SESSION_TOKEN)
-	if (!sessionToken) return redirect(routes.web.SIGN_IN)
+	const sessionToken = await sessionMiddleware()
 
+	const backendUrl = getBackendUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.GET_ALL_ORGANIZATIONS}`, {
-		method: "POST",
+		method: "GET",
 		headers: {
 			"Authorization": `Bearer ${sessionToken}`
 		}

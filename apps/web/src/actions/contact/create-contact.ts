@@ -1,15 +1,27 @@
 "use server"
 
+import { routes } from "@repo/routes"
 import { CreateContactDto } from "@repo/types/contact/dto/create-contact"
 
-import { type ActionResponse, actionSuccess } from "~/lib/actions"
+import { sessionMiddleware } from "~/actions/utils"
+import { getBackendUrl } from "~/lib/backend"
 
-const createContact = async (dto: CreateContactDto): Promise<ActionResponse<undefined>> => {
-	await new Promise((resolve) => setTimeout(resolve, 1000))
+const createContact = async (organizationId: string, dto: CreateContactDto): Promise<void> => {
+	const sessionToken = await sessionMiddleware()
 
-	console.log(dto)
-
-	return actionSuccess(undefined)
+	const backendUrl = getBackendUrl()
+	const res = await fetch(`${backendUrl}${routes.backend.CREATE_CONTACT(organizationId)}`, {
+		method: "POST",
+		body: JSON.stringify(dto),
+		headers: {
+			"Authorization": `Bearer ${sessionToken}`,
+			"Content-Type": "application/json"
+		}
+	})
+	if (!res.ok) {
+		const errData = await res.json()
+		throw new Error(errData.message)
+	}
 }
 
 export { createContact }

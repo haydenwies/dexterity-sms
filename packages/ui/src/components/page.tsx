@@ -27,7 +27,7 @@ const PageHeader = ({ className, ...props }: PageHeaderProps) => (
 type PageHeaderRowProps = React.ComponentProps<"div">
 const PageHeaderRow = ({ className, ...props }: PageHeaderRowProps) => (
 	<div
-		className={cn("relative flex h-16 flex-row items-center justify-between gap-4 px-6", className)}
+		className={cn("relative flex h-16 items-center justify-between gap-4 px-6", className)}
 		{...props}
 	/>
 )

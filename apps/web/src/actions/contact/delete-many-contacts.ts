@@ -1,15 +1,27 @@
 "use server"
 
+import { routes } from "@repo/routes"
 import { type DeleteManyContactsDto } from "@repo/types/contact/dto/delete-many-contacts"
 
-import { type ActionResponse, actionSuccess } from "~/lib/actions"
+import { sessionMiddleware } from "~/actions/utils"
+import { getBackendUrl } from "~/lib/backend"
 
-const deleteManyContacts = async (dto: DeleteManyContactsDto): Promise<ActionResponse<undefined>> => {
-	await new Promise((resolve) => setTimeout(resolve, 1000))
+const deleteManyContacts = async (organizationId: string, dto: DeleteManyContactsDto): Promise<void> => {
+	const sessionToken = await sessionMiddleware()
 
-	console.log(dto)
-
-	return actionSuccess(undefined)
+	const backendUrl = getBackendUrl()
+	const res = await fetch(`${backendUrl}${routes.backend.DELETE_MANY_CONTACTS(organizationId)}`, {
+		method: "DELETE",
+		body: JSON.stringify(dto),
+		headers: {
+			"Authorization": `Bearer ${sessionToken}`,
+			"Content-Type": "application/json"
+		}
+	})
+	if (!res.ok) {
+		const errData = await res.json()
+		throw new Error(errData.message)
+	}
 }
 
 export { deleteManyContacts }

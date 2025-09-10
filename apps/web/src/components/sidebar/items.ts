@@ -21,31 +21,31 @@ type SidebarItemFolder = {
 	items: SidebarItemLink[]
 }
 
-const getSidebarItems = (): (SidebarItemLink | SidebarItemFolder)[] => {
+const getSidebarItems = (organizationId: string): (SidebarItemLink | SidebarItemFolder)[] => {
 	return [
 		{
 			type: SidebarItemType.LINK,
 			title: "Home",
-			href: routes.HOME("123"),
+			href: routes.HOME(organizationId),
 			icon: IconName.HOME
 		},
 		{
 			type: SidebarItemType.LINK,
 			title: "Campaigns",
-			href: routes.ALL_CAMPAIGNS("123"),
+			href: routes.ALL_CAMPAIGNS(organizationId),
 			icon: IconName.MEGAPHONE
 		},
 		{
 			type: SidebarItemType.LINK,
 			title: "Messages",
-			href: routes.ALL_MESSAGES("123"),
+			href: routes.ALL_MESSAGES(organizationId),
 			icon: IconName.MESSAGE
 		},
 		{
 			type: SidebarItemType.LINK,
 			title: "Contacts",
 			icon: IconName.USERS,
-			href: routes.ALL_CONTACTS("123")
+			href: routes.ALL_CONTACTS(organizationId)
 		}
 	]
 }

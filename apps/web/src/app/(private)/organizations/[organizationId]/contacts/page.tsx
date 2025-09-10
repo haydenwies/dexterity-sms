@@ -2,33 +2,34 @@ import { Icon, IconName } from "@repo/ui/components/icon"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
 
 import { getAllContacts } from "~/actions/contact/get-all-contacts"
-import { getAllTags } from "~/actions/contact/get-all-tags"
-import { AllContactsTable } from "~/features/contact/all-contacts-table"
-import { CreateContactButton } from "~/features/contact/create-contact"
+import { ContactTable } from "~/features/contact/components/contact-table"
+import { CreateContactButton } from "~/features/contact/components/create-contact"
+import { UploadContactCsvButton } from "~/features/contact/components/upload-contact-csv"
 
-const AllContactsPage = async () => {
-	const contactsPromise = getAllContacts()
-	const contactTagsPromise = getAllTags()
+type AllContactsPageProps = Readonly<{
+	params: Promise<{ organizationId: string }>
+}>
+const AllContactsPage = async ({ params }: AllContactsPageProps) => {
+	const { organizationId } = await params
+
+	const contactsPromise = getAllContacts(organizationId)
 
 	return (
 		<Page>
-			<PageHeader>
+			<PageHeader className="border-border border-b">
 				<PageHeaderRow>
 					<PageHeaderGroup>
-						<Icon
-							className="size-6"
-							name={IconName.USERS}
-						/>
-						<h1>Contacts</h1>
+						<Icon name={IconName.USERS} />
+						<p className="font-bold">Contacts</p>
 					</PageHeaderGroup>
-					<CreateContactButton />
+					<PageHeaderGroup>
+						<UploadContactCsvButton />
+						<CreateContactButton />
+					</PageHeaderGroup>
 				</PageHeaderRow>
 			</PageHeader>
 			<PageContent>
-				<AllContactsTable
-					contactsPromise={contactsPromise}
-					contactTagsPromise={contactTagsPromise}
-				/>
+				<ContactTable contactsPromise={contactsPromise} />
 			</PageContent>
 		</Page>
 	)

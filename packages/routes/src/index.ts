@@ -13,14 +13,28 @@ const routes = {
 		GET_ALL_ORGANIZATIONS: "/organization",
 		GET_ORGANIZATION: (id: string) => `/organization/${id}`,
 		CREATE_ORGANIZATION: "/organization",
-		UPDATE_ORGANIZATION: (id: string) => `/organization/${id}`
+		UPDATE_ORGANIZATION: (id: string) => `/organization/${id}`,
+
+		// contact
+		GET_ALL_CONTACTS: (organizationId: string) => `/organizations/${organizationId}/contacts`,
+		GET_CONTACT: (organizationId: string, contactId: string) =>
+			`/organizations/${organizationId}/contacts/${contactId}`,
+		CREATE_CONTACT: (organizationId: string) => `/organizations/${organizationId}/contacts`,
+		UPDATE_CONTACT: (organizationId: string, id: string) => `/organizations/${organizationId}/contacts/${id}`,
+		DELETE_MANY_CONTACTS: (organizationId: string) => `/organizations/${organizationId}/contacts`,
+		DELETE_CONTACT: (organizationId: string, id: string) => `/organizations/${organizationId}/contacts/${id}`,
+		UPLOAD_CONTACT_CSV: (organizationId: string) => `/organizations/${organizationId}/contacts/csv`
 	},
 	web: {
 		// auth
 		SIGN_IN: "/sign-in",
 		SIGN_UP: "/sign-up",
 		RESET_PASSWORD: (params: { searchParams: SearchParams<{ token: string }> }) =>
-			`/reset-password?${stringifySearchParams(params.searchParams)}`
+			`/reset-password?${stringifySearchParams(params.searchParams)}`,
+
+		// organization
+		ALL_ORGANIZATIONS: "/organizations",
+		ORGANIZATION: (id: string) => `/organizations/${id}`
 	}
 }
 

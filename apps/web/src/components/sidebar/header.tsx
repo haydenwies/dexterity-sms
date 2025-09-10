@@ -1,5 +1,8 @@
 "use client"
 
+import Link from "next/link"
+
+import { Avatar, AvatarFallback } from "@repo/ui/components/avatar"
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -10,10 +13,15 @@ import {
 } from "@repo/ui/components/dropdown-menu"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import * as SidebarPrimitive from "@repo/ui/components/sidebar"
-import Link from "next/link"
-import { routes } from "~/lib/routes"
 
-const SidebarHeader = () => {
+import { routes } from "@repo/routes"
+import { OrganizationModel } from "@repo/types/organization"
+
+type SidebarHeaderProps = {
+	allOrganizations: OrganizationModel[]
+	organization: OrganizationModel
+}
+const SidebarHeader = ({ allOrganizations, organization: currentOrganization }: SidebarHeaderProps) => {
 	const { isMobile } = SidebarPrimitive.useSidebar()
 
 	return (
@@ -26,10 +34,12 @@ const SidebarHeader = () => {
 								className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 								size="lg"
 							>
-								<div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-									<Icon name={IconName.BUILDING} />
-								</div>
-								<span className="font-medium">Organization name</span>
+								<Avatar>
+									<AvatarFallback className="bg-primary text-primary-foreground border-none">
+										{currentOrganization.name[0]}
+									</AvatarFallback>
+								</Avatar>
+								<span className="font-medium">{currentOrganization.name}</span>
 								<Icon
 									className="ml-auto"
 									name={IconName.CHEVRONS_UP_DOWN}
@@ -42,12 +52,42 @@ const SidebarHeader = () => {
 							side={isMobile ? "bottom" : "right"}
 						>
 							<DropdownMenuLabel>Organizations</DropdownMenuLabel>
-							<DropdownMenuItem>Organization 1</DropdownMenuItem>
-							<DropdownMenuItem>Organization 2</DropdownMenuItem>
-							<DropdownMenuItem>Organization 3</DropdownMenuItem>
+							{allOrganizations.map((organization) => {
+								if (organization.id === currentOrganization.id)
+									return (
+										<DropdownMenuItem key={organization.id}>
+											<Avatar className="size-6 rounded-sm">
+												<AvatarFallback>{currentOrganization.name[0]}</AvatarFallback>
+											</Avatar>
+											{organization.name}
+											<Icon
+												className="ml-auto"
+												name={IconName.CHECK}
+											/>
+										</DropdownMenuItem>
+									)
+								return (
+									<DropdownMenuItem
+										asChild
+										key={organization.id}
+									>
+										<Link href={routes.web.ORGANIZATION(organization.id)}>
+											<Avatar className="size-6 rounded-sm">
+												<AvatarFallback className="bg-primary text-primary-foreground">
+													{currentOrganization.name[0]}
+												</AvatarFallback>
+											</Avatar>
+											{organization.name}
+										</Link>
+									</DropdownMenuItem>
+								)
+							})}
 							<DropdownMenuSeparator />
 							<DropdownMenuItem asChild>
-								<Link href={routes.ALL_ORGANIZATIONS}>View all organizations</Link>
+								<Link href={routes.web.ALL_ORGANIZATIONS}>
+									<Icon name={IconName.ELLIPSIS}></Icon>
+									All organizations
+								</Link>
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>

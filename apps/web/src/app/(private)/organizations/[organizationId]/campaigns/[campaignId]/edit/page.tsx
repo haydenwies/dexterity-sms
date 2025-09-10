@@ -22,7 +22,7 @@ const EditCampaignPage = async ({ params }: { params: Promise<{ organizationId: 
 	return (
 		<UpdateCampaignProvider campaign={campaign}>
 			<Page>
-				<PageHeader>
+				<PageHeader className="border-border border-b">
 					<PageHeaderRow>
 						<PageHeaderGroup>
 							<Button
@@ -33,7 +33,7 @@ const EditCampaignPage = async ({ params }: { params: Promise<{ organizationId: 
 									<Icon name={IconName.ARROW_LEFT} />
 								</Link>
 							</Button>
-							<h1>Edit Campaign</h1>
+							<p className="font-bold">Edit Campaign</p>
 						</PageHeaderGroup>
 						<PageHeaderGroup>
 							<UpdateCampaignSaveState className="pr-4" />

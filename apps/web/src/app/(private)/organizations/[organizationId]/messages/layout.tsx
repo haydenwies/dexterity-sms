@@ -1,6 +1,5 @@
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
-import { Separator } from "@repo/ui/components/separator"
 
 import { getAllContacts } from "~/actions/contact/get-all-contacts"
 import { getAllConversations } from "~/actions/message/get-all-conversations"
@@ -20,20 +19,16 @@ const AllMessagesLayout = async ({ children, params }: Props) => {
 
 	return (
 		<Page>
-			<PageHeader>
+			<PageHeader className="border-border border-b">
 				<PageHeaderRow>
 					<PageHeaderGroup>
-						<Icon
-							className="size-6"
-							name={IconName.MESSAGE}
-						/>
-						<h1>Messages</h1>
+						<Icon name={IconName.MESSAGE} />
+						<p className="font-bold">Messages</p>
 					</PageHeaderGroup>
 					<PageHeaderGroup>
 						<NewMessageButton />
 					</PageHeaderGroup>
 				</PageHeaderRow>
-				<Separator />
 			</PageHeader>
 			<PageContent
 				className="grid grid-cols-[auto_1fr] p-0"

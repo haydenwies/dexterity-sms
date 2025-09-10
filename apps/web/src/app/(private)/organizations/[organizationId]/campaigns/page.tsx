@@ -10,14 +10,11 @@ const AllCampaignsPage = () => {
 
 	return (
 		<Page>
-			<PageHeader>
+			<PageHeader className="border-border border-b">
 				<PageHeaderRow>
 					<PageHeaderGroup>
-						<Icon
-							className="size-6"
-							name={IconName.MEGAPHONE}
-						/>
-						<h1>Campaigns</h1>
+						<Icon name={IconName.MEGAPHONE} />
+						<p className="font-bold">Campaigns</p>
 					</PageHeaderGroup>
 					<CreateCampaignButton />
 				</PageHeaderRow>

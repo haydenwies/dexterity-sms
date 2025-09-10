@@ -64,8 +64,11 @@ const SidebarItemFolder = (item: SidebarItemFolderType) => {
 	)
 }
 
-const SidebarContent = () => {
-	const items = getSidebarItems()
+type SidebarContentProps = {
+	organizationId: string
+}
+const SidebarContent = ({ organizationId }: SidebarContentProps) => {
+	const items = getSidebarItems(organizationId)
 
 	return (
 		<SidebarPrimitive.SidebarContent>
