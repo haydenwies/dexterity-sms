@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from "@nestjs/common"
+import { CsvParser } from "@repo/csv"
 
 import { ContactModel } from "@repo/types/contact"
 import { CreateContactDto } from "@repo/types/contact/dto/create-contact"
@@ -36,7 +37,11 @@ class ContactService {
 	}
 
 	async createFromCsv(organizationId: string, file: Express.Multer.File, dto: UploadContactCsvDto): Promise<void> {
-		console.log(file.mimetype)
+		const fileContent = file.buffer.toString()
+		const parser = new CsvParser()
+		await parser.parseFromString(fileContent)
+
+		// TODO: Create contacts
 	}
 
 	async update(organizationId: string, id: string, dto: UpdateContactDto): Promise<void> {

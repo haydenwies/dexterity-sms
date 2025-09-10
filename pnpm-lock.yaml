@@ -224,6 +224,9 @@ importers:
       '@types/papaparse':
         specifier: ^5.3.16
         version: 5.3.16
+      typescript:
+        specifier: ^5.9.2
+        version: 5.9.2
 
   packages/email:
     dependencies:

@@ -35,6 +35,22 @@ class CsvParser {
 
 		this._data = data.data
 	}
+
+	async parseFromString(csv: string): Promise<void> {
+		const data = Papa.parse<{ [key: string]: string }>(csv, {
+			header: true,
+			skipEmptyLines: true
+		})
+		if (data.errors.length > 0) throw new Error("Error parsing CSV")
+		else if (!data.meta.fields || !data.meta.fields.length) throw new Error("CSV has no headers")
+
+		this._headers = data.meta.fields.reduce<string[]>((acc, field) => {
+			if (!!field.trim()) acc.push(field.trim())
+			return acc
+		}, [])
+
+		this._data = data.data
+	}
 }
 
 export { CsvParser }
