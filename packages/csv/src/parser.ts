@@ -1,5 +1,6 @@
 import Papa from "papaparse"
 
+// TODO: Change library
 class CsvParser {
 	private _data: { [key: string]: string }[] | undefined = undefined
 	private _headers: string[] | undefined = undefined

@@ -2,13 +2,11 @@ import { Body, Controller, Get, Param, Post, Put, UseGuards } from "@nestjs/comm
 
 import { OrganizationModel } from "@repo/types/organization"
 import {
+	createOrganizationDtoSchema,
+	updateOrganizationDtoSchema,
 	type CreateOrganizationDto,
-	createOrganizationDtoSchema
-} from "@repo/types/organization/dto/create-organization"
-import {
-	type UpdateOrganizationDto,
-	updateOrganizationDtoSchema
-} from "@repo/types/organization/dto/update-organization"
+	type UpdateOrganizationDto
+} from "@repo/types/organization/dto"
 
 import { User } from "~/auth/auth.decorator"
 import { AuthGuard } from "~/auth/auth.guard"

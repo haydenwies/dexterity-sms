@@ -1,9 +1,10 @@
 "use server"
 
 import { routes } from "@repo/routes"
-import { UpdateOrganizationDto } from "@repo/types/organization/dto/update-organization"
+import { type UpdateOrganizationDto } from "@repo/types/organization/dto"
+
+import { sessionMiddleware } from "~/actions/utils"
 import { getBackendUrl } from "~/lib/backend"
-import { sessionMiddleware } from "../utils"
 
 const updateOrganization = async (organizationId: string, dto: UpdateOrganizationDto): Promise<void> => {
 	const sessionToken = await sessionMiddleware()

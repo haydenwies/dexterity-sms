@@ -29,9 +29,9 @@
 			"types": "./src/organization/organization.type.ts",
 			"default": "./dist/organization/organization.js"
 		},
-		"./organization/dto/*": {
-			"types": "./src/organization/dto/*.ts",
-			"default": "./dist/organization/dto/*.js"
+		"./organization/dto": {
+			"types": "./src/organization/organization.dto.ts",
+			"default": "./dist/organization/organization.dto.js"
 		},
 		"./billing": {
 			"types": "./src/billing/billing.type.ts",
@@ -45,9 +45,9 @@
 			"types": "./src/contact/contact.type.ts",
 			"default": "./dist/contact/contact.js"
 		},
-		"./contact/dto/*": {
-			"types": "./src/contact/dto/*.ts",
-			"default": "./dist/contact/dto/*.js"
+		"./contact/dto": {
+			"types": "./src/contact/contact.dto.ts",
+			"default": "./dist/contact/contact.dto.js"
 		},
 		"./campaign": {
 			"types": "./src/campaign/campaign.type.ts",

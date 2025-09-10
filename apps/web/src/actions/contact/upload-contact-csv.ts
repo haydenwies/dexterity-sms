@@ -1,7 +1,7 @@
 "use server"
 
 import { routes } from "@repo/routes"
-import { type UploadContactCsvDto } from "@repo/types/contact/dto/upload-contact-csv"
+import { type UploadContactCsvDto } from "@repo/types/contact/dto"
 
 import { sessionMiddleware } from "~/actions/utils"
 import { getBackendUrl } from "~/lib/backend"

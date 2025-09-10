@@ -15,7 +15,7 @@ const AllMessagesLayout = async ({ children, params }: Props) => {
 	const { organizationId } = await params
 
 	const conversationsPromise = getAllConversations()
-	const contactsPromise = getAllContacts()
+	const contactsPromise = getAllContacts(organizationId)
 
 	return (
 		<Page>

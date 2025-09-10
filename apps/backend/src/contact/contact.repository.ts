@@ -1,6 +1,8 @@
 import { Inject, Injectable } from "@nestjs/common"
 import { and, eq, inArray } from "drizzle-orm"
 
+import { Email } from "~/common/email.vo"
+import { Phone } from "~/common/phone.vo"
 import { Contact } from "~/contact/contact.entity"
 import { DATABASE_PROVIDER, type DatabaseProvider } from "~/database/database.module"
 import { contactTable } from "~/database/database.schema"
@@ -12,19 +14,7 @@ class ContactRepository {
 	async findAll(organizationId: string): Promise<Contact[]> {
 		const rows = await this.db.select().from(contactTable).where(eq(contactTable.organizationId, organizationId))
 
-		return rows.map(
-			(row) =>
-				new Contact({
-					id: row.id,
-					organizationId: row.organizationId,
-					firstName: row.firstName,
-					lastName: row.lastName,
-					email: row.email,
-					phone: row.phone,
-					createdAt: row.createdAt,
-					updatedAt: row.updatedAt
-				})
-		)
+		return rows.map((row) => ContactRepository.toEntity(row))
 	}
 
 	async findMany(organizationId: string, ids: string[]): Promise<Contact[]> {
@@ -34,19 +24,7 @@ class ContactRepository {
 			.where(and(eq(contactTable.organizationId, organizationId), inArray(contactTable.id, ids)))
 		if (!rows) return []
 
-		return rows.map(
-			(row) =>
-				new Contact({
-					id: row.id,
-					organizationId: row.organizationId,
-					firstName: row.firstName,
-					lastName: row.lastName,
-					email: row.email,
-					phone: row.phone,
-					createdAt: row.createdAt,
-					updatedAt: row.updatedAt
-				})
-		)
+		return rows.map((row) => ContactRepository.toEntity(row))
 	}
 
 	async find(organizationId: string, id: string): Promise<Contact | undefined> {
@@ -57,16 +35,7 @@ class ContactRepository {
 			.limit(1)
 		if (!row) return undefined
 
-		return new Contact({
-			id: row.id,
-			organizationId: row.organizationId,
-			firstName: row.firstName,
-			lastName: row.lastName,
-			email: row.email,
-			phone: row.phone,
-			createdAt: row.createdAt,
-			updatedAt: row.updatedAt
-		})
+		return ContactRepository.toEntity(row)
 	}
 
 	async create(contact: Contact): Promise<Contact> {
@@ -77,24 +46,36 @@ class ContactRepository {
 				organizationId: contact.organizationId,
 				firstName: contact.firstName,
 				lastName: contact.lastName,
-				email: contact.email,
-				phone: contact.phone,
+				email: contact.email?.value || undefined,
+				phone: contact.phone?.value || undefined,
 				createdAt: contact.createdAt,
 				updatedAt: contact.updatedAt
 			})
 			.returning()
 		if (!row) throw new Error("Failed to create contact")
 
-		return new Contact({
-			id: row.id,
-			organizationId: row.organizationId,
-			firstName: row.firstName,
-			lastName: row.lastName,
-			email: row.email,
-			phone: row.phone,
-			createdAt: row.createdAt,
-			updatedAt: row.updatedAt
-		})
+		return ContactRepository.toEntity(row)
+	}
+
+	async createMany(contacts: Contact[]): Promise<Contact[]> {
+		const rows = await this.db
+			.insert(contactTable)
+			.values(
+				contacts.map((contact) => ({
+					id: contact.id,
+					organizationId: contact.organizationId,
+					firstName: contact.firstName,
+					lastName: contact.lastName,
+					email: contact.email?.value || undefined,
+					phone: contact.phone?.value || undefined,
+					createdAt: contact.createdAt,
+					updatedAt: contact.updatedAt
+				}))
+			)
+			.returning()
+		if (!rows) throw new Error("Failed to create contacts")
+
+		return rows.map((row) => ContactRepository.toEntity(row))
 	}
 
 	async update(contact: Contact): Promise<Contact> {
@@ -103,24 +84,15 @@ class ContactRepository {
 			.set({
 				firstName: contact.firstName,
 				lastName: contact.lastName,
-				email: contact.email,
-				phone: contact.phone,
+				email: contact.email?.value || undefined,
+				phone: contact.phone?.value || undefined,
 				updatedAt: contact.updatedAt
 			})
 			.where(eq(contactTable.id, contact.id))
 			.returning()
 		if (!row) throw new Error("Failed to update contact")
 
-		return new Contact({
-			id: row.id,
-			organizationId: row.organizationId,
-			firstName: row.firstName,
-			lastName: row.lastName,
-			email: row.email,
-			phone: row.phone,
-			createdAt: row.createdAt,
-			updatedAt: row.updatedAt
-		})
+		return ContactRepository.toEntity(row)
 	}
 
 	async deleteMany(contacts: Contact[]): Promise<Contact[]> {
@@ -129,32 +101,24 @@ class ContactRepository {
 		const contactIds = contacts.map((contact) => contact.id)
 		const rows = await this.db.delete(contactTable).where(inArray(contactTable.id, contactIds)).returning()
 
-		return rows.map(
-			(row) =>
-				new Contact({
-					id: row.id,
-					organizationId: row.organizationId,
-					firstName: row.firstName,
-					lastName: row.lastName,
-					email: row.email,
-					phone: row.phone,
-					createdAt: row.createdAt,
-					updatedAt: row.updatedAt
-				})
-		)
+		return rows.map((row) => ContactRepository.toEntity(row))
 	}
 
 	async delete(contact: Contact): Promise<Contact> {
 		const [row] = await this.db.delete(contactTable).where(eq(contactTable.id, contact.id)).returning()
 		if (!row) throw new Error("Failed to delete contact")
 
+		return ContactRepository.toEntity(row)
+	}
+
+	private static toEntity(row: typeof contactTable.$inferSelect): Contact {
 		return new Contact({
 			id: row.id,
 			organizationId: row.organizationId,
 			firstName: row.firstName,
 			lastName: row.lastName,
-			email: row.email,
-			phone: row.phone,
+			email: row.email ? Email.create(row.email) : undefined,
+			phone: row.phone ? Phone.create(row.phone) : undefined,
 			createdAt: row.createdAt,
 			updatedAt: row.updatedAt
 		})

@@ -5,16 +5,15 @@ import { AllMessagesList } from "~/features/message/conversation-interface/compo
 import { ConversationHeader } from "~/features/message/conversation-interface/components/conversation-header"
 import { MessageInput } from "~/features/message/conversation-interface/components/message-input"
 
-type Props = Readonly<{
+type ConversationPageProps = Readonly<{
 	params: Promise<{ organizationId: string; conversationId: string }>
 }>
-
-const ConversationPage = async ({ params }: Props) => {
-	const { conversationId } = await params
+const ConversationPage = async ({ params }: ConversationPageProps) => {
+	const { organizationId, conversationId } = await params
 
 	const conversationPromise = getConversation(conversationId)
 	const messagesPromise = getConversationMessages(conversationId)
-	const contactsPromise = getAllContacts()
+	const contactsPromise = getAllContacts(organizationId)
 
 	return (
 		<div className="flex h-full flex-col">

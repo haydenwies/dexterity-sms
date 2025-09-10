@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { type ContactModel } from "@repo/types/contact"
-import { type UpdateContactDto, updateContactDtoSchema } from "@repo/types/contact/dto/update-contact"
+import { type UpdateContactDto, updateContactDtoSchema } from "@repo/types/contact/dto"
 
 import { updateContact } from "~/actions/contact/update-contact"
 
@@ -17,10 +17,10 @@ const useUpdateContact = (contact: ContactModel) => {
 	const form = useForm<UpdateContactDto>({
 		resolver: zodResolver(updateContactDtoSchema),
 		defaultValues: {
-			firstName: contact.firstName,
-			lastName: contact.lastName,
-			email: contact.email,
-			phone: contact.phone
+			firstName: contact.firstName || "",
+			lastName: contact.lastName || "",
+			email: contact.email || "",
+			phone: contact.phone || ""
 		}
 	})
 

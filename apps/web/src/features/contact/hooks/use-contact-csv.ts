@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { CsvParser } from "@repo/csv"
-import { type UploadContactCsvDto, uploadContactCsvDtoSchema } from "@repo/types/contact/dto/upload-contact-csv"
+import { type UploadContactCsvDto, uploadContactCsvDtoSchema } from "@repo/types/contact/dto"
 
 import { uploadContactCsv } from "~/actions/contact/upload-contact-csv"
 

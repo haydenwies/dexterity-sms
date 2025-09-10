@@ -1,11 +1,13 @@
 import { Injectable, NotFoundException } from "@nestjs/common"
 import { CsvParser } from "@repo/csv"
 
-import { ContactModel } from "@repo/types/contact"
-import { CreateContactDto } from "@repo/types/contact/dto/create-contact"
-import { DeleteManyContactsDto } from "@repo/types/contact/dto/delete-many-contacts"
-import { UpdateContactDto } from "@repo/types/contact/dto/update-contact"
-import { UploadContactCsvDto } from "@repo/types/contact/dto/upload-contact-csv"
+import { type ContactModel } from "@repo/types/contact"
+import {
+	type CreateContactDto,
+	type DeleteManyContactsDto,
+	type UpdateContactDto,
+	type UploadContactCsvDto
+} from "@repo/types/contact/dto"
 
 import { Contact } from "~/contact/contact.entity"
 import { ContactRepository } from "~/contact/contact.repository"
@@ -37,11 +39,26 @@ class ContactService {
 	}
 
 	async createFromCsv(organizationId: string, file: Express.Multer.File, dto: UploadContactCsvDto): Promise<void> {
-		const fileContent = file.buffer.toString()
+		// Parse CSV file
+		const fileString = file.buffer.toString()
 		const parser = new CsvParser()
-		await parser.parseFromString(fileContent)
+		await parser.parseFromString(fileString)
 
-		// TODO: Create contacts
+		// Create contacts from column mappings
+		const contacts = []
+		for (const dataRow of parser.data) {
+			const contact = Contact.safeCreate({
+				organizationId,
+				firstName: dto.firstName ? dataRow[dto.firstName] : undefined,
+				lastName: dto.lastName ? dataRow[dto.lastName] : undefined,
+				email: dto.email ? dataRow[dto.email] : undefined,
+				phone: dto.phone ? dataRow[dto.phone] : undefined
+			})
+
+			if (contact) contacts.push(contact)
+		}
+
+		await this.contactRepository.createMany(contacts)
 	}
 
 	async update(organizationId: string, id: string, dto: UpdateContactDto): Promise<void> {
@@ -78,8 +95,8 @@ class ContactService {
 			tagIds: [],
 			firstName: contact.firstName,
 			lastName: contact.lastName,
-			email: contact.email,
-			phone: contact.phone,
+			email: contact.email?.value || undefined,
+			phone: contact.phone?.value || undefined,
 			createdAt: contact.createdAt,
 			updatedAt: contact.updatedAt
 		}

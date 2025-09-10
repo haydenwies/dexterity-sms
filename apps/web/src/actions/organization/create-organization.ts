@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation"
 
 import { routes } from "@repo/routes"
-import { CreateOrganizationDto } from "@repo/types/organization/dto/create-organization"
+import { CreateOrganizationDto } from "@repo/types/organization/dto"
 
 import { sessionMiddleware } from "~/actions/utils"
 import { getBackendUrl } from "~/lib/backend"

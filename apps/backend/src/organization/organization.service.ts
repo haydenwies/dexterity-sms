@@ -1,8 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common"
 
 import { type OrganizationModel } from "@repo/types/organization"
-import { type CreateOrganizationDto } from "@repo/types/organization/dto/create-organization"
-import { type UpdateOrganizationDto } from "@repo/types/organization/dto/update-organization"
+import { type CreateOrganizationDto, type UpdateOrganizationDto } from "@repo/types/organization/dto"
 
 import { MemberService } from "~/organization/member/member.service"
 import { Organization } from "~/organization/organization.entity"
