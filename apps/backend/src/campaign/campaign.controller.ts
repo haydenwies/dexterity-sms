@@ -1,0 +1,107 @@
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from "@nestjs/common"
+
+import { CampaignModel } from "@repo/types/campaign"
+import {
+	createCampaignDtoSchema,
+	deleteManyCampaignsDtoSchema,
+	sendCampaignDtoSchema,
+	sendTestCampaignDtoSchema,
+	updateCampaignDtoSchema,
+	type CreateCampaignDto,
+	type DeleteManyCampaignsDto,
+	type SendCampaignDto,
+	type SendTestCampaignDto,
+	type UpdateCampaignDto
+} from "@repo/types/campaign/dto"
+
+import { AuthGuard } from "~/auth/auth.guard"
+import { CampaignService } from "~/campaign/campaign.service"
+import { ZodValidationPipe } from "~/common/zod-validation.pipe"
+
+@UseGuards(AuthGuard) // TODO: Add organization guard
+@Controller("organizations/:organizationId/campaigns")
+class CampaignController {
+	constructor(private readonly campaignService: CampaignService) {}
+
+	@Get()
+	async getMany(@Param("organizationId") organizationId: string): Promise<CampaignModel[]> {
+		const campaigns = await this.campaignService.getMany(organizationId)
+
+		return campaigns.map((campaign) => this.campaignService.toDto(campaign))
+	}
+
+	@Get(":campaignId")
+	async get(
+		@Param("organizationId") organizationId: string,
+		@Param("campaignId") campaignId: string
+	): Promise<CampaignModel> {
+		const campaign = await this.campaignService.get(organizationId, campaignId)
+
+		return this.campaignService.toDto(campaign)
+	}
+
+	@Post()
+	async create(
+		@Param("organizationId") organizationId: string,
+		@Body(new ZodValidationPipe(createCampaignDtoSchema)) body: CreateCampaignDto
+	): Promise<CampaignModel> {
+		const campaign = await this.campaignService.create(organizationId, body)
+
+		return this.campaignService.toDto(campaign)
+	}
+
+	@Put(":campaignId")
+	async update(
+		@Param("organizationId") organizationId: string,
+		@Param("campaignId") campaignId: string,
+		@Body(new ZodValidationPipe(updateCampaignDtoSchema)) body: UpdateCampaignDto
+	): Promise<CampaignModel> {
+		const campaign = await this.campaignService.update(organizationId, campaignId, body)
+
+		return this.campaignService.toDto(campaign)
+	}
+
+	@Delete()
+	async deleteMany(
+		@Param("organizationId") organizationId: string,
+		@Body(new ZodValidationPipe(deleteManyCampaignsDtoSchema)) body: DeleteManyCampaignsDto
+	): Promise<void> {
+		await this.campaignService.deleteMany(organizationId, body)
+	}
+
+	@Delete(":campaignId")
+	async delete(
+		@Param("organizationId") organizationId: string,
+		@Param("campaignId") campaignId: string
+	): Promise<void> {
+		await this.campaignService.delete(organizationId, campaignId)
+	}
+
+	@Post(":campaignId/send-test")
+	async sendTest(
+		@Param("organizationId") organizationId: string,
+		@Param("campaignId") campaignId: string,
+		@Body(new ZodValidationPipe(sendTestCampaignDtoSchema)) body: SendTestCampaignDto
+	): Promise<void> {
+		await this.campaignService.sendTest(organizationId, campaignId, body)
+	}
+
+	@Post(":campaignId/send")
+	async send(
+		@Param("organizationId") organizationId: string,
+		@Param("campaignId") campaignId: string,
+		@Body(new ZodValidationPipe(sendCampaignDtoSchema)) body: SendCampaignDto
+	): Promise<void> {
+		await this.campaignService.send(organizationId, campaignId, body)
+	}
+
+	@Post(":campaignId/cancel")
+	async cancel(
+		@Param("organizationId") organizationId: string,
+		@Param("campaignId") campaignId: string
+	): Promise<void> {
+		await this.campaignService.cancel(organizationId, campaignId)
+	}
+}
+
+export { CampaignController }

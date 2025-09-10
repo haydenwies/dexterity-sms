@@ -11,6 +11,8 @@ const userTable = pgTable("user", {
 	updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
 })
 
+// #endregion
+
 // #region account
 
 const accountTable = pgTable("account", {
@@ -25,6 +27,8 @@ const accountTable = pgTable("account", {
 	updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
 })
 
+// #endregion
+
 // #region session
 
 const sessionTable = pgTable("session", {
@@ -37,6 +41,8 @@ const sessionTable = pgTable("session", {
 	updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
 })
 
+// #endregion
+
 // #region verification_token
 
 const verificationTokenTable = pgTable("verification_token", {
@@ -48,6 +54,8 @@ const verificationTokenTable = pgTable("verification_token", {
 	updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
 })
 
+// #endregion
+
 // #region organization
 
 const organizationTable = pgTable("organization", {
@@ -56,6 +64,8 @@ const organizationTable = pgTable("organization", {
 	createdAt: timestamp("created_at", { mode: "date" }).notNull(),
 	updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
 })
+
+// #endregion
 
 // #region member
 
@@ -78,6 +88,8 @@ const memberTable = pgTable(
 	]
 )
 
+// #endregion
+
 // #region contact
 
 const contactTable = pgTable("contact", {
@@ -93,4 +105,31 @@ const contactTable = pgTable("contact", {
 	updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
 })
 
-export { accountTable, contactTable, memberTable, organizationTable, sessionTable, userTable, verificationTokenTable }
+// #endregion
+
+// #region campaign
+
+const campaignTable = pgTable("campaign", {
+	id: uuid("id").primaryKey(),
+	organizationId: uuid("organization_id")
+		.references(() => organizationTable.id, { onUpdate: "cascade", onDelete: "cascade" })
+		.notNull(),
+	status: text("status").notNull(),
+	name: text("name").notNull(),
+	body: text("body"),
+	createdAt: timestamp("created_at", { mode: "date" }).notNull(),
+	updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
+})
+
+// #endregion
+
+export {
+	accountTable,
+	campaignTable,
+	contactTable,
+	memberTable,
+	organizationTable,
+	sessionTable,
+	userTable,
+	verificationTokenTable
+}

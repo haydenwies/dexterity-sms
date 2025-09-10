@@ -1,12 +1,12 @@
 import z from "zod"
 
 type CreateCampaignDto = {
-	name?: string
+	name: string
 	body?: string
 }
 
 const createCampaignDtoSchema = z.object({
-	name: z.string().optional(),
+	name: z.string(),
 	body: z.string().optional()
 })
 

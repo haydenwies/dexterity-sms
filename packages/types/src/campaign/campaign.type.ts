@@ -5,7 +5,7 @@ type CampaignModel = {
 	organizationId: String
 	status: CampaignStatus
 	name: string
-	body: string
+	body?: string
 	createdAt: Date
 	updatedAt: Date
 }

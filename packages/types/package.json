@@ -57,6 +57,10 @@
 			"types": "./src/campaign/campaign.enum.ts",
 			"default": "./dist/campaign/campaign.enum.js"
 		},
+		"./campaign/dto": {
+			"types": "./src/campaign/campaign.dto.ts",
+			"default": "./dist/campaign/campaign.dto.js"
+		},
 		"./campaign/dto/*": {
 			"types": "./src/campaign/dto/*.ts",
 			"default": "./dist/campaign/dto/*.js"
