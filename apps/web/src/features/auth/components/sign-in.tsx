@@ -9,19 +9,19 @@ import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
 import { cn } from "@repo/ui/lib/utils"
 
-import { useSignUp } from "~/features/auth/sign-up/hooks/use-sign-up"
+import { useSignIn } from "~/features/auth/hooks/use-sign-in"
 import { placeholders } from "~/lib/placeholders"
 import { routes } from "~/lib/routes"
 
-const SignUpForm = ({ className }: { className?: string }) => {
-	const { error, signUpForm, handleSignUp } = useSignUp()
+const SignInForm = ({ className }: { className?: string }) => {
+	const { error, signInForm, handleSignIn } = useSignIn()
 
 	return (
 		<form
 			className={cn("flex flex-col gap-6", className)}
 			onSubmit={(e) => {
 				e.preventDefault()
-				handleSignUp()
+				handleSignIn()
 			}}
 		>
 			{error && (
@@ -30,9 +30,9 @@ const SignUpForm = ({ className }: { className?: string }) => {
 					<AlertTitle>{error}</AlertTitle>
 				</Alert>
 			)}
-			<Form {...signUpForm}>
+			<Form {...signInForm}>
 				<FormField
-					control={signUpForm.control}
+					control={signInForm.control}
 					name="email"
 					render={({ field }) => (
 						<FormItem>
@@ -48,28 +48,17 @@ const SignUpForm = ({ className }: { className?: string }) => {
 					)}
 				/>
 				<FormField
-					control={signUpForm.control}
+					control={signInForm.control}
 					name="password"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Password</FormLabel>
-							<FormControl>
-								<Input
-									placeholder={placeholders.PASSWORD}
-									type="password"
-									{...field}
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				<FormField
-					control={signUpForm.control}
-					name="confirmPassword"
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Confirm password</FormLabel>
+							<div className="flex items-center justify-between">
+								<FormLabel>Password</FormLabel>
+								<Link href={routes.FORGOT_PASSWORD}>
+									<p>Forgot your password?</p>
+								</Link>
+							</div>
+
 							<FormControl>
 								<Input
 									placeholder={placeholders.PASSWORD}
@@ -82,18 +71,18 @@ const SignUpForm = ({ className }: { className?: string }) => {
 					)}
 				/>
 			</Form>
-			<Button>Sign up</Button>
+			<Button>Sign in</Button>
 			<p className="text-muted-foreground text-center">
-				Already have an account?{" "}
+				Don&apos;t have an account?{" "}
 				<Link
 					className="underline"
-					href={routes.SIGN_IN}
+					href={routes.SIGN_UP}
 				>
-					Sign in
+					Sign up
 				</Link>
 			</p>
 		</form>
 	)
 }
 
-export { SignUpForm }
+export { SignInForm }

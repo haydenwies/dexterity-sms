@@ -1,4 +1,4 @@
-import { ResetPasswordForm } from "~/features/auth/reset-password"
+import { ResetPasswordForm } from "~/features/auth/components/reset-password"
 
 type Props = {
 	searchParams: Promise<{ token: string }>

@@ -7,7 +7,7 @@ import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
 import { cn } from "@repo/ui/lib/utils"
 
-import { useResetPassword } from "~/features/auth/reset-password/hooks/use-reset-password"
+import { useResetPassword } from "~/features/auth/hooks/use-reset-password"
 import { placeholders } from "~/lib/placeholders"
 
 type ResetPasswordFormProps = {

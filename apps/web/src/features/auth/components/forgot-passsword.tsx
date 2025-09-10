@@ -7,7 +7,7 @@ import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
 import { cn } from "@repo/ui/lib/utils"
 
-import { useForgotPassword } from "~/features/auth/forgot-password/hooks/use-forgot-password"
+import { useForgotPassword } from "~/features/auth/hooks/use-forgot-password"
 import { placeholders } from "~/lib/placeholders"
 
 const ForgotPasswordForm = ({ className }: { className?: string }) => {

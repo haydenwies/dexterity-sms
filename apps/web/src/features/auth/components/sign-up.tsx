@@ -9,19 +9,19 @@ import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
 import { cn } from "@repo/ui/lib/utils"
 
-import { useSignIn } from "~/features/auth/sign-in/hooks/use-sign-in"
+import { useSignUp } from "~/features/auth/hooks/use-sign-up"
 import { placeholders } from "~/lib/placeholders"
 import { routes } from "~/lib/routes"
 
-const SignInForm = ({ className }: { className?: string }) => {
-	const { error, signInForm, handleSignIn } = useSignIn()
+const SignUpForm = ({ className }: { className?: string }) => {
+	const { error, signUpForm, handleSignUp } = useSignUp()
 
 	return (
 		<form
 			className={cn("flex flex-col gap-6", className)}
 			onSubmit={(e) => {
 				e.preventDefault()
-				handleSignIn()
+				handleSignUp()
 			}}
 		>
 			{error && (
@@ -30,9 +30,9 @@ const SignInForm = ({ className }: { className?: string }) => {
 					<AlertTitle>{error}</AlertTitle>
 				</Alert>
 			)}
-			<Form {...signInForm}>
+			<Form {...signUpForm}>
 				<FormField
-					control={signInForm.control}
+					control={signUpForm.control}
 					name="email"
 					render={({ field }) => (
 						<FormItem>
@@ -48,17 +48,28 @@ const SignInForm = ({ className }: { className?: string }) => {
 					)}
 				/>
 				<FormField
-					control={signInForm.control}
+					control={signUpForm.control}
 					name="password"
 					render={({ field }) => (
 						<FormItem>
-							<div className="flex items-center justify-between">
-								<FormLabel>Password</FormLabel>
-								<Link href={routes.FORGOT_PASSWORD}>
-									<p>Forgot your password?</p>
-								</Link>
-							</div>
-
+							<FormLabel>Password</FormLabel>
+							<FormControl>
+								<Input
+									placeholder={placeholders.PASSWORD}
+									type="password"
+									{...field}
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={signUpForm.control}
+					name="confirmPassword"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Confirm password</FormLabel>
 							<FormControl>
 								<Input
 									placeholder={placeholders.PASSWORD}
@@ -71,18 +82,18 @@ const SignInForm = ({ className }: { className?: string }) => {
 					)}
 				/>
 			</Form>
-			<Button>Sign in</Button>
+			<Button>Sign up</Button>
 			<p className="text-muted-foreground text-center">
-				Don&apos;t have an account?{" "}
+				Already have an account?{" "}
 				<Link
 					className="underline"
-					href={routes.SIGN_UP}
+					href={routes.SIGN_IN}
 				>
-					Sign up
+					Sign in
 				</Link>
 			</p>
 		</form>
 	)
 }
 
-export { SignInForm }
+export { SignUpForm }
