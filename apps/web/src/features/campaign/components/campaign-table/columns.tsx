@@ -6,7 +6,7 @@ import { Checkbox } from "@repo/ui/components/checkbox"
 
 import { AllCampaignsTableActions } from "~/features/campaign/all-campaigns-table/components/actions"
 
-const getAllCampaignsTableColumns = (): ColumnDef<CampaignModel>[] => [
+const getCampaignTableColumns = (): ColumnDef<CampaignModel>[] => [
 	{
 		id: "select",
 		enableHiding: false,
@@ -70,4 +70,4 @@ const getAllCampaignsTableColumns = (): ColumnDef<CampaignModel>[] => [
 	}
 ]
 
-export { getAllCampaignsTableColumns }
+export { getCampaignTableColumns }

@@ -4,8 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { createContext, useEffect, useState } from "react"
 import { useForm, UseFormReturn } from "react-hook-form"
 
-import { CampaignModel } from "@repo/types/campaign"
-import { UpdateCampaignDto, updateCampaignDtoSchema } from "@repo/types/campaign/dto/update-campaign"
+import { type CampaignModel } from "@repo/types/campaign"
+import { type UpdateCampaignDto, updateCampaignDtoSchema } from "@repo/types/campaign/dto"
 
 import { updateCampaign } from "~/actions/campaign/update-campaign"
 import { useDebounce } from "~/hooks/use-debounce"
@@ -23,10 +23,11 @@ type UpdateCampaignContextType = {
 const UpdateCampaignContext = createContext<UpdateCampaignContextType | null>(null)
 
 type UpdateCampaignProviderProps = {
+	organizationId: string
 	campaign: CampaignModel
 	children: React.ReactNode
 }
-const UpdateCampaignProvider = ({ campaign, children }: UpdateCampaignProviderProps) => {
+const UpdateCampaignProvider = ({ organizationId, campaign, children }: UpdateCampaignProviderProps) => {
 	const [saveState, setSaveState] = useState<SaveState>(SaveState.SAVED)
 	const { debouncedFn, cleanup } = useDebounce({ delay: 1000 })
 
@@ -43,12 +44,7 @@ const UpdateCampaignProvider = ({ campaign, children }: UpdateCampaignProviderPr
 			setSaveState(SaveState.SAVING)
 
 			try {
-				const res = await updateCampaign(campaign.id, data)
-				if (!res.success) {
-					setSaveState(SaveState.ERROR)
-					return
-				}
-
+				await updateCampaign(organizationId, campaign.id, data)
 				setSaveState(SaveState.SAVED)
 			} catch {
 				setSaveState(SaveState.ERROR)

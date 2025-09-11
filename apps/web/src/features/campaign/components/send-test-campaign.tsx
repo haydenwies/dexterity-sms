@@ -12,18 +12,17 @@ import {
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@repo/ui/components/form"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { PhoneInput } from "@repo/ui/components/phone-input"
+import { useState } from "react"
 
-import { useSendTestCampaign } from "~/features/campaign/send-test-campaign/hooks/use-send-test-campaign"
+import { useSendTestCampaign } from "~/features/campaign/hooks/use-send-test-campaign"
 import { placeholders } from "~/lib/placeholders"
 
-type Props = {
-	campaignId: string
+type SendTestCampaignDialogProps = {
 	open: boolean
 	setOpen: (open: boolean) => void
 }
-
-const SendTestCampaignDialog = ({ campaignId, open, setOpen }: Props) => {
-	const { form, handleSendTestCampaign } = useSendTestCampaign(campaignId)
+const SendTestCampaignDialog = ({ open, setOpen }: SendTestCampaignDialogProps) => {
+	const { form, handleSendTest } = useSendTestCampaign()
 
 	return (
 		<Dialog
@@ -59,7 +58,7 @@ const SendTestCampaignDialog = ({ campaignId, open, setOpen }: Props) => {
 					>
 						Cancel
 					</Button>
-					<Button onClick={handleSendTestCampaign}>
+					<Button onClick={handleSendTest}>
 						<Icon name={IconName.SEND} />
 						Send Test
 					</Button>
@@ -69,4 +68,24 @@ const SendTestCampaignDialog = ({ campaignId, open, setOpen }: Props) => {
 	)
 }
 
-export { SendTestCampaignDialog }
+const SendTestCampaignButton = () => {
+	const [open, setOpen] = useState<boolean>(false)
+
+	return (
+		<>
+			<Button
+				onClick={() => setOpen(true)}
+				variant="secondary"
+			>
+				<Icon name={IconName.TEST_TUBE} />
+				Test
+			</Button>
+			<SendTestCampaignDialog
+				setOpen={setOpen}
+				open={open}
+			/>
+		</>
+	)
+}
+
+export { SendTestCampaignButton }

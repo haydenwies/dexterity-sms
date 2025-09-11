@@ -1,15 +1,31 @@
 "use server"
 
-import { SendTestCampaignDto } from "@repo/types/campaign/dto/send-test-campaign"
+import { routes } from "@repo/routes"
+import { type SendTestCampaignDto } from "@repo/types/campaign/dto/send-test-campaign"
 
-import { ActionResponse, actionSuccess } from "~/lib/actions"
+import { sessionMiddleware } from "~/actions/utils"
+import { getBackendUrl } from "~/lib/backend"
 
-const sendTestCampaign = async (dto: SendTestCampaignDto): Promise<ActionResponse<void>> => {
-	await new Promise((resolve) => setTimeout(resolve, 1000))
+const sendTestCampaign = async (
+	organizationId: string,
+	campaignId: string,
+	dto: SendTestCampaignDto
+): Promise<void> => {
+	const sessionToken = await sessionMiddleware()
 
-	console.log(dto)
-
-	return actionSuccess(undefined)
+	const backendUrl = getBackendUrl()
+	const res = await fetch(`${backendUrl}${routes.backend.SEND_TEST_CAMPAIGN(organizationId, campaignId)}`, {
+		method: "POST",
+		body: JSON.stringify(dto),
+		headers: {
+			"Authorization": `Bearer ${sessionToken}`,
+			"Content-Type": "application/json"
+		}
+	})
+	if (!res.ok) {
+		const errData = await res.json()
+		throw new Error(errData.message)
+	}
 }
 
 export { sendTestCampaign }

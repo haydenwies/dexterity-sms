@@ -12,16 +12,15 @@ import {
 	AlertDialogTitle
 } from "@repo/ui/components/alert-dialog"
 
-import { useDeleteManyCampaigns } from "~/features/campaign/all-campaigns-table/hooks/use-delete-many-campaigns"
+import { useDeleteCampaign } from "~/features/campaign/hooks/use-delete-campaign"
 
-type Props = {
+type CampaignTableDeleteDialogProps = {
 	campaigns: CampaignModel[]
 	open: boolean
 	setOpen: (open: boolean) => void
 }
-
-const AllCampaignsTableDeleteDialog = ({ campaigns, open, setOpen }: Props) => {
-	const { loading, handleSubmit } = useDeleteManyCampaigns()
+const CampaignTableDeleteDialog = ({ campaigns, open, setOpen }: CampaignTableDeleteDialogProps) => {
+	const { loading, handleDeleteMany } = useDeleteCampaign()
 
 	return (
 		<AlertDialog
@@ -42,7 +41,7 @@ const AllCampaignsTableDeleteDialog = ({ campaigns, open, setOpen }: Props) => {
 						disabled={loading}
 						onClick={async (e) => {
 							e.preventDefault()
-							await handleSubmit(
+							await handleDeleteMany(
 								campaigns.map((campaign) => campaign.id),
 								{ onSuccess: () => setOpen(false) }
 							)
@@ -56,4 +55,4 @@ const AllCampaignsTableDeleteDialog = ({ campaigns, open, setOpen }: Props) => {
 	)
 }
 
-export { AllCampaignsTableDeleteDialog }
+export { CampaignTableDeleteDialog }

@@ -35,18 +35,15 @@ const useCreateContact = () => {
 		form.handleSubmit(async (data) => {
 			setLoading(true)
 
-			const organizationId = params.organizationId
-			if (!organizationId || Array.isArray(organizationId)) {
-				setError("Organization ID is required")
-				onError?.()
-				return
-			}
-
 			try {
+				const organizationId = params.organizationId
+				if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
+
 				await createContact(organizationId, data)
 				onSuccess?.()
 			} catch {
 				setError("An unknown error occurred")
+				onError?.()
 			} finally {
 				setLoading(false)
 			}

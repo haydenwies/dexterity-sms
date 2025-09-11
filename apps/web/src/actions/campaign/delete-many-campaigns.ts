@@ -1,17 +1,17 @@
 "use server"
 
 import { routes } from "@repo/routes"
-import { type CreateCampaignDto } from "@repo/types/campaign/dto"
+import { DeleteManyCampaignsDto } from "@repo/types/campaign/dto"
 
 import { sessionMiddleware } from "~/actions/utils"
 import { getBackendUrl } from "~/lib/backend"
 
-const createCampaign = async (organizationId: string, dto: CreateCampaignDto): Promise<void> => {
+const deleteManyCampaigns = async (organizationId: string, dto: DeleteManyCampaignsDto): Promise<void> => {
 	const sessionToken = await sessionMiddleware()
 
 	const backendUrl = getBackendUrl()
-	const res = await fetch(`${backendUrl}${routes.backend.CREATE_CAMPAIGN(organizationId)}`, {
-		method: "POST",
+	const res = await fetch(`${backendUrl}${routes.backend.DELETE_MANY_CAMPAIGNS(organizationId)}`, {
+		method: "DELETE",
 		body: JSON.stringify(dto),
 		headers: {
 			"Authorization": `Bearer ${sessionToken}`,
@@ -24,4 +24,4 @@ const createCampaign = async (organizationId: string, dto: CreateCampaignDto): P
 	}
 }
 
-export { createCampaign }
+export { deleteManyCampaigns }

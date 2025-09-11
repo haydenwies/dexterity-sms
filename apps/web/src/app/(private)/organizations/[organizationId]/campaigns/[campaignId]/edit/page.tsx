@@ -5,22 +5,28 @@ import { Icon, IconName } from "@repo/ui/components/icon"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
 
 import { getCampaign } from "~/actions/campaign/get-campaign"
-import { SendCampaignButton } from "~/features/campaign/send-campaign"
-import { SendTestCampaignButton } from "~/features/campaign/send-test-campaign"
+import { SendCampaignButton } from "~/features/campaign/components/send-campaign"
+import { SendTestCampaignButton } from "~/features/campaign/components/send-test-campaign"
 import {
 	UpdateCampaignInterface,
 	UpdateCampaignProvider,
 	UpdateCampaignSaveState
-} from "~/features/campaign/update-campaign"
+} from "~/features/campaign/components/update-campaign"
 import { routes } from "~/lib/routes"
 
-const EditCampaignPage = async ({ params }: { params: Promise<{ organizationId: string; campaignId: string }> }) => {
+type Props = Readonly<{
+	params: Promise<{ organizationId: string; campaignId: string }>
+}>
+const EditCampaignPage = async ({ params }: Props) => {
 	const { organizationId, campaignId } = await params
 
-	const campaign = await getCampaign(campaignId)
+	const campaign = await getCampaign(organizationId, campaignId)
 
 	return (
-		<UpdateCampaignProvider campaign={campaign}>
+		<UpdateCampaignProvider
+			organizationId={organizationId}
+			campaign={campaign}
+		>
 			<Page>
 				<PageHeader className="border-border border-b">
 					<PageHeaderRow>
@@ -37,8 +43,8 @@ const EditCampaignPage = async ({ params }: { params: Promise<{ organizationId: 
 						</PageHeaderGroup>
 						<PageHeaderGroup>
 							<UpdateCampaignSaveState className="pr-4" />
-							<SendTestCampaignButton campaignId={campaignId} />
-							<SendCampaignButton campaignId={campaignId} />
+							<SendTestCampaignButton />
+							<SendCampaignButton />
 						</PageHeaderGroup>
 					</PageHeaderRow>
 				</PageHeader>

@@ -8,11 +8,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 
 import { getAllCampaignsTableColumns } from "~/features/campaign/all-campaigns-table/components/columns"
 
-type Props = {
+type CampaignTableProps = Readonly<{
 	campaignsPromise: Promise<CampaignModel[]>
-}
-
-const AllCampaignsTable = ({ campaignsPromise }: Props) => {
+}>
+const CampaignTable = ({ campaignsPromise }: CampaignTableProps) => {
 	const data = use(campaignsPromise)
 	const columns = getAllCampaignsTableColumns()
 
@@ -76,4 +75,4 @@ const AllCampaignsTable = ({ campaignsPromise }: Props) => {
 	)
 }
 
-export { AllCampaignsTable }
+export { CampaignTable }

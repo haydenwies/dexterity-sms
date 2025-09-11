@@ -1,6 +1,6 @@
 import { useContext } from "react"
 
-import { UpdateCampaignContext } from "../components/provider"
+import { UpdateCampaignContext } from "~/features/campaign/components/update-campaign/provider"
 
 const useUpdateCampaign = () => {
 	const ctx = useContext(UpdateCampaignContext)

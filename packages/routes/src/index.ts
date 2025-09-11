@@ -20,10 +20,27 @@ const routes = {
 		GET_CONTACT: (organizationId: string, contactId: string) =>
 			`/organizations/${organizationId}/contacts/${contactId}`,
 		CREATE_CONTACT: (organizationId: string) => `/organizations/${organizationId}/contacts`,
+		UPLOAD_CONTACT_CSV: (organizationId: string) => `/organizations/${organizationId}/contacts/csv`,
 		UPDATE_CONTACT: (organizationId: string, id: string) => `/organizations/${organizationId}/contacts/${id}`,
 		DELETE_MANY_CONTACTS: (organizationId: string) => `/organizations/${organizationId}/contacts`,
 		DELETE_CONTACT: (organizationId: string, id: string) => `/organizations/${organizationId}/contacts/${id}`,
-		UPLOAD_CONTACT_CSV: (organizationId: string) => `/organizations/${organizationId}/contacts/csv`
+
+		// campaign
+		GET_MANY_CAMPAIGNS: (organizationId: string) => `/organizations/${organizationId}/campaigns`,
+		GET_CAMPAIGN: (organizationId: string, campaignId: string) =>
+			`/organizations/${organizationId}/campaigns/${campaignId}`,
+		CREATE_CAMPAIGN: (organizationId: string) => `/organizations/${organizationId}/campaigns`,
+		UPDATE_CAMPAIGN: (organizationId: string, campaignId: string) =>
+			`/organizations/${organizationId}/campaigns/${campaignId}`,
+		DELETE_MANY_CAMPAIGNS: (organizationId: string) => `/organizations/${organizationId}/campaigns`,
+		DELETE_CAMPAIGN: (organizationId: string, campaignId: string) =>
+			`/organizations/${organizationId}/campaigns/${campaignId}`,
+		SEND_TEST_CAMPAIGN: (organizationId: string, campaignId: string) =>
+			`/organizations/${organizationId}/campaigns/${campaignId}/send-test`,
+		SEND_CAMPAIGN: (organizationId: string, campaignId: string) =>
+			`/organizations/${organizationId}/campaigns/${campaignId}/send`,
+		CANCEL_CAMPAIGN: (organizationId: string, campaignId: string) =>
+			`/organizations/${organizationId}/campaigns/${campaignId}/cancel`
 	},
 	web: {
 		// auth

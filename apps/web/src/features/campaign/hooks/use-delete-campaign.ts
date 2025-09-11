@@ -1,9 +1,9 @@
 import { useParams } from "next/navigation"
 import { useState } from "react"
 
-import { deleteManyContacts } from "~/actions/contact/delete-many-contacts"
+import { deleteManyCampaigns } from "~/actions/campaign/delete-many-campaigns"
 
-const useDeleteContact = () => {
+const useDeleteCampaign = () => {
 	const params = useParams()
 
 	const [loading, setLoading] = useState<boolean>(false)
@@ -16,15 +16,11 @@ const useDeleteContact = () => {
 	const handleDeleteMany = async (ids: string[], { onError, onSuccess }: HandleDeleteManyConfig) => {
 		setLoading(true)
 
-		const organizationId = params.organizationId
-		if (!organizationId || Array.isArray(organizationId)) {
-			setError("Organization ID is required")
-			onError?.()
-			return
-		}
-
 		try {
-			await deleteManyContacts(organizationId, { ids })
+			const organizationId = params.organizationId
+			if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
+
+			await deleteManyCampaigns(organizationId, { ids })
 			onSuccess?.()
 		} catch {
 			setError("An unknown error occurred")
@@ -37,4 +33,4 @@ const useDeleteContact = () => {
 	return { loading, error, handleDeleteMany }
 }
 
-export { useDeleteContact }
+export { useDeleteCampaign }

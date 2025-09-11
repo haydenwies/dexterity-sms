@@ -4,7 +4,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@repo/ui/components/input"
 import { Textarea } from "@repo/ui/components/textarea"
 
-import { useUpdateCampaign } from "~/features/campaign/update-campaign/hooks/use-update-campaign"
+import { useUpdateCampaign } from "~/features/campaign/hooks/use-update-campaign"
 
 const UpdateCampaignInterface = () => {
 	const { form } = useUpdateCampaign()

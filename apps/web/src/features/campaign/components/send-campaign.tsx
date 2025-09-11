@@ -14,20 +14,18 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@repo/ui/components/form"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/components/select"
 import { TimeInput } from "@repo/ui/components/time-input"
 import { cn } from "@repo/ui/lib/utils"
+import { useState } from "react"
 
-import { useSendCampaign } from "~/features/campaign/send-campaign/hooks/use-send-campaign"
+import { useSendCampaign } from "~/features/campaign/hooks/use-send-campaign"
 
-type Props = {
-	campaignId: string
+type SendCampaignDialogProps = {
 	open: boolean
-	onOpenChange: (open: boolean) => void
+	setOpen: (open: boolean) => void
 }
-
-const SendCampaignDialog = ({ campaignId, open, onOpenChange }: Props) => {
-	const { loading, form, formValues, handleSendCampaign } = useSendCampaign(campaignId)
+const SendCampaignDialog = ({ open, setOpen }: SendCampaignDialogProps) => {
+	const { loading, form, formValues, handleSendCampaign } = useSendCampaign()
 
 	const getStartMonth = (): Date => {
 		return new Date()
@@ -54,7 +52,7 @@ const SendCampaignDialog = ({ campaignId, open, onOpenChange }: Props) => {
 	return (
 		<Dialog
 			open={open}
-			onOpenChange={onOpenChange}
+			onOpenChange={setOpen}
 		>
 			<DialogContent>
 				<DialogHeader>
@@ -143,37 +141,12 @@ const SendCampaignDialog = ({ campaignId, open, onOpenChange }: Props) => {
 								)}
 							/>
 						)}
-						<FormField
-							control={form.control}
-							name="contactTagIds"
-							render={() => (
-								<FormItem>
-									<FormLabel>Send to</FormLabel>
-									<FormControl>
-										<Select value="all">
-											<SelectTrigger className="w-full">
-												<SelectValue placeholder="Select recipients" />
-											</SelectTrigger>
-											<SelectContent>
-												<SelectItem value="all">All contacts</SelectItem>
-												<SelectItem
-													disabled
-													value="tags"
-												>
-													Tags &#40;coming soon&#41;
-												</SelectItem>
-											</SelectContent>
-										</Select>
-									</FormControl>
-								</FormItem>
-							)}
-						/>
 					</form>
 				</Form>
 				<DialogFooter>
 					<Button
 						disabled={loading}
-						onClick={() => onOpenChange(false)}
+						onClick={() => setOpen(false)}
 						variant="ghost"
 					>
 						Cancel
@@ -191,4 +164,21 @@ const SendCampaignDialog = ({ campaignId, open, onOpenChange }: Props) => {
 	)
 }
 
-export { SendCampaignDialog }
+const SendCampaignButton = () => {
+	const [open, setOpen] = useState<boolean>(false)
+
+	return (
+		<>
+			<Button onClick={() => setOpen(true)}>
+				<Icon name={IconName.ARROW_RIGHT} />
+				Continue
+			</Button>
+			<SendCampaignDialog
+				open={open}
+				setOpen={setOpen}
+			/>
+		</>
+	)
+}
+
+export { SendCampaignButton }

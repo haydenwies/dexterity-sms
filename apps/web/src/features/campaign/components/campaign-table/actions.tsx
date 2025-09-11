@@ -12,13 +12,12 @@ import {
 } from "@repo/ui/components/dropdown-menu"
 import { Icon, IconName } from "@repo/ui/components/icon"
 
-import { AllCampaignsTableDeleteDialog } from "~/features/campaign/all-campaigns-table/components/delete-dialog"
+import { CampaignTableDeleteDialog } from "~/features/campaign/components/campaign-table/delete-dialog"
 
-type Props =
+type CampaignTableActionsProps =
 	| { type: "header"; data: { campaigns: CampaignModel[] } }
 	| { type: "cell"; data: { campaign: CampaignModel } }
-
-const AllCampaignsTableActions = ({ type, data }: Props) => {
+const CampaignTableActions = ({ type, data }: CampaignTableActionsProps) => {
 	const [deleteOpen, setDeleteOpen] = useState<boolean>(false)
 
 	return (
@@ -40,7 +39,7 @@ const AllCampaignsTableActions = ({ type, data }: Props) => {
 					<Icon name={IconName.TRASH} /> Delete
 				</DropdownMenuItem>
 			</DropdownMenuContent>
-			<AllCampaignsTableDeleteDialog
+			<CampaignTableDeleteDialog
 				campaigns={type === "header" ? data.campaigns : [data.campaign]}
 				open={deleteOpen}
 				setOpen={setDeleteOpen}
@@ -49,4 +48,4 @@ const AllCampaignsTableActions = ({ type, data }: Props) => {
 	)
 }
 
-export { AllCampaignsTableActions }
+export { CampaignTableActions }

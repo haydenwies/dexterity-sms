@@ -2,14 +2,14 @@
 
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { cn } from "@repo/ui/lib/utils"
-import { useUpdateCampaign } from "../hooks/use-update-campaign"
-import { SaveState } from "./provider"
 
-type Props = {
+import { SaveState } from "~/features/campaign/components/update-campaign/provider"
+import { useUpdateCampaign } from "~/features/campaign/hooks/use-update-campaign"
+
+type UpdateCampaignSaveStateProps = {
 	className?: string
 }
-
-const UpdateCampaignSaveState = ({ className }: Props) => {
+const UpdateCampaignSaveState = ({ className }: UpdateCampaignSaveStateProps) => {
 	const { saveState } = useUpdateCampaign()
 
 	const icon = {

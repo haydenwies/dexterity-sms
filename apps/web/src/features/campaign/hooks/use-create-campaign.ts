@@ -9,19 +9,16 @@ const useCreateCampaign = () => {
 	const [error, setError] = useState<string | null>(null)
 
 	const router = useRouter()
-	const { organizationId } = useParams()
+	const params = useParams()
 
-	const handleCreateCampaign = async () => {
+	const handleCreate = async () => {
 		setLoading(true)
 
 		try {
-			if (typeof organizationId !== "string") throw new Error("Organization ID is required")
+			const organizationId = params.organizationId
+			if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
 
-			const res = await createCampaign({})
-			if (!res.success) {
-				setError(res.message)
-				return
-			}
+			await createCampaign(organizationId, {})
 
 			router.push(routes.EDIT_CAMPAIGN(organizationId, "123"))
 		} catch {
@@ -31,11 +28,7 @@ const useCreateCampaign = () => {
 		}
 	}
 
-	return {
-		loading,
-		error,
-		handleCreateCampaign
-	}
+	return { loading, error, handleCreate }
 }
 
 export { useCreateCampaign }
