@@ -20,6 +20,10 @@ class MemberService {
 		return member
 	}
 
+	async find(userId: string, organizationId: string): Promise<Member | undefined> {
+		return this.memberRepository.find(userId, organizationId)
+	}
+
 	async create(userId: string, organizationId: string): Promise<Member> {
 		const member = Member.create({ userId, organizationId })
 		const createdMember = await this.memberRepository.create(member)

@@ -27,8 +27,9 @@ import {
 import { AuthGuard } from "~/auth/auth.guard"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
 import { ContactService } from "~/contact/contact.service"
+import { OrganizationGuard } from "~/organization/organization.guard"
 
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, OrganizationGuard)
 @Controller("organizations/:organizationId/contacts")
 class ContactController {
 	constructor(private readonly contactService: ContactService) {}

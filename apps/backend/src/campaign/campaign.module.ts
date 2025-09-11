@@ -8,6 +8,7 @@ import { CampaignRepository } from "~/campaign/campaign.repository"
 import { CampaignService } from "~/campaign/campaign.service"
 import { ContactModule } from "~/contact/contact.module"
 import { DatabaseModule } from "~/database/database.module"
+import { OrganizationModule } from "~/organization/organization.module"
 import { SenderModule } from "~/sender/sender.module"
 import { SmsModule } from "~/sms/sms.module"
 
@@ -15,6 +16,7 @@ import { SmsModule } from "~/sms/sms.module"
 	imports: [
 		BullModule.registerQueue({ name: CAMPAIGN_QUEUE }),
 		AuthModule,
+		OrganizationModule,
 		DatabaseModule,
 		ContactModule,
 		SenderModule,

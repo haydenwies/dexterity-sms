@@ -17,8 +17,10 @@ import {
 import { AuthGuard } from "~/auth/auth.guard"
 import { CampaignService } from "~/campaign/campaign.service"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
+import { OrganizationGuard } from "~/organization/organization.guard"
+import { SenderGuard } from "~/sender/sender.guard"
 
-@UseGuards(AuthGuard) // TODO: Add organization guard
+@UseGuards(AuthGuard, OrganizationGuard)
 @Controller("organizations/:organizationId/campaigns")
 class CampaignController {
 	constructor(private readonly campaignService: CampaignService) {}
@@ -77,6 +79,7 @@ class CampaignController {
 		await this.campaignService.delete(organizationId, campaignId)
 	}
 
+	@UseGuards(SenderGuard)
 	@Post(":campaignId/send-test")
 	async sendTest(
 		@Param("organizationId") organizationId: string,
@@ -86,6 +89,7 @@ class CampaignController {
 		await this.campaignService.sendTest(organizationId, campaignId, body)
 	}
 
+	@UseGuards(SenderGuard)
 	@Post(":campaignId/send")
 	async send(
 		@Param("organizationId") organizationId: string,

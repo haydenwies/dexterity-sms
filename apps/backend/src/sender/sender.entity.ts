@@ -1,6 +1,7 @@
 import { Phone } from "~/common/phone.vo"
 
 type SenderConstructorParams = {
+	id: string
 	organizationId: string
 	externalId: string
 	value: Phone
@@ -9,6 +10,7 @@ type SenderConstructorParams = {
 }
 
 class Sender {
+	public readonly id: string
 	public readonly organizationId: string
 	public readonly externalId: string
 	public readonly value: Phone
@@ -16,6 +18,7 @@ class Sender {
 	public readonly updatedAt: Date
 
 	constructor(params: SenderConstructorParams) {
+		this.id = params.id
 		this.organizationId = params.organizationId
 		this.externalId = params.externalId
 		this.value = params.value

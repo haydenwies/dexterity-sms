@@ -11,6 +11,12 @@ import { SenderRepository } from "~/sender/sender.repository"
 class SenderService {
 	constructor(private readonly senderRepository: SenderRepository) {}
 
+	async safeGet(organizationId: string): Promise<Sender | undefined> {
+		const sender = await this.senderRepository.find(organizationId)
+
+		return sender
+	}
+
 	async get(organizationId: string): Promise<Sender> {
 		const sender = await this.senderRepository.find(organizationId)
 		if (!sender) throw new NotFoundException("Sender not found")
