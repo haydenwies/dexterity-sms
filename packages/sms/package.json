@@ -1,0 +1,22 @@
+{
+	"name": "@repo/sms",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"build": "tsc"
+	},
+	"devDependencies": {
+		"@repo/typescript-config": "workspace:*",
+		"typescript": "^5.9.2"
+	},
+	"exports": {
+		".": {
+			"types": "./src/types.ts",
+			"default": "./dist/types.js"
+		},
+		"./providers/*": {
+			"types": "./src/providers/*.ts",
+			"default": "./dist/providers/*.js"
+		}
+	}
+}

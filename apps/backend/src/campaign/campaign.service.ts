@@ -1,4 +1,6 @@
-import { Injectable, NotFoundException } from "@nestjs/common"
+import { InjectQueue } from "@nestjs/bullmq"
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common"
+import { type Queue } from "bullmq"
 
 import { type CampaignModel } from "@repo/types/campaign"
 import {
@@ -10,11 +12,20 @@ import {
 } from "@repo/types/campaign/dto"
 
 import { Campaign } from "~/campaign/campaign.entity"
+import { CAMPAIGN_QUEUE, CAMPAIGN_QUEUE_JOB } from "~/campaign/campaign.queue"
 import { CampaignRepository } from "~/campaign/campaign.repository"
+import { Phone } from "~/common/phone.vo"
+import { SenderService } from "~/sender/sender.service"
+import { SmsService } from "~/sms/sms.service"
 
 @Injectable()
 class CampaignService {
-	constructor(private readonly campaignRepository: CampaignRepository) {}
+	constructor(
+		@InjectQueue(CAMPAIGN_QUEUE) private readonly campaignQueue: Queue,
+		private readonly campaignRepository: CampaignRepository,
+		private readonly senderService: SenderService,
+		private readonly smsService: SmsService
+	) {}
 
 	async get(organizationId: string, campaignId: string): Promise<Campaign> {
 		const campaign = await this.campaignRepository.find(organizationId, campaignId)
@@ -67,11 +78,44 @@ class CampaignService {
 		await this.campaignRepository.deleteMany(campaigns)
 	}
 
-	async sendTest(organizationId: string, campaignId: string, dto: SendTestCampaignDto): Promise<void> {}
+	async sendTest(organizationId: string, campaignId: string, dto: SendTestCampaignDto): Promise<void> {
+		const campaign = await this.campaignRepository.find(organizationId, campaignId)
+		if (!campaign) throw new NotFoundException("Campaign not found")
+		else if (!campaign.canSendTest()) throw new BadRequestException("Campaign test cannot be sent")
 
-	async send(organizationId: string, campaignId: string, dto: SendCampaignDto): Promise<void> {}
+		const { body } = campaign.sendTest()
 
-	async cancel(organizationId: string, campaignId: string): Promise<void> {}
+		const sender = await this.senderService.get(organizationId)
+
+		const to = Phone.create(dto.to)
+
+		await this.smsService.send({
+			from: sender.value,
+			to,
+			body
+		})
+	}
+
+	async send(organizationId: string, campaignId: string, dto: SendCampaignDto): Promise<void> {
+		const campaign = await this.campaignRepository.find(organizationId, campaignId)
+		if (!campaign) throw new NotFoundException("Campaign not found")
+
+		campaign.schedule(dto.scheduledAt)
+		await this.campaignRepository.update(campaign)
+
+		await this.campaignQueue.add(CAMPAIGN_QUEUE_JOB.SEND, {
+			organizationId,
+			campaignId
+		})
+	}
+
+	async cancel(organizationId: string, campaignId: string): Promise<void> {
+		const campaign = await this.campaignRepository.find(organizationId, campaignId)
+		if (!campaign) throw new NotFoundException("Campaign not found")
+
+		campaign.cancel()
+		await this.campaignRepository.update(campaign)
+	}
 
 	toDto(campaign: Campaign): CampaignModel {
 		return {

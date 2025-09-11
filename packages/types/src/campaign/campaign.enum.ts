@@ -1,10 +1,9 @@
 enum CampaignStatus {
 	DRAFT = "draft",
 	SCHEDULED = "scheduled",
-	QUEUED = "queued",
+	SENT = "sent",
 	CANCELLED = "cancelled",
-	FAILED = "failed",
-	DELIVERED = "delivered"
+	FAILED = "failed"
 }
 
 export { CampaignStatus }

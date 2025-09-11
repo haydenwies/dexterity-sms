@@ -6,7 +6,7 @@ type EmailPayload = {
 	html: string
 }
 
-type EmailReturn = {}
+type EmailResponse = {}
 
 type EmailProvider = {
 	send: (payload: EmailPayload) => Promise<void>

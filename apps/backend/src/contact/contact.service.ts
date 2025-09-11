@@ -88,6 +88,20 @@ class ContactService {
 		await this.contactRepository.delete(contact)
 	}
 
+	deduplicateByPhone(contacts: Contact[]): Contact[] {
+		const phoneValues = new Set<string>()
+		const deduplicatedContacts = []
+
+		for (const contact of contacts) {
+			if (contact.phone && !phoneValues.has(contact.phone.value)) {
+				phoneValues.add(contact.phone.value)
+				deduplicatedContacts.push(contact)
+			}
+		}
+
+		return deduplicatedContacts
+	}
+
 	toDto(contact: Contact): ContactModel {
 		return {
 			id: contact.id,

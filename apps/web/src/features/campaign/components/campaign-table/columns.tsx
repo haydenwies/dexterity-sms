@@ -4,7 +4,7 @@ import { type CampaignModel } from "@repo/types/campaign"
 import { Badge } from "@repo/ui/components/badge"
 import { Checkbox } from "@repo/ui/components/checkbox"
 
-import { AllCampaignsTableActions } from "~/features/campaign/all-campaigns-table/components/actions"
+import { CampaignTableActions } from "~/features/campaign/components/campaign-table/actions"
 
 const getCampaignTableColumns = (): ColumnDef<CampaignModel>[] => [
 	{
@@ -52,7 +52,7 @@ const getCampaignTableColumns = (): ColumnDef<CampaignModel>[] => [
 		header: ({ table }) => {
 			const campaigns = table.getSelectedRowModel().rows.map((row) => row.original)
 			return (
-				<AllCampaignsTableActions
+				<CampaignTableActions
 					type="header"
 					data={{ campaigns: campaigns }}
 				/>
@@ -61,7 +61,7 @@ const getCampaignTableColumns = (): ColumnDef<CampaignModel>[] => [
 		cell: ({ row }) => {
 			const campaign = row.original
 			return (
-				<AllCampaignsTableActions
+				<CampaignTableActions
 					type="cell"
 					data={{ campaign }}
 				/>

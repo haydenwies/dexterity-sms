@@ -6,14 +6,14 @@ import { use, useState } from "react"
 import { CampaignModel } from "@repo/types/campaign"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/components/table"
 
-import { getAllCampaignsTableColumns } from "~/features/campaign/all-campaigns-table/components/columns"
+import { getCampaignTableColumns } from "~/features/campaign/components/campaign-table/columns"
 
 type CampaignTableProps = Readonly<{
 	campaignsPromise: Promise<CampaignModel[]>
 }>
 const CampaignTable = ({ campaignsPromise }: CampaignTableProps) => {
 	const data = use(campaignsPromise)
-	const columns = getAllCampaignsTableColumns()
+	const columns = getCampaignTableColumns()
 
 	const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
 

@@ -9,7 +9,8 @@ import { DatabaseModule } from "~/database/database.module"
 @Module({
 	imports: [AuthModule, DatabaseModule],
 	controllers: [ContactController],
-	providers: [ContactService, ContactRepository]
+	providers: [ContactService, ContactRepository],
+	exports: [ContactService]
 })
 class ContactModule {}
 
