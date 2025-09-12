@@ -1,11 +1,11 @@
 import z from "zod"
 
 type AddSenderDto = {
-	availableSenderId: string
+	phone: string
 }
 
 const addSenderDtoSchema = z.object({
-	availableSenderId: z.string()
+	phone: z.e164()
 })
 
 export { addSenderDtoSchema, type AddSenderDto }

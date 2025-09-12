@@ -15,8 +15,8 @@ import { Campaign } from "~/campaign/campaign.entity"
 import { CAMPAIGN_QUEUE, CAMPAIGN_QUEUE_JOB } from "~/campaign/campaign.queue"
 import { CampaignRepository } from "~/campaign/campaign.repository"
 import { Phone } from "~/common/phone.vo"
+import { MessageService } from "~/message/message.service"
 import { SenderService } from "~/sender/sender.service"
-import { SmsService } from "~/sms/sms.service"
 
 @Injectable()
 class CampaignService {
@@ -24,7 +24,7 @@ class CampaignService {
 		@InjectQueue(CAMPAIGN_QUEUE) private readonly campaignQueue: Queue,
 		private readonly campaignRepository: CampaignRepository,
 		private readonly senderService: SenderService,
-		private readonly smsService: SmsService
+		private readonly messageService: MessageService
 	) {}
 
 	async get(organizationId: string, campaignId: string): Promise<Campaign> {
@@ -89,8 +89,8 @@ class CampaignService {
 
 		const to = Phone.create(dto.to)
 
-		await this.smsService.send({
-			from: sender.value,
+		await this.messageService.send({
+			from: sender.phone,
 			to,
 			body
 		})

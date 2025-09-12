@@ -1,14 +1,27 @@
-import { BullModule } from "@nestjs/bullmq"
 import { Module } from "@nestjs/common"
+import { ConfigService } from "@nestjs/config"
 
-import { SMS_QUEUE, SmsQueueConsumer } from "~/sms/sms.queue"
-import { SmsService } from "~/sms/sms.service"
+import { TwilioProvider, type SmsProvider as SmsProviderType } from "@repo/sms"
+
+const SMS_PROVIDER = "sms-provider"
+type SmsProvider = SmsProviderType
 
 @Module({
-	imports: [BullModule.registerQueue({ name: SMS_QUEUE })],
-	providers: [SmsService, SmsQueueConsumer],
-	exports: [SmsService]
+	providers: [
+		{
+			provide: SMS_PROVIDER,
+			inject: [ConfigService],
+			useFactory: (configService: ConfigService) => {
+				const provider = new TwilioProvider({
+					accountSid: configService.getOrThrow("sms.twilioAccountSid"),
+					authToken: configService.getOrThrow("sms.twilioAuthToken")
+				})
+
+				return provider
+			}
+		}
+	]
 })
 class SmsModule {}
 
-export { SmsModule }
+export { SMS_PROVIDER, SmsModule, type SmsProvider }

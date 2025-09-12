@@ -8,9 +8,9 @@ import { CampaignRepository } from "~/campaign/campaign.repository"
 import { CampaignService } from "~/campaign/campaign.service"
 import { ContactModule } from "~/contact/contact.module"
 import { DatabaseModule } from "~/database/database.module"
+import { MessageModule } from "~/message/message.module"
 import { OrganizationModule } from "~/organization/organization.module"
 import { SenderModule } from "~/sender/sender.module"
-import { SmsModule } from "~/sms/sms.module"
 
 @Module({
 	imports: [
@@ -20,7 +20,7 @@ import { SmsModule } from "~/sms/sms.module"
 		DatabaseModule,
 		ContactModule,
 		SenderModule,
-		SmsModule
+		MessageModule
 	],
 	controllers: [CampaignController],
 	providers: [CampaignService, CampaignQueueConsumer, CampaignRepository]

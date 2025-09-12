@@ -2,8 +2,8 @@ import { Processor, WorkerHost } from "@nestjs/bullmq"
 import { BadRequestException, NotFoundException } from "@nestjs/common"
 import { Job } from "bullmq"
 import { ContactService } from "~/contact/contact.service"
+import { MessageService } from "~/message/message.service"
 import { SenderService } from "~/sender/sender.service"
-import { SmsService } from "~/sms/sms.service"
 import { CampaignRepository } from "./campaign.repository"
 
 const CAMPAIGN_QUEUE = "campaign-queue"
@@ -17,8 +17,8 @@ class CampaignQueueConsumer extends WorkerHost {
 	constructor(
 		private readonly campaignRepository: CampaignRepository,
 		private readonly contactService: ContactService,
-		private readonly senderService: SenderService,
-		private readonly smsService: SmsService
+		private readonly messageService: MessageService,
+		private readonly senderService: SenderService
 	) {
 		super()
 	}
@@ -48,7 +48,7 @@ class CampaignQueueConsumer extends WorkerHost {
 			deduplicatedContacts.map((contact) => {
 				if (!contact.phone) return
 
-				return this.smsService.send({
+				return this.messageService.send({
 					from: sender.value,
 					to: contact.phone,
 					body

@@ -123,12 +123,25 @@ const campaignTable = pgTable("campaign", {
 
 // #endregion
 
+// #region sender
+
+const senderTable = pgTable("sender", {
+	organizationId: uuid("organization_id")
+		.references(() => organizationTable.id, { onUpdate: "cascade", onDelete: "cascade" })
+		.primaryKey(),
+	phone: text("phone").unique().notNull(),
+	createdAt: timestamp("created_at", { mode: "date" }).notNull()
+})
+
+// #endregion
+
 export {
 	accountTable,
 	campaignTable,
 	contactTable,
 	memberTable,
 	organizationTable,
+	senderTable,
 	sessionTable,
 	userTable,
 	verificationTokenTable

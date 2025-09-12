@@ -11,12 +11,11 @@
 	},
 	"exports": {
 		".": {
-			"types": "./src/types.ts",
-			"default": "./dist/types.js"
-		},
-		"./providers/*": {
-			"types": "./src/providers/*.ts",
-			"default": "./dist/providers/*.js"
+			"types": "./src/index.ts",
+			"default": "./dist/index.js"
 		}
+	},
+	"dependencies": {
+		"twilio": "^5.9.0"
 	}
 }

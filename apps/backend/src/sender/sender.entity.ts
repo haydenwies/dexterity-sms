@@ -1,29 +1,33 @@
 import { Phone } from "~/common/phone.vo"
 
 type SenderConstructorParams = {
-	id: string
-	organizationId: string
-	externalId: string
-	value: Phone
+	organizationId?: string | null
+	phone: Phone
 	createdAt: Date
-	updatedAt: Date
+}
+
+type SenderCreateParams = {
+	organizationId?: string | null
+	phone: Phone
 }
 
 class Sender {
-	public readonly id: string
-	public readonly organizationId: string
-	public readonly externalId: string
-	public readonly value: Phone
+	public readonly organizationId: string | null
+	public readonly phone: Phone
 	public readonly createdAt: Date
-	public readonly updatedAt: Date
 
 	constructor(params: SenderConstructorParams) {
-		this.id = params.id
-		this.organizationId = params.organizationId
-		this.externalId = params.externalId
-		this.value = params.value
+		this.organizationId = params.organizationId || null
+		this.phone = params.phone
 		this.createdAt = params.createdAt
-		this.updatedAt = params.updatedAt
+	}
+
+	static create(params: SenderCreateParams): Sender {
+		return new Sender({
+			organizationId: params.organizationId || null,
+			phone: params.phone,
+			createdAt: new Date()
+		})
 	}
 }
 

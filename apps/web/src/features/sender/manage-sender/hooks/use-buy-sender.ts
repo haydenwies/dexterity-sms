@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { buySender } from "~/actions/sender/buy-sender"
+import { addSender } from "~/actions/sender/add-sender"
 
 const useBuySender = () => {
 	const [loading, setLoading] = useState<boolean>(false)
@@ -13,7 +13,7 @@ const useBuySender = () => {
 		setLoading(true)
 
 		try {
-			const res = await buySender({ availableSenderId })
+			const res = await addSender({ availableSenderId })
 			if (!res.success) throw new Error(res.message)
 
 			return res.data

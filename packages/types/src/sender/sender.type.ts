@@ -1,6 +1,6 @@
 type SenderModel = {
 	id: string
-	organizationId: string
+	organizationId: string | null
 	value: string
 	createdAt: Date
 }
