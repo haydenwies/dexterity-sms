@@ -48,8 +48,8 @@ class CampaignQueueConsumer extends WorkerHost {
 			deduplicatedContacts.map((contact) => {
 				if (!contact.phone) return
 
-				return this.messageService.send({
-					from: sender.value,
+				return this.messageService.send(organizationId, {
+					from: sender.phone,
 					to: contact.phone,
 					body
 				})

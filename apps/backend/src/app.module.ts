@@ -10,6 +10,7 @@ import { databaseConfig, databaseConfigSchema } from "~/config/database.config"
 import { routerConfig, routerConfigSchema } from "~/config/router.config"
 import { smsConfig, smsConfigSchema } from "~/config/sms.config"
 import { ContactModule } from "~/contact/contact.module"
+import { ConversationModule } from "~/conversation/conversation.module"
 import { OrganizationModule } from "~/organization/organization.module"
 
 @Module({
@@ -42,6 +43,7 @@ import { OrganizationModule } from "~/organization/organization.module"
 		AuthModule,
 		OrganizationModule,
 		ContactModule,
+		ConversationModule,
 		CampaignModule
 	],
 	controllers: [],

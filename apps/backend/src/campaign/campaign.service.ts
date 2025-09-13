@@ -89,7 +89,7 @@ class CampaignService {
 
 		const to = Phone.create(dto.to)
 
-		await this.messageService.send({
+		await this.messageService.send(organizationId, {
 			from: sender.phone,
 			to,
 			body

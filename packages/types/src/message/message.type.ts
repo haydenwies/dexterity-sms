@@ -15,13 +15,13 @@ type ConversationModel = {
 type MessageModel = {
 	id: string
 	organizationId: string
-	conversationId: string
 	externalId: string | null
 	direction: MessageDirection
 	status: MessageStatus
 	body: string
 	from: string
 	to: string
+	recipient: string // Computed: the conversation participant (to for outbound, from for inbound)
 	sentAt?: Date
 	deliveredAt?: Date
 	readAt?: Date

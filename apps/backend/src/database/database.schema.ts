@@ -135,11 +135,34 @@ const senderTable = pgTable("sender", {
 
 // #endregion
 
+// #region message
+
+const messageTable = pgTable("message", {
+	id: uuid("id").primaryKey(),
+	organizationId: uuid("organization_id")
+		.references(() => organizationTable.id, { onUpdate: "cascade", onDelete: "cascade" })
+		.notNull(),
+	externalId: text("external_id"),
+	direction: text("direction").notNull(),
+	status: text("status").notNull(),
+	from: text("from").notNull(),
+	to: text("to").notNull(),
+	body: text("body").notNull(),
+	sentAt: timestamp("sent_at", { mode: "date" }),
+	deliveredAt: timestamp("delivered_at", { mode: "date" }),
+	readAt: timestamp("read_at", { mode: "date" }),
+	createdAt: timestamp("created_at", { mode: "date" }).notNull(),
+	updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
+})
+
+// #endregion
+
 export {
 	accountTable,
 	campaignTable,
 	contactTable,
 	memberTable,
+	messageTable,
 	organizationTable,
 	senderTable,
 	sessionTable,

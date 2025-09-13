@@ -66,8 +66,8 @@
 			"default": "./dist/campaign/dto/*.js"
 		},
 		"./message": {
-			"types": "./src/message/message.type.ts",
-			"default": "./dist/message/message.js"
+			"types": "./src/message/index.ts",
+			"default": "./dist/message/index.js"
 		},
 		"./message/enums": {
 			"types": "./src/message/message.enum.ts",
