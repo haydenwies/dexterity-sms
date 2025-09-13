@@ -51,7 +51,8 @@ class CampaignQueueConsumer extends WorkerHost {
 				return this.messageService.send(organizationId, {
 					from: sender.phone,
 					to: contact.phone,
-					body
+					body,
+					campaignId
 				})
 			})
 		)

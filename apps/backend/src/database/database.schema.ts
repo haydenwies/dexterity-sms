@@ -1,4 +1,4 @@
-import { pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core"
+import { pgTable, primaryKey, text, timestamp, unique, uuid } from "drizzle-orm/pg-core"
 
 // #region user
 
@@ -157,10 +157,32 @@ const messageTable = pgTable("message", {
 
 // #endregion
 
+// #region conversation
+
+const conversationTable = pgTable(
+	"conversation",
+	{
+		id: uuid("id").primaryKey(),
+		organizationId: uuid("organization_id")
+			.references(() => organizationTable.id, { onUpdate: "cascade", onDelete: "cascade" })
+			.notNull(),
+		recipient: text("recipient").notNull(), // phone number
+		createdAt: timestamp("created_at", { mode: "date" }).notNull(),
+		updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
+	},
+	(table) => ({
+		// Unique constraint: one conversation per organization-recipient pair
+		uniqueOrgRecipient: unique().on(table.organizationId, table.recipient)
+	})
+)
+
+// #endregion
+
 export {
 	accountTable,
 	campaignTable,
 	contactTable,
+	conversationTable,
 	memberTable,
 	messageTable,
 	organizationTable,

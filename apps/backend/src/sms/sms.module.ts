@@ -20,7 +20,8 @@ type SmsProvider = SmsProviderType
 				return provider
 			}
 		}
-	]
+	],
+	exports: [SMS_PROVIDER]
 })
 class SmsModule {}
 
