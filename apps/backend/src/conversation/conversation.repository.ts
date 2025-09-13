@@ -37,6 +37,15 @@ export class ConversationRepository {
 		return ConversationRepository.toEntity(row)
 	}
 
+	async findMany(organizationId: string): Promise<Conversation[]> {
+		const rows = await this.db
+			.select()
+			.from(conversationTable)
+			.where(eq(conversationTable.organizationId, organizationId))
+
+		return rows.map((row) => ConversationRepository.toEntity(row))
+	}
+
 	async create(conversation: Conversation): Promise<Conversation> {
 		const [row] = await this.db
 			.insert(conversationTable)
