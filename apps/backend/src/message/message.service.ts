@@ -18,27 +18,42 @@ class MessageService {
 		@InjectQueue(EVENT_QUEUE) private readonly eventQueue: Queue
 	) {}
 
+	async findManyByConversationId(organizationId: string, conversationId: string): Promise<Message[]> {
+		const messages = await this.messageRepository.findMany(organizationId, { conversationId })
+
+		return messages
+	}
+
 	async updateConversationId(organizationId: string, messageId: string, conversationId: string): Promise<Message> {
 		const message = await this.messageRepository.find(organizationId, messageId)
 		if (!message) throw new NotFoundException("Message not found")
 
 		message.updateConversationId(conversationId)
-		return this.messageRepository.update(message)
+		const updatedMessage = await this.messageRepository.update(message)
+
+		return updatedMessage
 	}
 
 	async send(
 		organizationId: string,
-		payload: { body: string; from: Phone; to: Phone; campaignId?: string }
+		payload: {
+			body: string
+			from: Phone
+			to: Phone
+			conversationId?: string
+			campaignId?: string
+		}
 	): Promise<Message> {
 		// Create message entity
 		const message = Message.create({
 			organizationId,
-			body: payload.body,
-			from: payload.from,
-			to: payload.to,
+			conversationId: payload.conversationId,
 			campaignId: payload.campaignId,
 			direction: MessageDirection.OUTBOUND,
-			status: MessageStatus.PENDING
+			status: MessageStatus.PENDING,
+			from: payload.from,
+			to: payload.to,
+			body: payload.body
 		})
 		const createdMessage = await this.messageRepository.create(message)
 

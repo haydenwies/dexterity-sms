@@ -1,12 +1,20 @@
 import { Injectable, NotFoundException } from "@nestjs/common"
-import { ConversationModel, CreateConversationDto } from "@repo/types/message"
+import { SendMessageDto } from "@repo/types/conversation"
+import { CreateConversationDto } from "@repo/types/message"
 
 import { Conversation } from "~/conversation/conversation.entity"
 import { ConversationRepository } from "~/conversation/conversation.repository"
+import { Message } from "~/message/message.entity"
+import { MessageService } from "~/message/message.service"
+import { SenderService } from "~/sender/sender.service"
 
 @Injectable()
 export class ConversationService {
-	constructor(private readonly conversationRepository: ConversationRepository) {}
+	constructor(
+		private readonly conversationRepository: ConversationRepository,
+		private readonly senderService: SenderService,
+		private readonly messageService: MessageService
+	) {}
 
 	async get(organizationId: string, conversationId: string): Promise<Conversation> {
 		const conversation = await this.conversationRepository.find(organizationId, conversationId)
@@ -30,12 +38,24 @@ export class ConversationService {
 		return createdConversation
 	}
 
-	toDto(conversation: Conversation): ConversationModel {
-		// @ts-expect-error - TODO: Add unreadCount, createdAt, updatedAt
-		return {
-			id: conversation.id,
-			organizationId: conversation.organizationId,
-			recipient: conversation.recipient.value
-		}
+	async getManyMessages(organizationId: string, conversationId: string): Promise<Message[]> {
+		const messages = await this.messageService.findManyByConversationId(organizationId, conversationId)
+
+		return messages
+	}
+
+	async sendMessage(organizationId: string, conversationId: string, dto: SendMessageDto): Promise<void> {
+		const conversation = await this.conversationRepository.find(organizationId, conversationId)
+		if (!conversation) throw new NotFoundException("Conversation not found")
+
+		const sender = await this.senderService.get(organizationId)
+		if (!sender) throw new NotFoundException("Sender not found")
+
+		await this.messageService.send(organizationId, {
+			conversationId,
+			body: dto.body,
+			from: sender.phone,
+			to: conversation.recipient
+		})
 	}
 }

@@ -65,6 +65,10 @@
 			"types": "./src/campaign/dto/*.ts",
 			"default": "./dist/campaign/dto/*.js"
 		},
+		"./conversation": {
+			"types": "./src/conversation/index.ts",
+			"default": "./dist/conversation/index.js"
+		},
 		"./message": {
 			"types": "./src/message/index.ts",
 			"default": "./dist/message/index.js"

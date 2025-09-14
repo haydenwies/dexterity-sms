@@ -14,9 +14,9 @@ type MessageConstructorParams = {
 	from: Phone
 	to: Phone
 	body: string
-	sentAt?: Date
-	deliveredAt?: Date
-	readAt?: Date
+	sentAt?: Date | null
+	deliveredAt?: Date | null
+	readAt?: Date | null
 	createdAt: Date
 	updatedAt: Date
 }
@@ -64,9 +64,9 @@ class Message {
 		this.body = params.body
 		this.from = params.from
 		this.to = params.to
-		this._sentAt = params.sentAt
-		this._deliveredAt = params.deliveredAt
-		this._readAt = params.readAt
+		this._sentAt = params.sentAt || undefined
+		this._deliveredAt = params.deliveredAt || undefined
+		this._readAt = params.readAt || undefined
 		this.createdAt = params.createdAt
 		this._updatedAt = params.updatedAt
 	}

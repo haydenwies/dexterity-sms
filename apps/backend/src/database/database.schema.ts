@@ -139,10 +139,21 @@ const senderTable = pgTable("sender", {
 
 const messageTable = pgTable("message", {
 	id: uuid("id").primaryKey(),
-	organizationId: uuid("organization_id")
-		.references(() => organizationTable.id, { onUpdate: "cascade", onDelete: "cascade" })
-		.notNull(),
 	externalId: text("external_id"),
+	organizationId: uuid("organization_id")
+		.references(() => organizationTable.id, {
+			onUpdate: "cascade",
+			onDelete: "cascade"
+		})
+		.notNull(),
+	conversationId: uuid("conversation_id").references(() => conversationTable.id, {
+		onUpdate: "cascade",
+		onDelete: "cascade"
+	}),
+	campaignId: uuid("campaign_id").references(() => campaignTable.id, {
+		onUpdate: "cascade",
+		onDelete: "cascade"
+	}),
 	direction: text("direction").notNull(),
 	status: text("status").notNull(),
 	from: text("from").notNull(),

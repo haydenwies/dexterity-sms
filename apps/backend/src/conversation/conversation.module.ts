@@ -9,6 +9,7 @@ import { DatabaseModule } from "~/database/database.module"
 import { EVENT_QUEUE } from "~/event/event.types"
 import { MessageModule } from "~/message/message.module"
 import { OrganizationModule } from "~/organization/organization.module"
+import { SenderModule } from "~/sender/sender.module"
 
 @Module({
 	imports: [
@@ -16,6 +17,7 @@ import { OrganizationModule } from "~/organization/organization.module"
 		AuthModule,
 		OrganizationModule,
 		DatabaseModule,
+		SenderModule,
 		MessageModule
 	],
 	controllers: [ConversationController],
