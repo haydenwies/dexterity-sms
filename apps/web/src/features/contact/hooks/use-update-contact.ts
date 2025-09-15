@@ -3,8 +3,7 @@ import { useParams } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { type ContactModel } from "@repo/types/contact"
-import { type UpdateContactDto, updateContactDtoSchema } from "@repo/types/contact/dto"
+import { type ContactModel, type UpdateContactDto, updateContactDtoSchema } from "@repo/types/contact"
 
 import { updateContact } from "~/actions/contact/update-contact"
 

@@ -40,7 +40,13 @@ const routes = {
 		SEND_CAMPAIGN: (organizationId: string, campaignId: string) =>
 			`/organizations/${organizationId}/campaigns/${campaignId}/send`,
 		CANCEL_CAMPAIGN: (organizationId: string, campaignId: string) =>
-			`/organizations/${organizationId}/campaigns/${campaignId}/cancel`
+			`/organizations/${organizationId}/campaigns/${campaignId}/cancel`,
+
+		// sender
+		GET_SENDER: (organizationId: string) => `/organizations/${organizationId}/sender`,
+		ADD_SENDER: (organizationId: string) => `/organizations/${organizationId}/sender`,
+		REMOVE_SENDER: (organizationId: string) => `/organizations/${organizationId}/sender`,
+		GET_AVAILABLE_SENDERS: (organizationId: string) => `/organizations/${organizationId}/sender/available`
 	},
 	web: {
 		// auth
@@ -51,7 +57,11 @@ const routes = {
 
 		// organization
 		ALL_ORGANIZATIONS: "/organizations",
-		ORGANIZATION: (id: string) => `/organizations/${id}`
+		ORGANIZATION: (id: string) => `/organizations/${id}`,
+
+		// campaign
+		UPDATE_CAMPAIGN: (organizationId: string, campaignId: string) =>
+			`/organizations/${organizationId}/campaigns/${campaignId}/edit`
 	}
 }
 

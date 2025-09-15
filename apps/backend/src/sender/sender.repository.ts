@@ -28,6 +28,7 @@ class SenderRepository {
 			.insert(senderTable)
 			.values({
 				organizationId: sender.organizationId,
+				externalId: sender.externalId,
 				phone: sender.phone.value,
 				createdAt: sender.createdAt
 			})
@@ -52,6 +53,7 @@ class SenderRepository {
 	private static toEntity(row: typeof senderTable.$inferSelect): Sender {
 		return new Sender({
 			organizationId: row.organizationId,
+			externalId: row.externalId,
 			phone: Phone.create(row.phone),
 			createdAt: row.createdAt
 		})

@@ -1,6 +1,6 @@
 "use server"
 
-import { SendMessageDto } from "@repo/types/message/dto/send-message"
+import { type SendMessageDto } from "@repo/types/conversation"
 
 import { type ActionResponse, actionSuccess } from "~/lib/actions"
 

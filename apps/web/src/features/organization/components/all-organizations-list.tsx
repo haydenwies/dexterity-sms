@@ -1,16 +1,17 @@
 "use client"
 
+import Link from "next/link"
 import { use, useState } from "react"
 
 import { routes } from "@repo/routes"
-import { OrganizationModel } from "@repo/types/organization"
+import { type OrganizationModel } from "@repo/types/organization"
 import { Avatar, AvatarFallback } from "@repo/ui/components/avatar"
 import { Button } from "@repo/ui/components/button"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
 import { cn } from "@repo/ui/lib/utils"
-import Link from "next/link"
-import { CreateOrganizationDialog } from "./create-organization-dialog"
+
+import { CreateOrganizationDialog } from "~/features/organization/components/create-organization-dialog"
 
 // #region OrganizationListItem
 

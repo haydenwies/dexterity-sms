@@ -1,5 +1,17 @@
 import z from "zod"
 
+// #region CreateConversationDto
+
+type CreateConversationDto = {
+	contactId: string
+}
+
+const createConversationDtoSchema = z.object({
+	contactId: z.string()
+})
+
+// #endregion
+
 // #region SendMessageDto
 
 type SendMessageDto = {
@@ -14,4 +26,4 @@ const sendMessageDtoSchema = z.object({
 
 // #endregion
 
-export { sendMessageDtoSchema, type SendMessageDto }
+export { createConversationDtoSchema, sendMessageDtoSchema, type CreateConversationDto, type SendMessageDto }

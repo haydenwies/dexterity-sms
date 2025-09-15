@@ -1,7 +1,7 @@
 "use server"
 
 import { routes } from "@repo/routes"
-import { type ForgotPasswordDto } from "@repo/types/auth/dto"
+import { type ForgotPasswordDto } from "@repo/types/auth"
 
 import { actionError, type ActionResponse, actionSuccess } from "~/lib/actions"
 import { getBackendUrl } from "~/lib/backend"

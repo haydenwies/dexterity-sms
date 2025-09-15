@@ -14,24 +14,12 @@
 	},
 	"exports": {
 		"./auth": {
-			"types": "./src/auth/auth.type.ts",
-			"default": "./dist/auth/auth.js"
-		},
-		"./auth/dto": {
-			"types": "./src/auth/auth.dto.ts",
-			"default": "./dist/auth/auth.dto.js"
-		},
-		"./auth/enum": {
-			"types": "./src/auth/auth.enum.ts",
-			"default": "./dist/auth/auth.enum.js"
+			"types": "./src/auth/index.ts",
+			"default": "./dist/auth/index.js"
 		},
 		"./organization": {
-			"types": "./src/organization/organization.type.ts",
-			"default": "./dist/organization/organization.js"
-		},
-		"./organization/dto": {
-			"types": "./src/organization/organization.dto.ts",
-			"default": "./dist/organization/organization.dto.js"
+			"types": "./src/organization/index.ts",
+			"default": "./dist/organization/index.js"
 		},
 		"./billing": {
 			"types": "./src/billing/billing.type.ts",
@@ -42,28 +30,12 @@
 			"default": "./dist/billing/dto/*.js"
 		},
 		"./contact": {
-			"types": "./src/contact/contact.type.ts",
-			"default": "./dist/contact/contact.js"
-		},
-		"./contact/dto": {
-			"types": "./src/contact/contact.dto.ts",
-			"default": "./dist/contact/contact.dto.js"
+			"types": "./src/contact/index.ts",
+			"default": "./dist/contact/index.js"
 		},
 		"./campaign": {
-			"types": "./src/campaign/campaign.type.ts",
-			"default": "./dist/campaign/campaign.js"
-		},
-		"./campaign/enums": {
-			"types": "./src/campaign/campaign.enum.ts",
-			"default": "./dist/campaign/campaign.enum.js"
-		},
-		"./campaign/dto": {
-			"types": "./src/campaign/campaign.dto.ts",
-			"default": "./dist/campaign/campaign.dto.js"
-		},
-		"./campaign/dto/*": {
-			"types": "./src/campaign/dto/*.ts",
-			"default": "./dist/campaign/dto/*.js"
+			"types": "./src/campaign/index.ts",
+			"default": "./dist/campaign/index.js"
 		},
 		"./conversation": {
 			"types": "./src/conversation/index.ts",
@@ -73,21 +45,9 @@
 			"types": "./src/message/index.ts",
 			"default": "./dist/message/index.js"
 		},
-		"./message/enums": {
-			"types": "./src/message/message.enum.ts",
-			"default": "./dist/message/message.enum.js"
-		},
-		"./message/dto/*": {
-			"types": "./src/message/dto/*.ts",
-			"default": "./dist/message/dto/*.js"
-		},
 		"./sender": {
-			"types": "./src/sender/sender.type.ts",
-			"default": "./dist/sender/sender.js"
-		},
-		"./sender/dto/*": {
-			"types": "./src/sender/dto/*.ts",
-			"default": "./dist/sender/dto/*.js"
+			"types": "./src/sender/index.ts",
+			"default": "./dist/sender/index.js"
 		}
 	}
 }

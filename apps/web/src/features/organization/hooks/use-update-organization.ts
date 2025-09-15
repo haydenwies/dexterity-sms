@@ -2,8 +2,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { type OrganizationModel } from "@repo/types/organization"
-import { type UpdateOrganizationDto, updateOrganizationDtoSchema } from "@repo/types/organization/dto"
+import {
+	type OrganizationModel,
+	type UpdateOrganizationDto,
+	updateOrganizationDtoSchema
+} from "@repo/types/organization"
+
 import { updateOrganization } from "~/actions/organization/update-organization"
 
 const useUpdateOrganization = (organization: OrganizationModel) => {

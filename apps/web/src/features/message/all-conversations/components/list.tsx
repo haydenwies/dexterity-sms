@@ -2,8 +2,8 @@
 
 import { use } from "react"
 
-import { ContactModel } from "@repo/types/contact"
-import { ConversationModel } from "@repo/types/message"
+import { type ContactModel } from "@repo/types/contact"
+import { type ConversationModel } from "@repo/types/conversation"
 import { cn } from "@repo/ui/lib/utils"
 
 import { AllConvesationsListItem } from "~/features/message/all-conversations/components/list-item"

@@ -15,11 +15,16 @@ type Message = {
 	body: string
 }
 
+type PurchasedNumber = {
+	id: string
+	phone: string
+}
+
 type SmsProvider = {
 	send: (payload: SmsPayload) => Promise<Message>
 	getAvailableNumbers: () => Promise<string[]>
-	buyNumber: (phone: string) => Promise<void>
-	releaseNumber: (phone: string) => Promise<void>
+	buyNumber: (phone: string) => Promise<PurchasedNumber>
+	releaseNumber: (id: string) => Promise<void>
 }
 
-export type { Message, Phone, SmsPayload, SmsProvider }
+export type { Message, Phone, PurchasedNumber, SmsPayload, SmsProvider }

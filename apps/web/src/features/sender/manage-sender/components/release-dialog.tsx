@@ -1,6 +1,6 @@
 "use client"
 
-import { SenderModel } from "@repo/types/sender"
+import { type SenderModel } from "@repo/types/sender"
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -11,7 +11,8 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle
 } from "@repo/ui/components/alert-dialog"
-import { useReleaseSender } from "../hooks/use-release-sender"
+
+import { useReleaseSender } from "~/features/sender/manage-sender/hooks/use-release-sender"
 
 type ReleaseSenderDialogProps = {
 	sender: SenderModel
@@ -41,7 +42,7 @@ const ReleaseSenderDialog = ({ sender, open, setOpen }: ReleaseSenderDialogProps
 					<AlertDialogAction
 						disabled={loading}
 						onClick={async () => {
-							await handleReleaseSender(sender.id)
+							await handleReleaseSender()
 							setOpen(false)
 						}}
 						variant="destructive"

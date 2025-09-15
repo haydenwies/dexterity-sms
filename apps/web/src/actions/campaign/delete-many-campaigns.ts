@@ -1,7 +1,7 @@
 "use server"
 
 import { routes } from "@repo/routes"
-import { DeleteManyCampaignsDto } from "@repo/types/campaign/dto"
+import { DeleteManyCampaignsDto } from "@repo/types/campaign"
 
 import { sessionMiddleware } from "~/actions/utils"
 import { getBackendUrl } from "~/lib/backend"

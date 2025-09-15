@@ -1,5 +1,7 @@
 import z from "zod"
 
+// #region AddSenderDto
+
 type AddSenderDto = {
 	phone: string
 }
@@ -7,5 +9,7 @@ type AddSenderDto = {
 const addSenderDtoSchema = z.object({
 	phone: z.e164()
 })
+
+// #endregion
 
 export { addSenderDtoSchema, type AddSenderDto }

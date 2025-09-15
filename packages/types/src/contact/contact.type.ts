@@ -10,13 +10,4 @@ type ContactModel = {
 	updatedAt: Date
 }
 
-type TagModel = {
-	id: string
-	organizationId: string
-	name: string
-	color?: string
-	createdAt: Date
-	updatedAt: Date
-}
-
-export type { ContactModel, TagModel }
+export type { ContactModel }

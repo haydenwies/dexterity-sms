@@ -5,10 +5,4 @@ type SenderModel = {
 	createdAt: Date
 }
 
-type AvailableSenderModel = {
-	id: string
-	value: string
-	countryCode: string
-}
-
-export type { AvailableSenderModel, SenderModel }
+export type { SenderModel }

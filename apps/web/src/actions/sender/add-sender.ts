@@ -1,14 +1,27 @@
 "use server"
 
-import { AddSenderDto } from "@repo/types/sender/dto/add-sender"
-import { ActionResponse, actionSuccess } from "~/lib/actions"
+import { routes } from "@repo/routes"
+import { type AddSenderDto } from "@repo/types/sender"
 
-const addSender = async (dto: AddSenderDto): Promise<ActionResponse<undefined>> => {
-	await new Promise((resolve) => setTimeout(resolve, 1000))
+import { sessionMiddleware } from "~/actions/utils"
+import { getBackendUrl } from "~/lib/backend"
 
-	console.log(dto)
+const addSender = async (organizationId: string, dto: AddSenderDto): Promise<void> => {
+	const sessionToken = await sessionMiddleware()
 
-	return actionSuccess(undefined)
+	const backendUrl = getBackendUrl()
+	const res = await fetch(`${backendUrl}${routes.backend.ADD_SENDER(organizationId)}`, {
+		method: "POST",
+		body: JSON.stringify(dto),
+		headers: {
+			"Authorization": `Bearer ${sessionToken}`,
+			"Content-Type": "application/json"
+		}
+	})
+	if (!res.ok) {
+		const errData = await res.json()
+		throw new Error(errData.message)
+	}
 }
 
 export { addSender }

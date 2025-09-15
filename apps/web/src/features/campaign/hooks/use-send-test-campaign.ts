@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { type SendTestCampaignDto, sendTestCampaignDtoSchema } from "@repo/types/campaign/dto"
+import { type SendTestCampaignDto, sendTestCampaignDtoSchema } from "@repo/types/campaign"
 
 import { useParams } from "next/navigation"
 import { sendTestCampaign } from "~/actions/campaign/send-test-campaign"

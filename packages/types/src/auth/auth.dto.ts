@@ -1,6 +1,6 @@
 import z from "zod"
 
-// #region Sign In
+// #region SignInDto
 
 type SignInDto = {
 	email: string
@@ -12,7 +12,7 @@ const signInDtoSchema = z.object({
 	password: z.string().min(1)
 })
 
-// #region Sign Up
+// #region SignUpDto
 
 type SignUpDto = {
 	email: string
@@ -31,7 +31,7 @@ const signUpDtoSchema = z
 		path: ["confirmPassword"]
 	})
 
-// #region Forgot Password
+// #region ForgotPasswordDto
 
 type ForgotPasswordDto = {
 	email: string
@@ -41,7 +41,7 @@ const forgotPasswordDtoSchema = z.object({
 	email: z.email("Invalid email address").trim().toLowerCase()
 })
 
-// #region Reset Password
+// #region ResetPasswordDto
 
 type ResetPasswordDto = {
 	token: string

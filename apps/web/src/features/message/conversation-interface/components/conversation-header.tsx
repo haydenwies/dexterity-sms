@@ -3,7 +3,7 @@
 import { use, useMemo } from "react"
 
 import { type ContactModel } from "@repo/types/contact"
-import { type ConversationModel } from "@repo/types/message"
+import { type ConversationModel } from "@repo/types/conversation"
 import { cn } from "@repo/ui/lib/utils"
 
 type ConversationHeaderProps = {
@@ -16,7 +16,7 @@ const ConversationHeader = ({ conversationPromise, contactsPromise, className }:
 	const contacts = use(contactsPromise)
 
 	const displayName = useMemo((): string | undefined => {
-		const contact = contacts.find((contact) => contact.id === conversation.contactId)
+		const contact = contacts.find((contact) => contact.phone === conversation.recipient)
 		if (!contact) return undefined
 		if (!contact.firstName && !contact.lastName) return undefined
 

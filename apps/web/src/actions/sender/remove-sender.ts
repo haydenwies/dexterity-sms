@@ -1,15 +1,24 @@
 "use server"
 
-import { RemoveSenderDto } from "@repo/types/sender/dto/remove-sender"
+import { routes } from "@repo/routes"
 
-import { ActionResponse, actionSuccess } from "~/lib/actions"
+import { sessionMiddleware } from "~/actions/utils"
+import { getBackendUrl } from "~/lib/backend"
 
-const removeSender = async (dto: RemoveSenderDto): Promise<ActionResponse<void>> => {
-	await new Promise((resolve) => setTimeout(resolve, 1000))
+const removeSender = async (organizationId: string): Promise<void> => {
+	const sessionToken = await sessionMiddleware()
 
-	console.log(dto)
-
-	return actionSuccess(undefined)
+	const backendUrl = getBackendUrl()
+	const res = await fetch(`${backendUrl}${routes.backend.REMOVE_SENDER(organizationId)}`, {
+		method: "DELETE",
+		headers: {
+			"Authorization": `Bearer ${sessionToken}`
+		}
+	})
+	if (!res.ok) {
+		const errData = await res.json()
+		throw new Error(errData.message)
+	}
 }
 
 export { removeSender }

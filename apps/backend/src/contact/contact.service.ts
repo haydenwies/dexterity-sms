@@ -1,13 +1,13 @@
 import { Injectable, NotFoundException } from "@nestjs/common"
 import { CsvParser } from "@repo/csv"
 
-import { type ContactModel } from "@repo/types/contact"
 import {
+	type ContactModel,
 	type CreateContactDto,
 	type DeleteManyContactsDto,
 	type UpdateContactDto,
 	type UploadContactCsvDto
-} from "@repo/types/contact/dto"
+} from "@repo/types/contact"
 
 import { Contact } from "~/contact/contact.entity"
 import { ContactRepository } from "~/contact/contact.repository"

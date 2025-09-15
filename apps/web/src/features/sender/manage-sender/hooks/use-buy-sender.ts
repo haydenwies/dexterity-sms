@@ -1,3 +1,4 @@
+import { useParams } from "next/navigation"
 import { useState } from "react"
 
 import { addSender } from "~/actions/sender/add-sender"
@@ -6,26 +7,28 @@ const useBuySender = () => {
 	const [loading, setLoading] = useState<boolean>(false)
 	const [error, setError] = useState<string | null>(null)
 
-	const [selectedAvailableSenderId, setSelectedAvailableSenderId] = useState<string | null>(null)
+	const [selectedPhone, setSelectedPhone] = useState<string | null>(null)
 
-	const handleBuySender = async (availableSenderId: string) => {
-		setSelectedAvailableSenderId(availableSenderId)
+	const params = useParams()
+
+	const handleBuySender = async (phone: string) => {
+		setSelectedPhone(phone)
 		setLoading(true)
 
 		try {
-			const res = await addSender({ availableSenderId })
-			if (!res.success) throw new Error(res.message)
+			const organizationId = params.organizationId
+			if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
 
-			return res.data
+			await addSender(organizationId, { phone }) // TODO: fix this
 		} catch {
 			setError("An unexpected error occurred")
 		} finally {
-			setSelectedAvailableSenderId(null)
+			setSelectedPhone(null)
 			setLoading(false)
 		}
 	}
 
-	return { loading, error, selectedAvailableSenderId, handleBuySender }
+	return { loading, error, selectedPhone, handleBuySender }
 }
 
 export { useBuySender }

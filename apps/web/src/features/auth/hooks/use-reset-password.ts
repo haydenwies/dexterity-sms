@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { type ResetPasswordDto, resetPasswordDtoSchema } from "@repo/types/auth/dto"
+import { type ResetPasswordDto, resetPasswordDtoSchema } from "@repo/types/auth"
 
 import { resetPassword } from "~/actions/auth/reset-password"
 

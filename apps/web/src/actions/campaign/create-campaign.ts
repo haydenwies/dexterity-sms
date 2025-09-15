@@ -1,12 +1,12 @@
 "use server"
 
 import { routes } from "@repo/routes"
-import { type CreateCampaignDto } from "@repo/types/campaign/dto"
+import { CampaignModel, type CreateCampaignDto } from "@repo/types/campaign"
 
 import { sessionMiddleware } from "~/actions/utils"
 import { getBackendUrl } from "~/lib/backend"
 
-const createCampaign = async (organizationId: string, dto: CreateCampaignDto): Promise<void> => {
+const createCampaign = async (organizationId: string, dto: CreateCampaignDto): Promise<CampaignModel> => {
 	const sessionToken = await sessionMiddleware()
 
 	const backendUrl = getBackendUrl()
@@ -22,6 +22,10 @@ const createCampaign = async (organizationId: string, dto: CreateCampaignDto): P
 		const errData = await res.json()
 		throw new Error(errData.message)
 	}
+
+	const data = await res.json()
+
+	return data
 }
 
 export { createCampaign }

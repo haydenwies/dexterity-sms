@@ -1,5 +1,7 @@
 "use client"
 
+import { useState } from "react"
+
 import { Button } from "@repo/ui/components/button"
 import {
 	Dialog,
@@ -12,7 +14,6 @@ import {
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@repo/ui/components/form"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { PhoneInput } from "@repo/ui/components/phone-input"
-import { useState } from "react"
 
 import { useSendTestCampaign } from "~/features/campaign/hooks/use-send-test-campaign"
 import { placeholders } from "~/lib/placeholders"

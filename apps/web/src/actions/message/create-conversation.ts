@@ -1,6 +1,6 @@
 "use server"
 
-import { type CreateConversationDto } from "@repo/types/message/dto/create-conversation"
+import { type CreateConversationDto } from "@repo/types/conversation"
 
 import { type ActionResponse, actionSuccess } from "~/lib/actions"
 

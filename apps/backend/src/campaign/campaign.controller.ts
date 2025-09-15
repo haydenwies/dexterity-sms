@@ -1,18 +1,18 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from "@nestjs/common"
 
-import { CampaignModel } from "@repo/types/campaign"
 import {
 	createCampaignDtoSchema,
 	deleteManyCampaignsDtoSchema,
 	sendCampaignDtoSchema,
 	sendTestCampaignDtoSchema,
 	updateCampaignDtoSchema,
+	type CampaignModel,
 	type CreateCampaignDto,
 	type DeleteManyCampaignsDto,
 	type SendCampaignDto,
 	type SendTestCampaignDto,
 	type UpdateCampaignDto
-} from "@repo/types/campaign/dto"
+} from "@repo/types/campaign"
 
 import { AuthGuard } from "~/auth/auth.guard"
 import { CampaignService } from "~/campaign/campaign.service"
@@ -32,22 +32,22 @@ class CampaignController {
 		return campaigns.map((campaign) => this.campaignService.toDto(campaign))
 	}
 
-	@Get(":campaignId")
-	async get(
-		@Param("organizationId") organizationId: string,
-		@Param("campaignId") campaignId: string
-	): Promise<CampaignModel> {
-		const campaign = await this.campaignService.get(organizationId, campaignId)
-
-		return this.campaignService.toDto(campaign)
-	}
-
 	@Post()
 	async create(
 		@Param("organizationId") organizationId: string,
 		@Body(new ZodValidationPipe(createCampaignDtoSchema)) body: CreateCampaignDto
 	): Promise<CampaignModel> {
 		const campaign = await this.campaignService.create(organizationId, body)
+
+		return this.campaignService.toDto(campaign)
+	}
+
+	@Get(":campaignId")
+	async get(
+		@Param("organizationId") organizationId: string,
+		@Param("campaignId") campaignId: string
+	): Promise<CampaignModel> {
+		const campaign = await this.campaignService.get(organizationId, campaignId)
 
 		return this.campaignService.toDto(campaign)
 	}

@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from "@nestjs/common"
-import { UserDto } from "@repo/types/auth"
 
-import { User, UserCreateParams } from "~/auth/user/user.entity"
+import { type UserDto } from "@repo/types/auth"
+
+import { User, type UserCreateParams } from "~/auth/user/user.entity"
 import { UserRepository } from "~/auth/user/user.repository"
 
 @Injectable()

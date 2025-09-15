@@ -1,3 +1,4 @@
+import { useParams } from "next/navigation"
 import { useState } from "react"
 
 import { removeSender } from "~/actions/sender/remove-sender"
@@ -6,12 +7,16 @@ const useReleaseSender = () => {
 	const [loading, setLoading] = useState<boolean>(false)
 	const [error, setError] = useState<string | null>(null)
 
-	const handleReleaseSender = async (senderId: string) => {
+	const params = useParams()
+
+	const handleReleaseSender = async () => {
 		setLoading(true)
 
 		try {
-			const res = await removeSender({ senderId })
-			if (!res.success) throw new Error(res.message)
+			const organizationId = params.organizationId
+			if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
+
+			await removeSender(organizationId)
 		} catch {
 			setError("An unexpected error occurred")
 		} finally {

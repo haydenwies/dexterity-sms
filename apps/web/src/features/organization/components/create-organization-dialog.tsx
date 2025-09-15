@@ -12,7 +12,8 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
-import { useCreateOrganization } from "../hooks/use-create-organization"
+
+import { useCreateOrganization } from "~/features/organization/hooks/use-create-organization"
 
 type CreateOrganizationDialogProps = {
 	open: boolean

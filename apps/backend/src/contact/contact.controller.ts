@@ -12,17 +12,17 @@ import {
 } from "@nestjs/common"
 import { FileInterceptor } from "@nestjs/platform-express"
 
-import { type ContactModel } from "@repo/types/contact"
 import {
 	createContactDtoSchema,
 	deleteManyContactsDtoSchema,
 	updateContactDtoSchema,
 	uploadContactCsvDtoSchema,
+	type ContactModel,
 	type CreateContactDto,
 	type DeleteManyContactsDto,
 	type UpdateContactDto,
 	type UploadContactCsvDto
-} from "@repo/types/contact/dto"
+} from "@repo/types/contact"
 
 import { AuthGuard } from "~/auth/auth.guard"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"

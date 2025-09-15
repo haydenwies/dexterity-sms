@@ -1,6 +1,6 @@
 import twilio, { type Twilio } from "twilio"
 
-import { type Message, type SmsPayload, type SmsProvider } from "../types"
+import { PurchasedNumber, type Message, type SmsPayload, type SmsProvider } from "../types"
 
 type TwilioConfig = {
 	accountSid: string
@@ -35,8 +35,13 @@ class TwilioProvider implements SmsProvider {
 		return availableNumbers.map((number) => number.phoneNumber)
 	}
 
-	async buyNumber(phone: string): Promise<void> {
-		await this.client.incomingPhoneNumbers.create({ phoneNumber: phone })
+	async buyNumber(phone: string): Promise<PurchasedNumber> {
+		const res = await this.client.incomingPhoneNumbers.create({ phoneNumber: phone })
+
+		return {
+			id: res.sid,
+			phone: res.phoneNumber
+		}
 	}
 
 	async releaseNumber(phone: string): Promise<void> {

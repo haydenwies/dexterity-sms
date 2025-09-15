@@ -1,22 +1,28 @@
 "use server"
 
-import { AvailableSenderModel } from "@repo/types/sender"
+import { routes } from "@repo/routes"
 
-const searchAvailableSenders = async (): Promise<AvailableSenderModel[]> => {
-	await new Promise((resolve) => setTimeout(resolve, 1000))
+import { sessionMiddleware } from "~/actions/utils"
+import { getBackendUrl } from "~/lib/backend"
 
-	return [
-		{
-			id: "1",
-			value: "+1234567890",
-			countryCode: "CA"
-		},
-		{
-			id: "2",
-			value: "+1234567890",
-			countryCode: "CA"
+const searchAvailableSenders = async (organizationId: string): Promise<string[]> => {
+	const sessionToken = await sessionMiddleware()
+
+	const backendUrl = getBackendUrl()
+	const res = await fetch(`${backendUrl}${routes.backend.GET_AVAILABLE_SENDERS(organizationId)}`, {
+		method: "GET",
+		headers: {
+			"Authorization": `Bearer ${sessionToken}`
 		}
-	]
+	})
+	if (!res.ok) {
+		const errData = await res.json()
+		throw new Error(errData.message)
+	}
+
+	const data = await res.json()
+
+	return data
 }
 
 export { searchAvailableSenders }

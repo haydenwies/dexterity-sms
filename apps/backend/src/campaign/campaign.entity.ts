@@ -1,4 +1,4 @@
-import { CampaignStatus } from "@repo/types/campaign/enums"
+import { CampaignStatus } from "@repo/types/campaign"
 import { isEnumValue } from "@repo/utils"
 
 type CampaignConstructorParams = {

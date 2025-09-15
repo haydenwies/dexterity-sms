@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common"
-import { SendMessageDto } from "@repo/types/conversation"
-import { CreateConversationDto } from "@repo/types/message"
+
+import { type CreateConversationDto, type SendMessageDto } from "@repo/types/conversation"
 
 import { Conversation } from "~/conversation/conversation.entity"
 import { ConversationRepository } from "~/conversation/conversation.repository"

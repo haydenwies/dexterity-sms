@@ -1,7 +1,13 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common"
 
-import { type ConversationModel, type SendMessageDto, sendMessageDtoSchema } from "@repo/types/conversation"
-import { type CreateConversationDto, createConversationDtoSchema, type MessageModel } from "@repo/types/message"
+import {
+	type ConversationModel,
+	type CreateConversationDto,
+	createConversationDtoSchema,
+	type SendMessageDto,
+	sendMessageDtoSchema
+} from "@repo/types/conversation"
+import { type MessageModel } from "@repo/types/message"
 
 import { AuthGuard } from "~/auth/auth.guard"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"

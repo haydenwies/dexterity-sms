@@ -1,8 +1,9 @@
 import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 
+import { routes } from "@repo/routes"
+
 import { createCampaign } from "~/actions/campaign/create-campaign"
-import { routes } from "~/lib/routes"
 
 const useCreateCampaign = () => {
 	const [loading, setLoading] = useState<boolean>(false)
@@ -18,9 +19,11 @@ const useCreateCampaign = () => {
 			const organizationId = params.organizationId
 			if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
 
-			await createCampaign(organizationId, {})
+			const campaign = await createCampaign(organizationId, {})
 
-			router.push(routes.EDIT_CAMPAIGN(organizationId, "123"))
+			// console.log(routes.web.UPDATE_CAMPAIGN(organizationId, campaign.id))
+
+			router.push(routes.web.UPDATE_CAMPAIGN(organizationId, campaign.id))
 		} catch {
 			setError("An unknown error occurred")
 		} finally {

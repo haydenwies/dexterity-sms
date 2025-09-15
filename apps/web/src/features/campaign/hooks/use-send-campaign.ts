@@ -3,7 +3,7 @@ import { useParams } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { sendCampaignDtoSchema, type SendCampaignDto } from "@repo/types/campaign/dto"
+import { sendCampaignDtoSchema, type SendCampaignDto } from "@repo/types/campaign"
 
 import { sendCampaign } from "~/actions/campaign/send-campaign"
 

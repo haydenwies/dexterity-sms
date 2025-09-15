@@ -27,7 +27,7 @@ const OrganizationSettingsPage = async ({ params }: Props) => {
 	const { organizationId } = await params
 
 	const organizationPromise = getOrganization(organizationId)
-	const senderPromise = getSender()
+	const senderPromise = getSender(organizationId)
 	const allSubscriptionsPromise = getAllSubscriptions()
 	const billingAccountPromise = getBillingAccount()
 

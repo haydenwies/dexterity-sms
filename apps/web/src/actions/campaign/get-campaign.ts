@@ -1,7 +1,7 @@
 "use server"
 
 import { routes } from "@repo/routes"
-import { CampaignModel } from "@repo/types/campaign"
+import { type CampaignModel } from "@repo/types/campaign"
 
 import { sessionMiddleware } from "~/actions/utils"
 import { getBackendUrl } from "~/lib/backend"

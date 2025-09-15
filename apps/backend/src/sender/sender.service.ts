@@ -1,7 +1,6 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common"
 
-import { type SenderModel } from "@repo/types/sender"
-import { type AddSenderDto } from "@repo/types/sender/dto/add-sender"
+import { type AddSenderDto, type SenderModel } from "@repo/types/sender"
 
 import { Phone } from "~/common/phone.vo"
 import { Sender } from "~/sender/sender.entity"
@@ -28,11 +27,11 @@ class SenderService {
 		return sender
 	}
 
-	async getAvailable(): Promise<Sender[]> {
+	async getAvailable(): Promise<Phone[]> {
 		const availableNumbers = await this.smsProvider.getAvailableNumbers()
-		const phones = availableNumbers.map((number) => Phone.create(number))
+		const phones = availableNumbers.slice(0, 5).map((number) => Phone.create(number)) // TODO: Find better way to limit
 
-		return phones.map((phone) => Sender.create({ phone }))
+		return phones
 	}
 
 	async add(organizationId: string, body: AddSenderDto): Promise<void> {
@@ -41,10 +40,11 @@ class SenderService {
 
 		const phone = Phone.create(body.phone)
 
-		await this.smsProvider.buyNumber(phone.value)
+		const res = await this.smsProvider.buyNumber(phone.value)
 
 		const sender = Sender.create({
 			organizationId,
+			externalId: res.id,
 			phone
 		})
 		await this.senderRepository.create(sender)
@@ -54,7 +54,7 @@ class SenderService {
 		const sender = await this.senderRepository.find(organizationId)
 		if (!sender) throw new NotFoundException("Sender not found")
 
-		await this.smsProvider.releaseNumber(sender.phone.value)
+		await this.smsProvider.releaseNumber(sender.externalId)
 		await this.senderRepository.delete(sender)
 	}
 

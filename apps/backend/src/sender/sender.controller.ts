@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from "@nestjs/common"
 
-import { type SenderModel } from "@repo/types/sender"
-import { addSenderDtoSchema, type AddSenderDto } from "@repo/types/sender/dto/add-sender"
+import { addSenderDtoSchema, type AddSenderDto, type SenderModel } from "@repo/types/sender"
 
 import { AuthGuard } from "~/auth/auth.guard"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
@@ -20,13 +19,6 @@ class SenderController {
 		return this.senderService.toDto(sender)
 	}
 
-	@Get("available")
-	async getAvailable(): Promise<SenderModel[]> {
-		const senders = await this.senderService.getAvailable()
-
-		return senders.map(this.senderService.toDto)
-	}
-
 	@Post()
 	async add(
 		@Param("organizationId") organizationId: string,
@@ -38,6 +30,13 @@ class SenderController {
 	@Delete()
 	async remove(@Param("organizationId") organizationId: string): Promise<void> {
 		await this.senderService.remove(organizationId)
+	}
+
+	@Get("available")
+	async getAvailable(): Promise<string[]> {
+		const senders = await this.senderService.getAvailable()
+
+		return senders.map((sender) => sender.value)
 	}
 }
 

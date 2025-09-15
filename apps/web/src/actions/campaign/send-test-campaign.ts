@@ -1,7 +1,7 @@
 "use server"
 
 import { routes } from "@repo/routes"
-import { type SendTestCampaignDto } from "@repo/types/campaign/dto/send-test-campaign"
+import { type SendTestCampaignDto } from "@repo/types/campaign"
 
 import { sessionMiddleware } from "~/actions/utils"
 import { getBackendUrl } from "~/lib/backend"

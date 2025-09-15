@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 
-import { AvailableSenderModel } from "@repo/types/sender"
 import { Button } from "@repo/ui/components/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@repo/ui/components/dialog"
 import { Icon, IconName } from "@repo/ui/components/icon"
@@ -17,9 +16,9 @@ type BuySenderDialogProps = {
 
 const BuySenderDialog = ({ open, setOpen }: BuySenderDialogProps) => {
 	const { loading: searchLoading, handleSearchAvailableSenders } = useSearchAvailableSenders()
-	const { loading: buyLoading, selectedAvailableSenderId, handleBuySender } = useBuySender()
+	const { loading: buyLoading, selectedPhone, handleBuySender } = useBuySender()
 
-	const [availableSenders, setAvailableSenders] = useState<AvailableSenderModel[]>([])
+	const [availableSenders, setAvailableSenders] = useState<string[]>([])
 
 	useEffect(() => {
 		const run = async () => {
@@ -57,15 +56,15 @@ const BuySenderDialog = ({ open, setOpen }: BuySenderDialogProps) => {
 						{availableSenders.map((sender) => (
 							<div
 								className="flex items-center justify-between gap-2"
-								key={sender.id}
+								key={sender}
 							>
-								<p>{sender.value}</p>
+								<p>{sender}</p>
 								<Button
 									disabled={buyLoading}
-									onClick={() => handleBuySender(sender.id)}
+									onClick={() => handleBuySender(sender)}
 									variant="outline"
 								>
-									{buyLoading && selectedAvailableSenderId === sender.id && (
+									{buyLoading && selectedPhone === sender && (
 										<Icon
 											className="animate-spin"
 											name={IconName.SPINNER}

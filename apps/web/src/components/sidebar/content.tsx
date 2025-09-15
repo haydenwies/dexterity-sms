@@ -1,7 +1,8 @@
+import Link from "next/link"
+
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@repo/ui/components/collapsible"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import * as SidebarPrimitive from "@repo/ui/components/sidebar"
-import Link from "next/link"
 
 import {
 	getSidebarItems,

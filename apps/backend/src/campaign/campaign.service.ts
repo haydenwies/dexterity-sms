@@ -2,14 +2,14 @@ import { InjectQueue } from "@nestjs/bullmq"
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common"
 import { type Queue } from "bullmq"
 
-import { type CampaignModel } from "@repo/types/campaign"
 import {
+	type CampaignModel,
 	type CreateCampaignDto,
 	type DeleteManyCampaignsDto,
 	type SendCampaignDto,
 	type SendTestCampaignDto,
 	type UpdateCampaignDto
-} from "@repo/types/campaign/dto"
+} from "@repo/types/campaign"
 
 import { Campaign } from "~/campaign/campaign.entity"
 import { CAMPAIGN_QUEUE, CAMPAIGN_QUEUE_JOB } from "~/campaign/campaign.queue"

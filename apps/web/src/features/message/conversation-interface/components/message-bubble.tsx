@@ -1,7 +1,6 @@
 "use client"
 
-import { type MessageModel } from "@repo/types/message"
-import { MessageDirection } from "@repo/types/message/enums"
+import { MessageDirection, type MessageModel } from "@repo/types/message"
 import { cn } from "@repo/ui/lib/utils"
 
 type MessageBubbleProps = {

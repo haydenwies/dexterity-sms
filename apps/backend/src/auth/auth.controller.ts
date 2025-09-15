@@ -9,7 +9,7 @@ import {
 	signInDtoSchema,
 	type SignUpDto,
 	signUpDtoSchema
-} from "@repo/types/auth/dto"
+} from "@repo/types/auth"
 
 import { Session } from "~/auth/auth.decorator"
 import { AuthGuard } from "~/auth/auth.guard"

@@ -2,8 +2,13 @@ import { BadRequestException, ConflictException, Injectable, UnauthorizedExcepti
 import { ConfigService } from "@nestjs/config"
 
 import { routes } from "@repo/routes"
-import { type ForgotPasswordDto, type ResetPasswordDto, type SignInDto, type SignUpDto } from "@repo/types/auth/dto"
-import { AccountProvider } from "@repo/types/auth/enum"
+import {
+	AccountProvider,
+	type ForgotPasswordDto,
+	type ResetPasswordDto,
+	type SignInDto,
+	type SignUpDto
+} from "@repo/types/auth"
 
 import { SessionService } from "~/auth/session/session.service"
 import { UserService } from "~/auth/user/user.service"

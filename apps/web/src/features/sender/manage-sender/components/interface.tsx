@@ -7,7 +7,7 @@ import { Button } from "@repo/ui/components/button"
 import { Icon, IconName } from "@repo/ui/components/icon"
 
 import { BuySenderDialog } from "~/features/sender/manage-sender/components/buy-dialog"
-import { ReleaseSenderDialog } from "./release-dialog"
+import { ReleaseSenderDialog } from "~/features/sender/manage-sender/components/release-dialog"
 
 type Props = {
 	senderPromise: Promise<SenderModel | undefined>

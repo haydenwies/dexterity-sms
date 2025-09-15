@@ -4,8 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { createContext, useEffect, useState } from "react"
 import { useForm, UseFormReturn } from "react-hook-form"
 
-import { type CampaignModel } from "@repo/types/campaign"
-import { type UpdateCampaignDto, updateCampaignDtoSchema } from "@repo/types/campaign/dto"
+import { type CampaignModel, type UpdateCampaignDto, updateCampaignDtoSchema } from "@repo/types/campaign"
 
 import { updateCampaign } from "~/actions/campaign/update-campaign"
 import { useDebounce } from "~/hooks/use-debounce"

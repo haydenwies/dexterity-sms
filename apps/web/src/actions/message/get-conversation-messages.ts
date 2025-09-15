@@ -1,7 +1,6 @@
 "use server"
 
-import { MessageModel } from "@repo/types/message"
-import { MessageDirection, MessageStatus } from "@repo/types/message/enums"
+import { MessageDirection, type MessageModel, MessageStatus } from "@repo/types/message"
 
 const getConversationMessages = async (conversationId: string): Promise<MessageModel[]> => {
 	// Mock data based on conversation ID
@@ -11,7 +10,6 @@ const getConversationMessages = async (conversationId: string): Promise<MessageM
 				id: "1",
 				organizationId: "1",
 				conversationId: "1",
-				externalId: "sms_123",
 				direction: MessageDirection.OUTBOUND,
 				status: MessageStatus.DELIVERED,
 				body: "Hi John! Just wanted to follow up on your recent order.",
@@ -26,7 +24,6 @@ const getConversationMessages = async (conversationId: string): Promise<MessageM
 				id: "2",
 				organizationId: "1",
 				conversationId: "1",
-				externalId: "sms_124",
 				direction: MessageDirection.INBOUND,
 				status: MessageStatus.RECEIVED,
 				body: "Hi! Yes, I received it yesterday. Everything looks great!",
@@ -40,7 +37,6 @@ const getConversationMessages = async (conversationId: string): Promise<MessageM
 				id: "3",
 				organizationId: "1",
 				conversationId: "1",
-				externalId: "sms_125",
 				direction: MessageDirection.OUTBOUND,
 				status: MessageStatus.DELIVERED,
 				body: "Wonderful! Please let us know if you need anything else.",
@@ -55,7 +51,6 @@ const getConversationMessages = async (conversationId: string): Promise<MessageM
 				id: "4",
 				organizationId: "1",
 				conversationId: "1",
-				externalId: "sms_126",
 				direction: MessageDirection.INBOUND,
 				status: MessageStatus.RECEIVED,
 				body: "Thanks for the update!",
@@ -74,7 +69,6 @@ const getConversationMessages = async (conversationId: string): Promise<MessageM
 				id: "5",
 				organizationId: "1",
 				conversationId: "2",
-				externalId: "sms_127",
 				direction: MessageDirection.OUTBOUND,
 				status: MessageStatus.DELIVERED,
 				body: "Hi Jane, our meeting is still on for 3pm tomorrow, right?",
@@ -89,7 +83,6 @@ const getConversationMessages = async (conversationId: string): Promise<MessageM
 				id: "6",
 				organizationId: "1",
 				conversationId: "2",
-				externalId: "sms_128",
 				direction: MessageDirection.INBOUND,
 				status: MessageStatus.RECEIVED,
 				body: "Perfect, see you then",
@@ -108,7 +101,6 @@ const getConversationMessages = async (conversationId: string): Promise<MessageM
 				id: "7",
 				organizationId: "1",
 				conversationId: "3",
-				externalId: "sms_129",
 				direction: MessageDirection.INBOUND,
 				status: MessageStatus.RECEIVED,
 				body: "Hi, I found this number online. Is this the right number for customer support?",
@@ -122,7 +114,6 @@ const getConversationMessages = async (conversationId: string): Promise<MessageM
 				id: "8",
 				organizationId: "1",
 				conversationId: "3",
-				externalId: "sms_130",
 				direction: MessageDirection.INBOUND,
 				status: MessageStatus.RECEIVED,
 				body: "Is this the right number for customer support?",
@@ -135,7 +126,6 @@ const getConversationMessages = async (conversationId: string): Promise<MessageM
 		]
 	}
 
-	// Default empty array for unknown conversations
 	return []
 }
 

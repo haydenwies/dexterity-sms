@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation"
 
 import { routes } from "@repo/routes"
-import { type SignInDto } from "@repo/types/auth/dto"
+import { type SignInDto } from "@repo/types/auth"
 
 import { type ActionResponse } from "~/lib/actions"
 import { getBackendUrl } from "~/lib/backend"

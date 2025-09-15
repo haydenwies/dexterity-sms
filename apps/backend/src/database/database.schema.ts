@@ -1,4 +1,4 @@
-import { pgTable, primaryKey, text, timestamp, unique, uuid } from "drizzle-orm/pg-core"
+import { pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core"
 
 // #region user
 
@@ -18,7 +18,10 @@ const userTable = pgTable("user", {
 const accountTable = pgTable("account", {
 	id: uuid("id").primaryKey(),
 	userId: uuid("user_id")
-		.references(() => userTable.id, { onUpdate: "cascade", onDelete: "cascade" })
+		.references(() => userTable.id, {
+			onUpdate: "cascade",
+			onDelete: "cascade"
+		})
 		.notNull(),
 	provider: text("provider").notNull(),
 	providerAccountId: text("provider_account_id").notNull(),
@@ -34,7 +37,10 @@ const accountTable = pgTable("account", {
 const sessionTable = pgTable("session", {
 	id: uuid("id").primaryKey(),
 	userId: uuid("user_id")
-		.references(() => userTable.id, { onUpdate: "cascade", onDelete: "cascade" })
+		.references(() => userTable.id, {
+			onUpdate: "cascade",
+			onDelete: "cascade"
+		})
 		.notNull(),
 	expiresAt: timestamp("expires_at", { mode: "date" }).notNull(),
 	createdAt: timestamp("created_at", { mode: "date" }).notNull(),
@@ -73,10 +79,16 @@ const memberTable = pgTable(
 	"member",
 	{
 		userId: uuid("user_id")
-			.references(() => userTable.id, { onUpdate: "cascade", onDelete: "cascade" })
+			.references(() => userTable.id, {
+				onUpdate: "cascade",
+				onDelete: "cascade"
+			})
 			.notNull(),
 		organizationId: uuid("organization_id")
-			.references(() => organizationTable.id, { onUpdate: "cascade", onDelete: "cascade" })
+			.references(() => organizationTable.id, {
+				onUpdate: "cascade",
+				onDelete: "cascade"
+			})
 			.notNull(),
 		createdAt: timestamp("created_at", { mode: "date" }).notNull(),
 		updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
@@ -95,7 +107,10 @@ const memberTable = pgTable(
 const contactTable = pgTable("contact", {
 	id: uuid("id").primaryKey(),
 	organizationId: uuid("organization_id")
-		.references(() => organizationTable.id, { onUpdate: "cascade", onDelete: "cascade" })
+		.references(() => organizationTable.id, {
+			onUpdate: "cascade",
+			onDelete: "cascade"
+		})
 		.notNull(),
 	firstName: text("first_name"),
 	lastName: text("last_name"),
@@ -112,7 +127,10 @@ const contactTable = pgTable("contact", {
 const campaignTable = pgTable("campaign", {
 	id: uuid("id").primaryKey(),
 	organizationId: uuid("organization_id")
-		.references(() => organizationTable.id, { onUpdate: "cascade", onDelete: "cascade" })
+		.references(() => organizationTable.id, {
+			onUpdate: "cascade",
+			onDelete: "cascade"
+		})
 		.notNull(),
 	status: text("status").notNull(),
 	name: text("name").notNull(),
@@ -127,8 +145,12 @@ const campaignTable = pgTable("campaign", {
 
 const senderTable = pgTable("sender", {
 	organizationId: uuid("organization_id")
-		.references(() => organizationTable.id, { onUpdate: "cascade", onDelete: "cascade" })
+		.references(() => organizationTable.id, {
+			onUpdate: "cascade",
+			onDelete: "cascade"
+		})
 		.primaryKey(),
+	externalId: text("external_id").unique().notNull(),
 	phone: text("phone").unique().notNull(),
 	createdAt: timestamp("created_at", { mode: "date" }).notNull()
 })
@@ -170,22 +192,18 @@ const messageTable = pgTable("message", {
 
 // #region conversation
 
-const conversationTable = pgTable(
-	"conversation",
-	{
-		id: uuid("id").primaryKey(),
-		organizationId: uuid("organization_id")
-			.references(() => organizationTable.id, { onUpdate: "cascade", onDelete: "cascade" })
-			.notNull(),
-		recipient: text("recipient").notNull(), // phone number
-		createdAt: timestamp("created_at", { mode: "date" }).notNull(),
-		updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
-	},
-	(table) => ({
-		// Unique constraint: one conversation per organization-recipient pair
-		uniqueOrgRecipient: unique().on(table.organizationId, table.recipient)
-	})
-)
+const conversationTable = pgTable("conversation", {
+	id: uuid("id").primaryKey(),
+	organizationId: uuid("organization_id")
+		.references(() => organizationTable.id, {
+			onUpdate: "cascade",
+			onDelete: "cascade"
+		})
+		.notNull(),
+	recipient: text("recipient").notNull(), // phone number
+	createdAt: timestamp("created_at", { mode: "date" }).notNull(),
+	updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
+})
 
 // #endregion
 

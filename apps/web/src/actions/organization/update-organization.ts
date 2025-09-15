@@ -1,7 +1,7 @@
 "use server"
 
 import { routes } from "@repo/routes"
-import { type UpdateOrganizationDto } from "@repo/types/organization/dto"
+import { type UpdateOrganizationDto } from "@repo/types/organization"
 
 import { sessionMiddleware } from "~/actions/utils"
 import { getBackendUrl } from "~/lib/backend"

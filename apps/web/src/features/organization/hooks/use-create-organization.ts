@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { type CreateOrganizationDto, createOrganizationDtoSchema } from "@repo/types/organization/dto"
+import { type CreateOrganizationDto, createOrganizationDtoSchema } from "@repo/types/organization"
 
 import { createOrganization } from "~/actions/organization/create-organization"
 
