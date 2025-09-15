@@ -1,4 +1,4 @@
 import { TwilioProvider } from "./providers/twilio"
-import { type Message, type Phone, type SmsPayload, type SmsProvider } from "./types"
+import { type Message, type Sender, type SmsPayload, type SmsProvider } from "./types"
 
-export { TwilioProvider, type Message, type Phone, type SmsPayload, type SmsProvider }
+export { TwilioProvider, type Message, type Sender, type SmsPayload, type SmsProvider }

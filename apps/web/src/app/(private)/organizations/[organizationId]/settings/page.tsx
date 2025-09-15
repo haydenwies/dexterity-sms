@@ -17,7 +17,7 @@ import { getOrganization } from "~/actions/organization/get-organization"
 import { getSender } from "~/actions/sender/get-sender"
 import { ManageBillingLinkButton, ManageSubscriptionInterface } from "~/features/billing/manage-billing"
 import { UpdateOrganizationForm } from "~/features/organization/components/update-organization-form"
-import { ManageSenderInterface } from "~/features/sender/manage-sender"
+import { ManageSenderInterface } from "~/features/sender/components/manage-sender"
 
 type Props = {
 	params: Promise<{ organizationId: string }>

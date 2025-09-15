@@ -10,10 +10,10 @@ const routes = {
 		RESET_PASSWORD: "/auth/reset-password",
 
 		// organization
-		GET_ALL_ORGANIZATIONS: "/organization",
-		GET_ORGANIZATION: (id: string) => `/organization/${id}`,
-		CREATE_ORGANIZATION: "/organization",
-		UPDATE_ORGANIZATION: (id: string) => `/organization/${id}`,
+		GET_ALL_ORGANIZATIONS: "/organizations",
+		GET_ORGANIZATION: (id: string) => `/organizations/${id}`,
+		CREATE_ORGANIZATION: "/organizations",
+		UPDATE_ORGANIZATION: (id: string) => `/organizations/${id}`,
 
 		// contact
 		GET_ALL_CONTACTS: (organizationId: string) => `/organizations/${organizationId}/contacts`,

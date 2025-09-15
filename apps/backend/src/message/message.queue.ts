@@ -39,8 +39,8 @@ class MessageQueueConsumer extends WorkerHost {
 		try {
 			// Send via SMS provider
 			const result = await this.smsProvider.send({
-				from: message.from,
-				to: message.to,
+				from: message.from.value,
+				to: message.to.value,
 				body: message.body
 			})
 

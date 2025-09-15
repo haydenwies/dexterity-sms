@@ -33,8 +33,8 @@ class SenderController {
 	}
 
 	@Get("available")
-	async getAvailable(): Promise<string[]> {
-		const senders = await this.senderService.getAvailable()
+	async getAvailablePhones(): Promise<string[]> {
+		const senders = await this.senderService.getAvailablePhones()
 
 		return senders.map((sender) => sender.value)
 	}

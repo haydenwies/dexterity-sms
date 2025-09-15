@@ -6,17 +6,16 @@ import { Button } from "@repo/ui/components/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@repo/ui/components/dialog"
 import { Icon, IconName } from "@repo/ui/components/icon"
 
-import { useBuySender } from "~/features/sender/manage-sender/hooks/use-buy-sender"
-import { useSearchAvailableSenders } from "~/features/sender/manage-sender/hooks/use-search-available-senders"
+import { useAddSender } from "~/features/sender/hooks/use-add-sender"
+import { useGetAvailablePhones } from "~/features/sender/hooks/use-get-available-phones"
 
-type BuySenderDialogProps = {
+type AddSenderDialogProps = {
 	open: boolean
 	setOpen: (open: boolean) => void
 }
-
-const BuySenderDialog = ({ open, setOpen }: BuySenderDialogProps) => {
-	const { loading: searchLoading, handleSearchAvailableSenders } = useSearchAvailableSenders()
-	const { loading: buyLoading, selectedPhone, handleBuySender } = useBuySender()
+const AddSenderDialog = ({ open, setOpen }: AddSenderDialogProps) => {
+	const { loading: searchLoading, handleGetAvailablePhones } = useGetAvailablePhones()
+	const { loading: buyLoading, selectedPhone, handleAddSender } = useAddSender()
 
 	const [availableSenders, setAvailableSenders] = useState<string[]>([])
 
@@ -24,12 +23,12 @@ const BuySenderDialog = ({ open, setOpen }: BuySenderDialogProps) => {
 		const run = async () => {
 			if (!open) return
 
-			const res = await handleSearchAvailableSenders()
+			const res = await handleGetAvailablePhones()
 			if (res) setAvailableSenders(res)
 		}
 
 		run()
-	}, [handleSearchAvailableSenders, open])
+	}, [handleGetAvailablePhones, open])
 
 	return (
 		<Dialog
@@ -61,7 +60,7 @@ const BuySenderDialog = ({ open, setOpen }: BuySenderDialogProps) => {
 								<p>{sender}</p>
 								<Button
 									disabled={buyLoading}
-									onClick={() => handleBuySender(sender)}
+									onClick={() => handleAddSender(sender)}
 									variant="outline"
 								>
 									{buyLoading && selectedPhone === sender && (
@@ -81,4 +80,4 @@ const BuySenderDialog = ({ open, setOpen }: BuySenderDialogProps) => {
 	)
 }
 
-export { BuySenderDialog }
+export { AddSenderDialog }

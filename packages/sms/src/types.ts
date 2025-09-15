@@ -1,21 +1,17 @@
-type Phone = {
-	value: string
-}
-
 type SmsPayload = {
-	from: Phone
-	to: Phone
+	from: string
+	to: string
 	body: string
 }
 
 type Message = {
 	id: string
-	from: Phone
-	to: Phone
+	from: string
+	to: string
 	body: string
 }
 
-type PurchasedNumber = {
+type Sender = {
 	id: string
 	phone: string
 }
@@ -23,8 +19,8 @@ type PurchasedNumber = {
 type SmsProvider = {
 	send: (payload: SmsPayload) => Promise<Message>
 	getAvailableNumbers: () => Promise<string[]>
-	buyNumber: (phone: string) => Promise<PurchasedNumber>
-	releaseNumber: (id: string) => Promise<void>
+	buyNumber: (phone: string) => Promise<Sender>
+	releaseNumber: (senderId: string) => Promise<void>
 }
 
-export type { Message, Phone, PurchasedNumber, SmsPayload, SmsProvider }
+export type { Message, Sender, SmsPayload, SmsProvider }

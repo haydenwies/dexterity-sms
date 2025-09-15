@@ -6,14 +6,13 @@ import { SenderModel } from "@repo/types/sender"
 import { Button } from "@repo/ui/components/button"
 import { Icon, IconName } from "@repo/ui/components/icon"
 
-import { BuySenderDialog } from "~/features/sender/manage-sender/components/buy-dialog"
-import { ReleaseSenderDialog } from "~/features/sender/manage-sender/components/release-dialog"
+import { AddSenderDialog } from "~/features/sender/components/manage-sender/add-dialog"
+import { RemoveSenderDialog } from "~/features/sender/components/manage-sender/remove-dialog"
 
-type Props = {
+type ManageSenderInterfaceProps = {
 	senderPromise: Promise<SenderModel | undefined>
 }
-
-const ManageSenderInterface = ({ senderPromise }: Props) => {
+const ManageSenderInterface = ({ senderPromise }: ManageSenderInterfaceProps) => {
 	const sender = use(senderPromise)
 
 	const [buySenderDialogOpen, setBuySenderDialogOpen] = useState<boolean>(false)
@@ -29,7 +28,7 @@ const ManageSenderInterface = ({ senderPromise }: Props) => {
 					<Icon name={IconName.PLUS} />
 					Add a phone number
 				</Button>
-				<BuySenderDialog
+				<AddSenderDialog
 					open={buySenderDialogOpen}
 					setOpen={setBuySenderDialogOpen}
 				/>
@@ -51,7 +50,7 @@ const ManageSenderInterface = ({ senderPromise }: Props) => {
 			>
 				<Icon name={IconName.TRASH} />
 			</Button>
-			<ReleaseSenderDialog
+			<RemoveSenderDialog
 				sender={sender}
 				open={releaseSenderDialogOpen}
 				setOpen={setReleaseSenderDialogOpen}

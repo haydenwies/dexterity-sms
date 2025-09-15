@@ -5,7 +5,7 @@ import { routes } from "@repo/routes"
 import { sessionMiddleware } from "~/actions/utils"
 import { getBackendUrl } from "~/lib/backend"
 
-const searchAvailableSenders = async (organizationId: string): Promise<string[]> => {
+const getAvailablePhones = async (organizationId: string): Promise<string[]> => {
 	const sessionToken = await sessionMiddleware()
 
 	const backendUrl = getBackendUrl()
@@ -25,4 +25,4 @@ const searchAvailableSenders = async (organizationId: string): Promise<string[]>
 	return data
 }
 
-export { searchAvailableSenders }
+export { getAvailablePhones }

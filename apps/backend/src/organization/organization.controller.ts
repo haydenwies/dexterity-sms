@@ -15,7 +15,7 @@ import { ZodValidationPipe } from "~/common/zod-validation.pipe"
 import { OrganizationService } from "~/organization/organization.service"
 
 @UseGuards(AuthGuard)
-@Controller("organization")
+@Controller("organizations")
 class OrganizationController {
 	constructor(private readonly organizationService: OrganizationService) {}
 

@@ -3,13 +3,13 @@ import { useState } from "react"
 
 import { removeSender } from "~/actions/sender/remove-sender"
 
-const useReleaseSender = () => {
+const useRemoveSender = () => {
 	const [loading, setLoading] = useState<boolean>(false)
 	const [error, setError] = useState<string | null>(null)
 
 	const params = useParams()
 
-	const handleReleaseSender = async () => {
+	const handleRemoveSender = async () => {
 		setLoading(true)
 
 		try {
@@ -24,7 +24,7 @@ const useReleaseSender = () => {
 		}
 	}
 
-	return { loading, error, handleReleaseSender }
+	return { loading, error, handleRemoveSender }
 }
 
-export { useReleaseSender }
+export { useRemoveSender }

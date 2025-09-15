@@ -27,7 +27,7 @@ class SenderService {
 		return sender
 	}
 
-	async getAvailable(): Promise<Phone[]> {
+	async getAvailablePhones(): Promise<Phone[]> {
 		const availableNumbers = await this.smsProvider.getAvailableNumbers()
 		const phones = availableNumbers.slice(0, 5).map((number) => Phone.create(number)) // TODO: Find better way to limit
 

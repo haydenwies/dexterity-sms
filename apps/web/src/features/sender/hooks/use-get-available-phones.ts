@@ -1,34 +1,32 @@
 import { useParams } from "next/navigation"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 
-import { addSender } from "~/actions/sender/add-sender"
+import { getAvailablePhones } from "~/actions/sender/get-available-phones"
 
-const useBuySender = () => {
+const useGetAvailablePhones = () => {
 	const [loading, setLoading] = useState<boolean>(false)
 	const [error, setError] = useState<string | null>(null)
 
-	const [selectedPhone, setSelectedPhone] = useState<string | null>(null)
-
 	const params = useParams()
 
-	const handleBuySender = async (phone: string) => {
-		setSelectedPhone(phone)
+	const handleGetAvailablePhones = useCallback(async () => {
 		setLoading(true)
 
 		try {
 			const organizationId = params.organizationId
 			if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
 
-			await addSender(organizationId, { phone }) // TODO: fix this
+			const res = await getAvailablePhones(organizationId)
+
+			return res
 		} catch {
 			setError("An unexpected error occurred")
 		} finally {
-			setSelectedPhone(null)
 			setLoading(false)
 		}
-	}
+	}, [params.organizationId])
 
-	return { loading, error, selectedPhone, handleBuySender }
+	return { loading, error, handleGetAvailablePhones }
 }
 
-export { useBuySender }
+export { useGetAvailablePhones }

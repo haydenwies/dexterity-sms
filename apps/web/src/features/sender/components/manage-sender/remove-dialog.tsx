@@ -12,16 +12,15 @@ import {
 	AlertDialogTitle
 } from "@repo/ui/components/alert-dialog"
 
-import { useReleaseSender } from "~/features/sender/manage-sender/hooks/use-release-sender"
+import { useRemoveSender } from "~/features/sender/hooks/use-remove-sender"
 
-type ReleaseSenderDialogProps = {
+type RemoveSenderDialogProps = {
 	sender: SenderModel
 	open: boolean
 	setOpen: (open: boolean) => void
 }
-
-const ReleaseSenderDialog = ({ sender, open, setOpen }: ReleaseSenderDialogProps) => {
-	const { loading, handleReleaseSender } = useReleaseSender()
+const RemoveSenderDialog = ({ sender, open, setOpen }: RemoveSenderDialogProps) => {
+	const { loading, handleRemoveSender } = useRemoveSender()
 
 	return (
 		<AlertDialog
@@ -42,7 +41,7 @@ const ReleaseSenderDialog = ({ sender, open, setOpen }: ReleaseSenderDialogProps
 					<AlertDialogAction
 						disabled={loading}
 						onClick={async () => {
-							await handleReleaseSender()
+							await handleRemoveSender()
 							setOpen(false)
 						}}
 						variant="destructive"
@@ -55,4 +54,4 @@ const ReleaseSenderDialog = ({ sender, open, setOpen }: ReleaseSenderDialogProps
 	)
 }
 
-export { ReleaseSenderDialog }
+export { RemoveSenderDialog }

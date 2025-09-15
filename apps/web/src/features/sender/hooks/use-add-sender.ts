@@ -1,32 +1,34 @@
 import { useParams } from "next/navigation"
-import { useCallback, useState } from "react"
+import { useState } from "react"
 
-import { searchAvailableSenders } from "~/actions/sender/search-available-senders"
+import { addSender } from "~/actions/sender/add-sender"
 
-const useSearchAvailableSenders = () => {
+const useAddSender = () => {
 	const [loading, setLoading] = useState<boolean>(false)
 	const [error, setError] = useState<string | null>(null)
 
+	const [selectedPhone, setSelectedPhone] = useState<string | null>(null)
+
 	const params = useParams()
 
-	const handleSearchAvailableSenders = useCallback(async () => {
+	const handleAddSender = async (phone: string) => {
+		setSelectedPhone(phone)
 		setLoading(true)
 
 		try {
 			const organizationId = params.organizationId
 			if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
 
-			const res = await searchAvailableSenders(organizationId)
-
-			return res
+			await addSender(organizationId, { phone }) // TODO: fix this
 		} catch {
 			setError("An unexpected error occurred")
 		} finally {
+			setSelectedPhone(null)
 			setLoading(false)
 		}
-	}, [params.organizationId])
+	}
 
-	return { loading, error, handleSearchAvailableSenders }
+	return { loading, error, selectedPhone, handleAddSender }
 }
 
-export { useSearchAvailableSenders }
+export { useAddSender }
