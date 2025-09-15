@@ -19,7 +19,7 @@ const useAddSender = () => {
 			const organizationId = params.organizationId
 			if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
 
-			await addSender(organizationId, { phone }) // TODO: fix this
+			await addSender(organizationId, { phone })
 		} catch {
 			setError("An unexpected error occurred")
 		} finally {
