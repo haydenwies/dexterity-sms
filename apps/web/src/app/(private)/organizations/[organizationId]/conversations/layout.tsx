@@ -2,16 +2,15 @@ import { Icon, IconName } from "@repo/ui/components/icon"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
 
 import { getAllContacts } from "~/actions/contact/get-all-contacts"
-import { getAllConversations } from "~/actions/message/get-all-conversations"
-import { AllConversationsList } from "~/features/message/all-conversations"
-import { NewMessageButton } from "~/features/message/new-message"
+import { getAllConversations } from "~/actions/conversation/get-all-conversations"
+import { AllConversationsList } from "~/features/conversation/components/all-conversations-list"
+import { NewConversationButton } from "~/features/conversation/components/new-conversation"
 
-type Props = Readonly<{
+type LayoutProps = Readonly<{
 	children: React.ReactNode
 	params: Promise<{ organizationId: string }>
 }>
-
-const AllMessagesLayout = async ({ children, params }: Props) => {
+const AllMessagesLayout = async ({ children, params }: LayoutProps) => {
 	const { organizationId } = await params
 
 	const conversationsPromise = getAllConversations()
@@ -26,7 +25,7 @@ const AllMessagesLayout = async ({ children, params }: Props) => {
 						<p className="font-bold">Messages</p>
 					</PageHeaderGroup>
 					<PageHeaderGroup>
-						<NewMessageButton />
+						<NewConversationButton />
 					</PageHeaderGroup>
 				</PageHeaderRow>
 			</PageHeader>

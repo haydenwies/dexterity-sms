@@ -1,11 +1,9 @@
 "use server"
 
-import { actionSuccess, type ActionResponse } from "~/lib/actions"
-
-const getBillingAccountPortalSession = async (): Promise<ActionResponse<string>> => {
+const getBillingAccountPortalSession = async (): Promise<string> => {
 	await new Promise((resolve) => setTimeout(resolve, 1000))
 
-	return actionSuccess("https://google.com")
+	return "https://google.com"
 }
 
 export { getBillingAccountPortalSession }

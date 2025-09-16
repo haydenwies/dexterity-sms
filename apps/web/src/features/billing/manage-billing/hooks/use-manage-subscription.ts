@@ -11,8 +11,7 @@ const useManageSubscription = () => {
 		setError(null)
 
 		try {
-			const res = await changeSubscription({ subscriptionId })
-			if (!res.success) throw new Error(res.message)
+			await changeSubscription({ subscriptionId })
 		} catch {
 			setError("An unexpected error occurred")
 		} finally {

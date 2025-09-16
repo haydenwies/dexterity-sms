@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 
-import { routes } from "~/lib/routes"
+import { routes } from "@repo/routes"
 
 type OrganizationPageProps = {
 	params: Promise<{ organizationId: string }>
@@ -9,7 +9,7 @@ type OrganizationPageProps = {
 const OrganizationPage = async ({ params }: OrganizationPageProps) => {
 	const { organizationId } = await params
 
-	return redirect(routes.HOME(organizationId))
+	return redirect(routes.web.HOME(organizationId))
 }
 
 export default OrganizationPage

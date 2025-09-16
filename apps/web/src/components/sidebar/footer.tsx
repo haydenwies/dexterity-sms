@@ -1,5 +1,8 @@
 "use client"
 
+import Link from "next/link"
+
+import { routes } from "@repo/routes"
 import { Avatar, AvatarFallback } from "@repo/ui/components/avatar"
 import {
 	DropdownMenu,
@@ -9,9 +12,8 @@ import {
 } from "@repo/ui/components/dropdown-menu"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import * as SidebarPrimitive from "@repo/ui/components/sidebar"
-import Link from "next/link"
+
 import { signOut } from "~/actions/auth/sign-out"
-import { routes } from "~/lib/routes"
 
 type SidebarFooterProps = {
 	organizationId: string
@@ -27,7 +29,7 @@ const SidebarFooter = ({ organizationId }: SidebarFooterProps) => {
 						asChild
 						tooltip="Settings"
 					>
-						<Link href={routes.SETTINGS(organizationId)}>
+						<Link href={routes.web.SETTINGS(organizationId)}>
 							<Icon name={IconName.SETTINGS} />
 							Settings
 						</Link>

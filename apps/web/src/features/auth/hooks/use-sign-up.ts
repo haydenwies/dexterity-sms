@@ -23,11 +23,7 @@ const useSignUp = () => {
 		setLoading(true)
 
 		try {
-			const res = await signUp(data)
-			if (!res.success) {
-				setError(res.message)
-				return
-			}
+			await signUp(data)
 		} catch {
 			setError("An unknown error occurred")
 		} finally {

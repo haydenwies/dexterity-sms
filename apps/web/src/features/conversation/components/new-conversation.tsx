@@ -14,12 +14,13 @@ import {
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@repo/ui/components/dialog"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover"
+import { useState } from "react"
 
-type NewMessageDialogProps = {
+type NewConversationDialogProps = {
 	open: boolean
 	setOpen: (open: boolean) => void
 }
-const NewMessageDialog = ({ open, setOpen }: NewMessageDialogProps) => {
+const NewConversationDialog = ({ open, setOpen }: NewConversationDialogProps) => {
 	return (
 		<Dialog
 			onOpenChange={setOpen}
@@ -71,4 +72,21 @@ const NewMessageDialog = ({ open, setOpen }: NewMessageDialogProps) => {
 	)
 }
 
-export { NewMessageDialog }
+const NewConversationButton = () => {
+	const [open, setOpen] = useState(false)
+
+	return (
+		<>
+			<Button onClick={() => setOpen(true)}>
+				<Icon name={IconName.PLUS} />
+				New Conversation
+			</Button>
+			<NewConversationDialog
+				open={open}
+				setOpen={setOpen}
+			/>
+		</>
+	)
+}
+
+export { NewConversationButton }

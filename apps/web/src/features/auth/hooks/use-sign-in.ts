@@ -22,11 +22,7 @@ const useSignIn = () => {
 		setLoading(true)
 
 		try {
-			const res = await signIn(data)
-			if (!res.success) {
-				setError(res.message)
-				return
-			}
+			await signIn(data)
 		} catch {
 			setError("An unknown error occurred")
 		} finally {

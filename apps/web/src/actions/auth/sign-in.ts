@@ -5,11 +5,10 @@ import { redirect } from "next/navigation"
 import { routes } from "@repo/routes"
 import { type SignInDto } from "@repo/types/auth"
 
-import { type ActionResponse } from "~/lib/actions"
 import { getBackendUrl } from "~/lib/backend"
 import { Cookie, setCookie } from "~/lib/cookies"
 
-const signIn = async (dto: SignInDto): Promise<ActionResponse<undefined>> => {
+const signIn = async (dto: SignInDto): Promise<undefined> => {
 	const backendUrl = getBackendUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.SIGN_IN}`, {
 		method: "POST",

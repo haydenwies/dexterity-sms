@@ -1,14 +1,14 @@
+import Link from "next/link"
+
+import { routes } from "@repo/routes"
 import { Button } from "@repo/ui/components/button"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Label } from "@repo/ui/components/label"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
-import Link from "next/link"
-import { routes } from "~/lib/routes"
 
-type Props = {
+type Props = Readonly<{
 	params: Promise<{ organizationId: string }>
-}
-
+}>
 const DashboardPage = async ({ params }: Props) => {
 	const { organizationId } = await params
 
@@ -33,7 +33,7 @@ const DashboardPage = async ({ params }: Props) => {
 						size="lg"
 						variant="outline"
 					>
-						<Link href={routes.ALL_CAMPAIGNS(organizationId)}>
+						<Link href={routes.web.ALL_CAMPAIGNS(organizationId)}>
 							<Icon name={IconName.MEGAPHONE} />
 							Create Campaign
 						</Link>
@@ -43,7 +43,7 @@ const DashboardPage = async ({ params }: Props) => {
 						size="lg"
 						variant="outline"
 					>
-						<Link href={routes.ALL_MESSAGES(organizationId)}>
+						<Link href={routes.web.ALL_CONVERSATIONS(organizationId)}>
 							<Icon name={IconName.MESSAGE} />
 							View Messages
 						</Link>
@@ -53,7 +53,7 @@ const DashboardPage = async ({ params }: Props) => {
 						size="lg"
 						variant="outline"
 					>
-						<Link href={routes.ALL_CONTACTS(organizationId)}>
+						<Link href={routes.web.ALL_CONTACTS(organizationId)}>
 							<Icon name={IconName.USERS} />
 							Manage Contacts
 						</Link>

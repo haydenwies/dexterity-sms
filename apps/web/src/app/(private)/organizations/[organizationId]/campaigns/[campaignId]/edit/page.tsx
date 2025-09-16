@@ -1,5 +1,6 @@
 import Link from "next/link"
 
+import { routes } from "@repo/routes"
 import { Button } from "@repo/ui/components/button"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
@@ -12,7 +13,6 @@ import {
 	UpdateCampaignProvider,
 	UpdateCampaignSaveState
 } from "~/features/campaign/components/update-campaign"
-import { routes } from "~/lib/routes"
 
 type Props = Readonly<{
 	params: Promise<{ organizationId: string; campaignId: string }>
@@ -35,7 +35,7 @@ const EditCampaignPage = async ({ params }: Props) => {
 								size="icon"
 								variant="link"
 							>
-								<Link href={routes.ALL_CAMPAIGNS(organizationId)}>
+								<Link href={routes.web.ALL_CAMPAIGNS(organizationId)}>
 									<Icon name={IconName.ARROW_LEFT} />
 								</Link>
 							</Button>

@@ -23,11 +23,7 @@ const useResetPassword = (token: string) => {
 		setLoading(true)
 
 		try {
-			const res = await resetPassword(data)
-			if (!res.success) {
-				setError(res.message)
-				return
-			}
+			await resetPassword(data)
 		} catch {
 			setError("An unknown error occurred")
 		} finally {

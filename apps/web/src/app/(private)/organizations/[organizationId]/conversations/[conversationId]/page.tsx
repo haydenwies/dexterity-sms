@@ -1,14 +1,16 @@
 import { getAllContacts } from "~/actions/contact/get-all-contacts"
-import { getConversation } from "~/actions/message/get-conversation"
-import { getConversationMessages } from "~/actions/message/get-conversation-messages"
-import { AllMessagesList } from "~/features/message/conversation-interface/components/all-messages-list"
-import { ConversationHeader } from "~/features/message/conversation-interface/components/conversation-header"
-import { MessageInput } from "~/features/message/conversation-interface/components/message-input"
+import { getConversation } from "~/actions/conversation/get-conversation"
+import { getConversationMessages } from "~/actions/conversation/get-conversation-messages"
+import {
+	AllMessagesList,
+	ConversationHeader,
+	MessageInput
+} from "~/features/conversation/components/conversation-interface"
 
-type ConversationPageProps = Readonly<{
+type PageProps = Readonly<{
 	params: Promise<{ organizationId: string; conversationId: string }>
 }>
-const ConversationPage = async ({ params }: ConversationPageProps) => {
+const ConversationPage = async ({ params }: PageProps) => {
 	const { organizationId, conversationId } = await params
 
 	const conversationPromise = getConversation(conversationId)

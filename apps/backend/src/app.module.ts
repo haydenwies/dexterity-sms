@@ -1,6 +1,7 @@
 import { BullModule } from "@nestjs/bullmq"
 import { Module } from "@nestjs/common"
 import { ConfigModule, ConfigService } from "@nestjs/config"
+import { EventEmitterModule } from "@nestjs/event-emitter"
 import z from "zod"
 
 import { AuthModule } from "~/auth/auth.module"
@@ -41,6 +42,7 @@ import { OrganizationModule } from "~/organization/organization.module"
 				}
 			})
 		}),
+		EventEmitterModule.forRoot(),
 		AuthModule,
 		OrganizationModule,
 		ContactModule,

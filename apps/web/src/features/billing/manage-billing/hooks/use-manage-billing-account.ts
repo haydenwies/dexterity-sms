@@ -14,9 +14,8 @@ const useManageBillingAccount = () => {
 
 			try {
 				const res = await getBillingAccountPortalSession()
-				if (!res.success) throw new Error(res.message)
 
-				setManageBillingAccountPortalSession(res.data)
+				setManageBillingAccountPortalSession(res)
 			} catch {
 				setError("An unexpected error occurred")
 			} finally {

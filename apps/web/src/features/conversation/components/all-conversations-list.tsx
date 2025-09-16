@@ -1,13 +1,12 @@
 "use client"
 
 import Link from "next/link"
-import { useMemo } from "react"
+import { use, useMemo } from "react"
 
+import { routes } from "@repo/routes"
 import { type ContactModel } from "@repo/types/contact"
 import { type ConversationModel } from "@repo/types/conversation"
 import { cn } from "@repo/ui/lib/utils"
-
-import { routes } from "~/lib/routes"
 
 type AllConversationsListItemProps = {
 	organizationId: string
@@ -31,7 +30,7 @@ const AllConvesationsListItem = ({
 
 	return (
 		<Link
-			href={routes.MESSAGE(organizationId, conversation.id)}
+			href={routes.web.CONVERSATION(organizationId, conversation.id)}
 			className="block w-full"
 		>
 			<div
@@ -59,4 +58,33 @@ const AllConvesationsListItem = ({
 	)
 }
 
-export { AllConvesationsListItem }
+type AllConversationsListProps = {
+	className?: string
+	organizationId: string
+	conversationsPromise: Promise<ConversationModel[]>
+	contactsPromise: Promise<ContactModel[]>
+}
+const AllConversationsList = ({
+	className,
+	organizationId,
+	conversationsPromise,
+	contactsPromise
+}: AllConversationsListProps) => {
+	const conversations = use(conversationsPromise)
+	const contacts = use(contactsPromise)
+
+	return (
+		<div className={cn("border-border flex h-full w-full flex-col gap-1 overflow-y-auto border-r p-2", className)}>
+			{conversations.map((conversation) => (
+				<AllConvesationsListItem
+					key={conversation.id}
+					organizationId={organizationId}
+					conversation={conversation}
+					contacts={contacts}
+				/>
+			))}
+		</div>
+	)
+}
+
+export { AllConversationsList }

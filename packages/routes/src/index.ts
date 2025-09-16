@@ -52,6 +52,7 @@ const routes = {
 		// auth
 		SIGN_IN: "/sign-in",
 		SIGN_UP: "/sign-up",
+		FORGOT_PASSWORD: "/forgot-password",
 		RESET_PASSWORD: (params: { searchParams: SearchParams<{ token: string }> }) =>
 			`/reset-password?${stringifySearchParams(params.searchParams)}`,
 
@@ -59,9 +60,24 @@ const routes = {
 		ALL_ORGANIZATIONS: "/organizations",
 		ORGANIZATION: (id: string) => `/organizations/${id}`,
 
+		// home
+		HOME: (organizationId: string) => `/organizations/${organizationId}/home`,
+
 		// campaign
+		ALL_CAMPAIGNS: (organizationId: string) => `/organizations/${organizationId}/campaigns`,
 		UPDATE_CAMPAIGN: (organizationId: string, campaignId: string) =>
-			`/organizations/${organizationId}/campaigns/${campaignId}/edit`
+			`/organizations/${organizationId}/campaigns/${campaignId}/edit`,
+
+		// conversation
+		ALL_CONVERSATIONS: (organizationId: string) => `/organizations/${organizationId}/conversations`,
+		CONVERSATION: (organizationId: string, conversationId: string) =>
+			`/organizations/${organizationId}/conversations/${conversationId}`,
+
+		// contact
+		ALL_CONTACTS: (organizationId: string) => `/organizations/${organizationId}/contacts`,
+
+		// settings
+		SETTINGS: (organizationId: string) => `/organizations/${organizationId}/settings`
 	}
 }
 

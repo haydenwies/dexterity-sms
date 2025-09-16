@@ -2,9 +2,7 @@
 
 import { type SendMessageDto } from "@repo/types/conversation"
 
-import { type ActionResponse, actionSuccess } from "~/lib/actions"
-
-const sendMessage = async (dto: SendMessageDto): Promise<ActionResponse<undefined>> => {
+const sendMessage = async (dto: SendMessageDto): Promise<undefined> => {
 	// Simulate API delay
 	await new Promise((resolve) => setTimeout(resolve, 1000))
 
@@ -16,8 +14,6 @@ const sendMessage = async (dto: SendMessageDto): Promise<ActionResponse<undefine
 	// 3. Create message record
 	// 4. Send via SMS provider
 	// 5. Return success/error
-
-	return actionSuccess(undefined)
 }
 
 export { sendMessage }

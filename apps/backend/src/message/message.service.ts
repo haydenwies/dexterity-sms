@@ -4,8 +4,9 @@ import { Queue } from "bullmq"
 
 import { MessageDirection, MessageStatus } from "@repo/types/message"
 
+import { EventEmitter2 } from "@nestjs/event-emitter"
 import { Phone } from "~/common/phone.vo"
-import { EVENT_QUEUE, EVENT_TOPIC, MessageCreatedEvent } from "~/event/event.types"
+import { EVENT_TOPIC, type MessageCreatedEvent } from "~/event/event.types"
 import { Message } from "~/message/message.entity"
 import { MESSAGE_QUEUE, MESSAGE_QUEUE_JOB } from "~/message/message.queue"
 import { MessageRepository } from "~/message/message.repository"
@@ -15,7 +16,7 @@ class MessageService {
 	constructor(
 		@InjectQueue(MESSAGE_QUEUE) private readonly messageQueue: Queue,
 		private readonly messageRepository: MessageRepository,
-		@InjectQueue(EVENT_QUEUE) private readonly eventQueue: Queue
+		private readonly eventEmitter: EventEmitter2
 	) {}
 
 	async findManyByConversationId(organizationId: string, conversationId: string): Promise<Message[]> {
@@ -64,7 +65,7 @@ class MessageService {
 		})
 		const createdMessage = await this.messageRepository.create(message)
 
-		// Publish message created event
+		// Emit message created event
 		const messageCreatedEvent: MessageCreatedEvent = {
 			messageId: createdMessage.id,
 			organizationId: createdMessage.organizationId,
@@ -74,7 +75,7 @@ class MessageService {
 			direction: createdMessage.direction,
 			campaignId: createdMessage.campaignId
 		}
-		await this.eventQueue.add(EVENT_TOPIC.MESSAGE_CREATED, messageCreatedEvent)
+		this.eventEmitter.emit(EVENT_TOPIC.MESSAGE_CREATED, messageCreatedEvent)
 
 		// Queue for sending
 		await this.messageQueue.add(MESSAGE_QUEUE_JOB.SEND, {

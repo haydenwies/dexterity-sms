@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 
+import { routes } from "@repo/routes"
 import { Alert, AlertTitle } from "@repo/ui/components/alert"
 import { Button } from "@repo/ui/components/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
@@ -11,7 +12,6 @@ import { cn } from "@repo/ui/lib/utils"
 
 import { useSignIn } from "~/features/auth/hooks/use-sign-in"
 import { placeholders } from "~/lib/placeholders"
-import { routes } from "~/lib/routes"
 
 const SignInForm = ({ className }: { className?: string }) => {
 	const { error, signInForm, handleSignIn } = useSignIn()
@@ -54,7 +54,7 @@ const SignInForm = ({ className }: { className?: string }) => {
 						<FormItem>
 							<div className="flex items-center justify-between">
 								<FormLabel>Password</FormLabel>
-								<Link href={routes.FORGOT_PASSWORD}>
+								<Link href={routes.web.FORGOT_PASSWORD}>
 									<p>Forgot your password?</p>
 								</Link>
 							</div>
@@ -76,7 +76,7 @@ const SignInForm = ({ className }: { className?: string }) => {
 				Don&apos;t have an account?{" "}
 				<Link
 					className="underline"
-					href={routes.SIGN_UP}
+					href={routes.web.SIGN_UP}
 				>
 					Sign up
 				</Link>

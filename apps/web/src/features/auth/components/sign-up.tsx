@@ -9,9 +9,10 @@ import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
 import { cn } from "@repo/ui/lib/utils"
 
+import { routes } from "@repo/routes"
+// import { routes } from "~/lib/routes"
 import { useSignUp } from "~/features/auth/hooks/use-sign-up"
 import { placeholders } from "~/lib/placeholders"
-import { routes } from "~/lib/routes"
 
 const SignUpForm = ({ className }: { className?: string }) => {
 	const { error, signUpForm, handleSignUp } = useSignUp()
@@ -87,7 +88,7 @@ const SignUpForm = ({ className }: { className?: string }) => {
 				Already have an account?{" "}
 				<Link
 					className="underline"
-					href={routes.SIGN_IN}
+					href={routes.web.SIGN_IN}
 				>
 					Sign in
 				</Link>

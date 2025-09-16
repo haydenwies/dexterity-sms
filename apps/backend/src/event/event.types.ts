@@ -1,24 +1,10 @@
 import { MessageDirection } from "@repo/types/message"
 
-export const EVENT_QUEUE = "event-queue"
-
-export enum EVENT_TOPIC {
+enum EVENT_TOPIC {
 	MESSAGE_CREATED = "message.created"
 }
 
-export type EVENT_PAYLOAD = {
-	[EVENT_TOPIC.MESSAGE_CREATED]: {
-		messageId: string
-		organizationId: string
-		from: string
-		to: string
-		direction: MessageDirection
-		campaignId?: string | null
-		timestamp: Date
-	}
-}
-
-export interface MessageCreatedEvent {
+type MessageCreatedEvent = {
 	messageId: string
 	organizationId: string
 	conversationId?: string | null
@@ -27,3 +13,5 @@ export interface MessageCreatedEvent {
 	from: string
 	to: string
 }
+
+export { EVENT_TOPIC, type MessageCreatedEvent }

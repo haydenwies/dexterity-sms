@@ -1,6 +1,7 @@
 import { IconName } from "@repo/ui/components/icon"
 
-import { routes } from "~/lib/routes"
+import { routes } from "@repo/routes"
+// import { routes } from "~/lib/routes"
 
 enum SidebarItemType {
 	LINK = "link",
@@ -26,26 +27,26 @@ const getSidebarItems = (organizationId: string): (SidebarItemLink | SidebarItem
 		{
 			type: SidebarItemType.LINK,
 			title: "Home",
-			href: routes.HOME(organizationId),
+			href: routes.web.HOME(organizationId),
 			icon: IconName.HOME
 		},
 		{
 			type: SidebarItemType.LINK,
 			title: "Campaigns",
-			href: routes.ALL_CAMPAIGNS(organizationId),
+			href: routes.web.ALL_CAMPAIGNS(organizationId),
 			icon: IconName.MEGAPHONE
 		},
 		{
 			type: SidebarItemType.LINK,
 			title: "Messages",
-			href: routes.ALL_MESSAGES(organizationId),
+			href: routes.web.ALL_CONVERSATIONS(organizationId),
 			icon: IconName.MESSAGE
 		},
 		{
 			type: SidebarItemType.LINK,
 			title: "Contacts",
 			icon: IconName.USERS,
-			href: routes.ALL_CONTACTS(organizationId)
+			href: routes.web.ALL_CONTACTS(organizationId)
 		}
 	]
 }
