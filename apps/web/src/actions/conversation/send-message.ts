@@ -1,19 +1,27 @@
 "use server"
 
+import { routes } from "@repo/routes"
 import { type SendMessageDto } from "@repo/types/conversation"
 
-const sendMessage = async (dto: SendMessageDto): Promise<undefined> => {
-	// Simulate API delay
-	await new Promise((resolve) => setTimeout(resolve, 1000))
+import { sessionMiddleware } from "~/actions/utils"
+import { getBackendUrl } from "~/lib/backend"
 
-	console.log("Sending message:", dto)
+const sendMessage = async (organizationId: string, conversationId: string, dto: SendMessageDto): Promise<undefined> => {
+	const sessionToken = await sessionMiddleware()
 
-	// In real implementation, this would:
-	// 1. Look up contact by contactId to get phone number
-	// 2. Find or create conversation for that phone number
-	// 3. Create message record
-	// 4. Send via SMS provider
-	// 5. Return success/error
+	const backendUrl = getBackendUrl()
+	const res = await fetch(`${backendUrl}${routes.backend.SEND_MESSAGE(organizationId, conversationId)}`, {
+		method: "POST",
+		body: JSON.stringify(dto),
+		headers: {
+			"Authorization": `Bearer ${sessionToken}`,
+			"Content-Type": "application/json"
+		}
+	})
+	if (!res.ok) {
+		const errData = await res.json()
+		throw new Error(errData.message)
+	}
 }
 
 export { sendMessage }

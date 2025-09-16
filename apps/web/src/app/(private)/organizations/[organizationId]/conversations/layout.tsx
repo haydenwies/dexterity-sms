@@ -13,7 +13,7 @@ type LayoutProps = Readonly<{
 const AllMessagesLayout = async ({ children, params }: LayoutProps) => {
 	const { organizationId } = await params
 
-	const conversationsPromise = getAllConversations()
+	const conversationsPromise = getAllConversations(organizationId)
 	const contactsPromise = getAllContacts(organizationId)
 
 	return (

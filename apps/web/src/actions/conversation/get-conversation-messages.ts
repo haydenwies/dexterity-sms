@@ -1,132 +1,32 @@
 "use server"
 
-import { MessageDirection, type MessageModel, MessageStatus } from "@repo/types/message"
+import { routes } from "@repo/routes"
+import { type MessageModel } from "@repo/types/message"
 
-const getConversationMessages = async (conversationId: string): Promise<MessageModel[]> => {
-	// Mock data based on conversation ID
-	if (conversationId === "1") {
-		return [
-			{
-				id: "1",
-				organizationId: "1",
-				conversationId: "1",
-				direction: MessageDirection.OUTBOUND,
-				status: MessageStatus.DELIVERED,
-				body: "Hi John! Just wanted to follow up on your recent order.",
-				from: "+15551234567", // org number
-				to: "+12345678906", // contact number
-				sentAt: new Date("2024-01-15T10:00:00Z"),
-				deliveredAt: new Date("2024-01-15T10:01:00Z"),
-				createdAt: new Date("2024-01-15T10:00:00Z"),
-				updatedAt: new Date("2024-01-15T10:01:00Z")
-			},
-			{
-				id: "2",
-				organizationId: "1",
-				conversationId: "1",
-				direction: MessageDirection.INBOUND,
-				status: MessageStatus.RECEIVED,
-				body: "Hi! Yes, I received it yesterday. Everything looks great!",
-				from: "+12345678906",
-				to: "+15551234567",
-				sentAt: new Date("2024-01-15T10:15:00Z"),
-				createdAt: new Date("2024-01-15T10:15:00Z"),
-				updatedAt: new Date("2024-01-15T10:15:00Z")
-			},
-			{
-				id: "3",
-				organizationId: "1",
-				conversationId: "1",
-				direction: MessageDirection.OUTBOUND,
-				status: MessageStatus.DELIVERED,
-				body: "Wonderful! Please let us know if you need anything else.",
-				from: "+15551234567",
-				to: "+12345678906",
-				sentAt: new Date("2024-01-15T10:25:00Z"),
-				deliveredAt: new Date("2024-01-15T10:26:00Z"),
-				createdAt: new Date("2024-01-15T10:25:00Z"),
-				updatedAt: new Date("2024-01-15T10:26:00Z")
-			},
-			{
-				id: "4",
-				organizationId: "1",
-				conversationId: "1",
-				direction: MessageDirection.INBOUND,
-				status: MessageStatus.RECEIVED,
-				body: "Thanks for the update!",
-				from: "+12345678906",
-				to: "+15551234567",
-				sentAt: new Date("2024-01-15T10:30:00Z"),
-				createdAt: new Date("2024-01-15T10:30:00Z"),
-				updatedAt: new Date("2024-01-15T10:30:00Z")
+import { sessionMiddleware } from "~/actions/utils"
+import { getBackendUrl } from "~/lib/backend"
+
+const getConversationMessages = async (organizationId: string, conversationId: string): Promise<MessageModel[]> => {
+	const sessionToken = await sessionMiddleware()
+
+	const backendUrl = getBackendUrl()
+	const res = await fetch(
+		`${backendUrl}${routes.backend.GET_CONVERSATION_MESSAGES(organizationId, conversationId)}`,
+		{
+			method: "GET",
+			headers: {
+				"Authorization": `Bearer ${sessionToken}`
 			}
-		]
+		}
+	)
+	if (!res.ok) {
+		const errData = await res.json()
+		throw new Error(errData.message)
 	}
 
-	if (conversationId === "2") {
-		return [
-			{
-				id: "5",
-				organizationId: "1",
-				conversationId: "2",
-				direction: MessageDirection.OUTBOUND,
-				status: MessageStatus.DELIVERED,
-				body: "Hi Jane, our meeting is still on for 3pm tomorrow, right?",
-				from: "+15551234567",
-				to: "+19876543216",
-				sentAt: new Date("2024-01-14T15:30:00Z"),
-				deliveredAt: new Date("2024-01-14T15:31:00Z"),
-				createdAt: new Date("2024-01-14T15:30:00Z"),
-				updatedAt: new Date("2024-01-14T15:31:00Z")
-			},
-			{
-				id: "6",
-				organizationId: "1",
-				conversationId: "2",
-				direction: MessageDirection.INBOUND,
-				status: MessageStatus.RECEIVED,
-				body: "Perfect, see you then",
-				from: "+19876543216",
-				to: "+15551234567",
-				sentAt: new Date("2024-01-14T15:45:00Z"),
-				createdAt: new Date("2024-01-14T15:45:00Z"),
-				updatedAt: new Date("2024-01-14T15:45:00Z")
-			}
-		]
-	}
+	const data = await res.json()
 
-	if (conversationId === "3") {
-		return [
-			{
-				id: "7",
-				organizationId: "1",
-				conversationId: "3",
-				direction: MessageDirection.INBOUND,
-				status: MessageStatus.RECEIVED,
-				body: "Hi, I found this number online. Is this the right number for customer support?",
-				from: "+15551234567",
-				to: "+15551234567",
-				sentAt: new Date("2024-01-13T08:15:00Z"),
-				createdAt: new Date("2024-01-13T08:15:00Z"),
-				updatedAt: new Date("2024-01-13T08:15:00Z")
-			},
-			{
-				id: "8",
-				organizationId: "1",
-				conversationId: "3",
-				direction: MessageDirection.INBOUND,
-				status: MessageStatus.RECEIVED,
-				body: "Is this the right number for customer support?",
-				from: "+15551234567",
-				to: "+15551234567",
-				sentAt: new Date("2024-01-13T08:20:00Z"),
-				createdAt: new Date("2024-01-13T08:20:00Z"),
-				updatedAt: new Date("2024-01-13T08:20:00Z")
-			}
-		]
-	}
-
-	return []
+	return data
 }
 
 export { getConversationMessages }

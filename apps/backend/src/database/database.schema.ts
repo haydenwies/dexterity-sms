@@ -1,4 +1,4 @@
-import { pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core"
+import { integer, pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core"
 
 // #region user
 
@@ -201,6 +201,9 @@ const conversationTable = pgTable("conversation", {
 		})
 		.notNull(),
 	recipient: text("recipient").notNull(), // phone number
+	unreadCount: integer("unread_count"),
+	lastMessagePreview: text("last_message_preview"),
+	lastMessageAt: timestamp("last_message_at", { mode: "date" }),
 	createdAt: timestamp("created_at", { mode: "date" }).notNull(),
 	updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
 })

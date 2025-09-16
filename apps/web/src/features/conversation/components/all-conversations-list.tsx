@@ -6,6 +6,7 @@ import { use, useMemo } from "react"
 import { routes } from "@repo/routes"
 import { type ContactModel } from "@repo/types/contact"
 import { type ConversationModel } from "@repo/types/conversation"
+import { Badge } from "@repo/ui/components/badge"
 import { cn } from "@repo/ui/lib/utils"
 
 type AllConversationsListItemProps = {
@@ -41,18 +42,18 @@ const AllConvesationsListItem = ({
 			>
 				<div className="min-w-0 flex-1">
 					<p className="truncate font-medium">{displayName || conversation.recipient}</p>
-					{/* {conversation.lastMessagePreview && (
+					{conversation.lastMessagePreview && (
 						<p className="text-muted-foreground truncate text-xs">{conversation.lastMessagePreview}</p>
-					)} */}
+					)}
 				</div>
-				{/* {conversation.unreadCount > 0 && (
+				{conversation.unreadCount && conversation.unreadCount > 0 && (
 					<Badge
 						variant="destructive"
 						className="rounded-full p-1 py-0"
 					>
 						{conversation.unreadCount > 99 ? "99+" : conversation.unreadCount}
 					</Badge>
-				)} */}
+				)}
 			</div>
 		</Link>
 	)

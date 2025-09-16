@@ -12,6 +12,8 @@ type MessageCreatedEvent = {
 	direction: MessageDirection
 	from: string
 	to: string
+	body: string
+	createdAt: Date
 }
 
 export { EVENT_TOPIC, type MessageCreatedEvent }

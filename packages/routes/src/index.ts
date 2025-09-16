@@ -42,6 +42,16 @@ const routes = {
 		CANCEL_CAMPAIGN: (organizationId: string, campaignId: string) =>
 			`/organizations/${organizationId}/campaigns/${campaignId}/cancel`,
 
+		// conversation
+		GET_ALL_CONVERSATIONS: (organizationId: string) => `/organizations/${organizationId}/conversations`,
+		GET_CONVERSATION: (organizationId: string, conversationId: string) =>
+			`/organizations/${organizationId}/conversations/${conversationId}`,
+		CREATE_CONVERSATION: (organizationId: string) => `/organizations/${organizationId}/conversations`,
+		GET_CONVERSATION_MESSAGES: (organizationId: string, conversationId: string) =>
+			`/organizations/${organizationId}/conversations/${conversationId}/messages`,
+		SEND_MESSAGE: (organizationId: string, conversationId: string) =>
+			`/organizations/${organizationId}/conversations/${conversationId}/messages`,
+
 		// sender
 		GET_SENDER: (organizationId: string) => `/organizations/${organizationId}/sender`,
 		ADD_SENDER: (organizationId: string) => `/organizations/${organizationId}/sender`,

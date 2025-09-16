@@ -63,11 +63,33 @@ export class ConversationRepository {
 		return ConversationRepository.toEntity(row)
 	}
 
+	async update(conversation: Conversation): Promise<Conversation> {
+		const [row] = await this.db
+			.update(conversationTable)
+			.set({
+				unreadCount: conversation.unreadCount,
+				lastMessagePreview: conversation.lastMessagePreview,
+				lastMessageAt: conversation.lastMessageAt,
+				updatedAt: conversation.updatedAt
+			})
+			.where(and(eq(conversationTable.id, conversation.id)))
+			.returning()
+
+		if (!row) throw new Error("Failed to update conversation")
+
+		return ConversationRepository.toEntity(row)
+	}
+
 	private static toEntity(row: typeof conversationTable.$inferSelect): Conversation {
 		return new Conversation({
 			id: row.id,
 			organizationId: row.organizationId,
-			recipient: Phone.create(row.recipient)
+			recipient: Phone.create(row.recipient),
+			unreadCount: row.unreadCount,
+			lastMessagePreview: row.lastMessagePreview,
+			lastMessageAt: row.lastMessageAt,
+			createdAt: row.createdAt,
+			updatedAt: row.updatedAt
 		})
 	}
 }

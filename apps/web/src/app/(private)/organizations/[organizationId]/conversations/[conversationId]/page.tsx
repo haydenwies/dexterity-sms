@@ -13,8 +13,8 @@ type PageProps = Readonly<{
 const ConversationPage = async ({ params }: PageProps) => {
 	const { organizationId, conversationId } = await params
 
-	const conversationPromise = getConversation(conversationId)
-	const messagesPromise = getConversationMessages(conversationId)
+	const conversationPromise = getConversation(organizationId, conversationId)
+	const messagesPromise = getConversationMessages(organizationId, conversationId)
 	const contactsPromise = getAllContacts(organizationId)
 
 	return (

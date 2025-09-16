@@ -70,10 +70,12 @@ class MessageService {
 			messageId: createdMessage.id,
 			organizationId: createdMessage.organizationId,
 			conversationId: createdMessage.conversationId,
+			direction: createdMessage.direction,
+			campaignId: createdMessage.campaignId,
 			from: createdMessage.from.value,
 			to: createdMessage.to.value,
-			direction: createdMessage.direction,
-			campaignId: createdMessage.campaignId
+			body: createdMessage.body,
+			createdAt: createdMessage.createdAt
 		}
 		this.eventEmitter.emit(EVENT_TOPIC.MESSAGE_CREATED, messageCreatedEvent)
 

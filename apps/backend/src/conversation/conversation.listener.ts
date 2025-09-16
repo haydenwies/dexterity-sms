@@ -31,13 +31,36 @@ class ConversationListener {
 
 			// Find or create the conversation
 			let conversation = await this.conversationRepository.findByRecipient(payload.organizationId, recipient)
+
 			if (!conversation) {
-				conversation = Conversation.create({ organizationId: payload.organizationId, recipient })
+				// Create conversation if it doesn't exist
+				conversation = Conversation.create({
+					organizationId: payload.organizationId,
+					recipient,
+					unreadCount: 0,
+					lastMessagePreview: payload.body,
+					lastMessageAt: payload.createdAt
+				})
 				conversation = await this.conversationRepository.create(conversation)
 			}
 
 			// Link the message to the conversation
 			await this.messageService.updateConversationId(payload.organizationId, payload.messageId, conversation.id)
+
+			// Update conversation if the message is newer than the last message
+			let wasUpdated = false
+			if (payload.direction === MessageDirection.OUTBOUND) {
+				conversation.incrementUnreadCount()
+				wasUpdated = true
+			}
+			if (payload.createdAt > conversation.lastMessageAt) {
+				conversation.update({
+					lastMessagePreview: payload.body,
+					lastMessageAt: payload.createdAt
+				})
+				wasUpdated = true
+			}
+			if (wasUpdated) await this.conversationRepository.update(conversation)
 		} catch (err: unknown) {
 			this.logger.error(err) // TODO: Better error handling for listeners
 		}
