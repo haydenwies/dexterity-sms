@@ -1,5 +1,16 @@
 import { Phone } from "~/common/phone.vo"
 
+interface IConversation {
+	id: string
+	organizationId: string
+	recipient: Phone
+	unreadCount: number
+	lastMessagePreview?: string
+	lastMessageAt?: Date
+	createdAt: Date
+	updatedAt: Date
+}
+
 type ConversationConstructorParams = {
 	id: string
 	organizationId: string
@@ -20,16 +31,15 @@ type ConversationCreateParams = {
 }
 
 type ConversationUpdateParams = {
-	unreadCount?: number
-	lastMessagePreview?: string
-	lastMessageAt?: Date
+	lastMessagePreview: string
+	lastMessageAt: Date
 }
 
-class Conversation {
+class Conversation implements IConversation {
 	public readonly id: string
 	public readonly organizationId: string
 	public readonly recipient: Phone
-	private _unreadCount?: number
+	private _unreadCount: number
 	private _lastMessagePreview?: string
 	private _lastMessageAt?: Date
 	public readonly createdAt: Date
@@ -39,7 +49,7 @@ class Conversation {
 		this.id = params.id
 		this.organizationId = params.organizationId
 		this.recipient = params.recipient
-		this._unreadCount = params.unreadCount || undefined
+		this._unreadCount = params.unreadCount || 0
 		this._lastMessagePreview = params.lastMessagePreview || undefined
 		this._lastMessageAt = params.lastMessageAt || undefined
 		this.createdAt = params.createdAt
@@ -50,12 +60,12 @@ class Conversation {
 		return this._unreadCount || 0
 	}
 
-	get lastMessagePreview(): string {
-		return this._lastMessagePreview || ""
+	get lastMessagePreview(): string | undefined {
+		return this._lastMessagePreview
 	}
 
-	get lastMessageAt(): Date {
-		return this._lastMessageAt || new Date()
+	get lastMessageAt(): Date | undefined {
+		return this._lastMessageAt
 	}
 
 	get updatedAt(): Date {

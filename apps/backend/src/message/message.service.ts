@@ -70,14 +70,15 @@ class MessageService {
 			messageId: createdMessage.id,
 			organizationId: createdMessage.organizationId,
 			conversationId: createdMessage.conversationId,
-			direction: createdMessage.direction,
 			campaignId: createdMessage.campaignId,
+			direction: createdMessage.direction,
 			from: createdMessage.from.value,
 			to: createdMessage.to.value,
 			body: createdMessage.body,
 			createdAt: createdMessage.createdAt
 		}
-		this.eventEmitter.emit(EVENT_TOPIC.MESSAGE_CREATED, messageCreatedEvent)
+		// TODO: Remove synchronous event emitter and add mutex handling
+		await this.eventEmitter.emitAsync(EVENT_TOPIC.MESSAGE_CREATED, messageCreatedEvent)
 
 		// Queue for sending
 		await this.messageQueue.add(MESSAGE_QUEUE_JOB.SEND, {

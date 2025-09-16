@@ -2,7 +2,7 @@ type ConversationModel = {
 	id: string
 	organizationId: string
 	recipient: string
-	unreadCount?: number
+	unreadCount: number
 	lastMessagePreview?: string
 	lastMessageAt?: Date
 }

@@ -42,11 +42,11 @@ const AllConvesationsListItem = ({
 			>
 				<div className="min-w-0 flex-1">
 					<p className="truncate font-medium">{displayName || conversation.recipient}</p>
-					{conversation.lastMessagePreview && (
-						<p className="text-muted-foreground truncate text-xs">{conversation.lastMessagePreview}</p>
-					)}
+					<p className="text-muted-foreground truncate text-xs">
+						{conversation.lastMessagePreview || "No messages"}
+					</p>
 				</div>
-				{conversation.unreadCount && conversation.unreadCount > 0 && (
+				{conversation.unreadCount > 0 && (
 					<Badge
 						variant="destructive"
 						className="rounded-full p-1 py-0"

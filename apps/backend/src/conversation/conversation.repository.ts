@@ -53,6 +53,9 @@ export class ConversationRepository {
 				id: conversation.id,
 				organizationId: conversation.organizationId,
 				recipient: conversation.recipient.value,
+				unreadCount: conversation.unreadCount,
+				lastMessagePreview: conversation.lastMessagePreview,
+				lastMessageAt: conversation.lastMessageAt,
 				createdAt: new Date(),
 				updatedAt: new Date()
 			})

@@ -21,9 +21,6 @@ class ConversationListener {
 	@OnEvent(EVENT_TOPIC.MESSAGE_CREATED)
 	async processMessageCreated(payload: MessageCreatedEvent): Promise<void> {
 		try {
-			// Skip if message is already linked to a conversation
-			if (payload.conversationId) return
-
 			// Determine the conversation recipient from the message direction
 			let recipient: Phone
 			if (payload.direction === MessageDirection.OUTBOUND) recipient = Phone.create(payload.to)
@@ -31,7 +28,6 @@ class ConversationListener {
 
 			// Find or create the conversation
 			let conversation = await this.conversationRepository.findByRecipient(payload.organizationId, recipient)
-
 			if (!conversation) {
 				// Create conversation if it doesn't exist
 				conversation = Conversation.create({
@@ -44,23 +40,32 @@ class ConversationListener {
 				conversation = await this.conversationRepository.create(conversation)
 			}
 
-			// Link the message to the conversation
-			await this.messageService.updateConversationId(payload.organizationId, payload.messageId, conversation.id)
+			// Link the message to the conversation if no conversation ID
+			if (!payload.conversationId)
+				await this.messageService.updateConversationId(
+					payload.organizationId,
+					payload.messageId,
+					conversation.id
+				)
+
+			let conversationUpdated = false
+
+			// Increment unread count if the message is inbound
+			if (payload.direction === MessageDirection.INBOUND) {
+				conversation.incrementUnreadCount()
+				conversationUpdated = true
+			}
 
 			// Update conversation if the message is newer than the last message
-			let wasUpdated = false
-			if (payload.direction === MessageDirection.OUTBOUND) {
-				conversation.incrementUnreadCount()
-				wasUpdated = true
-			}
-			if (payload.createdAt > conversation.lastMessageAt) {
+			if (!conversation.lastMessageAt || payload.createdAt > conversation.lastMessageAt) {
 				conversation.update({
 					lastMessagePreview: payload.body,
 					lastMessageAt: payload.createdAt
 				})
-				wasUpdated = true
+				conversationUpdated = true
 			}
-			if (wasUpdated) await this.conversationRepository.update(conversation)
+
+			if (conversationUpdated) await this.conversationRepository.update(conversation)
 		} catch (err: unknown) {
 			this.logger.error(err) // TODO: Better error handling for listeners
 		}

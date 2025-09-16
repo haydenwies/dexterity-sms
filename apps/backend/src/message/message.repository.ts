@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common"
-import { and, count, eq } from "drizzle-orm"
+import { and, asc, count, eq } from "drizzle-orm"
 
 import { MessageStatus } from "@repo/types/message"
 
@@ -35,6 +35,7 @@ class MessageRepository {
 			.select()
 			.from(messageTable)
 			.where(and(eq(messageTable.organizationId, organizationId), ...sql))
+			.orderBy(asc(messageTable.createdAt))
 
 		return messages.map((row) => MessageRepository.toEntity(row))
 	}

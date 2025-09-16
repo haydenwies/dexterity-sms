@@ -18,12 +18,14 @@ const ConversationPage = async ({ params }: PageProps) => {
 	const contactsPromise = getAllContacts(organizationId)
 
 	return (
-		<div className="flex h-full flex-col">
+		<div className="flex h-full max-h-full flex-col overflow-hidden">
 			<ConversationHeader
 				conversationPromise={conversationPromise}
 				contactsPromise={contactsPromise}
 			/>
-			<AllMessagesList messagesPromise={messagesPromise} />
+			<div className="min-h-0 flex-1 overflow-hidden">
+				<AllMessagesList messagesPromise={messagesPromise} />
+			</div>
 			<MessageInput />
 		</div>
 	)

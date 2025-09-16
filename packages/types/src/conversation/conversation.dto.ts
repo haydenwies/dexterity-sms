@@ -19,7 +19,7 @@ type SendMessageDto = {
 }
 
 const sendMessageDtoSchema = z.object({
-	body: z.string().min(1, "Message body is required").max(1600, "Message too long")
+	body: z.string().trim().min(1, "Message body is required").max(1600, "Message too long")
 })
 
 // #endregion
