@@ -9,14 +9,12 @@ import { EVENT_QUEUE, EVENT_TOPIC, MessageCreatedEvent } from "~/event/event.typ
 import { Message } from "~/message/message.entity"
 import { MESSAGE_QUEUE, MESSAGE_QUEUE_JOB } from "~/message/message.queue"
 import { MessageRepository } from "~/message/message.repository"
-import { SenderService } from "~/sender/sender.service"
 
 @Injectable()
 class MessageService {
 	constructor(
 		@InjectQueue(MESSAGE_QUEUE) private readonly messageQueue: Queue,
 		private readonly messageRepository: MessageRepository,
-		private readonly senderService: SenderService,
 		@InjectQueue(EVENT_QUEUE) private readonly eventQueue: Queue
 	) {}
 
@@ -34,6 +32,13 @@ class MessageService {
 		const updatedMessage = await this.messageRepository.update(message)
 
 		return updatedMessage
+	}
+
+	async countPending(
+		organizationId: string,
+		filters?: { conversationId?: string; campaignId?: string }
+	): Promise<number> {
+		return this.messageRepository.countPending(organizationId, filters)
 	}
 
 	async send(

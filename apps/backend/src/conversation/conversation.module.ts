@@ -10,6 +10,7 @@ import { EVENT_QUEUE } from "~/event/event.types"
 import { MessageModule } from "~/message/message.module"
 import { OrganizationModule } from "~/organization/organization.module"
 import { SenderModule } from "~/sender/sender.module"
+import { ConversationEventConsumer } from "./conversation.event-consumer"
 
 @Module({
 	imports: [
@@ -21,7 +22,7 @@ import { SenderModule } from "~/sender/sender.module"
 		MessageModule
 	],
 	controllers: [ConversationController],
-	providers: [ConversationService, ConversationRepository]
+	providers: [ConversationEventConsumer, ConversationService, ConversationRepository]
 })
 class ConversationModule {}
 

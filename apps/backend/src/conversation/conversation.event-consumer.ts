@@ -23,6 +23,9 @@ class ConversationEventConsumer extends WorkerHost {
 			case EVENT_TOPIC.MESSAGE_CREATED: {
 				return this.processMessageCreated(job)
 			}
+			default: {
+				return
+			}
 		}
 	}
 
