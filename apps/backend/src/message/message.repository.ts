@@ -23,6 +23,14 @@ class MessageRepository {
 		return MessageRepository.toEntity(row)
 	}
 
+	// TODO: Add index on externalId
+	async findByExternalId(externalId: string): Promise<Message | undefined> {
+		const [row] = await this.db.select().from(messageTable).where(eq(messageTable.externalId, externalId)).limit(1)
+		if (!row) return undefined
+
+		return MessageRepository.toEntity(row)
+	}
+
 	async findMany(
 		organizationId: string,
 		filters?: {

@@ -56,7 +56,10 @@ const routes = {
 		GET_SENDER: (organizationId: string) => `/organizations/${organizationId}/sender`,
 		ADD_SENDER: (organizationId: string) => `/organizations/${organizationId}/sender`,
 		REMOVE_SENDER: (organizationId: string) => `/organizations/${organizationId}/sender`,
-		GET_AVAILABLE_SENDERS: (organizationId: string) => `/organizations/${organizationId}/sender/available`
+		GET_AVAILABLE_SENDERS: (organizationId: string) => `/organizations/${organizationId}/sender/available`,
+
+		// message
+		MESSAGE_STATUS_WEBHOOK: "/webhooks/message/status"
 	},
 	web: {
 		// auth

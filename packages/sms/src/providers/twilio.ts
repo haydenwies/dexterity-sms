@@ -1,16 +1,28 @@
-import twilio, { type Twilio } from "twilio"
+import twilio, { validateRequest, type Twilio } from "twilio"
 
-import type { Message, Sender, SmsPayload, SmsProvider } from "../types"
+import type { Message, Sender, SmsPayload, SmsProvider, StatusWebhookEvent } from "../types"
 
 type TwilioConfig = {
 	accountSid: string
 	authToken: string
 }
 
+type TwilioWebhookPayload = {
+	MessageSid: string
+	MessageStatus: string
+	From: string
+	To: string
+	Body: string
+	ErrorCode?: string
+	ErrorMessage?: string
+}
+
 class TwilioProvider implements SmsProvider {
+	private readonly authToken: string
 	private readonly client: Twilio
 
 	constructor(config: TwilioConfig) {
+		this.authToken = config.authToken
 		this.client = twilio(config.accountSid, config.authToken)
 	}
 
@@ -46,6 +58,62 @@ class TwilioProvider implements SmsProvider {
 
 	async releaseNumber(senderId: string): Promise<void> {
 		await this.client.incomingPhoneNumbers(senderId).remove()
+	}
+
+	validateWebhook(headers: Record<string, string>, body: any, url: string): boolean {
+		const twilioHeader = headers["X-Twilio-Signature"]
+		if (!twilioHeader) return false
+
+		const isValid = validateRequest(this.authToken, twilioHeader, url, body)
+
+		return isValid
+	}
+
+	parseStatusWebhookPayload(payload: any): StatusWebhookEvent | null {
+		try {
+			// Validate message ID
+			const messageId = payload["MessageSid"]
+			if (!messageId || typeof messageId !== "string") return null
+
+			// Validate and map message status
+			const twilioStatus = payload["MessageStatus"]
+			if (!twilioStatus || typeof twilioStatus !== "string") return null
+			const status = this.mapTwilioStatusToGeneric(twilioStatus)
+			if (!status) return null
+
+			// Validate error code
+			const errorCode = payload["ErrorCode"]
+			if (errorCode && typeof errorCode !== "string") return null
+
+			// Validate error message
+			const errorMessage = payload["ErrorMessage"]
+			if (errorMessage && typeof errorMessage !== "string") return null
+
+			return {
+				messageId,
+				status,
+				timestamp: new Date(), // Twilio doesn't provide timestamp in webhook, use current time
+				errorCode,
+				errorMessage
+			}
+		} catch {
+			return null
+		}
+	}
+
+	private mapTwilioStatusToGeneric(twilioStatus: string): StatusWebhookEvent["status"] | null {
+		const statusMap = {
+			PENDING: ["accepted", "scheduled", "queued", "sending"],
+			SENT: ["sent"],
+			DELIVERED: ["delivered"],
+			FAILED: ["failed", "undelivered", "delivery_unknown"]
+		}
+
+		if (statusMap.PENDING.includes(twilioStatus)) return "pending"
+		else if (statusMap.SENT.includes(twilioStatus)) return "sent"
+		else if (statusMap.DELIVERED.includes(twilioStatus)) return "delivered"
+		else if (statusMap.FAILED.includes(twilioStatus)) return "failed"
+		else return null
 	}
 }
 
