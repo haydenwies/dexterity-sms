@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common"
-import { and, asc, count, eq } from "drizzle-orm"
+import { and, asc, count as drizzleCount, eq, inArray } from "drizzle-orm"
 
 import { MessageStatus } from "@repo/types/message"
 
@@ -25,11 +25,14 @@ class MessageRepository {
 
 	async findMany(
 		organizationId: string,
-		filters: { conversationId?: string; campaignId?: string }
+		filters?: {
+			conversationId?: string
+			campaignId?: string
+		}
 	): Promise<Message[]> {
 		const sql = []
-		if (filters.conversationId) sql.push(eq(messageTable.conversationId, filters.conversationId))
-		if (filters.campaignId) sql.push(eq(messageTable.campaignId, filters.campaignId))
+		if (filters?.conversationId) sql.push(eq(messageTable.conversationId, filters.conversationId))
+		if (filters?.campaignId) sql.push(eq(messageTable.campaignId, filters.campaignId))
 
 		const messages = await this.db
 			.select()
@@ -38,6 +41,30 @@ class MessageRepository {
 			.orderBy(asc(messageTable.createdAt))
 
 		return messages.map((row) => MessageRepository.toEntity(row))
+	}
+
+	async count(
+		organizationId: string,
+		filters?: {
+			conversationId?: string
+			campaignId?: string
+			status?: MessageStatus | MessageStatus[]
+		}
+	): Promise<number> {
+		const sql = []
+		if (filters?.conversationId) sql.push(eq(messageTable.conversationId, filters.conversationId))
+		if (filters?.campaignId) sql.push(eq(messageTable.campaignId, filters.campaignId))
+		if (filters?.status) {
+			if (Array.isArray(filters.status)) sql.push(inArray(messageTable.status, filters.status))
+			else sql.push(eq(messageTable.status, filters.status))
+		}
+
+		const [result] = await this.db
+			.select({ count: drizzleCount() })
+			.from(messageTable)
+			.where(and(eq(messageTable.organizationId, organizationId), ...sql))
+
+		return result?.count || 0
 	}
 
 	async create(message: Message): Promise<Message> {
@@ -83,28 +110,6 @@ class MessageRepository {
 		if (!row) throw new Error("Failed to update message")
 
 		return MessageRepository.toEntity(row)
-	}
-
-	async countPending(
-		organizationId: string,
-		filters?: { conversationId?: string; campaignId?: string }
-	): Promise<number> {
-		const sql = []
-		if (filters?.conversationId) sql.push(eq(messageTable.conversationId, filters.conversationId))
-		if (filters?.campaignId) sql.push(eq(messageTable.campaignId, filters.campaignId))
-
-		const [result] = await this.db
-			.select({ count: count() })
-			.from(messageTable)
-			.where(
-				and(
-					eq(messageTable.organizationId, organizationId),
-					eq(messageTable.status, MessageStatus.PENDING),
-					...sql
-				)
-			)
-
-		return result?.count ?? 0
 	}
 
 	private static toEntity(row: typeof messageTable.$inferSelect): Message {

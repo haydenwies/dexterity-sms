@@ -22,7 +22,7 @@ class MessageQueueConsumer extends WorkerHost {
 		super()
 	}
 
-	async process(job: Job) {
+	async process(job: Job): Promise<void> {
 		switch (job.name) {
 			case MESSAGE_QUEUE_JOB.SEND: {
 				const { organizationId, messageId } = job.data // TODO: Validate job data
@@ -33,6 +33,7 @@ class MessageQueueConsumer extends WorkerHost {
 	}
 
 	private async processSend(organizationId: string, messageId: string): Promise<void> {
+		// Find message
 		const message = await this.messageRepository.find(organizationId, messageId)
 		if (!message) throw new NotFoundException("Message not found")
 
@@ -44,10 +45,12 @@ class MessageQueueConsumer extends WorkerHost {
 				body: message.body
 			})
 
+			// Update message external ID and status
 			message.updateExternalId(result.id)
 			message.updateStatus(MessageStatus.SENT)
 			await this.messageRepository.update(message)
 		} catch (err: unknown) {
+			// Update message status to failed
 			message.updateStatus(MessageStatus.FAILED)
 			await this.messageRepository.update(message)
 

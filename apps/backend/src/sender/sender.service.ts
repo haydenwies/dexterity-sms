@@ -1,4 +1,5 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common"
+import { MessageStatus } from "@repo/types/message"
 
 import { type AddSenderDto, type SenderModel } from "@repo/types/sender"
 
@@ -54,7 +55,7 @@ class SenderService {
 
 	async remove(organizationId: string): Promise<void> {
 		// Check for pending messages first
-		const pendingCount = await this.messageService.countPending(organizationId)
+		const pendingCount = await this.messageService.count(organizationId, { status: MessageStatus.PENDING })
 		if (pendingCount > 0) {
 			throw new BadRequestException(`Cannot remove sender. ${pendingCount} messages are still pending delivery.`)
 		}

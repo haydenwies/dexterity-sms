@@ -10,6 +10,7 @@ import { EVENT_TOPIC, type MessageCreatedEvent } from "~/event/event.types"
 import { Message } from "~/message/message.entity"
 import { MESSAGE_QUEUE, MESSAGE_QUEUE_JOB } from "~/message/message.queue"
 import { MessageRepository } from "~/message/message.repository"
+import { toMessageCreatedEvent } from "./message.utils"
 
 @Injectable()
 class MessageService {
@@ -19,10 +20,26 @@ class MessageService {
 		private readonly eventEmitter: EventEmitter2
 	) {}
 
-	async findManyByConversationId(organizationId: string, conversationId: string): Promise<Message[]> {
-		const messages = await this.messageRepository.findMany(organizationId, { conversationId })
+	async getMany(
+		organizationId: string,
+		filters?: { conversationId?: string; campaignId?: string }
+	): Promise<Message[]> {
+		const messages = await this.messageRepository.findMany(organizationId, filters)
 
 		return messages
+	}
+
+	async count(
+		organizationId: string,
+		filters?: {
+			conversationId?: string
+			campaignId?: string
+			status?: MessageStatus | MessageStatus[]
+		}
+	): Promise<number> {
+		const count = await this.messageRepository.count(organizationId, filters)
+
+		return count
 	}
 
 	async updateConversationId(organizationId: string, messageId: string, conversationId: string): Promise<Message> {
@@ -33,13 +50,6 @@ class MessageService {
 		const updatedMessage = await this.messageRepository.update(message)
 
 		return updatedMessage
-	}
-
-	async countPending(
-		organizationId: string,
-		filters?: { conversationId?: string; campaignId?: string }
-	): Promise<number> {
-		return this.messageRepository.countPending(organizationId, filters)
 	}
 
 	async send(
@@ -66,18 +76,8 @@ class MessageService {
 		const createdMessage = await this.messageRepository.create(message)
 
 		// Emit message created event
-		const messageCreatedEvent: MessageCreatedEvent = {
-			messageId: createdMessage.id,
-			organizationId: createdMessage.organizationId,
-			conversationId: createdMessage.conversationId,
-			campaignId: createdMessage.campaignId,
-			direction: createdMessage.direction,
-			from: createdMessage.from.value,
-			to: createdMessage.to.value,
-			body: createdMessage.body,
-			createdAt: createdMessage.createdAt
-		}
 		// TODO: Remove synchronous event emitter and add mutex handling
+		const messageCreatedEvent: MessageCreatedEvent = toMessageCreatedEvent(createdMessage)
 		await this.eventEmitter.emitAsync(EVENT_TOPIC.MESSAGE_CREATED, messageCreatedEvent)
 
 		// Queue for sending

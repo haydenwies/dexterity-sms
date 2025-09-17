@@ -39,7 +39,9 @@ export class ConversationService {
 	}
 
 	async getManyMessages(organizationId: string, conversationId: string): Promise<Message[]> {
-		const messages = await this.messageService.findManyByConversationId(organizationId, conversationId)
+		const messages = await this.messageService.getMany(organizationId, {
+			conversationId
+		})
 
 		return messages
 	}

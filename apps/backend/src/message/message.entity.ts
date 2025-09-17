@@ -3,6 +3,24 @@ import { isEnumValue } from "@repo/utils"
 
 import { Phone } from "~/common/phone.vo"
 
+interface IMessage {
+	id: string
+	organizationId: string
+	externalId?: string
+	conversationId?: string
+	campaignId?: string
+	direction: MessageDirection
+	status: MessageStatus
+	from: Phone
+	to: Phone
+	body: string
+	sentAt?: Date
+	deliveredAt?: Date
+	readAt?: Date
+	createdAt: Date
+	updatedAt: Date
+}
+
 type MessageConstructorParams = {
 	id: string
 	externalId?: string | null
@@ -33,12 +51,12 @@ type MessageCreateParams = {
 	body: string
 }
 
-class Message {
+class Message implements IMessage {
 	public readonly id: string
-	private _externalId: string | null
 	public readonly organizationId: string
-	private _conversationId: string | null
-	public readonly campaignId: string | null
+	private _externalId?: string
+	private _conversationId?: string
+	public readonly campaignId?: string
 	public readonly direction: MessageDirection
 	private _status: MessageStatus
 	public readonly from: Phone
@@ -55,10 +73,10 @@ class Message {
 		if (!isEnumValue(MessageStatus, params.status)) throw new Error("Invalid message status")
 
 		this.id = params.id
-		this._externalId = params.externalId || null
 		this.organizationId = params.organizationId
-		this._conversationId = params.conversationId || null
-		this.campaignId = params.campaignId || null
+		this._externalId = params.externalId || undefined
+		this._conversationId = params.conversationId || undefined
+		this.campaignId = params.campaignId || undefined
 		this.direction = params.direction
 		this._status = params.status
 		this.body = params.body
@@ -71,11 +89,11 @@ class Message {
 		this._updatedAt = params.updatedAt
 	}
 
-	get externalId(): string | null {
+	get externalId(): string | undefined {
 		return this._externalId
 	}
 
-	get conversationId(): string | null {
+	get conversationId(): string | undefined {
 		return this._conversationId
 	}
 
