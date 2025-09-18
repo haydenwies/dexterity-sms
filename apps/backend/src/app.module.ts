@@ -14,6 +14,7 @@ import { ContactModule } from "~/contact/contact.module"
 import { ConversationModule } from "~/conversation/conversation.module"
 import { MessageModule } from "~/message/message.module"
 import { OrganizationModule } from "~/organization/organization.module"
+import { UnsubscribeModule } from "~/unsubscribe/unsubscribe.module"
 
 @Module({
 	imports: [
@@ -48,7 +49,8 @@ import { OrganizationModule } from "~/organization/organization.module"
 		ContactModule,
 		MessageModule,
 		ConversationModule,
-		CampaignModule
+		CampaignModule,
+		UnsubscribeModule
 	],
 	controllers: [],
 	providers: []

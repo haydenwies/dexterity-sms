@@ -4,6 +4,7 @@ import { Job } from "bullmq"
 import { ContactService } from "~/contact/contact.service"
 import { MessageService } from "~/message/message.service"
 import { SenderService } from "~/sender/sender.service"
+import { UnsubscribeService } from "~/unsubscribe/unsubscribe.service"
 import { CampaignRepository } from "./campaign.repository"
 
 const CAMPAIGN_QUEUE = "campaign-queue"
@@ -18,7 +19,8 @@ class CampaignQueueConsumer extends WorkerHost {
 		private readonly campaignRepository: CampaignRepository,
 		private readonly contactService: ContactService,
 		private readonly messageService: MessageService,
-		private readonly senderService: SenderService
+		private readonly senderService: SenderService,
+		private readonly unsubscribeService: UnsubscribeService
 	) {
 		super()
 	}
@@ -44,17 +46,29 @@ class CampaignQueueConsumer extends WorkerHost {
 		const contacts = await this.contactService.getAll(organizationId)
 		const deduplicatedContacts = this.contactService.deduplicateByPhone(contacts)
 
-		await Promise.all(
-			deduplicatedContacts.map((contact) => {
-				if (!contact.phone) return
+		// Filter out unsubscribed contacts
+		const allowedContacts = await Promise.all(
+			deduplicatedContacts.map(async (contact) => {
+				if (!contact.phone) return null
 
-				return this.messageService.send(organizationId, {
+				// Check if the contact is unsubscribed
+				const isUnsubscribed = await this.unsubscribeService.isUnsubscribed(organizationId, contact.phone)
+				return isUnsubscribed ? null : contact
+			})
+		)
+
+		// Send messages only to subscribed contacts
+		const validContacts = allowedContacts.filter((contact) => contact !== null)
+
+		await Promise.all(
+			validContacts.map((contact) =>
+				this.messageService.send(organizationId, {
 					from: sender.phone,
-					to: contact.phone,
+					to: contact.phone!,
 					body,
 					campaignId
 				})
-			})
+			)
 		)
 	}
 }

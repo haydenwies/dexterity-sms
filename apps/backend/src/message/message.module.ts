@@ -9,9 +9,16 @@ import { MessageWebhookController } from "~/message/message.webhook.controller"
 import { MessageWebhookService } from "~/message/message.webhook.service"
 import { SenderModule } from "~/sender/sender.module"
 import { SmsModule } from "~/sms/sms.module"
+import { UnsubscribeModule } from "~/unsubscribe/unsubscribe.module"
 
 @Module({
-	imports: [BullModule.registerQueue({ name: MESSAGE_QUEUE }), DatabaseModule, SenderModule, SmsModule],
+	imports: [
+		BullModule.registerQueue({ name: MESSAGE_QUEUE }),
+		DatabaseModule,
+		SenderModule,
+		SmsModule,
+		UnsubscribeModule
+	],
 	controllers: [MessageWebhookController],
 	providers: [MessageService, MessageRepository, MessageQueueConsumer, MessageWebhookService],
 	exports: [MessageService]

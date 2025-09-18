@@ -1,4 +1,4 @@
-import { integer, pgTable, primaryKey, text, timestamp, uuid } from "drizzle-orm/pg-core"
+import { integer, pgTable, primaryKey, text, timestamp, unique, uuid } from "drizzle-orm/pg-core"
 
 // #region user
 
@@ -210,6 +210,32 @@ const conversationTable = pgTable("conversation", {
 
 // #endregion
 
+// #region unsubscribe
+
+const unsubscribeTable = pgTable(
+	"unsubscribe",
+	{
+		id: uuid("id").primaryKey(),
+		organizationId: uuid("organization_id")
+			.references(() => organizationTable.id, {
+				onUpdate: "cascade",
+				onDelete: "cascade"
+			})
+			.notNull(),
+		phone: text("phone").notNull(),
+		unsubscribedAt: timestamp("unsubscribed_at", { mode: "date" }).notNull(),
+		createdAt: timestamp("created_at", { mode: "date" }).notNull(),
+		updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
+	},
+	(table) => [
+		{
+			uniqueOrgPhone: unique().on(table.organizationId, table.phone)
+		}
+	]
+)
+
+// #endregion
+
 export {
 	accountTable,
 	campaignTable,
@@ -220,6 +246,7 @@ export {
 	organizationTable,
 	senderTable,
 	sessionTable,
+	unsubscribeTable,
 	userTable,
 	verificationTokenTable
 }

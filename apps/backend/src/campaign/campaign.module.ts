@@ -11,6 +11,7 @@ import { DatabaseModule } from "~/database/database.module"
 import { MessageModule } from "~/message/message.module"
 import { OrganizationModule } from "~/organization/organization.module"
 import { SenderModule } from "~/sender/sender.module"
+import { UnsubscribeModule } from "~/unsubscribe/unsubscribe.module"
 
 @Module({
 	imports: [
@@ -20,7 +21,8 @@ import { SenderModule } from "~/sender/sender.module"
 		DatabaseModule,
 		ContactModule,
 		SenderModule,
-		MessageModule
+		MessageModule,
+		UnsubscribeModule
 	],
 	controllers: [CampaignController],
 	providers: [CampaignService, CampaignQueueConsumer, CampaignRepository]
