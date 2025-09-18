@@ -40,4 +40,38 @@ class MessageStatusWebhookGuard implements CanActivate {
 	}
 }
 
-export { MessageStatusWebhookGuard }
+@Injectable()
+class MessageInboundWebhookGuard implements CanActivate {
+	private readonly logger = new Logger(MessageInboundWebhookGuard.name)
+
+	constructor(
+		private readonly configService: ConfigService,
+		@Inject(SMS_PROVIDER) private readonly smsProvider: SmsProvider
+	) {}
+
+	canActivate(context: ExecutionContext): boolean {
+		const request = context.switchToHttp().getRequest<Request>()
+
+		// Convert the headers to record of strings
+		const headers = Object.entries(request.headers).reduce<Record<string, string>>((acc, [key, value]) => {
+			if (typeof value !== "string") return acc
+			acc[key] = value
+			return acc
+		}, {})
+
+		const body = request.body
+
+		// Construct the URL for the webhook
+		const url = `${this.configService.getOrThrow<string>("router.backendUrl")}${routes.backend.INBOUND_MESSAGE_WEBHOOK}`
+
+		// Use the SMS provider to validate the webhook
+		const isValid = this.smsProvider.validateWebhook(headers, body, url)
+
+		if (!isValid) this.logger.warn("Message inbound webhook validation failed")
+		else this.logger.log("Message inbound webhook validation successful")
+
+		return isValid
+	}
+}
+
+export { MessageInboundWebhookGuard, MessageStatusWebhookGuard }

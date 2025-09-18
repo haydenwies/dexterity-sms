@@ -59,7 +59,8 @@ const routes = {
 		GET_AVAILABLE_SENDERS: (organizationId: string) => `/organizations/${organizationId}/sender/available`,
 
 		// message
-		MESSAGE_STATUS_WEBHOOK: "/webhooks/message/status"
+		MESSAGE_STATUS_WEBHOOK: "/webhooks/message/status",
+		INBOUND_MESSAGE_WEBHOOK: "/webhooks/message/inbound"
 	},
 	web: {
 		// auth

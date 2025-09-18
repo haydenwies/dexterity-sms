@@ -1,6 +1,6 @@
 import twilio, { validateRequest, type Twilio } from "twilio"
 
-import type { Message, Sender, SmsPayload, SmsProvider, StatusWebhookEvent } from "../types"
+import type { InboundWebhookEvent, Message, Sender, SmsPayload, SmsProvider, StatusWebhookEvent } from "../types"
 
 type TwilioConfig = {
 	accountSid: string
@@ -95,6 +95,36 @@ class TwilioProvider implements SmsProvider {
 				timestamp: new Date(), // Twilio doesn't provide timestamp in webhook, use current time
 				errorCode,
 				errorMessage
+			}
+		} catch {
+			return null
+		}
+	}
+
+	parseInboundWebhookPayload(payload: any): InboundWebhookEvent | null {
+		try {
+			// Validate message ID
+			const messageId = payload["MessageSid"]
+			if (!messageId || typeof messageId !== "string") return null
+
+			// Validate from phone number
+			const from = payload["From"]
+			if (!from || typeof from !== "string") return null
+
+			// Validate to phone number
+			const to = payload["To"]
+			if (!to || typeof to !== "string") return null
+
+			// Validate message body
+			const body = payload["Body"]
+			if (!body || typeof body !== "string") return null
+
+			return {
+				messageId,
+				from,
+				to,
+				body,
+				timestamp: new Date() // Twilio doesn't provide timestamp in webhook, use current time
 			}
 		} catch {
 			return null

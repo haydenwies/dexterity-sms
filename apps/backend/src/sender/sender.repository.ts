@@ -21,6 +21,13 @@ class SenderRepository {
 		return SenderRepository.toEntity(row)
 	}
 
+	async findByPhone(phone: Phone): Promise<Sender | undefined> {
+		const [row] = await this.db.select().from(senderTable).where(eq(senderTable.phone, phone.value)).limit(1)
+		if (!row) return undefined
+
+		return SenderRepository.toEntity(row)
+	}
+
 	async create(sender: Sender): Promise<Sender> {
 		if (!sender.organizationId) throw new Error("Organization ID is required to create sender")
 

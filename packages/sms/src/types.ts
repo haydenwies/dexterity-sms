@@ -24,6 +24,14 @@ type StatusWebhookEvent = {
 	errorMessage?: string
 }
 
+type InboundWebhookEvent = {
+	messageId: string // External ID from provider
+	from: string // Sender phone number
+	to: string // Recipient phone number (our number)
+	body: string // Message content
+	timestamp: Date // When message was received
+}
+
 type SmsProvider = {
 	send: (payload: SmsPayload) => Promise<Message>
 	getAvailableNumbers: () => Promise<string[]>
@@ -31,6 +39,7 @@ type SmsProvider = {
 	releaseNumber: (senderId: string) => Promise<void>
 	validateWebhook: (headers: Record<string, string>, body: any, url: string) => boolean
 	parseStatusWebhookPayload: (payload: unknown) => StatusWebhookEvent | null
+	parseInboundWebhookPayload: (payload: unknown) => InboundWebhookEvent | null
 }
 
-export type { Message, Sender, SmsPayload, SmsProvider, StatusWebhookEvent }
+export type { InboundWebhookEvent, Message, Sender, SmsPayload, SmsProvider, StatusWebhookEvent }
