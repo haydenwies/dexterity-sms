@@ -52,6 +52,14 @@ class CampaignController {
 		return this.campaignService.toDto(campaign)
 	}
 
+	@Delete()
+	async deleteMany(
+		@Param("organizationId") organizationId: string,
+		@Body(new ZodValidationPipe(deleteManyCampaignsDtoSchema)) body: DeleteManyCampaignsDto
+	): Promise<void> {
+		await this.campaignService.deleteMany(organizationId, body)
+	}
+
 	@Put(":campaignId")
 	async update(
 		@Param("organizationId") organizationId: string,
@@ -61,14 +69,6 @@ class CampaignController {
 		const campaign = await this.campaignService.update(organizationId, campaignId, body)
 
 		return this.campaignService.toDto(campaign)
-	}
-
-	@Delete()
-	async deleteMany(
-		@Param("organizationId") organizationId: string,
-		@Body(new ZodValidationPipe(deleteManyCampaignsDtoSchema)) body: DeleteManyCampaignsDto
-	): Promise<void> {
-		await this.campaignService.deleteMany(organizationId, body)
 	}
 
 	@Delete(":campaignId")

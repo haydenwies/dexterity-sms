@@ -1,8 +1,9 @@
 enum CampaignStatus {
 	DRAFT = "draft",
 	SCHEDULED = "scheduled",
-	SENT = "sent",
 	CANCELLED = "cancelled",
+	PROCESSING = "processing",
+	SENT = "sent",
 	FAILED = "failed"
 }
 
