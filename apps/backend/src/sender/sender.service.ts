@@ -1,10 +1,8 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common"
-import { MessageStatus } from "@repo/types/message"
 
 import { type AddSenderDto, type SenderModel } from "@repo/types/sender"
 
 import { Phone } from "~/common/phone.vo"
-import { MessageService } from "~/message/message.service"
 import { Sender } from "~/sender/sender.entity"
 import { SenderRepository } from "~/sender/sender.repository"
 import { SMS_PROVIDER, type SmsProvider } from "~/sms/sms.module"
@@ -13,7 +11,6 @@ import { SMS_PROVIDER, type SmsProvider } from "~/sms/sms.module"
 class SenderService {
 	constructor(
 		private readonly senderRepository: SenderRepository,
-		private readonly messageService: MessageService,
 		@Inject(SMS_PROVIDER) private readonly smsProvider: SmsProvider
 	) {}
 
@@ -60,12 +57,6 @@ class SenderService {
 	}
 
 	async remove(organizationId: string): Promise<void> {
-		// Check for pending messages first
-		const pendingCount = await this.messageService.count(organizationId, { status: MessageStatus.PENDING })
-		if (pendingCount > 0) {
-			throw new BadRequestException(`Cannot remove sender. ${pendingCount} messages are still pending delivery.`)
-		}
-
 		const sender = await this.senderRepository.find(organizationId)
 		if (!sender) throw new NotFoundException("Sender not found")
 
