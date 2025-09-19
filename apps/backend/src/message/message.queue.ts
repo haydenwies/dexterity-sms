@@ -29,32 +29,43 @@ class MessageQueueConsumer extends WorkerHost {
 	async process(job: Job): Promise<void> {
 		switch (job.name) {
 			case MESSAGE_QUEUE_JOB.SEND: {
-				const { organizationId, messageId } = job.data // TODO: Validate job data
+				const { organizationId, messageId, bypassUnsubscribeCheck } = job.data // TODO: Validate job data
 
-				return this.processSend(organizationId, messageId)
+				return this.processSend(organizationId, messageId, bypassUnsubscribeCheck || false)
 			}
 		}
 	}
 
-	private async processSend(organizationId: string, messageId: string): Promise<void> {
+	private async processSend(
+		organizationId: string,
+		messageId: string,
+		bypassUnsubscribeCheck = false
+	): Promise<void> {
 		// Find message
 		const message = await this.messageRepository.find(organizationId, messageId)
 		if (!message) throw new NotFoundException("Message not found")
 
-		// Check if the recipient is unsubscribed
-		const isUnsubscribed = await this.unsubscribeService.isUnsubscribed(organizationId, message.to)
-		if (isUnsubscribed) {
-			this.logger.warn(`Cannot send message to unsubscribed phone number: ${message.to.value}`, {
+		// Check if the recipient is unsubscribed (unless bypassed)
+		if (!bypassUnsubscribeCheck) {
+			const isUnsubscribed = await this.unsubscribeService.isUnsubscribed(organizationId, message.to)
+			if (isUnsubscribed) {
+				this.logger.warn(`Cannot send message to unsubscribed phone number: ${message.to.value}`, {
+					messageId: message.id,
+					organizationId,
+					to: message.to.value
+				})
+
+				// Mark message as failed due to unsubscribe
+				message.updateStatus(MessageStatus.FAILED)
+				await this.messageRepository.update(message)
+				return
+			}
+		} else
+			this.logger.log(`Bypassing unsubscribe check for message ${message.id} (system message)`, {
 				messageId: message.id,
 				organizationId,
 				to: message.to.value
 			})
-
-			// Mark message as failed due to unsubscribe
-			message.updateStatus(MessageStatus.FAILED)
-			await this.messageRepository.update(message)
-			return
-		}
 
 		try {
 			// Send via SMS provider

@@ -8,7 +8,7 @@ The Unsubscribe module provides automated opt-out functionality for SMS communic
 
 ### 1. Automatic Unsubscribe Detection
 
-- **R1.1**: Process inbound SMS messages for unsubscribe keywords
+- **R1.1**: Process SMS messages for unsubscribe keywords
 - **R1.2**: Support configurable unsubscribe keywords (initially: "STOP", "QUIT")
 - **R1.3**: Case-insensitive keyword matching
 - **R1.4**: Automatic confirmation reply when unsubscribe is processed
@@ -38,20 +38,6 @@ The Unsubscribe module provides automated opt-out functionality for SMS communic
 - **R5.3**: Simple record creation/deletion model
 
 ## Architecture Overview
-
-### Module Dependencies (Unidirectional)
-
-```
-MessageModule → UnsubscribeModule ← CampaignModule
-     ↓                   ↑
-DatabaseModule      DatabaseModule
-```
-
-**Key Design Principles:**
-
-- **Single Direction**: Only MessageModule and CampaignModule depend on UnsubscribeModule
-- **No Circular Dependencies**: UnsubscribeModule has no dependencies on other business modules
-- **Clean Separation**: Unsubscribe logic stays within webhook processing, not events
 
 ### Data Flow
 

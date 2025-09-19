@@ -9,9 +9,10 @@ import { DatabaseModule } from "~/database/database.module"
 import { MessageModule } from "~/message/message.module"
 import { OrganizationModule } from "~/organization/organization.module"
 import { SenderModule } from "~/sender/sender.module"
+import { UnsubscribeModule } from "~/unsubscribe/unsubscribe.module"
 
 @Module({
-	imports: [AuthModule, OrganizationModule, DatabaseModule, SenderModule, MessageModule],
+	imports: [AuthModule, OrganizationModule, DatabaseModule, SenderModule, MessageModule, UnsubscribeModule],
 	controllers: [ConversationController],
 	providers: [ConversationService, ConversationRepository, ConversationListener]
 })

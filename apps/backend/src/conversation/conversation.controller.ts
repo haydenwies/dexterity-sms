@@ -66,4 +66,12 @@ export class ConversationController {
 	): Promise<void> {
 		await this.conversationService.sendMessage(organizationId, conversationId, body)
 	}
+
+	@Get(":conversationId/unsubscribed")
+	async isUnsubscribed(
+		@Param("organizationId") organizationId: string,
+		@Param("conversationId") conversationId: string
+	): Promise<{ isUnsubscribed: boolean }> {
+		return await this.conversationService.isUnsubscribed(organizationId, conversationId)
+	}
 }

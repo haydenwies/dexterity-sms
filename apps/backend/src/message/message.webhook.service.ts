@@ -1,5 +1,7 @@
+import { InjectQueue } from "@nestjs/bullmq"
 import { Inject, Injectable, Logger } from "@nestjs/common"
 import { EventEmitter2 } from "@nestjs/event-emitter"
+import { Queue } from "bullmq"
 
 import { type InboundWebhookEvent, type StatusWebhookEvent } from "@repo/sms"
 import { MessageDirection, MessageStatus } from "@repo/types/message"
@@ -7,6 +9,7 @@ import { MessageDirection, MessageStatus } from "@repo/types/message"
 import { Phone } from "~/common/phone.vo"
 import { EVENT_TOPIC, type MessageCreatedEvent } from "~/event/event.types"
 import { Message } from "~/message/message.entity"
+import { MESSAGE_QUEUE, MESSAGE_QUEUE_JOB } from "~/message/message.queue"
 import { toMessageCreatedEvent } from "~/message/message.utils"
 import { SenderService } from "~/sender/sender.service"
 import { SMS_PROVIDER, type SmsProvider } from "~/sms/sms.module"
@@ -22,7 +25,8 @@ class MessageWebhookService {
 		private readonly messageRepository: MessageRepository,
 		private readonly senderService: SenderService,
 		private readonly eventEmitter: EventEmitter2,
-		private readonly unsubscribeService: UnsubscribeService
+		private readonly unsubscribeService: UnsubscribeService,
+		@InjectQueue(MESSAGE_QUEUE) private readonly messageQueue: Queue
 	) {}
 
 	async handleStatusUpdate(payload: StatusWebhookEvent): Promise<void> {
@@ -135,7 +139,12 @@ class MessageWebhookService {
 				await this.unsubscribeService.unsubscribe(organizationId, fromPhone)
 
 				// Send confirmation reply
-				await this.sendAutoReply(toPhone, fromPhone, this.unsubscribeService.getUnsubscribeReplyMessage())
+				await this.sendAutoReply(
+					organizationId,
+					toPhone,
+					fromPhone,
+					this.unsubscribeService.getUnsubscribeReplyMessage()
+				)
 				return
 			}
 
@@ -149,7 +158,12 @@ class MessageWebhookService {
 				await this.unsubscribeService.resubscribe(organizationId, fromPhone)
 
 				// Send confirmation reply
-				await this.sendAutoReply(toPhone, fromPhone, this.unsubscribeService.getResubscribeReplyMessage())
+				await this.sendAutoReply(
+					organizationId,
+					toPhone,
+					fromPhone,
+					this.unsubscribeService.getResubscribeReplyMessage()
+				)
 				return
 			}
 		} catch (error: unknown) {
@@ -163,24 +177,43 @@ class MessageWebhookService {
 	}
 
 	/**
-	 * Send auto-reply message
+	 * Send auto-reply message (bypasses unsubscribe check)
 	 */
-	private async sendAutoReply(from: Phone, to: Phone, message: string): Promise<void> {
+	private async sendAutoReply(organizationId: string, from: Phone, to: Phone, messageBody: string): Promise<void> {
 		try {
-			const payload = {
-				from: from.value,
-				to: to.value,
-				body: message
-			}
+			// Create message entity for auto-reply
+			const message = Message.create({
+				organizationId,
+				direction: MessageDirection.OUTBOUND,
+				status: MessageStatus.PENDING,
+				from,
+				to,
+				body: messageBody
+			})
 
-			await this.smsProvider.send(payload)
+			// Save message to database
+			const createdMessage = await this.messageRepository.create(message)
 
-			this.logger.log("Successfully sent unsubscribe auto-reply", {
+			// Emit message created event for conversation handling
+			const messageCreatedEvent = toMessageCreatedEvent(createdMessage)
+			await this.eventEmitter.emitAsync(EVENT_TOPIC.MESSAGE_CREATED, messageCreatedEvent)
+
+			// Queue for sending with bypass flag (internal only)
+			await this.messageQueue.add(MESSAGE_QUEUE_JOB.SEND, {
+				organizationId: createdMessage.organizationId,
+				messageId: createdMessage.id,
+				bypassUnsubscribeCheck: true
+			})
+
+			this.logger.log("Successfully queued unsubscribe auto-reply with bypass", {
+				messageId: createdMessage.id,
+				organizationId,
 				from: from.value,
 				to: to.value
 			})
 		} catch (error: unknown) {
-			this.logger.error("Failed to send unsubscribe auto-reply", {
+			this.logger.error("Failed to queue unsubscribe auto-reply", {
+				organizationId,
 				from: from.value,
 				to: to.value,
 				error
