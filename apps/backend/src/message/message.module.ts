@@ -20,7 +20,7 @@ import { UnsubscribeModule } from "~/unsubscribe/unsubscribe.module"
 		UnsubscribeModule
 	],
 	controllers: [MessageWebhookController],
-	providers: [MessageService, MessageRepository, MessageQueueConsumer, MessageWebhookService],
+	providers: [MessageService, MessageWebhookService, MessageQueueConsumer, MessageRepository],
 	exports: [MessageService]
 })
 class MessageModule {}
