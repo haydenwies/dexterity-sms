@@ -142,6 +142,29 @@ class Campaign {
 		this._status = CampaignStatus.CANCELLED
 		this._updatedAt = new Date()
 	}
+
+	updateStatusFromMessages(messageStatusCounts: {
+		sent: number
+		delivered: number
+		failed: number
+		total: number
+	}): boolean {
+		if (this._status !== CampaignStatus.SENT) return false
+
+		const { sent, delivered, failed, total } = messageStatusCounts
+
+		// If all messages failed, mark campaign as failed
+		if (failed === total && total > 0) {
+			this._status = CampaignStatus.FAILED
+			this._updatedAt = new Date()
+			return true
+		}
+
+		// Campaign remains SENT if there are still pending messages or some succeeded
+		// Additional status logic can be added here if needed (e.g., PARTIALLY_DELIVERED)
+
+		return false
+	}
 }
 
 export { Campaign }
