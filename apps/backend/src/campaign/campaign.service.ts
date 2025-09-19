@@ -1,5 +1,5 @@
 import { InjectQueue } from "@nestjs/bullmq"
-import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common"
+import { Injectable, NotFoundException } from "@nestjs/common"
 import { type Queue } from "bullmq"
 
 import {
@@ -81,15 +81,14 @@ class CampaignService {
 	async sendTest(organizationId: string, campaignId: string, dto: SendTestCampaignDto): Promise<void> {
 		const campaign = await this.campaignRepository.find(organizationId, campaignId)
 		if (!campaign) throw new NotFoundException("Campaign not found")
-		else if (!campaign.canSendTest()) throw new BadRequestException("Campaign test cannot be sent")
-
-		const { body } = campaign.sendTest()
 
 		const sender = await this.senderService.get(organizationId)
-
 		const to = Phone.create(dto.to)
 
+		const { body } = campaign.getBodyForSending()
+
 		await this.messageService.send(organizationId, {
+			campaignId,
 			from: sender.phone,
 			to,
 			body
@@ -100,20 +99,23 @@ class CampaignService {
 		const campaign = await this.campaignRepository.find(organizationId, campaignId)
 		if (!campaign) throw new NotFoundException("Campaign not found")
 
-		campaign.schedule(dto.scheduledAt)
+		// Use centralized state management - schedules campaign and transitions to SCHEDULED
+		campaign.setScheduled(dto.scheduledAt)
 		await this.campaignRepository.update(campaign)
 
+		// Queue the campaign for processing (will transition SCHEDULED -> PROCESSING -> SENT/FAILED)
 		await this.campaignQueue.add(CAMPAIGN_QUEUE_JOB.SEND, {
 			organizationId,
 			campaignId
-		})
+		}) // TODO: Add delay
 	}
 
 	async cancel(organizationId: string, campaignId: string): Promise<void> {
 		const campaign = await this.campaignRepository.find(organizationId, campaignId)
 		if (!campaign) throw new NotFoundException("Campaign not found")
 
-		campaign.cancel()
+		// Use centralized state management - transitions SCHEDULED -> CANCELLED
+		campaign.setCancelled()
 		await this.campaignRepository.update(campaign)
 	}
 

@@ -1,5 +1,5 @@
 import { InjectQueue, Processor, WorkerHost } from "@nestjs/bullmq"
-import { BadRequestException, NotFoundException } from "@nestjs/common"
+import { NotFoundException } from "@nestjs/common"
 import { Job, Queue } from "bullmq"
 
 import { MessageStatus } from "@repo/types/message"
@@ -46,10 +46,12 @@ class CampaignQueueConsumer extends WorkerHost {
 	private async processSend(organizationId: string, campaignId: string): Promise<void> {
 		const campaign = await this.campaignRepository.find(organizationId, campaignId)
 		if (!campaign) throw new NotFoundException("Campaign not found")
-		else if (!campaign.canSend()) throw new BadRequestException("Campaign cannot be sent")
 
-		const { body } = campaign.send()
+		// Transition from SCHEDULED to PROCESSING (following the state flow)
+		campaign.setProcessing()
+		await this.campaignRepository.update(campaign)
 
+		const { body } = campaign.getBodyForSending()
 		const sender = await this.senderService.get(organizationId)
 
 		const contacts = await this.contactService.getAll(organizationId)
@@ -68,14 +70,13 @@ class CampaignQueueConsumer extends WorkerHost {
 
 		// Send messages only to subscribed contacts
 		const validContacts = allowedContacts.filter((contact) => contact !== null)
-
 		await Promise.all(
 			validContacts.map((contact) =>
 				this.messageService.send(organizationId, {
+					campaignId,
 					from: sender.phone,
 					to: contact.phone!,
-					body,
-					campaignId
+					body
 				})
 			)
 		)
@@ -105,17 +106,23 @@ class CampaignQueueConsumer extends WorkerHost {
 		const messages = await this.messageService.getMany(organizationId, { campaignId })
 		if (messages.length === 0) return
 
+		// Count each message status
 		const statusCounts = {
-			total: messages.length,
+			processing: 0,
 			sent: 0,
 			delivered: 0,
 			failed: 0,
-			pending: 0
+			total: messages.length
 		}
 
-		// Count each message status
 		messages.forEach((message) => {
 			switch (message.status) {
+				case MessageStatus.PENDING: // TODO: Remove this
+					statusCounts.processing++
+					break
+				case MessageStatus.PROCESSING:
+					statusCounts.processing++
+					break
 				case MessageStatus.SENT:
 					statusCounts.sent++
 					break
@@ -125,21 +132,17 @@ class CampaignQueueConsumer extends WorkerHost {
 				case MessageStatus.FAILED:
 					statusCounts.failed++
 					break
-				case MessageStatus.PENDING:
-					statusCounts.pending++
-					break
 			}
 		})
 
-		// Update campaign status if needed
-		const wasUpdated = campaign.updateStatusFromMessages({
-			sent: statusCounts.sent,
-			delivered: statusCounts.delivered,
-			failed: statusCounts.failed,
-			total: statusCounts.total
-		})
-
-		if (wasUpdated) await this.campaignRepository.update(campaign)
+		if (statusCounts.processing > 0) return
+		else if (statusCounts.failed === statusCounts.total) {
+			campaign.setFailed()
+			await this.campaignRepository.update(campaign)
+		} else if (statusCounts.sent > 0 || statusCounts.delivered > 0) {
+			campaign.setSent()
+			await this.campaignRepository.update(campaign)
+		}
 	}
 }
 
