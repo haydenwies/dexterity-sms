@@ -99,6 +99,15 @@ class Campaign implements ICampaign {
 		this._updatedAt = new Date()
 	}
 
+	/**
+	 * Returns the campaign body for sending
+	 */
+	getBodyForSending(): { body: string } {
+		if (!this._body) throw new Error("Campaign body is required")
+
+		return { body: this._body }
+	}
+
 	// #region State Managemrnt
 
 	/**
@@ -158,15 +167,6 @@ class Campaign implements ICampaign {
 
 		this._status = CampaignStatus.FAILED
 		this._updatedAt = new Date()
-	}
-
-	/**
-	 * Returns the campaign body for sending
-	 */
-	getBodyForSending(): { body: string } {
-		if (!this._body) throw new Error("Campaign body is required")
-
-		return { body: this._body }
 	}
 
 	// #endregion
