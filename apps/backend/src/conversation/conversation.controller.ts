@@ -49,22 +49,22 @@ export class ConversationController {
 	}
 
 	@Get(":conversationId/messages")
-	async getManyMessages(
+	async getManyConversationMessages(
 		@Param("organizationId") organizationId: string,
 		@Param("conversationId") conversationId: string
 	): Promise<MessageModel[]> {
-		const messages = await this.conversationService.getManyMessages(organizationId, conversationId)
+		const messages = await this.conversationService.getManyConversationMessages(organizationId, conversationId)
 
 		return messages.map((message) => toMessageDto(message))
 	}
 
 	@Post(":conversationId/messages")
-	async sendMessage(
+	async sendConversationMessage(
 		@Param("organizationId") organizationId: string,
 		@Param("conversationId") conversationId: string,
 		@Body(new ZodValidationPipe(sendMessageDtoSchema)) body: SendMessageDto
 	): Promise<void> {
-		await this.conversationService.sendMessage(organizationId, conversationId, body)
+		await this.conversationService.sendConversationMessage(organizationId, conversationId, body)
 	}
 
 	@Get(":conversationId/unsubscribed")

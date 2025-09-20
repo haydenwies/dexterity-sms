@@ -41,19 +41,20 @@ class ContactController {
 		return contacts.map(this.contactService.toDto)
 	}
 
-	@Get(":id")
-	async get(@Param("organizationId") organizationId: string, @Param("id") id: string): Promise<ContactModel> {
-		const contact = await this.contactService.get(organizationId, id)
-
-		return this.contactService.toDto(contact)
-	}
-
 	@Post()
 	async create(
 		@Param("organizationId") organizationId: string,
 		@Body(new ZodValidationPipe(createContactDtoSchema)) body: CreateContactDto
 	): Promise<void> {
 		await this.contactService.create(organizationId, body)
+	}
+
+	@Delete()
+	async deleteMany(
+		@Param("organizationId") organizationId: string,
+		@Body(new ZodValidationPipe(deleteManyContactsDtoSchema)) body: DeleteManyContactsDto
+	): Promise<void> {
+		await this.contactService.deleteMany(organizationId, body)
 	}
 
 	@Post("csv")
@@ -66,26 +67,31 @@ class ContactController {
 		await this.contactService.createFromCsv(organizationId, file, body)
 	}
 
-	@Put(":id")
+	@Get(":contactId")
+	async get(
+		@Param("organizationId") organizationId: string,
+		@Param("contactId") contactId: string
+	): Promise<ContactModel> {
+		const contact = await this.contactService.get(organizationId, contactId)
+
+		return this.contactService.toDto(contact)
+	}
+
+	@Put(":contactId")
 	async update(
 		@Param("organizationId") organizationId: string,
-		@Param("id") id: string,
+		@Param("contactId") contactId: string,
 		@Body(new ZodValidationPipe(updateContactDtoSchema)) body: UpdateContactDto
 	): Promise<void> {
-		await this.contactService.update(organizationId, id, body)
+		await this.contactService.update(organizationId, contactId, body)
 	}
 
-	@Delete()
-	async deleteMany(
+	@Delete(":contactId")
+	async delete(
 		@Param("organizationId") organizationId: string,
-		@Body(new ZodValidationPipe(deleteManyContactsDtoSchema)) body: DeleteManyContactsDto
+		@Param("contactId") contactId: string
 	): Promise<void> {
-		await this.contactService.deleteMany(organizationId, body)
-	}
-
-	@Delete(":id")
-	async delete(@Param("organizationId") organizationId: string, @Param("id") id: string): Promise<void> {
-		await this.contactService.delete(organizationId, id)
+		await this.contactService.delete(organizationId, contactId)
 	}
 }
 

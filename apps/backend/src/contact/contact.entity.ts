@@ -3,6 +3,17 @@ import z from "zod"
 import { Email } from "~/common/email.vo"
 import { Phone } from "~/common/phone.vo"
 
+interface IContact {
+	id: string
+	organizationId: string
+	firstName?: string
+	lastName?: string
+	email?: Email
+	phone?: Phone
+	createdAt: Date
+	updatedAt: Date
+}
+
 type ContactConstructorParams = {
 	id: string
 	organizationId: string
@@ -29,7 +40,7 @@ type ContactUpdateParams = {
 	phone?: string
 }
 
-class Contact {
+class Contact implements IContact {
 	public readonly id: string
 	public readonly organizationId: string
 	private _firstName?: string

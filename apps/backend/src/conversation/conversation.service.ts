@@ -40,7 +40,7 @@ export class ConversationService {
 		return createdConversation
 	}
 
-	async getManyMessages(organizationId: string, conversationId: string): Promise<Message[]> {
+	async getManyConversationMessages(organizationId: string, conversationId: string): Promise<Message[]> {
 		const messages = await this.messageService.getMany(organizationId, {
 			conversationId
 		})
@@ -48,17 +48,14 @@ export class ConversationService {
 		return messages
 	}
 
-	async sendMessage(organizationId: string, conversationId: string, dto: SendMessageDto): Promise<void> {
+	async sendConversationMessage(organizationId: string, conversationId: string, dto: SendMessageDto): Promise<void> {
 		// Find conversation
 		const conversation = await this.conversationRepository.find(organizationId, conversationId)
 		if (!conversation) throw new NotFoundException("Conversation not found")
 
 		// Check if the recipient is unsubscribed
 		const isUnsubscribed = await this.unsubscribeService.isUnsubscribed(organizationId, conversation.recipient)
-		if (isUnsubscribed)
-			throw new BadRequestException(
-				`Cannot send message to unsubscribed recipient: ${conversation.recipient.value}`
-			)
+		if (isUnsubscribed) throw new BadRequestException(`Cannot send message to unsubscribed recipient`)
 
 		// Find sender
 		const sender = await this.senderService.get(organizationId)
