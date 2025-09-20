@@ -13,6 +13,7 @@ import { AuthGuard } from "~/auth/auth.guard"
 import { User as UserEntity } from "~/auth/user/user.entity"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
 import { OrganizationService } from "~/organization/organization.service"
+import { toOrganizationDto } from "~/organization/organization.utils"
 
 @UseGuards(AuthGuard)
 @Controller("organizations")
@@ -20,17 +21,10 @@ class OrganizationController {
 	constructor(private readonly organizationService: OrganizationService) {}
 
 	@Get()
-	async getAll(@User() user: UserEntity): Promise<OrganizationModel[]> {
-		const organizations = await this.organizationService.getAll(user.id)
+	async getMany(@User() user: UserEntity): Promise<OrganizationModel[]> {
+		const organizations = await this.organizationService.getMany(user.id)
 
-		return organizations.map(this.organizationService.toDto)
-	}
-
-	@Get(":id")
-	async get(@User() user: UserEntity, @Param("id") id: string): Promise<OrganizationModel> {
-		const organization = await this.organizationService.get(user.id, id)
-
-		return this.organizationService.toDto(organization)
+		return organizations.map((organization) => toOrganizationDto(organization))
 	}
 
 	@Post()
@@ -40,7 +34,14 @@ class OrganizationController {
 	): Promise<OrganizationModel> {
 		const organization = await this.organizationService.create(user.id, body)
 
-		return this.organizationService.toDto(organization)
+		return toOrganizationDto(organization)
+	}
+
+	@Get(":id")
+	async get(@User() user: UserEntity, @Param("id") id: string): Promise<OrganizationModel> {
+		const organization = await this.organizationService.get(user.id, id)
+
+		return toOrganizationDto(organization)
 	}
 
 	@Put(":id")
@@ -51,7 +52,7 @@ class OrganizationController {
 	): Promise<OrganizationModel> {
 		const organization = await this.organizationService.update(user.id, id, body)
 
-		return this.organizationService.toDto(organization)
+		return toOrganizationDto(organization)
 	}
 }
 

@@ -3,7 +3,6 @@ import { Injectable, NotFoundException } from "@nestjs/common"
 import { type Queue } from "bullmq"
 
 import {
-	type CampaignModel,
 	type CreateCampaignDto,
 	type DeleteManyCampaignsDto,
 	type SendCampaignDto,
@@ -117,18 +116,6 @@ class CampaignService {
 		// Use centralized state management - transitions SCHEDULED -> CANCELLED
 		campaign.setCancelled()
 		await this.campaignRepository.update(campaign)
-	}
-
-	toDto(campaign: Campaign): CampaignModel {
-		return {
-			id: campaign.id,
-			organizationId: campaign.organizationId,
-			status: campaign.status,
-			name: campaign.name,
-			body: campaign.body,
-			createdAt: campaign.createdAt,
-			updatedAt: campaign.updatedAt
-		}
 	}
 }
 

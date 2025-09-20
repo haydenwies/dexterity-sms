@@ -1,6 +1,6 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common"
 
-import { type AddSenderDto, type SenderModel } from "@repo/types/sender"
+import { type AddSenderDto } from "@repo/types/sender"
 
 import { Phone } from "~/common/phone.vo"
 import { Sender } from "~/sender/sender.entity"
@@ -62,15 +62,6 @@ class SenderService {
 
 		await this.smsProvider.releaseNumber(sender.externalId)
 		await this.senderRepository.delete(sender)
-	}
-
-	toDto(sender: Sender): SenderModel {
-		return {
-			id: sender.phone.value,
-			organizationId: sender.organizationId,
-			value: sender.phone.value,
-			createdAt: sender.createdAt
-		}
 	}
 }
 

@@ -16,6 +16,7 @@ import {
 
 import { AuthGuard } from "~/auth/auth.guard"
 import { CampaignService } from "~/campaign/campaign.service"
+import { toCampaignDto } from "~/campaign/campaign.utils"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
 import { OrganizationGuard } from "~/organization/organization.guard"
 import { SenderGuard } from "~/sender/sender.guard"
@@ -29,7 +30,7 @@ class CampaignController {
 	async getMany(@Param("organizationId") organizationId: string): Promise<CampaignModel[]> {
 		const campaigns = await this.campaignService.getMany(organizationId)
 
-		return campaigns.map((campaign) => this.campaignService.toDto(campaign))
+		return campaigns.map((campaign) => toCampaignDto(campaign))
 	}
 
 	@Post()
@@ -39,7 +40,7 @@ class CampaignController {
 	): Promise<CampaignModel> {
 		const campaign = await this.campaignService.create(organizationId, body)
 
-		return this.campaignService.toDto(campaign)
+		return toCampaignDto(campaign)
 	}
 
 	@Get(":campaignId")
@@ -49,7 +50,7 @@ class CampaignController {
 	): Promise<CampaignModel> {
 		const campaign = await this.campaignService.get(organizationId, campaignId)
 
-		return this.campaignService.toDto(campaign)
+		return toCampaignDto(campaign)
 	}
 
 	@Delete()
@@ -68,7 +69,7 @@ class CampaignController {
 	): Promise<CampaignModel> {
 		const campaign = await this.campaignService.update(organizationId, campaignId, body)
 
-		return this.campaignService.toDto(campaign)
+		return toCampaignDto(campaign)
 	}
 
 	@Delete(":campaignId")

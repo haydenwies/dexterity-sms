@@ -61,10 +61,7 @@ class MessageWebhookService {
 		// Check if message already exists (deduplication)
 		const existingMessage = await this.messageRepository.findByExternalId(payload.messageId)
 		if (existingMessage) {
-			this.logger.warn("Inbound message already exists, skipping", {
-				messageId: payload.messageId,
-				existingId: existingMessage.id
-			})
+			this.logger.warn(`Inbound message with external ID ${existingMessage.externalId} already exists, skipping`)
 			return
 		}
 
@@ -72,10 +69,7 @@ class MessageWebhookService {
 		const toPhone = Phone.create(payload.to)
 		const sender = await this.senderService.findByPhone(toPhone)
 		if (!sender) {
-			this.logger.warn("No sender found for inbound message recipient", {
-				to: payload.to,
-				messageId: payload.messageId
-			})
+			this.logger.warn(`No sender found for inbound message recipient ${payload.to}`)
 			return
 		}
 
@@ -94,12 +88,6 @@ class MessageWebhookService {
 		try {
 			const createdMessage = await this.messageRepository.create(message)
 
-			this.logger.log("Successfully created inbound message", {
-				messageId: createdMessage.id,
-				externalId: payload.messageId,
-				organizationId: sender.organizationId
-			})
-
 			// Process unsubscribe/resubscribe keywords directly
 			await this.processUnsubscribeKeywords(payload.body, sender.organizationId, fromPhone, toPhone)
 
@@ -107,9 +95,7 @@ class MessageWebhookService {
 			const messageCreatedEvent: MessageCreatedEvent = toMessageCreatedEvent(createdMessage)
 			await this.eventEmitter.emitAsync(EVENT_TOPIC.MESSAGE_CREATED, messageCreatedEvent)
 
-			this.logger.log("Emitted message created event for inbound message", {
-				messageId: createdMessage.id
-			})
+			this.logger.log(`Emitted message created event for inbound message ${createdMessage.id}`)
 		} catch (err: unknown) {
 			this.logger.error("Failed to create inbound message", {
 				messageId: payload.messageId,
@@ -203,13 +189,6 @@ class MessageWebhookService {
 				organizationId: createdMessage.organizationId,
 				messageId: createdMessage.id,
 				bypassUnsubscribeCheck: true
-			})
-
-			this.logger.log("Successfully queued unsubscribe auto-reply with bypass", {
-				messageId: createdMessage.id,
-				organizationId,
-				from: from.value,
-				to: to.value
 			})
 		} catch (error: unknown) {
 			this.logger.error("Failed to queue unsubscribe auto-reply", {

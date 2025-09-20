@@ -1,10 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common"
 
-import {
-	type CreateOrganizationDto,
-	type OrganizationModel,
-	type UpdateOrganizationDto
-} from "@repo/types/organization"
+import { type CreateOrganizationDto, type UpdateOrganizationDto } from "@repo/types/organization"
 
 import { MemberService } from "~/organization/member/member.service"
 import { Organization } from "~/organization/organization.entity"
@@ -17,7 +13,7 @@ class OrganizationService {
 		private readonly memberService: MemberService
 	) {}
 
-	async getAll(userId: string): Promise<Organization[]> {
+	async getMany(userId: string): Promise<Organization[]> {
 		// Get all organization users
 		const members = await this.memberService.getAllByUserId(userId)
 		const organizationIds = members.map((member) => member.organizationId)
@@ -64,16 +60,6 @@ class OrganizationService {
 		const updatedOrganization = await this.organizationRepository.update(organization)
 
 		return updatedOrganization
-	}
-
-	toDto(organization: Organization): OrganizationModel {
-		return {
-			id: organization.id,
-			name: organization.name,
-			billingAccountId: undefined, // TODO: Remove this from DTO
-			createdAt: organization.createdAt,
-			updatedAt: organization.updatedAt
-		}
 	}
 }
 

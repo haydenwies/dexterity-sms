@@ -6,6 +6,7 @@ import { AuthGuard } from "~/auth/auth.guard"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
 import { OrganizationGuard } from "~/organization/organization.guard"
 import { SenderService } from "~/sender/sender.service"
+import { toSenderDto } from "./sender.utils"
 
 @UseGuards(AuthGuard, OrganizationGuard)
 @Controller("organizations/:organizationId/sender")
@@ -16,7 +17,7 @@ class SenderController {
 	async get(@Param("organizationId") organizationId: string): Promise<SenderModel> {
 		const sender = await this.senderService.get(organizationId)
 
-		return this.senderService.toDto(sender)
+		return toSenderDto(sender)
 	}
 
 	@Post()
