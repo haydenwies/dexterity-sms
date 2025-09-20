@@ -1,5 +1,10 @@
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useParams } from "next/navigation"
 import { useState } from "react"
+import { useForm } from "react-hook-form"
+
+import { type SendMessageDto, sendMessageDtoSchema } from "@repo/types/conversation"
+
 import { sendMessage } from "~/actions/conversation/send-message"
 
 const useSendMessage = () => {
@@ -8,7 +13,14 @@ const useSendMessage = () => {
 
 	const params = useParams()
 
-	const handleSendMessage = async (body: string) => {
+	const sendConversationMessageForm = useForm<SendMessageDto>({
+		resolver: zodResolver(sendMessageDtoSchema),
+		defaultValues: {
+			body: ""
+		}
+	})
+
+	const handleSendMessage = sendConversationMessageForm.handleSubmit(async (data) => {
 		setLoading(true)
 
 		try {
@@ -17,7 +29,9 @@ const useSendMessage = () => {
 			const conversationId = params.conversationId
 			if (!conversationId || Array.isArray(conversationId)) throw new Error("Conversation ID is required")
 
-			await sendMessage(organizationId, conversationId, { body })
+			await sendMessage(organizationId, conversationId, data)
+
+			sendConversationMessageForm.reset()
 		} catch {
 			setError("An unexpected error occurred")
 		} finally {
@@ -25,9 +39,9 @@ const useSendMessage = () => {
 		}
 
 		setError(null)
-	}
+	})
 
-	return { loading, error, handleSendMessage }
+	return { loading, error, sendConversationMessageForm, handleSendMessage }
 }
 
 export { useSendMessage }

@@ -35,13 +35,13 @@ const AllMessagesList = ({ messagesPromise, className }: AllMessagesListProps) =
 
 	if (messages.length === 0)
 		return (
-			<div className={cn("flex h-full items-center justify-center p-4", className)}>
+			<div className={cn("flex h-full items-center justify-center", className)}>
 				<p className="text-muted-foreground text-sm">No messages yet</p>
 			</div>
 		)
 
 	return (
-		<div className={cn("h-full space-y-2 overflow-y-auto px-6 py-4", className)}>
+		<div className={cn("h-full space-y-2 overflow-y-auto", className)}>
 			{messages.map((message) => (
 				<MessageBubble
 					key={message.id}

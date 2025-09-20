@@ -24,7 +24,7 @@ const ConversationHeader = ({ conversationPromise, contactsPromise, className }:
 	}, [conversation, contacts])
 
 	return (
-		<div className={cn("flex h-16 items-center px-6", className)}>
+		<div className={cn("flex items-center", className)}>
 			<div>
 				<h2 className="text-lg font-semibold">{displayName || conversation.recipient}</h2>
 				{displayName && <p className="text-muted-foreground">{conversation.recipient}</p>}

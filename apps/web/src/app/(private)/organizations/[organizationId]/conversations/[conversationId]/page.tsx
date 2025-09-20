@@ -20,13 +20,17 @@ const ConversationPage = async ({ params }: PageProps) => {
 	return (
 		<div className="flex h-full max-h-full flex-col overflow-hidden">
 			<ConversationHeader
+				className="h-16 px-6"
 				conversationPromise={conversationPromise}
 				contactsPromise={contactsPromise}
 			/>
 			<div className="min-h-0 flex-1 overflow-hidden">
-				<AllMessagesList messagesPromise={messagesPromise} />
+				<AllMessagesList
+					className="px-6 py-4"
+					messagesPromise={messagesPromise}
+				/>
 			</div>
-			<MessageInput />
+			<MessageInput className="px-6 py-4" />
 		</div>
 	)
 }
