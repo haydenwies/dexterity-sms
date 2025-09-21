@@ -6,7 +6,7 @@ import { MessageInboundWebhookGuard, MessageStatusWebhookGuard } from "~/message
 import { MessageInboundWebhookPipe, MessageStatusWebhookPipe } from "~/message/message.webhook.pipe"
 import { MessageWebhookService } from "~/message/message.webhook.service"
 
-@Controller("webhooks/message")
+@Controller("webhooks/messages")
 class MessageWebhookController {
 	private readonly logger = new Logger(MessageWebhookController.name)
 
