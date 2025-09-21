@@ -7,16 +7,6 @@ type TwilioConfig = {
 	authToken: string
 }
 
-type TwilioWebhookPayload = {
-	MessageSid: string
-	MessageStatus: string
-	From: string
-	To: string
-	Body: string
-	ErrorCode?: string
-	ErrorMessage?: string
-}
-
 class TwilioProvider implements SmsProvider {
 	private readonly authToken: string
 	private readonly client: Twilio
@@ -30,7 +20,8 @@ class TwilioProvider implements SmsProvider {
 		const message = await this.client.messages.create({
 			from: payload.from,
 			to: payload.to,
-			body: payload.body
+			body: payload.body,
+			statusCallback: payload.statusCallback
 		})
 
 		return {
@@ -61,7 +52,7 @@ class TwilioProvider implements SmsProvider {
 	}
 
 	validateWebhook(headers: Record<string, string>, body: any, url: string): boolean {
-		const twilioHeader = headers["X-Twilio-Signature"]
+		const twilioHeader = headers["x-twilio-signature"]
 		if (!twilioHeader) return false
 
 		const isValid = validateRequest(this.authToken, twilioHeader, url, body)

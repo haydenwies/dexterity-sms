@@ -2,6 +2,7 @@ type SmsPayload = {
 	from: string
 	to: string
 	body: string
+	statusCallback?: string
 }
 
 type Message = {
