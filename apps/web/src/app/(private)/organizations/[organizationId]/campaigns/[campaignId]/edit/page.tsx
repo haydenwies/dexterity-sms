@@ -5,7 +5,7 @@ import { Button } from "@repo/ui/components/button"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
 
-import { getCampaign } from "~/actions/campaign/get-campaign"
+import { getCampaign } from "~/data/campaign/get-campaign"
 import { SendCampaignButton } from "~/features/campaign/components/send-campaign"
 import { SendTestCampaignButton } from "~/features/campaign/components/send-test-campaign"
 import {

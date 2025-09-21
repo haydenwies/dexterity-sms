@@ -1,6 +1,6 @@
-import { getAllOrganizations } from "~/actions/organization/get-all-organizations"
-import { getOrganization } from "~/actions/organization/get-organization"
 import { Sidebar, SidebarProvider } from "~/components/sidebar"
+import { getManyOrganizations } from "~/data/organization/get-many-organizations"
+import { getOrganization } from "~/data/organization/get-organization"
 
 type OrganizationLayoutProps = {
 	children: React.ReactNode
@@ -8,7 +8,10 @@ type OrganizationLayoutProps = {
 }
 const OrganizationLayout = async ({ children, params }: OrganizationLayoutProps) => {
 	const { organizationId } = await params
-	const [allOrganizations, organization] = await Promise.all([getAllOrganizations(), getOrganization(organizationId)])
+	const [allOrganizations, organization] = await Promise.all([
+		getManyOrganizations(),
+		getOrganization(organizationId)
+	])
 
 	return (
 		<SidebarProvider>

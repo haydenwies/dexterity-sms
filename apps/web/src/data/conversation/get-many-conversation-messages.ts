@@ -1,4 +1,4 @@
-"use server"
+import "server-only"
 
 import { routes } from "@repo/routes"
 import { type MessageModel } from "@repo/types/message"
@@ -6,7 +6,7 @@ import { type MessageModel } from "@repo/types/message"
 import { sessionMiddleware } from "~/actions/utils"
 import { getBackendUrl } from "~/lib/backend"
 
-const getConversationMessages = async (organizationId: string, conversationId: string): Promise<MessageModel[]> => {
+const getManyConversationMessages = async (organizationId: string, conversationId: string): Promise<MessageModel[]> => {
 	const sessionToken = await sessionMiddleware()
 
 	const backendUrl = getBackendUrl()
@@ -29,4 +29,4 @@ const getConversationMessages = async (organizationId: string, conversationId: s
 	return data
 }
 
-export { getConversationMessages }
+export { getManyConversationMessages }

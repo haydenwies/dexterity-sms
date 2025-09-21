@@ -1,6 +1,6 @@
-import { getAllContacts } from "~/actions/contact/get-all-contacts"
-import { getConversation } from "~/actions/conversation/get-conversation"
-import { getConversationMessages } from "~/actions/conversation/get-conversation-messages"
+import { getManyContacts } from "~/data/contact/get-many-contacts"
+import { getConversation } from "~/data/conversation/get-conversation"
+import { getManyConversationMessages } from "~/data/conversation/get-many-conversation-messages"
 import {
 	AllMessagesList,
 	ConversationHeader,
@@ -14,8 +14,8 @@ const ConversationPage = async ({ params }: PageProps) => {
 	const { organizationId, conversationId } = await params
 
 	const conversationPromise = getConversation(organizationId, conversationId)
-	const messagesPromise = getConversationMessages(organizationId, conversationId)
-	const contactsPromise = getAllContacts(organizationId)
+	const messagesPromise = getManyConversationMessages(organizationId, conversationId)
+	const contactsPromise = getManyContacts(organizationId)
 
 	return (
 		<div className="flex h-full max-h-full flex-col overflow-hidden">

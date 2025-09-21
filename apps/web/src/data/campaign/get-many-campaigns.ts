@@ -1,15 +1,16 @@
-"use server"
+import "server-only"
 
 import { routes } from "@repo/routes"
-import { type ConversationModel } from "@repo/types/conversation"
-import { getBackendUrl } from "~/lib/backend"
-import { sessionMiddleware } from "../utils"
+import { type CampaignModel } from "@repo/types/campaign"
 
-const getConversation = async (organizationId: string, conversationId: string): Promise<ConversationModel> => {
+import { sessionMiddleware } from "~/actions/utils"
+import { getBackendUrl } from "~/lib/backend"
+
+const getManyCampaigns = async (organizationId: string): Promise<CampaignModel[]> => {
 	const sessionToken = await sessionMiddleware()
 
 	const backendUrl = getBackendUrl()
-	const res = await fetch(`${backendUrl}${routes.backend.GET_CONVERSATION(organizationId, conversationId)}`, {
+	const res = await fetch(`${backendUrl}${routes.backend.GET_MANY_CAMPAIGNS(organizationId)}`, {
 		method: "GET",
 		headers: {
 			"Authorization": `Bearer ${sessionToken}`
@@ -25,4 +26,4 @@ const getConversation = async (organizationId: string, conversationId: string): 
 	return data
 }
 
-export { getConversation }
+export { getManyCampaigns }

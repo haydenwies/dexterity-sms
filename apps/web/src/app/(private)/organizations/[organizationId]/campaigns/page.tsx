@@ -1,7 +1,7 @@
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
 
-import { getManyCampaigns } from "~/actions/campaign/get-many-campaigns"
+import { getManyCampaigns } from "~/data/campaign/get-many-campaigns"
 import { CampaignTable } from "~/features/campaign/components/campaign-table"
 import { CreateCampaignButton } from "~/features/campaign/components/create-campaign"
 

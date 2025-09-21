@@ -1,4 +1,4 @@
-"use server"
+import "server-only"
 
 import { routes } from "@repo/routes"
 import { type ContactModel } from "@repo/types/contact"
@@ -6,7 +6,7 @@ import { type ContactModel } from "@repo/types/contact"
 import { sessionMiddleware } from "~/actions/utils"
 import { getBackendUrl } from "~/lib/backend"
 
-const getAllContacts = async (organizationId: string): Promise<ContactModel[]> => {
+const getManyContacts = async (organizationId: string): Promise<ContactModel[]> => {
 	const sessionToken = await sessionMiddleware()
 
 	const backendUrl = getBackendUrl()
@@ -26,4 +26,4 @@ const getAllContacts = async (organizationId: string): Promise<ContactModel[]> =
 	return data
 }
 
-export { getAllContacts }
+export { getManyContacts }

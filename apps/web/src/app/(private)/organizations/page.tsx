@@ -1,11 +1,11 @@
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
 
-import { getAllOrganizations } from "~/actions/organization/get-all-organizations"
+import { getManyOrganizations } from "~/data/organization/get-many-organizations"
 import { AllOrganizationsList } from "~/features/organization/components/all-organizations-list"
 
 const AllOrganizationsPage = () => {
-	const organizationsPromise = getAllOrganizations()
+	const organizationsPromise = getManyOrganizations()
 
 	return (
 		<Page className="container">

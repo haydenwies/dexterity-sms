@@ -1,4 +1,4 @@
-"use server"
+import "server-only"
 
 import { routes } from "@repo/routes"
 import { type OrganizationModel } from "@repo/types/organization"
@@ -6,11 +6,11 @@ import { type OrganizationModel } from "@repo/types/organization"
 import { sessionMiddleware } from "~/actions/utils"
 import { getBackendUrl } from "~/lib/backend"
 
-const getAllOrganizations = async (): Promise<OrganizationModel[]> => {
+const getOrganization = async (organizationId: string): Promise<OrganizationModel> => {
 	const sessionToken = await sessionMiddleware()
 
 	const backendUrl = getBackendUrl()
-	const res = await fetch(`${backendUrl}${routes.backend.GET_ALL_ORGANIZATIONS}`, {
+	const res = await fetch(`${backendUrl}${routes.backend.GET_ORGANIZATION(organizationId)}`, {
 		method: "GET",
 		headers: {
 			"Authorization": `Bearer ${sessionToken}`
@@ -26,4 +26,4 @@ const getAllOrganizations = async (): Promise<OrganizationModel[]> => {
 	return data
 }
 
-export { getAllOrganizations }
+export { getOrganization }

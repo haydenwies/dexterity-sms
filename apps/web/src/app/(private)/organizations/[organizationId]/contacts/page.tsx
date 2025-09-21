@@ -1,7 +1,7 @@
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
 
-import { getAllContacts } from "~/actions/contact/get-all-contacts"
+import { getManyContacts } from "~/data/contact/get-many-contacts"
 import { ContactTable } from "~/features/contact/components/contact-table"
 import { CreateContactButton } from "~/features/contact/components/create-contact"
 import { UploadContactCsvButton } from "~/features/contact/components/upload-contact-csv"
@@ -12,7 +12,7 @@ type AllContactsPageProps = Readonly<{
 const AllContactsPage = async ({ params }: AllContactsPageProps) => {
 	const { organizationId } = await params
 
-	const contactsPromise = getAllContacts(organizationId)
+	const contactsPromise = getManyContacts(organizationId)
 
 	return (
 		<Page>

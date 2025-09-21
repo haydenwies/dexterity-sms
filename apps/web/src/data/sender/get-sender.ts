@@ -1,22 +1,24 @@
-"use server"
+import "server-only"
 
 import { routes } from "@repo/routes"
-import { type OrganizationModel } from "@repo/types/organization"
+import { type SenderModel } from "@repo/types/sender"
 
 import { sessionMiddleware } from "~/actions/utils"
 import { getBackendUrl } from "~/lib/backend"
 
-const getOrganization = async (organizationId: string): Promise<OrganizationModel> => {
+const getSender = async (organizationId: string): Promise<SenderModel | undefined> => {
 	const sessionToken = await sessionMiddleware()
 
 	const backendUrl = getBackendUrl()
-	const res = await fetch(`${backendUrl}${routes.backend.GET_ORGANIZATION(organizationId)}`, {
+	const res = await fetch(`${backendUrl}${routes.backend.GET_SENDER(organizationId)}`, {
 		method: "GET",
 		headers: {
 			"Authorization": `Bearer ${sessionToken}`
 		}
 	})
 	if (!res.ok) {
+		if (res.status === 404) return undefined
+
 		const errData = await res.json()
 		throw new Error(errData.message)
 	}
@@ -26,4 +28,4 @@ const getOrganization = async (organizationId: string): Promise<OrganizationMode
 	return data
 }
 
-export { getOrganization }
+export { getSender }

@@ -1,8 +1,8 @@
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
 
-import { getAllContacts } from "~/actions/contact/get-all-contacts"
-import { getAllConversations } from "~/actions/conversation/get-all-conversations"
+import { getManyContacts } from "~/data/contact/get-many-contacts"
+import { getManyConversations } from "~/data/conversation/get-many-conversations"
 import { AllConversationsList } from "~/features/conversation/components/all-conversations-list"
 import { NewConversationButton } from "~/features/conversation/components/new-conversation"
 
@@ -13,8 +13,8 @@ type LayoutProps = Readonly<{
 const AllMessagesLayout = async ({ children, params }: LayoutProps) => {
 	const { organizationId } = await params
 
-	const conversationsPromise = getAllConversations(organizationId)
-	const contactsPromise = getAllContacts(organizationId)
+	const conversationsPromise = getManyConversations(organizationId)
+	const contactsPromise = getManyContacts(organizationId)
 
 	return (
 		<Page>
