@@ -38,7 +38,7 @@ const getSidebarItems = (organizationId: string): (SidebarItemLink | SidebarItem
 		},
 		{
 			type: SidebarItemType.LINK,
-			title: "Messages",
+			title: "Conversations",
 			href: routes.web.ALL_CONVERSATIONS(organizationId),
 			icon: IconName.MESSAGE
 		},

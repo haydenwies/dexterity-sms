@@ -27,7 +27,7 @@ const DashboardPage = async ({ params }: Props) => {
 				className="items-center justify-center"
 			>
 				<div className="mx-auto flex max-w-xs flex-col gap-4">
-					<Label>&#40;We&apos;re working on a real dashboard...&#41;</Label>
+					<Label>&#40;Dashboard is coming soon...&#41;</Label>
 					<Button
 						asChild
 						size="lg"

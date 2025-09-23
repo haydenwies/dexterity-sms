@@ -2,7 +2,7 @@ import { CampaignStatus } from "./campaign.enum"
 
 type CampaignModel = {
 	id: string
-	organizationId: String
+	organizationId: string
 	status: CampaignStatus
 	name: string
 	body?: string

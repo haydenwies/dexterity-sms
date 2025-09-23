@@ -5,6 +5,8 @@ import { Button } from "@repo/ui/components/button"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
 
+import { CampaignStatus } from "@repo/types/campaign"
+import { redirect } from "next/navigation"
 import { getCampaign } from "~/data/campaign/get-campaign"
 import { SendCampaignButton } from "~/features/campaign/components/send-campaign"
 import { SendTestCampaignButton } from "~/features/campaign/components/send-test-campaign"
@@ -21,6 +23,8 @@ const EditCampaignPage = async ({ params }: Props) => {
 	const { organizationId, campaignId } = await params
 
 	const campaign = await getCampaign(organizationId, campaignId)
+
+	if (campaign.status !== CampaignStatus.DRAFT) redirect(routes.web.ALL_CAMPAIGNS(organizationId))
 
 	return (
 		<UpdateCampaignProvider

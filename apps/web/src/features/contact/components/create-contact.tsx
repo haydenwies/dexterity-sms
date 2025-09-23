@@ -147,7 +147,7 @@ const CreateContactButton = () => {
 		<>
 			<Button onClick={() => setOpen(true)}>
 				<Icon name={IconName.PLUS} />
-				Add contact
+				New contact
 			</Button>
 			<CreateContactDialog
 				open={open}

@@ -1,9 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table"
 
-import { type CampaignModel } from "@repo/types/campaign"
+import { CampaignStatus, type CampaignModel } from "@repo/types/campaign"
 import { Badge } from "@repo/ui/components/badge"
 import { Checkbox } from "@repo/ui/components/checkbox"
 
+import { routes } from "@repo/routes"
+import { formatDate } from "date-fns"
+import Link from "next/link"
 import { CampaignTableActions } from "~/features/campaign/components/campaign-table/actions"
 
 const getCampaignTableColumns = (): ColumnDef<CampaignModel>[] => [
@@ -30,13 +33,42 @@ const getCampaignTableColumns = (): ColumnDef<CampaignModel>[] => [
 		accessorKey: "name",
 		enableHiding: true,
 		enableSorting: true,
-		header: "Name"
+		header: "Name",
+		cell: ({ row }) => {
+			const campaign = row.original
+
+			if (campaign.status === CampaignStatus.DRAFT)
+				return (
+					<Link href={routes.web.UPDATE_CAMPAIGN(campaign.organizationId, campaign.id)}>
+						<p className="underline">{campaign.name}</p>
+						<p className="text-muted-foreground text-xs">
+							Last updated {formatDate(campaign.createdAt, "MMM d, yyyy")}
+						</p>
+					</Link>
+				)
+
+			return (
+				<span>
+					<p>{campaign.name}</p>
+					<p className="text-muted-foreground text-xs">
+						Last updated {formatDate(campaign.createdAt, "MMM d, yyyy")}
+					</p>
+				</span>
+			)
+		}
 	},
 	{
 		accessorKey: "body",
 		enableHiding: true,
 		enableSorting: true,
-		header: "Body"
+		header: "Body",
+		cell: ({ row }) => {
+			const campaign = row.original
+
+			if (!campaign.body) return <p className="text-muted-foreground">--</p>
+
+			return <p>{campaign.body}</p>
+		}
 	},
 	{
 		accessorKey: "status",
@@ -51,20 +83,26 @@ const getCampaignTableColumns = (): ColumnDef<CampaignModel>[] => [
 		enableSorting: false,
 		header: ({ table }) => {
 			const campaigns = table.getSelectedRowModel().rows.map((row) => row.original)
+
 			return (
-				<CampaignTableActions
-					type="header"
-					data={{ campaigns: campaigns }}
-				/>
+				<div className="flex flex-1 justify-end">
+					<CampaignTableActions
+						type="header"
+						data={{ campaigns: campaigns }}
+					/>
+				</div>
 			)
 		},
 		cell: ({ row }) => {
 			const campaign = row.original
+
 			return (
-				<CampaignTableActions
-					type="cell"
-					data={{ campaign }}
-				/>
+				<div className="flex flex-1 justify-end">
+					<CampaignTableActions
+						type="cell"
+						data={{ campaign }}
+					/>
+				</div>
 			)
 		}
 	}

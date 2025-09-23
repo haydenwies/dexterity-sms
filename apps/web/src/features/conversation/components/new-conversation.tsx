@@ -79,7 +79,7 @@ const NewConversationButton = () => {
 		<>
 			<Button onClick={() => setOpen(true)}>
 				<Icon name={IconName.PLUS} />
-				New Conversation
+				New conversation
 			</Button>
 			<NewConversationDialog
 				open={open}

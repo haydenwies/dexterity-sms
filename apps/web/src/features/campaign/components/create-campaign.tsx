@@ -21,7 +21,7 @@ const CreateCampaignButton = () => {
 			) : (
 				<Icon name={IconName.PLUS} />
 			)}
-			Create campaign
+			New campaign
 		</Button>
 	)
 }
