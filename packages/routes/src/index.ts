@@ -46,16 +46,15 @@ const routes = {
 		GET_ALL_CONVERSATIONS: (organizationId: string) => `/organizations/${organizationId}/conversations`,
 		GET_CONVERSATION: (organizationId: string, conversationId: string) =>
 			`/organizations/${organizationId}/conversations/${conversationId}`,
-		STREAM_CONVERSATION: (params: {
+		STREAM_MANY_CONVERSATIONS: (params: {
 			organizationId: string
-			conversationId: string
 			searchParams: SearchParams<{ token: string }>
 		}) =>
-			`/organizations/${params.organizationId}/conversations/${params.conversationId}/stream?${stringifySearchParams(params.searchParams)}`,
+			`/organizations/${params.organizationId}/conversations/stream?${stringifySearchParams(params.searchParams)}`,
 		CREATE_CONVERSATION: (organizationId: string) => `/organizations/${organizationId}/conversations`,
 		GET_CONVERSATION_MESSAGES: (organizationId: string, conversationId: string) =>
 			`/organizations/${organizationId}/conversations/${conversationId}/messages`,
-		STREAM_CONVERSATION_MESSAGE: (params: {
+		STREAM_MANY_CONVERSATION_MESSAGES: (params: {
 			organizationId: string
 			conversationId: string
 			searchParams: SearchParams<{ token: string }>

@@ -41,21 +41,9 @@ export class ConversationController {
 		return toConversationDto(conversation)
 	}
 
-	@UseGuards(ConversationGuard)
-	@Get(":conversationId")
-	async get(
+	@Sse("stream")
+	streamManyConversations(
 		@Param("organizationId") organizationId: string,
-		@Param("conversationId") conversationId: string
-	): Promise<ConversationModel> {
-		const conversation = await this.conversationService.get(organizationId, conversationId)
-
-		return toConversationDto(conversation)
-	}
-
-	@Sse(":conversationId/stream")
-	streamConversation(
-		@Param("organizationId") organizationId: string,
-		@Param("conversationId") conversationId: string,
 		@Res() res: Response
 	): Observable<MessageEvent & { data: ConversationModel }> {
 		// Set CORS headers
@@ -66,8 +54,19 @@ export class ConversationController {
 		res.setHeader("Content-Type", "text/event-stream")
 
 		return this.conversationService
-			.streamConversation(organizationId, conversationId)
+			.streamManyConversations(organizationId)
 			.pipe(map((conversation) => ({ data: toConversationDto(conversation) })))
+	}
+
+	@UseGuards(ConversationGuard)
+	@Get(":conversationId")
+	async get(
+		@Param("organizationId") organizationId: string,
+		@Param("conversationId") conversationId: string
+	): Promise<ConversationModel> {
+		const conversation = await this.conversationService.get(organizationId, conversationId)
+
+		return toConversationDto(conversation)
 	}
 
 	@UseGuards(ConversationGuard)
@@ -93,7 +92,7 @@ export class ConversationController {
 
 	@UseGuards(ConversationGuard)
 	@Sse(":conversationId/messages/stream")
-	streamConversationMessages(
+	streamManyConversationMessages(
 		@Param("organizationId") organizationId: string,
 		@Param("conversationId") conversationId: string,
 		@Res() res: Response
@@ -106,7 +105,7 @@ export class ConversationController {
 		res.setHeader("Content-Type", "text/event-stream")
 
 		return this.conversationService
-			.streamConversationMessage(organizationId, conversationId)
+			.streamManyConversationMessages(organizationId, conversationId)
 			.pipe(map((message) => ({ data: toMessageDto(message) })))
 	}
 

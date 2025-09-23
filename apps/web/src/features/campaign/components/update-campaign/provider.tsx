@@ -15,11 +15,11 @@ enum SaveState {
 	ERROR = "error"
 }
 
-type UpdateCampaignContextType = {
+type UpdateCampaignContextValue = {
 	form: UseFormReturn<UpdateCampaignDto>
 	saveState: SaveState
 }
-const UpdateCampaignContext = createContext<UpdateCampaignContextType | null>(null)
+const UpdateCampaignContext = createContext<UpdateCampaignContextValue | null>(null)
 
 type UpdateCampaignProviderProps = {
 	organizationId: string

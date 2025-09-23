@@ -19,7 +19,10 @@ const UpdateCampaignInterface = () => {
 						<FormItem>
 							<FormLabel>Name</FormLabel>
 							<FormControl>
-								<Input {...field} />
+								<Input
+									placeholder="Untitled campaign"
+									{...field}
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -32,7 +35,10 @@ const UpdateCampaignInterface = () => {
 						<FormItem>
 							<FormLabel>Body</FormLabel>
 							<FormControl>
-								<Textarea {...field} />
+								<Textarea
+									placeholder="Your campaign body..."
+									{...field}
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>

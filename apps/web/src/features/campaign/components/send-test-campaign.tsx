@@ -23,7 +23,7 @@ type SendTestCampaignDialogProps = {
 	setOpen: (open: boolean) => void
 }
 const SendTestCampaignDialog = ({ open, setOpen }: SendTestCampaignDialogProps) => {
-	const { form, handleSendTest } = useSendTestCampaign()
+	const { loading, form, handleSendTest } = useSendTestCampaign()
 
 	return (
 		<Dialog
@@ -32,8 +32,8 @@ const SendTestCampaignDialog = ({ open, setOpen }: SendTestCampaignDialogProps) 
 		>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Test Campaign</DialogTitle>
-					<DialogDescription>Provide a phone number to send a test message</DialogDescription>
+					<DialogTitle>Test campaign</DialogTitle>
+					<DialogDescription>Provide a phone number to send a test message.</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
 					<FormField
@@ -54,13 +54,24 @@ const SendTestCampaignDialog = ({ open, setOpen }: SendTestCampaignDialogProps) 
 				</Form>
 				<DialogFooter>
 					<Button
+						disabled={loading}
 						onClick={() => setOpen(false)}
 						variant="ghost"
 					>
 						Cancel
 					</Button>
-					<Button onClick={handleSendTest}>
-						<Icon name={IconName.SEND} />
+					<Button
+						disabled={loading}
+						onClick={() => handleSendTest({ onSuccess: () => setOpen(false) })}
+					>
+						{loading ? (
+							<Icon
+								className="animate-spin"
+								name={IconName.SPINNER}
+							/>
+						) : (
+							<Icon name={IconName.SEND} />
+						)}
 						Send Test
 					</Button>
 				</DialogFooter>

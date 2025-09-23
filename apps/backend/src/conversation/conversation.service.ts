@@ -45,10 +45,10 @@ export class ConversationService {
 		return this.conversationRepository.findMany(organizationId)
 	}
 
-	streamConversation(organizationId: string, conversationId: string): Observable<Conversation> {
+	streamManyConversations(organizationId: string): Observable<Conversation> {
 		const created$ = fromEvent(this.eventEmitter, EVENT_TOPIC.CONVERSATION_CREATED).pipe(
 			map((conversation) => conversation as ConversationCreatedEvent),
-			filter((conversation) => conversation.id === conversationId),
+			filter((conversation) => conversation.organizationId === organizationId),
 			mergeMap(async (conversation) => {
 				const c = await this.conversationRepository.find(organizationId, conversation.id)
 				if (!c) throw new NotFoundException("Conversation not found")
@@ -59,7 +59,7 @@ export class ConversationService {
 
 		const updated$ = fromEvent(this.eventEmitter, EVENT_TOPIC.CONVERSATION_UPDATED).pipe(
 			map((conversation) => conversation as ConversationUpdatedEvent),
-			filter((conversation) => conversation.id === conversationId),
+			filter((conversation) => conversation.organizationId === organizationId),
 			mergeMap(async (conversation) => {
 				const c = await this.conversationRepository.find(organizationId, conversation.id)
 				if (!c) throw new NotFoundException("Conversation not found")
@@ -95,7 +95,7 @@ export class ConversationService {
 		return messages
 	}
 
-	streamConversationMessage(organizationId: string, conversationId: string): Observable<Message> {
+	streamManyConversationMessages(organizationId: string, conversationId: string): Observable<Message> {
 		const created$ = fromEvent(this.eventEmitter, EVENT_TOPIC.MESSAGE_CREATED).pipe(
 			map((msg) => msg as MessageCreatedEvent),
 			filter((msg) => msg.conversationId === conversationId),

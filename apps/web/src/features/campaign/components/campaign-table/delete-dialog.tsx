@@ -29,16 +29,17 @@ const CampaignTableDeleteDialog = ({ campaigns, open, setOpen }: CampaignTableDe
 		>
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle>Delete Campaign{campaigns.length > 1 && "s"}</AlertDialogTitle>
+					<AlertDialogTitle>Delete campaign{campaigns.length > 1 && "s"}?</AlertDialogTitle>
 					<AlertDialogDescription>
-						Are you sure you want to delete {campaigns.length} campaign{campaigns.length > 1 && "s"}? This
-						action cannot be undone.
+						Are you sure you want to delete {campaigns.length > 1 ? campaigns.length : "this"} campaign
+						{campaigns.length > 1 && "s"}? This action cannot be undone.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel disabled={loading}>Cancel</AlertDialogCancel>
 					<AlertDialogAction
 						disabled={loading}
+						variant="destructive"
 						onClick={async (e) => {
 							e.preventDefault()
 							await handleDeleteMany(

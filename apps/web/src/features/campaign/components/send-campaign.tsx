@@ -57,8 +57,8 @@ const SendCampaignDialog = ({ open, setOpen }: SendCampaignDialogProps) => {
 		>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Send Campaign</DialogTitle>
-					<DialogDescription>Send or schedule this campaign</DialogDescription>
+					<DialogTitle>Send campaign</DialogTitle>
+					<DialogDescription>Send or schedule this campaign.</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
 					<form className="flex flex-col gap-4">

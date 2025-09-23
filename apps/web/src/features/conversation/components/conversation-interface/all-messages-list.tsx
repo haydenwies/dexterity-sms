@@ -5,7 +5,7 @@ import { use, useEffect, useRef } from "react"
 import { MessageDirection, type MessageModel } from "@repo/types/message"
 import { cn } from "@repo/ui/lib/utils"
 
-import { useStreamConversationMessage } from "~/data/conversation/use-stream-conversation-message"
+import { useStreamManyConversationMessages } from "~/data/conversation/use-stream-many-conversation-messages"
 
 type MessageBubbleProps = {
 	message: MessageModel
@@ -34,7 +34,7 @@ type AllMessagesListProps = {
 }
 const AllMessagesList = ({ messagesPromise, className }: AllMessagesListProps) => {
 	const initialMessages = use(messagesPromise)
-	const messages = useStreamConversationMessage(initialMessages)
+	const messages = useStreamManyConversationMessages(initialMessages)
 	const messagesEndRef = useRef<HTMLDivElement>(null)
 
 	// Auto-scroll to bottom when messages update

@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { useParams } from "next/navigation"
 import { use, useMemo } from "react"
 
 import { routes } from "@repo/routes"
@@ -8,8 +9,8 @@ import { type ContactModel } from "@repo/types/contact"
 import { type ConversationModel } from "@repo/types/conversation"
 import { Badge } from "@repo/ui/components/badge"
 import { cn } from "@repo/ui/lib/utils"
-import { useParams } from "next/navigation"
-import { useStreamConversation } from "~/data/conversation/use-stream-conversation"
+
+import { useStreamManyConversations } from "~/data/conversation/use-stream-many-conversations"
 
 type AllConversationsListItemProps = {
 	organizationId: string
@@ -79,7 +80,7 @@ const AllConversationsList = ({
 	const initialConversations = use(conversationsPromise)
 	const contacts = use(contactsPromise)
 
-	const conversations = useStreamConversation(initialConversations)
+	const conversations = useStreamManyConversations(initialConversations)
 
 	return (
 		<div className={cn("border-border flex h-full w-full flex-col gap-1 overflow-y-auto border-r p-2", className)}>

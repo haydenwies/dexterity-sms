@@ -2,12 +2,12 @@ import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 
 import { routes } from "@repo/routes"
+import { toast } from "@repo/ui/components/sonner"
 
 import { createCampaign } from "~/actions/campaign/create-campaign"
 
 const useCreateCampaign = () => {
 	const [loading, setLoading] = useState<boolean>(false)
-	const [error, setError] = useState<string | null>(null)
 
 	const router = useRouter()
 	const params = useParams()
@@ -21,17 +21,13 @@ const useCreateCampaign = () => {
 
 			const campaign = await createCampaign(organizationId, {})
 
-			// console.log(routes.web.UPDATE_CAMPAIGN(organizationId, campaign.id))
-
 			router.push(routes.web.UPDATE_CAMPAIGN(organizationId, campaign.id))
 		} catch {
-			setError("An unknown error occurred")
-		} finally {
-			setLoading(false)
+			toast.error("An unknown error occurred")
 		}
 	}
 
-	return { loading, error, handleCreate }
+	return { loading, handleCreate }
 }
 
 export { useCreateCampaign }

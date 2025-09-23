@@ -2,12 +2,12 @@ import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
 import { routes } from "@repo/routes"
-import { type ConversationModel } from "@repo/types/conversation"
+import { type MessageModel } from "@repo/types/message"
 
 import { getBackendUrl } from "~/lib/backend"
 
-const useStreamConversation = (initalConversations: ConversationModel[]) => {
-	const [conversations, setConversations] = useState<ConversationModel[]>(initalConversations)
+const useStreamManyConversationMessages = (initalMessages: MessageModel[]) => {
+	const [messages, setMessages] = useState<MessageModel[]>(initalMessages)
 
 	const params = useParams()
 
@@ -17,17 +17,16 @@ const useStreamConversation = (initalConversations: ConversationModel[]) => {
 		if (!params.conversationId || Array.isArray(params.conversationId)) return
 
 		// Get session token
+		// TODO: Fix stretegy for accessing cookies
 		let token: string | undefined = undefined
 		document.cookie.split(";").forEach((cookie) => {
-			const [key, value] = cookie.split("=")
-			if (key === "session-token") {
-				token = value
-			}
+			const [key, value] = cookie.trim().split("=")
+			if (key === "session-token") token = value
 		})
 		if (!token) throw new Error("Session token not found")
 
 		// Get URL and create event source
-		const url = `${getBackendUrl()}${routes.backend.STREAM_CONVERSATION({
+		const url = `${getBackendUrl()}${routes.backend.STREAM_MANY_CONVERSATION_MESSAGES({
 			organizationId: params.organizationId,
 			conversationId: params.conversationId,
 			searchParams: { token }
@@ -39,11 +38,8 @@ const useStreamConversation = (initalConversations: ConversationModel[]) => {
 
 		// Handle on message event
 		eventSource.onmessage = (ev: MessageEvent) => {
-			const data: ConversationModel = JSON.parse(ev.data)
-
-			const conversation = conversations.find((conversation) => conversation.id === data.id)
-			if (conversation) setConversations((prev) => prev.map((c) => (c.id === data.id ? data : c)))
-			else setConversations((prev) => [data, ...prev])
+			const data: MessageModel = JSON.parse(ev.data)
+			setMessages((prev) => [...prev, data])
 		}
 
 		// Handle on error event
@@ -51,9 +47,9 @@ const useStreamConversation = (initalConversations: ConversationModel[]) => {
 
 		// Clean up
 		return () => eventSource.close()
-	}, [params.organizationId, params.conversationId]) // TODO: Fix dependencies
+	}, [params.organizationId, params.conversationId])
 
-	return conversations
+	return messages
 }
 
-export { useStreamConversation }
+export { useStreamManyConversationMessages }

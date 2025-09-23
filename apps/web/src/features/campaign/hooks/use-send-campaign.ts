@@ -1,16 +1,18 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { sendCampaignDtoSchema, type SendCampaignDto } from "@repo/types/campaign"
+import { toast } from "@repo/ui/components/sonner"
 
+import { routes } from "@repo/routes"
 import { sendCampaign } from "~/actions/campaign/send-campaign"
 
 const useSendCampaign = () => {
 	const [loading, setLoading] = useState<boolean>(false)
-	const [error, setError] = useState<string | null>(null)
 
+	const router = useRouter()
 	const params = useParams()
 
 	const form = useForm<SendCampaignDto>({
@@ -32,14 +34,14 @@ const useSendCampaign = () => {
 			if (!campaignId || Array.isArray(campaignId)) throw new Error("Campaign ID is required")
 
 			await sendCampaign(organizationId, campaignId, data)
+
+			router.push(routes.web.ALL_CAMPAIGNS(organizationId))
 		} catch {
-			setError("An unexpected error occurred")
-		} finally {
-			setLoading(false)
+			toast.error("An unknown error occurred")
 		}
 	})
 
-	return { loading, error, form, formValues, handleSendCampaign }
+	return { loading, form, formValues, handleSendCampaign }
 }
 
 export { useSendCampaign }

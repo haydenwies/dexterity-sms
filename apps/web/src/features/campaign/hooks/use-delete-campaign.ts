@@ -1,13 +1,14 @@
 import { useParams } from "next/navigation"
 import { useState } from "react"
 
+import { toast } from "@repo/ui/components/sonner"
+
 import { deleteManyCampaigns } from "~/actions/campaign/delete-many-campaigns"
 
 const useDeleteCampaign = () => {
 	const params = useParams()
 
 	const [loading, setLoading] = useState<boolean>(false)
-	const [error, setError] = useState<string | null>(null)
 
 	type HandleDeleteManyConfig = {
 		onError?: () => void
@@ -23,14 +24,14 @@ const useDeleteCampaign = () => {
 			await deleteManyCampaigns(organizationId, { ids })
 			onSuccess?.()
 		} catch {
-			setError("An unknown error occurred")
+			toast.error("An unknown error occurred")
 			onError?.()
 		} finally {
 			setLoading(false)
 		}
 	}
 
-	return { loading, error, handleDeleteMany }
+	return { loading, handleDeleteMany }
 }
 
 export { useDeleteCampaign }
