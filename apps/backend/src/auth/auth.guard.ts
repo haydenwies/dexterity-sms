@@ -18,10 +18,20 @@ class AuthGuard implements CanActivate {
 	async canActivate(context: ExecutionContext): Promise<boolean> {
 		const request = context.switchToHttp().getRequest<AuthRequest>()
 
-		const [type, token] = request.headers.authorization?.split(" ") ?? []
-		if (type !== "Bearer" || !token) return false
+		let sessionToken: string | undefined
 
-		const session = await this.sessionService.find(token)
+		const [type, token] = request.headers.authorization?.split(" ") ?? []
+		if (type === "Bearer" && token) sessionToken = token
+		else {
+			// Fallback to query parameter for SSE
+			const token = request.query.token
+			if (!token || typeof token !== "string") return false
+			sessionToken = token
+		}
+
+		if (!sessionToken) return false
+
+		const session = await this.sessionService.find(sessionToken)
 		if (!session) return false
 		request.session = session
 

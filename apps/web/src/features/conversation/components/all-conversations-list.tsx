@@ -8,6 +8,8 @@ import { type ContactModel } from "@repo/types/contact"
 import { type ConversationModel } from "@repo/types/conversation"
 import { Badge } from "@repo/ui/components/badge"
 import { cn } from "@repo/ui/lib/utils"
+import { useParams } from "next/navigation"
+import { useStreamConversation } from "~/data/conversation/use-stream-conversation"
 
 type AllConversationsListItemProps = {
 	organizationId: string
@@ -21,6 +23,8 @@ const AllConvesationsListItem = ({
 	contacts,
 	className
 }: AllConversationsListItemProps) => {
+	const params = useParams()
+
 	const displayName = useMemo((): string | undefined => {
 		const contact = contacts.find((contact) => contact.phone === conversation.recipient)
 		if (!contact) return undefined
@@ -37,6 +41,7 @@ const AllConvesationsListItem = ({
 			<div
 				className={cn(
 					"hover:bg-accent hover:text-accent-foreground grid grid-cols-[1fr_auto] items-start gap-2 rounded-md px-4 py-2 transition-colors hover:cursor-pointer",
+					{ "bg-accent": params.conversationId === conversation.id },
 					className
 				)}
 			>
@@ -71,8 +76,10 @@ const AllConversationsList = ({
 	conversationsPromise,
 	contactsPromise
 }: AllConversationsListProps) => {
-	const conversations = use(conversationsPromise)
+	const initialConversations = use(conversationsPromise)
 	const contacts = use(contactsPromise)
+
+	const conversations = useStreamConversation(initialConversations)
 
 	return (
 		<div className={cn("border-border flex h-full w-full flex-col gap-1 overflow-y-auto border-r p-2", className)}>

@@ -1,5 +1,5 @@
 import { Injectable, Logger } from "@nestjs/common"
-import { OnEvent } from "@nestjs/event-emitter"
+import { EventEmitter2, OnEvent } from "@nestjs/event-emitter"
 
 import { MessageDirection } from "@repo/types/message"
 
@@ -8,6 +8,7 @@ import { Conversation } from "~/conversation/conversation.entity"
 import { ConversationRepository } from "~/conversation/conversation.repository"
 import { EVENT_TOPIC, type MessageCreatedEvent } from "~/event/event.types"
 import { MessageService } from "~/message/message.service"
+import { toConversationCreatedEvent, toConversationUpdatedEvent } from "./conversation.utils"
 
 @Injectable()
 class ConversationListener {
@@ -15,7 +16,8 @@ class ConversationListener {
 
 	constructor(
 		private readonly conversationRepository: ConversationRepository,
-		private readonly messageService: MessageService
+		private readonly messageService: MessageService,
+		private readonly eventEmitter: EventEmitter2
 	) {}
 
 	@OnEvent(EVENT_TOPIC.MESSAGE_CREATED)
@@ -38,6 +40,11 @@ class ConversationListener {
 					lastMessageAt: payload.createdAt
 				})
 				conversation = await this.conversationRepository.create(conversation)
+
+				await this.eventEmitter.emitAsync(
+					EVENT_TOPIC.CONVERSATION_CREATED,
+					toConversationCreatedEvent(conversation)
+				)
 			}
 
 			// Link the message to the conversation if no conversation ID
@@ -65,7 +72,13 @@ class ConversationListener {
 				conversationUpdated = true
 			}
 
-			if (conversationUpdated) await this.conversationRepository.update(conversation)
+			if (conversationUpdated) {
+				const updatedConversation = await this.conversationRepository.update(conversation)
+				await this.eventEmitter.emitAsync(
+					EVENT_TOPIC.CONVERSATION_UPDATED,
+					toConversationUpdatedEvent(updatedConversation)
+				)
+			}
 		} catch (err: unknown) {
 			this.logger.error(err) // TODO: Better error handling for listeners
 		}

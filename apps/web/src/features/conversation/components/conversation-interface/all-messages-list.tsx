@@ -1,9 +1,11 @@
 "use client"
 
-import { use } from "react"
+import { use, useEffect, useRef } from "react"
 
 import { MessageDirection, type MessageModel } from "@repo/types/message"
 import { cn } from "@repo/ui/lib/utils"
+
+import { useStreamConversationMessage } from "~/data/conversation/use-stream-conversation-message"
 
 type MessageBubbleProps = {
 	message: MessageModel
@@ -31,7 +33,12 @@ type AllMessagesListProps = {
 	className?: string
 }
 const AllMessagesList = ({ messagesPromise, className }: AllMessagesListProps) => {
-	const messages = use(messagesPromise)
+	const initialMessages = use(messagesPromise)
+	const messages = useStreamConversationMessage(initialMessages)
+	const messagesEndRef = useRef<HTMLDivElement>(null)
+
+	// Auto-scroll to bottom when messages update
+	useEffect(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }), [messages])
 
 	if (messages.length === 0)
 		return (
@@ -48,6 +55,7 @@ const AllMessagesList = ({ messagesPromise, className }: AllMessagesListProps) =
 					message={message}
 				/>
 			))}
+			<div ref={messagesEndRef} />
 		</div>
 	)
 }

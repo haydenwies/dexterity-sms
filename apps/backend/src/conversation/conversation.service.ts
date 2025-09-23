@@ -1,13 +1,22 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common"
+import { EventEmitter2 } from "@nestjs/event-emitter"
 
 import { type CreateConversationDto, type SendMessageDto } from "@repo/types/conversation"
+import { filter, fromEvent, map, merge, mergeMap, Observable } from "rxjs"
 
 import { Conversation } from "~/conversation/conversation.entity"
 import { ConversationRepository } from "~/conversation/conversation.repository"
+import {
+	ConversationCreatedEvent,
+	ConversationUpdatedEvent,
+	EVENT_TOPIC,
+	type MessageCreatedEvent
+} from "~/event/event.types"
 import { Message } from "~/message/message.entity"
 import { MessageService } from "~/message/message.service"
 import { SenderService } from "~/sender/sender.service"
 import { UnsubscribeService } from "~/unsubscribe/unsubscribe.service"
+import { toConversationCreatedEvent } from "./conversation.utils"
 
 @Injectable()
 export class ConversationService {
@@ -15,8 +24,15 @@ export class ConversationService {
 		private readonly conversationRepository: ConversationRepository,
 		private readonly senderService: SenderService,
 		private readonly messageService: MessageService,
-		private readonly unsubscribeService: UnsubscribeService
+		private readonly unsubscribeService: UnsubscribeService,
+		private readonly eventEmitter: EventEmitter2
 	) {}
+
+	async safeGet(organizationId: string, conversationId: string): Promise<Conversation | undefined> {
+		const conversation = await this.conversationRepository.find(organizationId, conversationId)
+
+		return conversation
+	}
 
 	async get(organizationId: string, conversationId: string): Promise<Conversation> {
 		const conversation = await this.conversationRepository.find(organizationId, conversationId)
@@ -29,6 +45,32 @@ export class ConversationService {
 		return this.conversationRepository.findMany(organizationId)
 	}
 
+	streamConversation(organizationId: string, conversationId: string): Observable<Conversation> {
+		const created$ = fromEvent(this.eventEmitter, EVENT_TOPIC.CONVERSATION_CREATED).pipe(
+			map((conversation) => conversation as ConversationCreatedEvent),
+			filter((conversation) => conversation.id === conversationId),
+			mergeMap(async (conversation) => {
+				const c = await this.conversationRepository.find(organizationId, conversation.id)
+				if (!c) throw new NotFoundException("Conversation not found")
+
+				return c
+			})
+		)
+
+		const updated$ = fromEvent(this.eventEmitter, EVENT_TOPIC.CONVERSATION_UPDATED).pipe(
+			map((conversation) => conversation as ConversationUpdatedEvent),
+			filter((conversation) => conversation.id === conversationId),
+			mergeMap(async (conversation) => {
+				const c = await this.conversationRepository.find(organizationId, conversation.id)
+				if (!c) throw new NotFoundException("Conversation not found")
+
+				return c
+			})
+		)
+
+		return merge(created$, updated$)
+	}
+
 	async create(organizationId: string, dto: CreateConversationDto): Promise<Conversation> {
 		const conversation = Conversation.create({
 			organizationId,
@@ -36,6 +78,11 @@ export class ConversationService {
 			recipient: dto.contactId
 		})
 		const createdConversation = await this.conversationRepository.create(conversation)
+
+		await this.eventEmitter.emitAsync(
+			EVENT_TOPIC.CONVERSATION_CREATED,
+			toConversationCreatedEvent(createdConversation)
+		)
 
 		return createdConversation
 	}
@@ -46,6 +93,22 @@ export class ConversationService {
 		})
 
 		return messages
+	}
+
+	streamConversationMessage(organizationId: string, conversationId: string): Observable<Message> {
+		const created$ = fromEvent(this.eventEmitter, EVENT_TOPIC.MESSAGE_CREATED).pipe(
+			map((msg) => msg as MessageCreatedEvent),
+			filter((msg) => msg.conversationId === conversationId),
+			mergeMap((msg) => this.messageService.get(organizationId, msg.messageId))
+		)
+
+		// const updated$ = fromEvent(this.eventEmitter, "message.updated").pipe(
+		// 	map((msg) => msg as MessageCreatedEvent),
+		// 	filter((msg) => msg.conversationId === conversationId)
+		// )
+
+		return created$
+		// return merge(created$, updated$)
 	}
 
 	async sendConversationMessage(organizationId: string, conversationId: string, dto: SendMessageDto): Promise<void> {

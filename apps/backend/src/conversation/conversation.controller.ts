@@ -1,4 +1,6 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common"
+import { Body, Controller, Get, MessageEvent, Param, Post, Res, Sse, UseGuards } from "@nestjs/common"
+import { type Response } from "express"
+import { map, type Observable } from "rxjs"
 
 import {
 	type ConversationModel,
@@ -15,6 +17,7 @@ import { ConversationService } from "~/conversation/conversation.service"
 import { toConversationDto } from "~/conversation/conversation.utils"
 import { toMessageDto } from "~/message/message.utils"
 import { OrganizationGuard } from "~/organization/organization.guard"
+import { ConversationGuard } from "./conversation.guard"
 
 @UseGuards(AuthGuard, OrganizationGuard)
 @Controller("organizations/:organizationId/conversations")
@@ -38,6 +41,7 @@ export class ConversationController {
 		return toConversationDto(conversation)
 	}
 
+	@UseGuards(ConversationGuard)
 	@Get(":conversationId")
 	async get(
 		@Param("organizationId") organizationId: string,
@@ -48,6 +52,25 @@ export class ConversationController {
 		return toConversationDto(conversation)
 	}
 
+	@Sse(":conversationId/stream")
+	streamConversation(
+		@Param("organizationId") organizationId: string,
+		@Param("conversationId") conversationId: string,
+		@Res() res: Response
+	): Observable<MessageEvent & { data: ConversationModel }> {
+		// Set CORS headers
+		res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000") // TODO: Fix CORS
+		res.setHeader("Access-Control-Allow-Credentials", "true")
+		res.setHeader("Cache-Control", "no-cache")
+		res.setHeader("Connection", "keep-alive")
+		res.setHeader("Content-Type", "text/event-stream")
+
+		return this.conversationService
+			.streamConversation(organizationId, conversationId)
+			.pipe(map((conversation) => ({ data: toConversationDto(conversation) })))
+	}
+
+	@UseGuards(ConversationGuard)
 	@Get(":conversationId/messages")
 	async getManyConversationMessages(
 		@Param("organizationId") organizationId: string,
@@ -58,6 +81,7 @@ export class ConversationController {
 		return messages.map((message) => toMessageDto(message))
 	}
 
+	@UseGuards(ConversationGuard)
 	@Post(":conversationId/messages")
 	async sendConversationMessage(
 		@Param("organizationId") organizationId: string,
@@ -67,6 +91,26 @@ export class ConversationController {
 		await this.conversationService.sendConversationMessage(organizationId, conversationId, body)
 	}
 
+	@UseGuards(ConversationGuard)
+	@Sse(":conversationId/messages/stream")
+	streamConversationMessages(
+		@Param("organizationId") organizationId: string,
+		@Param("conversationId") conversationId: string,
+		@Res() res: Response
+	): Observable<MessageEvent & { data: MessageModel }> {
+		// Set CORS headers
+		res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000") // TODO: Fix CORS
+		res.setHeader("Access-Control-Allow-Credentials", "true")
+		res.setHeader("Cache-Control", "no-cache")
+		res.setHeader("Connection", "keep-alive")
+		res.setHeader("Content-Type", "text/event-stream")
+
+		return this.conversationService
+			.streamConversationMessage(organizationId, conversationId)
+			.pipe(map((message) => ({ data: toMessageDto(message) })))
+	}
+
+	@UseGuards(ConversationGuard)
 	@Get(":conversationId/unsubscribed")
 	async isUnsubscribed(
 		@Param("organizationId") organizationId: string,

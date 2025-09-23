@@ -20,6 +20,13 @@ class MessageService {
 		private readonly eventEmitter: EventEmitter2
 	) {}
 
+	async get(organizationId: string, messageId: string): Promise<Message> {
+		const message = await this.messageRepository.find(organizationId, messageId)
+		if (!message) throw new NotFoundException("Message not found")
+
+		return message
+	}
+
 	async getMany(
 		organizationId: string,
 		filters?: { conversationId?: string; campaignId?: string }
