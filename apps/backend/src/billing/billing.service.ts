@@ -17,7 +17,7 @@ class BillingService {
 		private readonly subscriptionService: SubscriptionService
 	) {}
 
-	async getCheckoutSession(organizationId: string, callbackUrl: string): Promise<{ url: string }> {
+	async getBillingAccountId(organizationId: string): Promise<string> {
 		const organization = await this.organizationService.getById(organizationId)
 
 		let billingAccountId = organization.externalBillingAccountId
@@ -32,6 +32,12 @@ class BillingService {
 			await this.organizationService.updateExternalBillingAccountId(organizationId, customer.id)
 			billingAccountId = customer.id
 		}
+
+		return billingAccountId
+	}
+
+	async getCheckoutSession(organizationId: string, callbackUrl: string): Promise<{ url: string }> {
+		const billingAccountId = await this.getBillingAccountId(organizationId)
 
 		const checkoutSession = await this.billingProvider.checkout.sessions.create({
 			customer: billingAccountId,
@@ -48,20 +54,7 @@ class BillingService {
 	}
 
 	async getBillingPortalSession(organizationId: string, callbackUrl: string): Promise<{ url: string }> {
-		const organization = await this.organizationService.getById(organizationId)
-
-		let billingAccountId = organization.externalBillingAccountId
-		if (!billingAccountId) {
-			// TODO: Add email
-			const customer = await this.billingProvider.customers.create({
-				metadata: {
-					organizationId: organization.id
-				}
-			})
-
-			await this.organizationService.updateExternalBillingAccountId(organizationId, customer.id)
-			billingAccountId = customer.id
-		}
+		const billingAccountId = await this.getBillingAccountId(organizationId)
 
 		const billingPortalSession = await this.billingProvider.billingPortal.sessions.create({
 			customer: billingAccountId,
