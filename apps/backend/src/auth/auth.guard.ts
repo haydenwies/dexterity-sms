@@ -1,4 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common"
+import { AUTH_COOKIE } from "@repo/types/auth"
 import { type Request } from "express"
 
 import { Session } from "~/auth/session/session.entity"
@@ -21,12 +22,12 @@ class AuthGuard implements CanActivate {
 		let sessionToken: string | undefined
 
 		const [type, token] = request.headers.authorization?.split(" ") ?? []
+		// Priority 1: Check Authorization header for API clients
 		if (type === "Bearer" && token) sessionToken = token
 		else {
-			// Fallback to query parameter for SSE
-			const token = request.query.token
-			if (!token || typeof token !== "string") return false
-			sessionToken = token
+			// Priority 2: Check session cookie
+			const token = request.cookies?.[AUTH_COOKIE]
+			if (token && typeof token === "string") sessionToken = token
 		}
 
 		if (!sessionToken) return false

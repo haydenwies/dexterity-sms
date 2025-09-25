@@ -12,23 +12,12 @@ const useStreamManyConversations = (initalConversations: ConversationModel[]) =>
 	const params = useParams()
 
 	useEffect(() => {
-		console.log(params.conversation)
 		// Validate params
 		if (!params.organizationId || Array.isArray(params.organizationId)) return
 
-		// Get session token
-		// TODO: Fix stretegy for accessing cookies
-		let token: string | undefined = undefined
-		document.cookie.split(";").forEach((cookie) => {
-			const [key, value] = cookie.trim().split("=")
-			if (key === "session-token") token = value
-		})
-		if (!token) throw new Error("Session token not found")
-
 		// Get URL and create event source
 		const url = `${getBackendUrl()}${routes.backend.STREAM_MANY_CONVERSATIONS({
-			organizationId: params.organizationId,
-			searchParams: { token }
+			organizationId: params.organizationId
 		})}`
 
 		const eventSource = new EventSource(url, {

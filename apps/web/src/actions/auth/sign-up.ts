@@ -3,10 +3,10 @@
 import { redirect } from "next/navigation"
 
 import { routes } from "@repo/routes"
-import { type SignUpDto } from "@repo/types/auth"
+import { AUTH_COOKIE, type SignUpDto } from "@repo/types/auth"
 
 import { getBackendUrl } from "~/lib/backend"
-import { Cookie, setCookie } from "~/lib/cookies"
+import { setCookie } from "~/lib/cookies"
 
 const signUp = async (dto: SignUpDto): Promise<undefined> => {
 	const backendUrl = getBackendUrl()
@@ -24,7 +24,7 @@ const signUp = async (dto: SignUpDto): Promise<undefined> => {
 	}
 
 	const sessionToken = await res.text()
-	await setCookie(Cookie.SESSION_TOKEN, sessionToken)
+	await setCookie(AUTH_COOKIE, sessionToken)
 
 	return redirect(routes.web.ALL_ORGANIZATIONS)
 }

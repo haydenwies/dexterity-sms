@@ -3,10 +3,11 @@
 import { redirect } from "next/navigation"
 
 import { routes } from "@repo/routes"
+import { AUTH_COOKIE } from "@repo/types/auth"
 
 import { sessionMiddleware } from "~/actions/utils"
 import { getBackendUrl } from "~/lib/backend"
-import { Cookie, deleteCookie } from "~/lib/cookies"
+import { deleteCookie } from "~/lib/cookies"
 
 const signOut = async (): Promise<void> => {
 	const sessionToken = await sessionMiddleware()
@@ -23,7 +24,7 @@ const signOut = async (): Promise<void> => {
 		throw new Error(errData.message)
 	}
 
-	await deleteCookie(Cookie.SESSION_TOKEN)
+	await deleteCookie(AUTH_COOKIE)
 
 	return redirect(routes.web.SIGN_IN)
 }

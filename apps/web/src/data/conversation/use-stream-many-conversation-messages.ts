@@ -16,20 +16,10 @@ const useStreamManyConversationMessages = (initalMessages: MessageModel[]) => {
 		if (!params.organizationId || Array.isArray(params.organizationId)) return
 		if (!params.conversationId || Array.isArray(params.conversationId)) return
 
-		// Get session token
-		// TODO: Fix stretegy for accessing cookies
-		let token: string | undefined = undefined
-		document.cookie.split(";").forEach((cookie) => {
-			const [key, value] = cookie.trim().split("=")
-			if (key === "session-token") token = value
-		})
-		if (!token) throw new Error("Session token not found")
-
 		// Get URL and create event source
 		const url = `${getBackendUrl()}${routes.backend.STREAM_MANY_CONVERSATION_MESSAGES({
 			organizationId: params.organizationId,
-			conversationId: params.conversationId,
-			searchParams: { token }
+			conversationId: params.conversationId
 		})}`
 
 		const eventSource = new EventSource(url, {
