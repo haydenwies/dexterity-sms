@@ -1,4 +1,4 @@
-import { integer, pgTable, primaryKey, text, timestamp, unique, uuid } from "drizzle-orm/pg-core"
+import { boolean, integer, pgTable, primaryKey, text, timestamp, unique, uuid } from "drizzle-orm/pg-core"
 
 // #region user
 
@@ -66,12 +66,30 @@ const verificationTokenTable = pgTable("verification_token", {
 
 const organizationTable = pgTable("organization", {
 	id: uuid("id").primaryKey(),
+	externalBillingAccountId: text("external_billing_account_id"),
 	name: text("name").notNull(),
 	createdAt: timestamp("created_at", { mode: "date" }).notNull(),
 	updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
 })
 
 // #endregion
+
+// #region subscription
+
+const subscriptionTable = pgTable("subscription", {
+	id: uuid("id").primaryKey(),
+	organizationId: uuid("organization_id")
+		.references(() => organizationTable.id, {
+			onUpdate: "cascade",
+			onDelete: "cascade"
+		})
+		.notNull(),
+	externalId: text("external_id").notNull(),
+	status: text("status").notNull(),
+	cancelAtPeriodEnd: boolean("cancel_at_period_end").notNull(),
+	createdAt: timestamp("created_at", { mode: "date" }).notNull(),
+	updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
+})
 
 // #region member
 
@@ -246,6 +264,7 @@ export {
 	organizationTable,
 	senderTable,
 	sessionTable,
+	subscriptionTable,
 	unsubscribeTable,
 	userTable,
 	verificationTokenTable

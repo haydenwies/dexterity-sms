@@ -7,6 +7,10 @@ import { OrganizationService } from "~/organization/organization.service"
 
 @Injectable()
 class BillingService {
+	private readonly SENDER_EXTERNAL_ID = "price_1SAsfeRfl3ViJIjUho0R5Y0g"
+	private readonly SMS_CREDIT_EXTERNAL_ID = "price_1SAsdGRfl3ViJIjUkVPpxU8h"
+	private readonly SMS_CREDIT_METER_ID = "sms_credit"
+
 	constructor(
 		@Inject(BILLING_PROVIDER) private readonly billingProvider: BillingProvider,
 		private readonly organizationService: OrganizationService,
@@ -33,8 +37,8 @@ class BillingService {
 			customer: billingAccountId,
 			mode: "subscription",
 			success_url: callbackUrl,
-			cancel_url: callbackUrl
-			// TODO: Add line items
+			cancel_url: callbackUrl,
+			line_items: [{ price: this.SMS_CREDIT_EXTERNAL_ID }]
 		})
 
 		const url = checkoutSession.url

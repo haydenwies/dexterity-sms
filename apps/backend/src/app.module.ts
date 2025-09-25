@@ -5,6 +5,7 @@ import { EventEmitterModule } from "@nestjs/event-emitter"
 import z from "zod"
 
 import { AuthModule } from "~/auth/auth.module"
+import { BillingModule } from "~/billing/billing.module"
 import { CampaignModule } from "~/campaign/campaign.module"
 import { bullmqConfig, bullmqConfigSchema } from "~/config/bullmq.config"
 import { databaseConfig, databaseConfigSchema } from "~/config/database.config"
@@ -15,6 +16,7 @@ import { ConversationModule } from "~/conversation/conversation.module"
 import { MessageModule } from "~/message/message.module"
 import { OrganizationModule } from "~/organization/organization.module"
 import { UnsubscribeModule } from "~/unsubscribe/unsubscribe.module"
+import { billingConfig, billingConfigSchema } from "./config/billing.config"
 
 @Module({
 	imports: [
@@ -25,9 +27,10 @@ import { UnsubscribeModule } from "~/unsubscribe/unsubscribe.module"
 				...routerConfigSchema.shape,
 				...databaseConfigSchema.shape,
 				...bullmqConfigSchema.shape,
-				...smsConfigSchema.shape
+				...smsConfigSchema.shape,
+				...billingConfigSchema.shape
 			}).parse,
-			load: [routerConfig, databaseConfig, bullmqConfig, smsConfig]
+			load: [routerConfig, databaseConfig, bullmqConfig, smsConfig, billingConfig]
 		}),
 		BullModule.forRootAsync({
 			inject: [ConfigService],
@@ -46,6 +49,7 @@ import { UnsubscribeModule } from "~/unsubscribe/unsubscribe.module"
 		EventEmitterModule.forRoot(),
 		AuthModule,
 		OrganizationModule,
+		BillingModule,
 		ContactModule,
 		MessageModule,
 		ConversationModule,

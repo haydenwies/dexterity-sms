@@ -1,3 +1,5 @@
+import { SubscriptionStatus } from "./billing.enum"
+
 type BillingAccountModel = {
 	id: string
 	subscriptionId?: string
@@ -6,9 +8,9 @@ type BillingAccountModel = {
 }
 
 type SubscriptionModel = {
-	id: string
-	name: string
-	description: string
+	organizationId: string
+	status: SubscriptionStatus
+	cancelAtPeriodEnd: boolean
 	createdAt: Date
 	updatedAt: Date
 }

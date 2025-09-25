@@ -15,6 +15,8 @@ const getSubscription = async (organizationId: string): Promise<SubscriptionMode
 		}
 	})
 	if (!res.ok) {
+		if (res.status === 404) return undefined
+
 		const errData = await res.json()
 		throw new Error(errData.message)
 	}

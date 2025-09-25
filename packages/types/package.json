@@ -22,12 +22,8 @@
 			"default": "./dist/organization/index.js"
 		},
 		"./billing": {
-			"types": "./src/billing/billing.type.ts",
-			"default": "./dist/billing/billing.js"
-		},
-		"./billing/dto/*": {
-			"types": "./src/billing/dto/*.ts",
-			"default": "./dist/billing/dto/*.js"
+			"types": "./src/billing/index.ts",
+			"default": "./dist/billing/index.js"
 		},
 		"./contact": {
 			"types": "./src/contact/index.ts",

@@ -11,7 +11,10 @@ import { OrganizationService } from "~/organization/organization.service"
 	imports: [AuthModule, DatabaseModule, MemberModule],
 	controllers: [OrganizationController],
 	providers: [OrganizationService, OrganizationRepository],
-	exports: [MemberModule] // Exports needed for OrganizationGuard
+	exports: [
+		OrganizationService,
+		MemberModule // Needed for OrganizationGuard
+	]
 })
 class OrganizationModule {}
 

@@ -1,8 +1,9 @@
 "use client"
 
+import { use } from "react"
+
 import { Button } from "@repo/ui/components/button"
 import { Icon, IconName } from "@repo/ui/components/icon"
-import { use } from "react"
 
 type BillingPortalButtonProps = {
 	billingPortalSessionPromise: Promise<{ url: string }>

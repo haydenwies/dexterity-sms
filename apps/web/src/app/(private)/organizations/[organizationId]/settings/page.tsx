@@ -10,26 +10,26 @@ import { Card, CardContent } from "@repo/ui/components/card"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
 import { Separator } from "@repo/ui/components/separator"
+import { getBillingPortalSession } from "~/data/billing/get-billing-portal-session"
+import { getSubscription } from "~/data/billing/get-subscription"
 
-import { getAllSubscriptions } from "~/actions/billing/get-all-subscriptions"
-import { getBillingAccount } from "~/actions/billing/get-billing-account"
 import { getOrganization } from "~/data/organization/get-organization"
 import { getSender } from "~/data/sender/get-sender"
-import { ManageBillingLinkButton, ManageSubscriptionInterface } from "~/features/billing/manage-billing"
+import { BillingPortalButton } from "~/features/billing/components/billing-portal"
+import { SubscriptionCard } from "~/features/billing/components/subscription-card"
 import { UpdateOrganizationForm } from "~/features/organization/components/update-organization-form"
 import { ManageSenderInterface } from "~/features/sender/components/manage-sender"
 
-type Props = {
+type PageProps = Readonly<{
 	params: Promise<{ organizationId: string }>
-}
-
-const OrganizationSettingsPage = async ({ params }: Props) => {
+}>
+const OrganizationSettingsPage = async ({ params }: PageProps) => {
 	const { organizationId } = await params
 
 	const organizationPromise = getOrganization(organizationId)
 	const senderPromise = getSender(organizationId)
-	const allSubscriptionsPromise = getAllSubscriptions()
-	const billingAccountPromise = getBillingAccount()
+	const subscriptionPromise = getSubscription(organizationId)
+	const billingPortalSessionPromise = getBillingPortalSession(organizationId)
 
 	return (
 		<Page>
@@ -79,12 +79,11 @@ const OrganizationSettingsPage = async ({ params }: Props) => {
 						<AnnotatedContent>
 							<Card>
 								<CardContent className="flex flex-col items-center gap-4">
-									<ManageSubscriptionInterface
-										allSubscriptionsPromise={allSubscriptionsPromise}
-										billingAccountPromise={billingAccountPromise}
+									<SubscriptionCard
 										className="w-full"
+										subscriptionPromise={subscriptionPromise}
 									/>
-									<ManageBillingLinkButton />
+									<BillingPortalButton billingPortalSessionPromise={billingPortalSessionPromise} />
 								</CardContent>
 							</Card>
 						</AnnotatedContent>

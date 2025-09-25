@@ -15,6 +15,13 @@ const routes = {
 		CREATE_ORGANIZATION: "/organizations",
 		UPDATE_ORGANIZATION: (id: string) => `/organizations/${id}`,
 
+		// billing
+		GET_SUBSCRIPTION: (organizationId: string) => `/organizations/${organizationId}/billing/subscription`,
+		GET_BILLING_PORTAL_SESSION: (organizationId: string, searchParams: SearchParams<{ callbackUrl: string }>) =>
+			`/organizations/${organizationId}/billing/billing-portal?${stringifySearchParams(searchParams)}`,
+		GET_CHECKOUT_SESSION: (organizationId: string, searchParams: SearchParams<{ callbackUrl: string }>) =>
+			`/organizations/${organizationId}/billing/checkout?${stringifySearchParams(searchParams)}`,
+
 		// contact
 		GET_ALL_CONTACTS: (organizationId: string) => `/organizations/${organizationId}/contacts`,
 		GET_CONTACT: (organizationId: string, contactId: string) =>

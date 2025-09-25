@@ -1,13 +1,16 @@
+"use server"
+
 import { routes } from "@repo/routes"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/backend"
+import { getBackendUrl, getFrontendUrl } from "~/lib/backend"
 
 const getCheckoutSession = async (organizationId: string): Promise<{ url: string }> => {
 	const sessionToken = await sessionMiddleware()
 
+	const callbackUrl = `${getFrontendUrl()}${routes.web.SETTINGS(organizationId)}`
 	const backendUrl = getBackendUrl()
-	const res = await fetch(`${backendUrl}${routes.backend.GET_CHECKOUT_SESSION(organizationId)}`, {
+	const res = await fetch(`${backendUrl}${routes.backend.GET_CHECKOUT_SESSION(organizationId, { callbackUrl })}`, {
 		method: "GET",
 		headers: {
 			"Authorization": `Bearer ${sessionToken}`
@@ -15,6 +18,7 @@ const getCheckoutSession = async (organizationId: string): Promise<{ url: string
 	})
 	if (!res.ok) {
 		const errData = await res.json()
+		console.error(errData)
 		throw new Error(errData.message)
 	}
 

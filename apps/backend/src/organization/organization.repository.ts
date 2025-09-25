@@ -13,12 +13,18 @@ class OrganizationRepository {
 		const [row] = await this.db.select().from(organizationTable).where(eq(organizationTable.id, id)).limit(1)
 		if (!row) return undefined
 
-		return new Organization({
-			id: row.id,
-			name: row.name,
-			createdAt: row.createdAt,
-			updatedAt: row.updatedAt
-		})
+		return OrganizationRepository.toEntity(row)
+	}
+
+	async findByExternalBillingAccountId(externalBillingAccountId: string): Promise<Organization | undefined> {
+		const [row] = await this.db
+			.select()
+			.from(organizationTable)
+			.where(eq(organizationTable.externalBillingAccountId, externalBillingAccountId))
+			.limit(1)
+		if (!row) return undefined
+
+		return OrganizationRepository.toEntity(row)
 	}
 
 	async findAll(ids: string[]): Promise<Organization[]> {
@@ -26,15 +32,7 @@ class OrganizationRepository {
 
 		const rows = await this.db.select().from(organizationTable).where(inArray(organizationTable.id, ids))
 
-		return rows.map(
-			(row) =>
-				new Organization({
-					id: row.id,
-					name: row.name,
-					createdAt: row.createdAt,
-					updatedAt: row.updatedAt
-				})
-		)
+		return rows.map((row) => OrganizationRepository.toEntity(row))
 	}
 
 	async create(organization: Organization): Promise<Organization> {
@@ -49,12 +47,7 @@ class OrganizationRepository {
 			.returning()
 		if (!row) throw new Error("Failed to create organization")
 
-		return new Organization({
-			id: row.id,
-			name: row.name,
-			createdAt: row.createdAt,
-			updatedAt: row.updatedAt
-		})
+		return OrganizationRepository.toEntity(row)
 	}
 
 	async update(organization: Organization): Promise<Organization> {
@@ -62,15 +55,21 @@ class OrganizationRepository {
 			.update(organizationTable)
 			.set({
 				name: organization.name,
+				externalBillingAccountId: organization.externalBillingAccountId,
 				updatedAt: new Date()
 			})
 			.where(eq(organizationTable.id, organization.id))
 			.returning()
 		if (!row) throw new Error("Failed to update organization")
 
+		return OrganizationRepository.toEntity(row)
+	}
+
+	private static toEntity(row: typeof organizationTable.$inferSelect): Organization {
 		return new Organization({
 			id: row.id,
 			name: row.name,
+			externalBillingAccountId: row.externalBillingAccountId,
 			createdAt: row.createdAt,
 			updatedAt: row.updatedAt
 		})

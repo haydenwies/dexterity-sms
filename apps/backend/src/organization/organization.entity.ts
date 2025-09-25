@@ -3,6 +3,7 @@ import z from "zod"
 type OrganizationConstructorParams = {
 	id: string
 	name: string
+	externalBillingAccountId?: string | null
 	createdAt: Date
 	updatedAt: Date
 }
@@ -18,18 +19,24 @@ type OrganizationUpdateParams = {
 class Organization {
 	public readonly id: string
 	private _name: string
+	private _externalBillingAccountId?: string
 	public readonly createdAt: Date
 	private _updatedAt: Date
 
 	constructor(params: OrganizationConstructorParams) {
 		this.id = params.id
 		this._name = params.name
+		this._externalBillingAccountId = params.externalBillingAccountId || undefined
 		this.createdAt = params.createdAt
 		this._updatedAt = params.updatedAt
 	}
 
 	get name(): string {
 		return this._name
+	}
+
+	get externalBillingAccountId(): string | undefined {
+		return this._externalBillingAccountId
 	}
 
 	get updatedAt(): Date {
@@ -47,6 +54,11 @@ class Organization {
 
 	update(params: OrganizationUpdateParams) {
 		this._name = params.name
+		this._updatedAt = new Date()
+	}
+
+	updateExternalBillingAccountId(externalBillingAccountId: string) {
+		this._externalBillingAccountId = externalBillingAccountId
 		this._updatedAt = new Date()
 	}
 

@@ -25,12 +25,26 @@ class OrganizationService {
 		return organizations
 	}
 
+	async getById(id: string): Promise<Organization> {
+		const organization = await this.organizationRepository.find(id)
+		if (!organization) throw new NotFoundException("Organization not found")
+
+		return organization
+	}
+
 	async get(userId: string, id: string): Promise<Organization> {
 		// Get organization user
 		const member = await this.memberService.get(userId, id)
 
 		// Get organization
 		const organization = await this.organizationRepository.find(member.organizationId)
+		if (!organization) throw new NotFoundException("Organization not found")
+
+		return organization
+	}
+
+	async getByExternalBillingAccountId(externalBillingAccountId: string): Promise<Organization> {
+		const organization = await this.organizationRepository.findByExternalBillingAccountId(externalBillingAccountId)
 		if (!organization) throw new NotFoundException("Organization not found")
 
 		return organization
@@ -57,6 +71,19 @@ class OrganizationService {
 
 		// Update organization
 		organization.update({ name: dto.name })
+		const updatedOrganization = await this.organizationRepository.update(organization)
+
+		return updatedOrganization
+	}
+
+	async updateExternalBillingAccountId(
+		organizationId: string,
+		externalBillingAccountId: string
+	): Promise<Organization> {
+		const organization = await this.organizationRepository.find(organizationId)
+		if (!organization) throw new NotFoundException("Organization not found")
+
+		organization.updateExternalBillingAccountId(externalBillingAccountId)
 		const updatedOrganization = await this.organizationRepository.update(organization)
 
 		return updatedOrganization
