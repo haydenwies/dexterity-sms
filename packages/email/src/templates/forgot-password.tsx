@@ -3,7 +3,6 @@ import { Button, Html } from "@react-email/components"
 type ForgotPasswordProps = {
 	url: string
 }
-
 const ForgotPassword = ({ url }: ForgotPasswordProps) => {
 	return (
 		<Html>

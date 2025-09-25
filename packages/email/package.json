@@ -3,23 +3,27 @@
 	"version": "1.0.0",
 	"private": true,
 	"scripts": {
+		"preview": "email dev --port 3005 --dir src/templates",
 		"build": "tsc"
 	},
 	"dependencies": {
-		"@sendgrid/mail": "^8.1.5"
+		"@react-email/components": "^0.5.1",
+		"@react-email/render": "^1.2.1",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0"
 	},
 	"devDependencies": {
+		"@react-email/preview-server": "4.2.8",
 		"@repo/typescript-config": "workspace:*",
+		"@types/react": "^19",
+		"@types/react-dom": "^19",
+		"react-email": "^4.2.8",
 		"typescript": "^5.9.2"
 	},
 	"exports": {
-		".": {
-			"types": "./src/types.ts",
-			"default": "./dist/types.js"
-		},
-		"./sendgrid": {
-			"types": "./src/providers/sendgrid.ts",
-			"default": "./dist/providers/sendgrid.js"
+		"./templates": {
+			"types": "./src/templates/index.ts",
+			"default": "./dist/templates/index.js"
 		}
 	}
 }

@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common"
 
-import { forgotPassword, type ForgotPasswordParams } from "@repo/email-templates"
+import { forgotPassword, type ForgotPasswordProps } from "@repo/email/templates"
 
 @Injectable()
 class EmailService {
-	async sendForgotPassword(to: string, params: ForgotPasswordParams): Promise<void> {
+	async sendForgotPassword(to: string, params: ForgotPasswordProps): Promise<void> {
 		const { html, text } = await forgotPassword(params)
 
 		// TODO Add email provider

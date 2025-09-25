@@ -41,9 +41,9 @@ importers:
       '@repo/csv':
         specifier: workspace:*
         version: link:../../packages/csv
-      '@repo/email-templates':
-        specifier: workspace:*
-        version: link:../../packages/email-templates
+      '@repo/email':
+        specifier: workspace:^
+        version: link:../../packages/email
       '@repo/routes':
         specifier: workspace:*
         version: link:../../packages/routes
@@ -242,13 +242,34 @@ importers:
 
   packages/email:
     dependencies:
-      '@sendgrid/mail':
-        specifier: ^8.1.5
-        version: 8.1.6
+      '@react-email/components':
+        specifier: ^0.5.1
+        version: 0.5.5(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      '@react-email/render':
+        specifier: ^1.2.1
+        version: 1.3.1(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      react:
+        specifier: ^19.0.0
+        version: 19.1.1
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.1.1(react@19.1.1)
     devDependencies:
+      '@react-email/preview-server':
+        specifier: 4.2.8
+        version: 4.2.8(@swc/core@1.13.5(@swc/helpers@0.5.17))(postcss@8.5.6)(ts-node@10.9.2(@swc/core@1.13.5(@swc/helpers@0.5.17))(@types/node@22.18.6)(typescript@5.9.2))
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
+      '@types/react':
+        specifier: ^19
+        version: 19.1.13
+      '@types/react-dom':
+        specifier: ^19
+        version: 19.1.9(@types/react@19.1.13)
+      react-email:
+        specifier: ^4.2.8
+        version: 4.2.11
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -2971,18 +2992,6 @@ packages:
 
   '@selderee/plugin-htmlparser2@0.11.0':
     resolution: {integrity: sha512-P33hHGdldxGabLFjPPpaTxVolMrzrcegejx+0GxjrIb9Zv48D8yAIA/QTDR2dFl7Uz7urX8aX6+5bCZslr+gWQ==}
-
-  '@sendgrid/client@8.1.6':
-    resolution: {integrity: sha512-/BHu0hqwXNHr2aLhcXU7RmmlVqrdfrbY9KpaNj00KZHlVOVoRxRVrpOCabIB+91ISXJ6+mLM9vpaVUhK6TwBWA==}
-    engines: {node: '>=12.*'}
-
-  '@sendgrid/helpers@8.0.0':
-    resolution: {integrity: sha512-Ze7WuW2Xzy5GT5WRx+yEv89fsg/pgy3T1E3FS0QEx0/VvRmigMZ5qyVGhJz4SxomegDkzXv/i0aFPpHKN8qdAA==}
-    engines: {node: '>= 12.0.0'}
-
-  '@sendgrid/mail@8.1.6':
-    resolution: {integrity: sha512-/ZqxUvKeEztU9drOoPC/8opEPOk+jLlB2q4+xpx6HVLq6aFu3pMpalkTpAQz8XfRfpLp8O25bh6pGPcHDCYpqg==}
-    engines: {node: '>=12.*'}
 
   '@sinclair/typebox@0.27.8':
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
@@ -7368,9 +7377,9 @@ snapshots:
       '@babel/helper-compilation-targets': 7.27.2
       '@babel/helper-module-transforms': 7.28.3(@babel/core@7.26.10)
       '@babel/helpers': 7.28.4
-      '@babel/parser': 7.27.0
+      '@babel/parser': 7.28.4
       '@babel/template': 7.27.2
-      '@babel/traverse': 7.27.0
+      '@babel/traverse': 7.28.4
       '@babel/types': 7.28.4
       convert-source-map: 2.0.0
       debug: 4.4.3
@@ -7559,7 +7568,7 @@ snapshots:
     dependencies:
       '@babel/code-frame': 7.27.1
       '@babel/generator': 7.28.3
-      '@babel/parser': 7.27.0
+      '@babel/parser': 7.28.4
       '@babel/template': 7.27.2
       '@babel/types': 7.28.4
       debug: 4.4.3
@@ -9780,24 +9789,6 @@ snapshots:
       domhandler: 5.0.3
       selderee: 0.11.0
 
-  '@sendgrid/client@8.1.6':
-    dependencies:
-      '@sendgrid/helpers': 8.0.0
-      axios: 1.12.2
-    transitivePeerDependencies:
-      - debug
-
-  '@sendgrid/helpers@8.0.0':
-    dependencies:
-      deepmerge: 4.3.1
-
-  '@sendgrid/mail@8.1.6':
-    dependencies:
-      '@sendgrid/client': 8.1.6
-      '@sendgrid/helpers': 8.0.0
-    transitivePeerDependencies:
-      - debug
-
   '@sinclair/typebox@0.27.8': {}
 
   '@sindresorhus/is@5.6.0': {}
@@ -10170,7 +10161,7 @@ snapshots:
 
   '@types/webpack@5.28.5(@swc/core@1.13.5(@swc/helpers@0.5.17))(esbuild@0.25.0)':
     dependencies:
-      '@types/node': 22.14.1
+      '@types/node': 22.18.6
       tapable: 2.2.3
       webpack: 5.101.3(@swc/core@1.13.5(@swc/helpers@0.5.17))(esbuild@0.25.0)
     transitivePeerDependencies:
