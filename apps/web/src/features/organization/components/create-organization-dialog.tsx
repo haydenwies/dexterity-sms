@@ -14,6 +14,7 @@ import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
 
 import { useCreateOrganization } from "~/features/organization/hooks/use-create-organization"
+import { placeholders } from "~/lib/placeholders"
 
 type CreateOrganizationDialogProps = {
 	open: boolean
@@ -44,7 +45,27 @@ const CreateOrganizationDialog = ({ open, setOpen }: CreateOrganizationDialogPro
 								<FormItem>
 									<FormLabel>Name</FormLabel>
 									<FormControl>
-										<Input {...field} />
+										<Input
+											{...field}
+											placeholder={placeholders.ORGANIZATION_NAME}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={createOrganizationForm.control}
+							name="email"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Email</FormLabel>
+									<FormControl>
+										<Input
+											{...field}
+											placeholder={placeholders.EMAIL}
+											type="email"
+										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>

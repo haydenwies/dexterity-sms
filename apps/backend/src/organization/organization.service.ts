@@ -52,7 +52,10 @@ class OrganizationService {
 
 	async create(userId: string, dto: CreateOrganizationDto): Promise<Organization> {
 		// Create organization
-		const organization = Organization.create({ name: dto.name })
+		const organization = Organization.create({
+			name: dto.name,
+			email: dto.email
+		})
 		const createdOrganization = await this.organizationRepository.create(organization)
 
 		// Create organization user
@@ -70,7 +73,10 @@ class OrganizationService {
 		if (!organization) throw new NotFoundException("Organization not found")
 
 		// Update organization
-		organization.update({ name: dto.name })
+		organization.update({
+			name: dto.name,
+			email: dto.email
+		})
 		const updatedOrganization = await this.organizationRepository.update(organization)
 
 		return updatedOrganization

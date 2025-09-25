@@ -1,7 +1,7 @@
 type OrganizationModel = {
 	id: string
 	name: string
-	billingAccountId?: string
+	email: string
 	createdAt: Date
 	updatedAt: Date
 }

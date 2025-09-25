@@ -13,7 +13,8 @@ const useCreateOrganization = () => {
 	const createOrganizationForm = useForm<CreateOrganizationDto>({
 		resolver: zodResolver(createOrganizationDtoSchema),
 		defaultValues: {
-			name: ""
+			name: "",
+			email: ""
 		}
 	})
 

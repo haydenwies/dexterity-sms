@@ -1,5 +1,5 @@
 import { type MessageModel } from "@repo/types/message"
-import { MessageCreatedEvent } from "~/event/event.types"
+import { MessageCreatedEvent, MessageUpdatedEvent } from "~/event/event.types"
 
 import { Message } from "~/message/message.entity"
 
@@ -34,4 +34,20 @@ const toMessageCreatedEvent = (message: Message): MessageCreatedEvent => {
 	}
 }
 
-export { toMessageCreatedEvent, toMessageDto }
+const toMessageUpdatedEvent = (message: Message): MessageUpdatedEvent => {
+	return {
+		id: message.id,
+		organizationId: message.organizationId,
+		conversationId: message.conversationId,
+		campaignId: message.campaignId,
+		direction: message.direction,
+		status: message.status,
+		from: message.from.value,
+		to: message.to.value,
+		body: message.body,
+		createdAt: message.createdAt,
+		updatedAt: message.updatedAt
+	}
+}
+
+export { toMessageCreatedEvent, toMessageDto, toMessageUpdatedEvent }

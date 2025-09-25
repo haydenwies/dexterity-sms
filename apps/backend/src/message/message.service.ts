@@ -10,7 +10,7 @@ import { EVENT_TOPIC, type MessageCreatedEvent } from "~/event/event.types"
 import { Message } from "~/message/message.entity"
 import { MESSAGE_QUEUE, MESSAGE_QUEUE_JOB } from "~/message/message.queue"
 import { MessageRepository } from "~/message/message.repository"
-import { toMessageCreatedEvent } from "./message.utils"
+import { toMessageCreatedEvent, toMessageUpdatedEvent } from "./message.utils"
 
 @Injectable()
 class MessageService {
@@ -55,6 +55,8 @@ class MessageService {
 
 		message.updateConversationId(conversationId)
 		const updatedMessage = await this.messageRepository.update(message)
+
+		await this.eventEmitter.emitAsync(EVENT_TOPIC.MESSAGE_UPDATED, toMessageUpdatedEvent(updatedMessage))
 
 		return updatedMessage
 	}

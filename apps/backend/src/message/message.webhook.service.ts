@@ -1,5 +1,5 @@
 import { InjectQueue } from "@nestjs/bullmq"
-import { Inject, Injectable, Logger } from "@nestjs/common"
+import { Injectable, Logger } from "@nestjs/common"
 import { EventEmitter2 } from "@nestjs/event-emitter"
 import { Queue } from "bullmq"
 
@@ -10,9 +10,8 @@ import { Phone } from "~/common/phone.vo"
 import { EVENT_TOPIC, type MessageCreatedEvent } from "~/event/event.types"
 import { Message } from "~/message/message.entity"
 import { MESSAGE_QUEUE, MESSAGE_QUEUE_JOB } from "~/message/message.queue"
-import { toMessageCreatedEvent } from "~/message/message.utils"
+import { toMessageCreatedEvent, toMessageUpdatedEvent } from "~/message/message.utils"
 import { SenderService } from "~/sender/sender.service"
-import { SMS_PROVIDER, type SmsProvider } from "~/sms/sms.module"
 import { UnsubscribeService } from "~/unsubscribe/unsubscribe.service"
 import { MessageRepository } from "./message.repository"
 
@@ -21,12 +20,11 @@ class MessageWebhookService {
 	private readonly logger = new Logger(MessageWebhookService.name)
 
 	constructor(
-		@Inject(SMS_PROVIDER) private readonly smsProvider: SmsProvider,
+		@InjectQueue(MESSAGE_QUEUE) private readonly messageQueue: Queue,
 		private readonly messageRepository: MessageRepository,
-		private readonly senderService: SenderService,
 		private readonly eventEmitter: EventEmitter2,
-		private readonly unsubscribeService: UnsubscribeService,
-		@InjectQueue(MESSAGE_QUEUE) private readonly messageQueue: Queue
+		private readonly senderService: SenderService,
+		private readonly unsubscribeService: UnsubscribeService
 	) {}
 
 	async handleStatusUpdate(payload: StatusWebhookEvent): Promise<void> {
@@ -47,7 +45,9 @@ class MessageWebhookService {
 		// Update message status
 		try {
 			message.updateStatus(messageStatus)
-			await this.messageRepository.update(message)
+			const updatedMessage = await this.messageRepository.update(message)
+
+			await this.eventEmitter.emitAsync(EVENT_TOPIC.MESSAGE_UPDATED, toMessageUpdatedEvent(updatedMessage))
 
 			this.logger.log(`Successfully updated message ${message.id} status to ${message.status}`)
 		} catch (error: unknown) {

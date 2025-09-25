@@ -10,6 +10,7 @@ import {
 	ConversationCreatedEvent,
 	ConversationUpdatedEvent,
 	EVENT_TOPIC,
+	MessageUpdatedEvent,
 	type MessageCreatedEvent
 } from "~/event/event.types"
 import { Message } from "~/message/message.entity"
@@ -102,13 +103,14 @@ export class ConversationService {
 			mergeMap((msg) => this.messageService.get(organizationId, msg.messageId))
 		)
 
-		// const updated$ = fromEvent(this.eventEmitter, "message.updated").pipe(
-		// 	map((msg) => msg as MessageCreatedEvent),
-		// 	filter((msg) => msg.conversationId === conversationId)
-		// )
+		const updated$ = fromEvent(this.eventEmitter, EVENT_TOPIC.MESSAGE_UPDATED).pipe(
+			map((msg) => msg as MessageUpdatedEvent),
+			filter((msg) => msg.conversationId === conversationId),
+			mergeMap((msg) => this.messageService.get(organizationId, msg.id))
+		)
 
-		return created$
-		// return merge(created$, updated$)
+		// return created$
+		return merge(created$, updated$)
 	}
 
 	async sendConversationMessage(organizationId: string, conversationId: string, dto: SendMessageDto): Promise<void> {

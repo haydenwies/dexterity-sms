@@ -17,7 +17,8 @@ const useUpdateOrganization = (organization: OrganizationModel) => {
 	const updateOrganizationForm = useForm<UpdateOrganizationDto>({
 		resolver: zodResolver(updateOrganizationDtoSchema),
 		defaultValues: {
-			name: organization.name
+			name: organization.name,
+			email: organization.email
 		}
 	})
 

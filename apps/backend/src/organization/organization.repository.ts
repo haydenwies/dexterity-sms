@@ -41,6 +41,7 @@ class OrganizationRepository {
 			.values({
 				id: organization.id,
 				name: organization.name,
+				email: organization.email,
 				createdAt: organization.createdAt,
 				updatedAt: organization.updatedAt
 			})
@@ -54,8 +55,9 @@ class OrganizationRepository {
 		const [row] = await this.db
 			.update(organizationTable)
 			.set({
-				name: organization.name,
 				externalBillingAccountId: organization.externalBillingAccountId,
+				name: organization.name,
+				email: organization.email,
 				updatedAt: new Date()
 			})
 			.where(eq(organizationTable.id, organization.id))
@@ -68,8 +70,9 @@ class OrganizationRepository {
 	private static toEntity(row: typeof organizationTable.$inferSelect): Organization {
 		return new Organization({
 			id: row.id,
-			name: row.name,
 			externalBillingAccountId: row.externalBillingAccountId,
+			name: row.name,
+			email: row.email,
 			createdAt: row.createdAt,
 			updatedAt: row.updatedAt
 		})

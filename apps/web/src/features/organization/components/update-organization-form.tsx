@@ -8,6 +8,7 @@ import { Input } from "@repo/ui/components/input"
 import { cn } from "@repo/ui/lib/utils"
 
 import { useUpdateOrganization } from "~/features/organization/hooks/use-update-organization"
+import { placeholders } from "~/lib/placeholders"
 
 type UpdateOrganizationFormProps = {
 	organizationPromise: Promise<OrganizationModel>
@@ -19,8 +20,8 @@ const UpdateOrganizationForm = ({ organizationPromise, className }: UpdateOrgani
 	const { updateOrganizationForm } = useUpdateOrganization(organization)
 
 	return (
-		<Form {...updateOrganizationForm}>
-			<form className={cn("flex flex-col gap-4", className)}>
+		<form className={cn("flex flex-col gap-4", className)}>
+			<Form {...updateOrganizationForm}>
 				<FormField
 					control={updateOrganizationForm.control}
 					name="name"
@@ -28,14 +29,34 @@ const UpdateOrganizationForm = ({ organizationPromise, className }: UpdateOrgani
 						<FormItem>
 							<FormLabel>Name</FormLabel>
 							<FormControl>
-								<Input {...field} />
+								<Input
+									{...field}
+									placeholder={placeholders.ORGANIZATION_NAME}
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
 					)}
 				/>
-			</form>
-		</Form>
+				<FormField
+					control={updateOrganizationForm.control}
+					name="email"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Email</FormLabel>
+							<FormControl>
+								<Input
+									{...field}
+									placeholder={placeholders.EMAIL}
+									type="email"
+								/>
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+			</Form>
+		</form>
 	)
 }
 

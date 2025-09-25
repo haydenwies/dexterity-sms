@@ -4,10 +4,12 @@ import z from "zod"
 
 type CreateOrganizationDto = {
 	name: string
+	email: string
 }
 
 const createOrganizationDtoSchema = z.object({
-	name: z.string().min(1)
+	name: z.string().min(1),
+	email: z.string().email()
 })
 
 // #endregion
@@ -16,10 +18,12 @@ const createOrganizationDtoSchema = z.object({
 
 type UpdateOrganizationDto = {
 	name: string
+	email: string
 }
 
 const updateOrganizationDtoSchema = z.object({
-	name: z.string().min(1)
+	name: z.string().min(1),
+	email: z.string().email()
 })
 
 // #endregion

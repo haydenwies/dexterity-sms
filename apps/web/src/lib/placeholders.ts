@@ -3,6 +3,7 @@ const placeholders = {
 	PASSWORD: "••••••••",
 	FIRST_NAME: "John",
 	LAST_NAME: "Doe",
+	ORGANIZATION_NAME: "Acme Inc",
 	PHONE: "(123) 456-7890"
 }
 
