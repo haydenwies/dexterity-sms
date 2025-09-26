@@ -96,6 +96,11 @@ class Conversation implements IConversation {
 		else this._unreadCount = 1
 		this._updatedAt = new Date()
 	}
+
+	clearUnreadCount() {
+		this._unreadCount = 0
+		this._updatedAt = new Date()
+	}
 }
 
 export { Conversation }

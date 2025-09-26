@@ -6,6 +6,7 @@ import { MessageDirection, type MessageModel } from "@repo/types/message"
 import { cn } from "@repo/ui/lib/utils"
 
 import { useStreamManyConversationMessages } from "~/data/conversation/use-stream-many-conversation-messages"
+import { useReadConversation } from "~/features/conversation/hooks/use-read-conversation"
 
 type MessageBubbleProps = {
 	message: MessageModel
@@ -36,9 +37,15 @@ const AllMessagesList = ({ messagesPromise, className }: AllMessagesListProps) =
 	const initialMessages = use(messagesPromise)
 	const messages = useStreamManyConversationMessages(initialMessages)
 	const messagesEndRef = useRef<HTMLDivElement>(null)
+	const { markAsRead } = useReadConversation()
 
 	// Auto-scroll to bottom when messages update
 	useEffect(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }), [messages])
+
+	// Mark conversation as read when component mounts (user views the conversation)
+	useEffect(() => {
+		markAsRead()
+	}, [markAsRead])
 
 	if (messages.length === 0)
 		return (

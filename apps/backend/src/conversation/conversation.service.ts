@@ -17,7 +17,7 @@ import { Message } from "~/message/message.entity"
 import { MessageService } from "~/message/message.service"
 import { SenderService } from "~/sender/sender.service"
 import { UnsubscribeService } from "~/unsubscribe/unsubscribe.service"
-import { toConversationCreatedEvent } from "./conversation.utils"
+import { toConversationCreatedEvent, toConversationUpdatedEvent } from "./conversation.utils"
 
 @Injectable()
 export class ConversationService {
@@ -135,7 +135,23 @@ export class ConversationService {
 		})
 	}
 
-	async isUnsubscribed(organizationId: string, conversationId: string): Promise<{ isUnsubscribed: boolean }> {
+	async readConversation(organizationId: string, conversationId: string): Promise<void> {
+		// Find conversation
+		const conversation = await this.conversationRepository.find(organizationId, conversationId)
+		if (!conversation) throw new NotFoundException("Conversation not found")
+
+		// Clear unread count
+		conversation.clearUnreadCount()
+		await this.conversationRepository.update(conversation)
+
+		// Emit event
+		await this.eventEmitter.emitAsync(EVENT_TOPIC.CONVERSATION_UPDATED, toConversationUpdatedEvent(conversation))
+	}
+
+	async isConversationUnsubscribed(
+		organizationId: string,
+		conversationId: string
+	): Promise<{ isUnsubscribed: boolean }> {
 		// Find conversation
 		const conversation = await this.conversationRepository.find(organizationId, conversationId)
 		if (!conversation) throw new NotFoundException("Conversation not found")

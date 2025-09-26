@@ -62,6 +62,10 @@ const routes = {
 			`/organizations/${params.organizationId}/conversations/${params.conversationId}/messages/stream`,
 		SEND_MESSAGE: (organizationId: string, conversationId: string) =>
 			`/organizations/${organizationId}/conversations/${conversationId}/messages`,
+		READ_CONVERSATION: (organizationId: string, conversationId: string) =>
+			`/organizations/${organizationId}/conversations/${conversationId}/read`,
+		IS_CONVERSATION_UNSUBSCRIBED: (organizationId: string, conversationId: string) =>
+			`/organizations/${organizationId}/conversations/${conversationId}/unsubscribed`,
 
 		// sender
 		GET_SENDER: (organizationId: string) => `/organizations/${organizationId}/sender`,

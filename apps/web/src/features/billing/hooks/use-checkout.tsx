@@ -18,6 +18,8 @@ const useCheckout = () => {
 
 			const { url } = await getCheckoutSession(organizationId)
 
+			console.log("here")
+
 			router.push(url)
 		} catch {
 			toast.error("An unknown error occurred")

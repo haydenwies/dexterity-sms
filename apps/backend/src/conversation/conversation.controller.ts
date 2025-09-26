@@ -95,11 +95,20 @@ export class ConversationController {
 	}
 
 	@UseGuards(ConversationGuard)
+	@Post(":conversationId/read")
+	async readConversationMessage(
+		@Param("organizationId") organizationId: string,
+		@Param("conversationId") conversationId: string
+	): Promise<void> {
+		await this.conversationService.readConversation(organizationId, conversationId)
+	}
+
+	@UseGuards(ConversationGuard)
 	@Get(":conversationId/unsubscribed")
 	async isUnsubscribed(
 		@Param("organizationId") organizationId: string,
 		@Param("conversationId") conversationId: string
 	): Promise<{ isUnsubscribed: boolean }> {
-		return await this.conversationService.isUnsubscribed(organizationId, conversationId)
+		return await this.conversationService.isConversationUnsubscribed(organizationId, conversationId)
 	}
 }
