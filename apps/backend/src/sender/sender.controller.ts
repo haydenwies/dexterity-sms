@@ -3,6 +3,7 @@ import { Body, Controller, Delete, Get, Param, Post, UseGuards } from "@nestjs/c
 import { addSenderDtoSchema, type AddSenderDto, type SenderModel } from "@repo/types/sender"
 
 import { AuthGuard } from "~/auth/auth.guard"
+import { SubscriptionGuard } from "~/billing/billing.guard"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
 import { OrganizationGuard } from "~/organization/organization.guard"
 import { SenderService } from "~/sender/sender.service"
@@ -20,6 +21,7 @@ class SenderController {
 		return toSenderDto(sender)
 	}
 
+	@UseGuards(SubscriptionGuard)
 	@Post()
 	async add(
 		@Param("organizationId") organizationId: string,

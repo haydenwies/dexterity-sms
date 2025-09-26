@@ -2,6 +2,7 @@ import { BullModule } from "@nestjs/bullmq"
 import { Module } from "@nestjs/common"
 
 import { AuthModule } from "~/auth/auth.module"
+import { BillingModule } from "~/billing/billing.module"
 import { CampaignController } from "~/campaign/campaign.controller"
 import { CAMPAIGN_QUEUE, CampaignQueueConsumer } from "~/campaign/campaign.queue"
 import { CampaignRepository } from "~/campaign/campaign.repository"
@@ -17,6 +18,7 @@ import { UnsubscribeModule } from "~/unsubscribe/unsubscribe.module"
 	imports: [
 		BullModule.registerQueue({ name: CAMPAIGN_QUEUE }),
 		AuthModule,
+		BillingModule,
 		OrganizationModule,
 		DatabaseModule,
 		ContactModule,

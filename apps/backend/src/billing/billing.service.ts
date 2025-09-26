@@ -7,9 +7,9 @@ import { OrganizationService } from "~/organization/organization.service"
 
 @Injectable()
 class BillingService {
-	private readonly SENDER_EXTERNAL_ID = "price_1SAsfeRfl3ViJIjUho0R5Y0g"
-	private readonly SMS_CREDIT_EXTERNAL_ID = "price_1SAsdGRfl3ViJIjUkVPpxU8h"
-	private readonly SMS_CREDIT_METER_ID = "sms_credit"
+	public readonly SENDER_EXTERNAL_ID = "price_1SAsfeRfl3ViJIjUho0R5Y0g"
+	public readonly SMS_CREDIT_EXTERNAL_ID = "price_1SAsdGRfl3ViJIjUkVPpxU8h"
+	public readonly SMS_CREDIT_METER_ID = "sms_credit"
 
 	constructor(
 		@Inject(BILLING_PROVIDER) private readonly billingProvider: BillingProvider,

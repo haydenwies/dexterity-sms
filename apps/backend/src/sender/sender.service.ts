@@ -1,17 +1,23 @@
-import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common"
+import { BadRequestException, Inject, Injectable, Logger, NotFoundException } from "@nestjs/common"
+import { EventEmitter2 } from "@nestjs/event-emitter"
 
 import { type AddSenderDto } from "@repo/types/sender"
 
 import { Phone } from "~/common/phone.vo"
+import { EVENT_TOPIC } from "~/event/event.types"
 import { Sender } from "~/sender/sender.entity"
 import { SenderRepository } from "~/sender/sender.repository"
 import { SMS_PROVIDER, type SmsProvider } from "~/sms/sms.module"
+import { toSenderAddedEvent, toSenderRemovedEvent } from "./sender.utils"
 
 @Injectable()
 class SenderService {
+	private readonly logger = new Logger(SenderService.name)
+
 	constructor(
 		private readonly senderRepository: SenderRepository,
-		@Inject(SMS_PROVIDER) private readonly smsProvider: SmsProvider
+		@Inject(SMS_PROVIDER) private readonly smsProvider: SmsProvider,
+		private readonly eventEmitter: EventEmitter2
 	) {}
 
 	async safeGet(organizationId: string): Promise<Sender | undefined> {
@@ -53,12 +59,18 @@ class SenderService {
 			externalId: res.id,
 			phone
 		})
-		await this.senderRepository.create(sender)
+		const createdSender = await this.senderRepository.create(sender)
+
+		// Emit sender added event for billing
+		await this.eventEmitter.emitAsync(EVENT_TOPIC.SENDER_ADDED, toSenderAddedEvent(createdSender))
 	}
 
 	async remove(organizationId: string): Promise<void> {
 		const sender = await this.senderRepository.find(organizationId)
 		if (!sender) throw new NotFoundException("Sender not found")
+
+		// Emit sender removed event for billing (before deletion)
+		await this.eventEmitter.emitAsync(EVENT_TOPIC.SENDER_REMOVED, toSenderRemovedEvent(sender))
 
 		await this.smsProvider.releaseNumber(sender.externalId)
 		await this.senderRepository.delete(sender)

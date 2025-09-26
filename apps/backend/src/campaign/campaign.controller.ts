@@ -15,6 +15,7 @@ import {
 } from "@repo/types/campaign"
 
 import { AuthGuard } from "~/auth/auth.guard"
+import { SubscriptionGuard } from "~/billing/billing.guard"
 import { CampaignService } from "~/campaign/campaign.service"
 import { toCampaignDto } from "~/campaign/campaign.utils"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
@@ -80,7 +81,7 @@ class CampaignController {
 		await this.campaignService.delete(organizationId, campaignId)
 	}
 
-	@UseGuards(SenderGuard)
+	@UseGuards(SubscriptionGuard, SenderGuard)
 	@Post(":campaignId/send-test")
 	async sendTest(
 		@Param("organizationId") organizationId: string,
@@ -90,7 +91,7 @@ class CampaignController {
 		await this.campaignService.sendTest(organizationId, campaignId, body)
 	}
 
-	@UseGuards(SenderGuard)
+	@UseGuards(SubscriptionGuard, SenderGuard)
 	@Post(":campaignId/send")
 	async send(
 		@Param("organizationId") organizationId: string,

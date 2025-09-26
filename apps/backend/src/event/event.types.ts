@@ -6,7 +6,9 @@ enum EVENT_TOPIC {
 	CONVERSATION_CREATED = "conversation.created",
 	CONVERSATION_UPDATED = "conversation.updated",
 	MESSAGE_CREATED = "message.created",
-	MESSAGE_UPDATED = "message.updated"
+	MESSAGE_UPDATED = "message.updated",
+	SENDER_ADDED = "sender.added",
+	SENDER_REMOVED = "sender.removed"
 }
 
 type ConversationCreatedEvent = {
@@ -53,10 +55,26 @@ type MessageUpdatedEvent = {
 	updatedAt: Date
 }
 
+type SenderAddedEvent = {
+	organizationId: string
+	externalId: string
+	phone: string
+	createdAt: Date
+}
+
+type SenderRemovedEvent = {
+	organizationId: string
+	externalId: string
+	phone: string
+	removedAt: Date
+}
+
 export {
 	EVENT_TOPIC,
 	type ConversationCreatedEvent,
 	type ConversationUpdatedEvent,
 	type MessageCreatedEvent,
-	type MessageUpdatedEvent
+	type MessageUpdatedEvent,
+	type SenderAddedEvent,
+	type SenderRemovedEvent
 }

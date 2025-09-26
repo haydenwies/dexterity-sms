@@ -11,11 +11,13 @@ import {
 import { type MessageModel } from "@repo/types/message"
 
 import { AuthGuard } from "~/auth/auth.guard"
+import { SubscriptionGuard } from "~/billing/billing.guard"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
 import { ConversationService } from "~/conversation/conversation.service"
 import { toConversationDto } from "~/conversation/conversation.utils"
 import { toMessageDto } from "~/message/message.utils"
 import { OrganizationGuard } from "~/organization/organization.guard"
+import { SenderGuard } from "~/sender/sender.guard"
 import { ConversationGuard } from "./conversation.guard"
 
 @UseGuards(AuthGuard, OrganizationGuard)
@@ -71,7 +73,7 @@ export class ConversationController {
 		return messages.map((message) => toMessageDto(message))
 	}
 
-	@UseGuards(ConversationGuard)
+	@UseGuards(ConversationGuard, SubscriptionGuard, SenderGuard)
 	@Post(":conversationId/messages")
 	async sendConversationMessage(
 		@Param("organizationId") organizationId: string,
