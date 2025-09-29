@@ -1,9 +1,13 @@
-import { Inject, Injectable, InternalServerErrorException } from "@nestjs/common"
+import { ConflictException, Inject, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common"
 
 import { BILLING_PROVIDER, type BillingProvider } from "~/billing/billing.provider"
-import { Subscription } from "~/billing/subscription/subscription.entity"
-import { SubscriptionService } from "~/billing/subscription/subscription.service"
+import {
+	Subscription,
+	SubscriptionCreateParams,
+	SubscriptionUpdateParams
+} from "~/billing/entities/subscription.entity"
 import { OrganizationService } from "~/organization/organization.service"
+import { SubscriptionRepository } from "./repositories/subscription.repository"
 
 @Injectable()
 class BillingService {
@@ -13,8 +17,8 @@ class BillingService {
 
 	constructor(
 		@Inject(BILLING_PROVIDER) private readonly billingProvider: BillingProvider,
-		private readonly organizationService: OrganizationService,
-		private readonly subscriptionService: SubscriptionService
+		private readonly subscriptionRepository: SubscriptionRepository,
+		private readonly organizationService: OrganizationService
 	) {}
 
 	async getBillingAccountId(organizationId: string): Promise<string> {
@@ -68,9 +72,44 @@ class BillingService {
 	}
 
 	async getSubscription(organizationId: string): Promise<Subscription> {
-		const subscription = await this.subscriptionService.get(organizationId)
+		const subscription = await this.subscriptionRepository.find(organizationId)
+		if (!subscription) throw new NotFoundException("Subscription not found")
 
 		return subscription
+	}
+
+	async safeGetSubscription(organizationId: string): Promise<Subscription | undefined> {
+		const subscription = await this.subscriptionRepository.find(organizationId)
+		if (!subscription) return undefined
+
+		return subscription
+	}
+
+	async createSubscription(organizationId: string, params: SubscriptionCreateParams): Promise<Subscription> {
+		const existingSubscription = await this.subscriptionRepository.find(organizationId)
+		if (existingSubscription) throw new ConflictException("Subscription already exists")
+
+		const subscription = Subscription.create(params)
+		const createdSubscription = await this.subscriptionRepository.create(subscription)
+
+		return createdSubscription
+	}
+
+	async updateSubscription(organizationId: string, params: SubscriptionUpdateParams): Promise<Subscription> {
+		const subscription = await this.subscriptionRepository.find(organizationId)
+		if (!subscription) throw new NotFoundException("Subscription not found")
+
+		subscription.update(params)
+		const updatedSubscription = await this.subscriptionRepository.update(subscription)
+
+		return updatedSubscription
+	}
+
+	async deleteSubscription(organizationId: string): Promise<void> {
+		const subscription = await this.subscriptionRepository.find(organizationId)
+		if (!subscription) return
+
+		await this.subscriptionRepository.delete(subscription)
 	}
 }
 

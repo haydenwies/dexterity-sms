@@ -6,13 +6,13 @@ import { SubscriptionStatus } from "@repo/types/billing"
 
 import { AuthRequest } from "~/auth/auth.guard"
 import { BILLING_PROVIDER, type BillingProvider } from "~/billing/billing.provider"
-import { SubscriptionService } from "~/billing/subscription/subscription.service"
+import { BillingService } from "./billing.service"
 
 @Injectable()
 class SubscriptionGuard implements CanActivate {
 	private readonly logger = new Logger(SubscriptionGuard.name)
 
-	constructor(private readonly subscriptionService: SubscriptionService) {}
+	constructor(private readonly billingService: BillingService) {}
 
 	async canActivate(context: ExecutionContext): Promise<boolean> {
 		const request = context.switchToHttp().getRequest<AuthRequest>()
@@ -25,7 +25,7 @@ class SubscriptionGuard implements CanActivate {
 
 		try {
 			// Get subscription
-			const subscription = await this.subscriptionService.safeGet(organizationId)
+			const subscription = await this.billingService.safeGetSubscription(organizationId)
 			if (!subscription) {
 				this.logger.warn(`No subscription found for organization ${organizationId}`)
 				throw new ForbiddenException("Active subscription required")

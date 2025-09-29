@@ -4,7 +4,7 @@ import { SubscriptionModel } from "@repo/types/billing"
 
 import { AuthGuard } from "~/auth/auth.guard"
 import { BillingService } from "~/billing/billing.service"
-import { toSubscriptionDto } from "~/billing/subscription/subscription.utils"
+import { toSubscriptionDto } from "~/billing/billing.utils"
 import { OrganizationGuard } from "~/organization/organization.guard"
 
 @UseGuards(AuthGuard, OrganizationGuard)

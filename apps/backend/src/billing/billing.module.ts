@@ -5,14 +5,15 @@ import { BillingController } from "~/billing/billing.controller"
 import { BillingListener } from "~/billing/billing.listener"
 import { billingProviderFactory } from "~/billing/billing.provider"
 import { BillingService } from "~/billing/billing.service"
-import { SubscriptionModule } from "~/billing/subscription/subscription.module"
 import { OrganizationModule } from "~/organization/organization.module"
+import { BillingWebhookController } from "./billing.webhook.controller"
+import { BillingWebhookService } from "./billing.webhook.service"
 
 @Module({
-	imports: [AuthModule, OrganizationModule, SubscriptionModule],
-	controllers: [BillingController],
-	providers: [billingProviderFactory, BillingService, BillingListener],
-	exports: [SubscriptionModule]
+	imports: [AuthModule, OrganizationModule],
+	controllers: [BillingController, BillingWebhookController],
+	providers: [billingProviderFactory, BillingService, BillingListener, BillingWebhookService],
+	exports: [BillingService]
 })
 class BillingModule {}
 
