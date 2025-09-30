@@ -11,7 +11,7 @@ import {
 import { type MessageModel } from "@repo/types/message"
 
 import { AuthGuard } from "~/auth/auth.guard"
-import { SubscriptionGuard } from "~/billing/billing.guard"
+import { SubscriptionGuard } from "~/billing/guards/subscription.guard"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
 import { ConversationService } from "~/conversation/conversation.service"
 import { toConversationDto } from "~/conversation/conversation.utils"

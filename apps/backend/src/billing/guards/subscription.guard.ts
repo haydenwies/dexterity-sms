@@ -3,7 +3,7 @@ import { CanActivate, ExecutionContext, ForbiddenException, Injectable, Logger }
 import { SubscriptionStatus } from "@repo/types/billing"
 
 import { AuthRequest } from "~/auth/auth.guard"
-import { BillingService } from "./billing.service"
+import { BillingService } from "~/billing/billing.service"
 
 @Injectable()
 class SubscriptionGuard implements CanActivate {

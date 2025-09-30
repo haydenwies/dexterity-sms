@@ -15,7 +15,7 @@ import {
 } from "@repo/types/campaign"
 
 import { AuthGuard } from "~/auth/auth.guard"
-import { SubscriptionGuard } from "~/billing/billing.guard"
+import { SubscriptionGuard } from "~/billing/guards/subscription.guard"
 import { CampaignService } from "~/campaign/campaign.service"
 import { toCampaignDto } from "~/campaign/campaign.utils"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
