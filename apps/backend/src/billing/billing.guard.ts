@@ -1,11 +1,8 @@
-import { CanActivate, ExecutionContext, ForbiddenException, Inject, Injectable, Logger } from "@nestjs/common"
-import { ConfigService } from "@nestjs/config"
-import { type Request } from "express"
+import { CanActivate, ExecutionContext, ForbiddenException, Injectable, Logger } from "@nestjs/common"
 
 import { SubscriptionStatus } from "@repo/types/billing"
 
 import { AuthRequest } from "~/auth/auth.guard"
-import { BILLING_PROVIDER, type BillingProvider } from "~/billing/billing.provider"
 import { BillingService } from "./billing.service"
 
 @Injectable()
@@ -51,32 +48,4 @@ class SubscriptionGuard implements CanActivate {
 	}
 }
 
-@Injectable()
-class BillingWebhookGuard implements CanActivate {
-	private readonly logger = new Logger(BillingWebhookGuard.name)
-
-	constructor(
-		@Inject(BILLING_PROVIDER) private readonly billinProvider: BillingProvider,
-		private readonly configService: ConfigService
-	) {}
-
-	async canActivate(context: ExecutionContext): Promise<boolean> {
-		const secret = this.configService.getOrThrow<string>("billing.stripeWebhookSecret")
-
-		const request = context.switchToHttp().getRequest<Request>()
-
-		const signatute = request.headers["stripe-signature"]
-		if (!signatute) return false
-
-		try {
-			this.billinProvider.webhooks.constructEvent(request.body as string, signatute, secret)
-		} catch {
-			this.logger.error("Failed to verify request")
-			return false
-		}
-
-		return true
-	}
-}
-
-export { BillingWebhookGuard, SubscriptionGuard }
+export { SubscriptionGuard }

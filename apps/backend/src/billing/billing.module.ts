@@ -1,18 +1,18 @@
 import { Module } from "@nestjs/common"
 
 import { AuthModule } from "~/auth/auth.module"
-import { BillingController } from "~/billing/billing.controller"
+import { BillingController, BillingWebhookController } from "~/billing/billing.controller"
 import { BillingListener } from "~/billing/billing.listener"
 import { billingProviderFactory } from "~/billing/billing.provider"
-import { BillingService } from "~/billing/billing.service"
+import { BillingService, BillingWebhookService } from "~/billing/billing.service"
+import { SubscriptionRepository } from "~/billing/repositories/subscription.repository"
+import { DatabaseModule } from "~/database/database.module"
 import { OrganizationModule } from "~/organization/organization.module"
-import { BillingWebhookController } from "./billing.webhook.controller"
-import { BillingWebhookService } from "./billing.webhook.service"
 
 @Module({
-	imports: [AuthModule, OrganizationModule],
+	imports: [AuthModule, OrganizationModule, DatabaseModule],
 	controllers: [BillingController, BillingWebhookController],
-	providers: [billingProviderFactory, BillingService, BillingListener, BillingWebhookService],
+	providers: [billingProviderFactory, BillingListener, BillingService, BillingWebhookService, SubscriptionRepository],
 	exports: [BillingService]
 })
 class BillingModule {}

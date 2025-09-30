@@ -78,13 +78,12 @@ const organizationTable = pgTable("organization", {
 // #region subscription
 
 const subscriptionTable = pgTable("subscription", {
-	id: uuid("id").primaryKey(),
 	organizationId: uuid("organization_id")
 		.references(() => organizationTable.id, {
 			onUpdate: "cascade",
 			onDelete: "cascade"
 		})
-		.notNull(),
+		.primaryKey(),
 	externalId: text("external_id").notNull(),
 	status: text("status").notNull(),
 	cancelAtPeriodEnd: boolean("cancel_at_period_end").notNull(),

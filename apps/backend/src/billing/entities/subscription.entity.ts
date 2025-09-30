@@ -1,4 +1,5 @@
 import { SubscriptionStatus } from "@repo/types/billing"
+import { isEnumValue } from "@repo/utils"
 
 interface ISubscription {
 	organizationId: string
@@ -12,7 +13,7 @@ interface ISubscription {
 type SubscriptionConstructorParams = {
 	organizationId: string
 	externalId: string
-	status: SubscriptionStatus
+	status: SubscriptionStatus | string
 	cancelAtPeriodEnd: boolean
 	createdAt: Date
 	updatedAt: Date
@@ -39,6 +40,8 @@ class Subscription implements ISubscription {
 	private _updatedAt: Date
 
 	constructor(params: SubscriptionConstructorParams) {
+		if (!isEnumValue(SubscriptionStatus, params.status)) throw new Error("Invalid subscription status")
+
 		this.organizationId = params.organizationId
 		this.externalId = params.externalId
 		this._status = params.status

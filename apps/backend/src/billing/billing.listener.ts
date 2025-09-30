@@ -2,7 +2,6 @@ import { Inject, Injectable, Logger } from "@nestjs/common"
 import { OnEvent } from "@nestjs/event-emitter"
 
 import { BILLING_PROVIDER, type BillingProvider } from "~/billing/billing.provider"
-import { SubscriptionService } from "~/billing/subscription/subscription.service"
 import {
 	EVENT_TOPIC,
 	type MessageCreatedEvent,
@@ -19,7 +18,6 @@ class BillingListener {
 	constructor(
 		@Inject(BILLING_PROVIDER) private readonly billingProvider: BillingProvider,
 		private readonly billingService: BillingService,
-		private readonly subscriptionService: SubscriptionService,
 		private readonly organizationService: OrganizationService
 	) {}
 
@@ -36,7 +34,7 @@ class BillingListener {
 			}
 
 			// Get subscription to ensure organization has active billing
-			const subscription = await this.subscriptionService.safeGet(event.organizationId)
+			const subscription = await this.billingService.safeGetSubscription(event.organizationId)
 			if (!subscription) {
 				this.logger.warn(
 					`No subscription found for organization ${event.organizationId}, skipping SMS credit billing`
@@ -67,7 +65,7 @@ class BillingListener {
 	async handleSenderAdded(event: SenderAddedEvent): Promise<void> {
 		try {
 			// Get subscription to ensure organization has active billing
-			const subscription = await this.subscriptionService.safeGet(event.organizationId)
+			const subscription = await this.billingService.safeGetSubscription(event.organizationId)
 			if (!subscription) {
 				this.logger.warn(
 					`No subscription found for organization ${event.organizationId}, skipping sender billing`
@@ -113,7 +111,7 @@ class BillingListener {
 	async handleSenderRemoved(event: SenderRemovedEvent): Promise<void> {
 		try {
 			// Get subscription to ensure organization has active billing
-			const subscription = await this.subscriptionService.safeGet(event.organizationId)
+			const subscription = await this.billingService.safeGetSubscription(event.organizationId)
 			if (!subscription) {
 				this.logger.warn(
 					`No subscription found for organization ${event.organizationId}, skipping sender removal billing`

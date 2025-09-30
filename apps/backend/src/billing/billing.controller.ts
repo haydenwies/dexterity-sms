@@ -1,9 +1,10 @@
-import { Controller, Get, Param, Query, UseGuards } from "@nestjs/common"
+import { Controller, Get, Param, Post, Query, type RawBodyRequest, Req, UseGuards } from "@nestjs/common"
+import { type Request } from "express"
 
 import { SubscriptionModel } from "@repo/types/billing"
 
 import { AuthGuard } from "~/auth/auth.guard"
-import { BillingService } from "~/billing/billing.service"
+import { BillingService, BillingWebhookService } from "~/billing/billing.service"
 import { toSubscriptionDto } from "~/billing/billing.utils"
 import { OrganizationGuard } from "~/organization/organization.guard"
 
@@ -40,4 +41,14 @@ class BillingController {
 	}
 }
 
-export { BillingController }
+@Controller("webhooks/billing")
+class BillingWebhookController {
+	constructor(private readonly billingWebhookService: BillingWebhookService) {}
+
+	@Post()
+	async handleWebhookEvent(@Req() req: RawBodyRequest<Request>): Promise<void> {
+		await this.billingWebhookService.handleWebhookEvent(req)
+	}
+}
+
+export { BillingController, BillingWebhookController }

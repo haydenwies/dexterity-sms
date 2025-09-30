@@ -1,4 +1,16 @@
-import { ConflictException, Inject, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common"
+import {
+	ConflictException,
+	Inject,
+	Injectable,
+	InternalServerErrorException,
+	Logger,
+	NotFoundException,
+	type RawBodyRequest
+} from "@nestjs/common"
+import { ConfigService } from "@nestjs/config"
+import { type Request } from "express"
+
+import { SubscriptionStatus } from "@repo/types/billing"
 
 import { BILLING_PROVIDER, type BillingProvider } from "~/billing/billing.provider"
 import {
@@ -6,8 +18,10 @@ import {
 	SubscriptionCreateParams,
 	SubscriptionUpdateParams
 } from "~/billing/entities/subscription.entity"
+import { SubscriptionRepository } from "~/billing/repositories/subscription.repository"
 import { OrganizationService } from "~/organization/organization.service"
-import { SubscriptionRepository } from "./repositories/subscription.repository"
+
+// #region BillingService
 
 @Injectable()
 class BillingService {
@@ -113,4 +127,109 @@ class BillingService {
 	}
 }
 
-export { BillingService }
+// #endregion
+
+// #region BillingWebhookService
+
+@Injectable()
+class BillingWebhookService {
+	private readonly logger = new Logger(BillingWebhookService.name)
+
+	constructor(
+		@Inject(BILLING_PROVIDER) private readonly billingProvider: BillingProvider,
+		private readonly billingService: BillingService,
+		private readonly configService: ConfigService,
+		private readonly organizationService: OrganizationService
+	) {}
+
+	async handleWebhookEvent(req: RawBodyRequest<Request>): Promise<void> {
+		const payload = req.rawBody
+		if (!payload) throw new Error("No payload provided")
+
+		const signature = req.headers["stripe-signature"]
+		if (!signature) return
+
+		const webhookSecret = this.configService.getOrThrow<string>("billing.stripeWebhookSecret")
+
+		let event: ReturnType<BillingProvider["webhooks"]["constructEvent"]>
+		try {
+			event = this.billingProvider.webhooks.constructEvent(payload, signature, webhookSecret)
+		} catch (err: unknown) {
+			this.logger.warn("Failed to construct webhook event with error", err)
+			return
+		}
+
+		const { customer: externalBillingAccountId } = event?.data?.object as { customer?: string }
+		if (!externalBillingAccountId) {
+			this.logger.warn("No external billing account ID found in webhook event")
+			return
+		}
+
+		const organization = await this.organizationService.getByExternalBillingAccountId(externalBillingAccountId)
+		if (!organization.externalBillingAccountId) {
+			this.logger.warn(`No organization found with external billing account ID ${externalBillingAccountId}`)
+			return
+		}
+
+		const subscriptions = await this.billingProvider.subscriptions.list({
+			customer: organization.externalBillingAccountId,
+			limit: 1,
+			status: "all"
+		})
+
+		const subscription = subscriptions.data[0]
+		if (!subscription) {
+			await this.billingService.deleteSubscription(organization.id)
+			this.logger.warn(`No subscription found in provider for organization ${organization.id}`)
+			return
+		}
+
+		if (subscription.status === "active" || subscription.status === "trialing") {
+			// Create active subscription or update existing
+			const existingSubscription = await this.billingService.safeGetSubscription(organization.id)
+			if (!existingSubscription)
+				await this.billingService.createSubscription(organization.id, {
+					organizationId: organization.id,
+					externalId: subscription.id,
+					status: SubscriptionStatus.ACTIVE,
+					cancelAtPeriodEnd: subscription.cancel_at_period_end
+				})
+			else
+				await this.billingService.updateSubscription(existingSubscription.organizationId, {
+					status: SubscriptionStatus.ACTIVE,
+					cancelAtPeriodEnd: subscription.cancel_at_period_end
+				})
+		} else if (subscription.status === "canceled")
+			// Update subscription to cancelled if exists
+			await this.billingService.updateSubscription(organization.id, {
+				status: SubscriptionStatus.CANCELLED,
+				cancelAtPeriodEnd: subscription.cancel_at_period_end
+			})
+		else if (subscription.status === "past_due")
+			// Update subscription to past due if exists
+			await this.billingService.updateSubscription(organization.id, {
+				status: SubscriptionStatus.PAST_DUE,
+				cancelAtPeriodEnd: subscription.cancel_at_period_end
+			})
+		else {
+			// Create inactive subscription or update existing
+			const existingSubscription = await this.billingService.safeGetSubscription(organization.id)
+			if (!existingSubscription)
+				await this.billingService.createSubscription(organization.id, {
+					organizationId: organization.id,
+					externalId: subscription.id,
+					status: SubscriptionStatus.INACTIVE,
+					cancelAtPeriodEnd: subscription.cancel_at_period_end
+				})
+			else
+				await this.billingService.updateSubscription(organization.id, {
+					status: SubscriptionStatus.INACTIVE,
+					cancelAtPeriodEnd: subscription.cancel_at_period_end
+				})
+		}
+	}
+}
+
+// #endregion
+
+export { BillingService, BillingWebhookService }
