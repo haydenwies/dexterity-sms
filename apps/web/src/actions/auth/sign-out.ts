@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation"
 
 import { routes } from "@repo/routes"
-import { AUTH_COOKIE } from "@repo/types/auth"
+import { SESSION_COOKIE } from "@repo/types/auth"
 
 import { sessionMiddleware } from "~/actions/utils"
 import { getBackendUrl } from "~/lib/backend"
@@ -24,7 +24,7 @@ const signOut = async (): Promise<void> => {
 		throw new Error(errData.message)
 	}
 
-	await deleteCookie(AUTH_COOKIE)
+	await deleteCookie(SESSION_COOKIE)
 
 	return redirect(routes.web.SIGN_IN)
 }

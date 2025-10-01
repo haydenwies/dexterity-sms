@@ -1,5 +1,30 @@
 import z from "zod"
 
+// #region UserDto
+
+type UserDto = {
+	id: string
+	firstName?: string
+	lastName?: string
+	email: string
+	createdAt: Date
+	updatedAt: Date
+}
+
+// #endregion
+
+// #region SessionDto
+
+type SessionDto = {
+	id: string
+	userId: string
+	organizationId?: string
+	createdAt: Date
+	updatedAt: Date
+}
+
+// #endregion
+
 // #region SignInDto
 
 type SignInDto = {
@@ -67,6 +92,8 @@ export {
 	signUpDtoSchema,
 	type ForgotPasswordDto,
 	type ResetPasswordDto,
+	type SessionDto,
 	type SignInDto,
-	type SignUpDto
+	type SignUpDto,
+	type UserDto
 }

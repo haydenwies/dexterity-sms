@@ -1,3 +1,3 @@
-const AUTH_COOKIE = "session"
+const SESSION_COOKIE = "session"
 
-export { AUTH_COOKIE }
+export { SESSION_COOKIE }
