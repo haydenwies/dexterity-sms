@@ -3,8 +3,8 @@ import { EventEmitter2 } from "@nestjs/event-emitter"
 
 import { type AddSenderDto } from "@repo/types/sender"
 
+import { Event } from "~/common/event.types"
 import { Phone } from "~/common/phone.vo"
-import { Event } from "~/event/event.types"
 import { Sender } from "~/sender/sender.entity"
 import { SenderRepository } from "~/sender/sender.repository"
 import { SMS_PROVIDER, type SmsProvider } from "~/sms/sms.module"

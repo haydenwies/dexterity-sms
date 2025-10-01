@@ -3,7 +3,7 @@ import { and, eq } from "drizzle-orm"
 
 import { DATABASE_PROVIDER, type DatabaseProvider } from "~/database/database.module"
 import { memberTable } from "~/database/database.schema"
-import { Member } from "~/organization/member/member.entity"
+import { Member } from "~/organization/entities/member.entity"
 
 @Injectable()
 class MemberRepository {

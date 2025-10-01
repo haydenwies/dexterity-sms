@@ -5,11 +5,11 @@ import { addSenderDtoSchema, type AddSenderDto, type SenderModel } from "@repo/t
 import { AuthGuard } from "~/auth/auth.guard"
 import { SubscriptionGuard } from "~/billing/guards/subscription.guard"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
-import { OrganizationGuard } from "~/organization/organization.guard"
+import { MemberGuard } from "~/organization/guards/member.guard"
 import { SenderService } from "~/sender/sender.service"
 import { toSenderDto } from "./sender.utils"
 
-@UseGuards(AuthGuard, OrganizationGuard)
+@UseGuards(AuthGuard, MemberGuard)
 @Controller("organizations/:organizationId/sender")
 class SenderController {
 	constructor(private readonly senderService: SenderService) {}

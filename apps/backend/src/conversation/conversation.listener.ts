@@ -3,10 +3,10 @@ import { EventEmitter2, OnEvent } from "@nestjs/event-emitter"
 
 import { MessageDirection } from "@repo/types/message"
 
+import { Event, type MessageCreatedEvent } from "~/common/event.types"
 import { Phone } from "~/common/phone.vo"
 import { Conversation } from "~/conversation/conversation.entity"
 import { ConversationRepository } from "~/conversation/conversation.repository"
-import { Event, type MessageCreatedEvent } from "~/event/event.types"
 import { MessageService } from "~/message/message.service"
 import { toConversationCreatedEvent, toConversationUpdatedEvent } from "./conversation.utils"
 

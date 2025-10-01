@@ -34,7 +34,7 @@ class BillingService {
 	private async getStripeCustomerId(organizationId: string): Promise<string> {
 		const organization = await this.organizationService.getById(organizationId)
 
-		let billingAccountId = organization.externalBillingAccountId
+		let billingAccountId = organization.externalBillingId
 		if (!billingAccountId) {
 			const customer = await this.stripe.customers.create({
 				name: organization.name,
@@ -44,7 +44,7 @@ class BillingService {
 				}
 			})
 
-			await this.organizationService.updateExternalBillingAccountId(organizationId, customer.id)
+			await this.organizationService.updateExternalBillingId(organizationId, customer.id)
 			billingAccountId = customer.id
 		}
 
@@ -164,14 +164,14 @@ class BillingWebhookService {
 			return
 		}
 
-		const organization = await this.organizationService.getByExternalBillingAccountId(externalBillingAccountId)
-		if (!organization.externalBillingAccountId) {
+		const organization = await this.organizationService.getByExternalBillingId(externalBillingAccountId)
+		if (!organization.externalBillingId) {
 			this.logger.warn(`No organization found with external billing account ID ${externalBillingAccountId}`)
 			return
 		}
 
 		const subscriptions = await this.stripe.subscriptions.list({
-			customer: organization.externalBillingAccountId,
+			customer: organization.externalBillingId,
 			limit: 1,
 			status: "all"
 		})

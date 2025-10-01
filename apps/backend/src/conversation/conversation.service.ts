@@ -4,15 +4,15 @@ import { EventEmitter2 } from "@nestjs/event-emitter"
 import { type CreateConversationDto, type SendMessageDto } from "@repo/types/conversation"
 import { filter, fromEvent, map, merge, mergeMap, Observable } from "rxjs"
 
-import { Conversation } from "~/conversation/conversation.entity"
-import { ConversationRepository } from "~/conversation/conversation.repository"
 import {
 	Event,
 	type ConversationCreatedEvent,
 	type ConversationUpdatedEvent,
 	type MessageCreatedEvent,
 	type MessageUpdatedEvent
-} from "~/event/event.types"
+} from "~/common/event.types"
+import { Conversation } from "~/conversation/conversation.entity"
+import { ConversationRepository } from "~/conversation/conversation.repository"
 import { Message } from "~/message/message.entity"
 import { MessageService } from "~/message/message.service"
 import { SenderService } from "~/sender/sender.service"

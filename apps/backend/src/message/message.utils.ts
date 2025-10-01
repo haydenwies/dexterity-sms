@@ -1,5 +1,5 @@
 import { type MessageModel } from "@repo/types/message"
-import { MessageCreatedEvent, MessageUpdatedEvent } from "~/event/event.types"
+import { MessageCreatedEvent, MessageUpdatedEvent } from "~/common/event.types"
 
 import { Message } from "~/message/message.entity"
 

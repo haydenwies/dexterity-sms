@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common"
 
 import { AuthRequest } from "~/auth/auth.guard"
-import { MemberService } from "~/organization/member/member.service"
+import { MemberRepository } from "../repositories/member.repository"
 
 /**
  * Ensures the user accessing the resource is a member of the specified organization.
@@ -10,8 +10,8 @@ import { MemberService } from "~/organization/member/member.service"
  * :organizationId route param must be present, otherwise will return false.
  */
 @Injectable()
-class OrganizationGuard implements CanActivate {
-	constructor(private readonly memberService: MemberService) {}
+class MemberGuard implements CanActivate {
+	constructor(private readonly memberRepository: MemberRepository) {}
 
 	async canActivate(context: ExecutionContext): Promise<boolean> {
 		const request = context.switchToHttp().getRequest<AuthRequest>()
@@ -25,11 +25,11 @@ class OrganizationGuard implements CanActivate {
 		if (!organizationId) return false
 
 		// Check if user belongs to the organization
-		const member = await this.memberService.find(user.id, organizationId)
+		const member = await this.memberRepository.find(user.id, organizationId)
 		if (!member) return false
 
 		return true
 	}
 }
 
-export { OrganizationGuard }
+export { MemberGuard }

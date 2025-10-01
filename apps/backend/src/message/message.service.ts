@@ -5,8 +5,8 @@ import { Queue } from "bullmq"
 import { MessageDirection, MessageStatus } from "@repo/types/message"
 
 import { EventEmitter2 } from "@nestjs/event-emitter"
+import { Event, type MessageCreatedEvent } from "~/common/event.types"
 import { Phone } from "~/common/phone.vo"
-import { Event, type MessageCreatedEvent } from "~/event/event.types"
 import { Message } from "~/message/message.entity"
 import { MESSAGE_QUEUE, MESSAGE_QUEUE_JOB } from "~/message/message.queue"
 import { MessageRepository } from "~/message/message.repository"
@@ -85,7 +85,6 @@ class MessageService {
 		const createdMessage = await this.messageRepository.create(message)
 
 		// Emit message created event
-		// TODO: Remove synchronous event emitter and add mutex handling
 		const messageCreatedEvent: MessageCreatedEvent = toMessageCreatedEvent(createdMessage)
 		await this.eventEmitter.emitAsync(Event.MESSAGE_CREATED, messageCreatedEvent)
 

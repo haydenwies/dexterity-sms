@@ -4,6 +4,8 @@ import { type BillingPortalSessionDto, type CheckoutSessionDto, type Subscriptio
 
 import { type Subscription } from "~/billing/entities/subscription.entity"
 
+// #region DTOs
+
 const toSubscriptionDto = (subscription: Subscription): SubscriptionModel => {
 	return {
 		organizationId: subscription.organizationId,
@@ -29,5 +31,7 @@ const toCheckoutSessionDto = (checkoutSession: Stripe.Checkout.Session): Checkou
 		url: checkoutSession.url
 	}
 }
+
+// #endregion
 
 export { toBillingPortalSessionDto, toCheckoutSessionDto, toSubscriptionDto }

@@ -13,14 +13,14 @@ import { type MessageModel } from "@repo/types/message"
 import { AuthGuard } from "~/auth/auth.guard"
 import { SubscriptionGuard } from "~/billing/guards/subscription.guard"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
+import { ConversationGuard } from "~/conversation/conversation.guard"
 import { ConversationService } from "~/conversation/conversation.service"
 import { toConversationDto } from "~/conversation/conversation.utils"
 import { toMessageDto } from "~/message/message.utils"
-import { OrganizationGuard } from "~/organization/organization.guard"
+import { MemberGuard } from "~/organization/guards/member.guard"
 import { SenderGuard } from "~/sender/sender.guard"
-import { ConversationGuard } from "./conversation.guard"
 
-@UseGuards(AuthGuard, OrganizationGuard)
+@UseGuards(AuthGuard, MemberGuard)
 @Controller("organizations/:organizationId/conversations")
 export class ConversationController {
 	constructor(private readonly conversationService: ConversationService) {}

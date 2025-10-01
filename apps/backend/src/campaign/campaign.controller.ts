@@ -19,10 +19,10 @@ import { SubscriptionGuard } from "~/billing/guards/subscription.guard"
 import { CampaignService } from "~/campaign/campaign.service"
 import { toCampaignDto } from "~/campaign/campaign.utils"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
-import { OrganizationGuard } from "~/organization/organization.guard"
+import { MemberGuard } from "~/organization/guards/member.guard"
 import { SenderGuard } from "~/sender/sender.guard"
 
-@UseGuards(AuthGuard, OrganizationGuard)
+@UseGuards(AuthGuard, MemberGuard)
 @Controller("organizations/:organizationId/campaigns")
 class CampaignController {
 	constructor(private readonly campaignService: CampaignService) {}

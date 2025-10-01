@@ -10,7 +10,7 @@ import {
 	type OrganizationUpdatedEvent,
 	type SenderAddedEvent,
 	type SenderRemovedEvent
-} from "~/event/event.types"
+} from "~/common/event.types"
 import { OrganizationService } from "~/organization/organization.service"
 
 @Injectable()
@@ -54,7 +54,7 @@ class BillingListener {
 		try {
 			// Get organization to find billing account
 			const organization = await this.organizationService.getById(event.organizationId)
-			if (!organization.externalBillingAccountId) {
+			if (!organization.externalBillingId) {
 				this.logger.warn(
 					`No billing account found for organization ${event.organizationId}, skipping SMS credit billing`
 				)
@@ -75,7 +75,7 @@ class BillingListener {
 			await this.stripe.billing.meterEvents.create({
 				event_name: this.billingService.SMS_CREDIT_METER_ID,
 				payload: {
-					stripe_customer_id: organization.externalBillingAccountId,
+					stripe_customer_id: organization.externalBillingId,
 					value: Math.ceil(event.body.length / 100).toString()
 				}
 			})

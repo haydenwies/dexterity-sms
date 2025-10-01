@@ -1,7 +1,7 @@
 import { type ConversationModel } from "@repo/types/conversation"
 
+import { ConversationUpdatedEvent, type ConversationCreatedEvent } from "~/common/event.types"
 import { type Conversation } from "~/conversation/conversation.entity"
-import { ConversationUpdatedEvent, type ConversationCreatedEvent } from "~/event/event.types"
 
 const toConversationDto = (conversation: Conversation): ConversationModel => {
 	return {

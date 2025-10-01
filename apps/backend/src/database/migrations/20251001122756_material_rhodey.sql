@@ -1,0 +1,1 @@
+ALTER TABLE "organization" RENAME COLUMN "external_billing_account_id" TO "external_billing_id";

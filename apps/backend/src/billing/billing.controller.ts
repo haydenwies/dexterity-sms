@@ -15,9 +15,9 @@ import { AuthGuard } from "~/auth/auth.guard"
 import { BillingService, BillingWebhookService } from "~/billing/billing.service"
 import { toBillingPortalSessionDto, toCheckoutSessionDto, toSubscriptionDto } from "~/billing/billing.utils"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
-import { OrganizationGuard } from "~/organization/organization.guard"
+import { MemberGuard } from "~/organization/guards/member.guard"
 
-@UseGuards(AuthGuard, OrganizationGuard)
+@UseGuards(AuthGuard, MemberGuard)
 @Controller("organizations/:organizationId/billing")
 class BillingController {
 	constructor(private readonly billingService: BillingService) {}

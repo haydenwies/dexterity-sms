@@ -66,7 +66,7 @@ const verificationTokenTable = pgTable("verification_token", {
 
 const organizationTable = pgTable("organization", {
 	id: uuid("id").primaryKey(),
-	externalBillingAccountId: text("external_billing_account_id"),
+	externalBillingId: text("external_billing_id"),
 	name: text("name").notNull(),
 	email: text("email").notNull(),
 	createdAt: timestamp("created_at", { mode: "date" }).notNull(),

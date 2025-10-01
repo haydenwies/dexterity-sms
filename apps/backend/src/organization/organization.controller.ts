@@ -12,6 +12,7 @@ import { User } from "~/auth/auth.decorator"
 import { AuthGuard } from "~/auth/auth.guard"
 import { User as UserEntity } from "~/auth/user/user.entity"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
+import { MemberGuard } from "~/organization/guards/member.guard"
 import { OrganizationService } from "~/organization/organization.service"
 import { toOrganizationDto } from "~/organization/organization.utils"
 
@@ -37,6 +38,7 @@ class OrganizationController {
 		return toOrganizationDto(organization)
 	}
 
+	@UseGuards(MemberGuard)
 	@Get(":id")
 	async get(@User() user: UserEntity, @Param("id") id: string): Promise<OrganizationModel> {
 		const organization = await this.organizationService.get(user.id, id)
@@ -44,6 +46,7 @@ class OrganizationController {
 		return toOrganizationDto(organization)
 	}
 
+	@UseGuards(MemberGuard)
 	@Put(":id")
 	async update(
 		@User() user: UserEntity,

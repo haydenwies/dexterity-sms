@@ -3,7 +3,7 @@ import { eq, inArray } from "drizzle-orm"
 
 import { DATABASE_PROVIDER, type DatabaseProvider } from "~/database/database.module"
 import { organizationTable } from "~/database/database.schema"
-import { Organization } from "~/organization/organization.entity"
+import { Organization } from "~/organization/entities/organization.entity"
 
 @Injectable()
 class OrganizationRepository {
@@ -16,11 +16,11 @@ class OrganizationRepository {
 		return OrganizationRepository.toEntity(row)
 	}
 
-	async findByExternalBillingAccountId(externalBillingAccountId: string): Promise<Organization | undefined> {
+	async findByExternalBillingId(externalBillingId: string): Promise<Organization | undefined> {
 		const [row] = await this.db
 			.select()
 			.from(organizationTable)
-			.where(eq(organizationTable.externalBillingAccountId, externalBillingAccountId))
+			.where(eq(organizationTable.externalBillingId, externalBillingId))
 			.limit(1)
 		if (!row) return undefined
 
@@ -55,7 +55,7 @@ class OrganizationRepository {
 		const [row] = await this.db
 			.update(organizationTable)
 			.set({
-				externalBillingAccountId: organization.externalBillingAccountId,
+				externalBillingId: organization.externalBillingId,
 				name: organization.name,
 				email: organization.email,
 				updatedAt: new Date()
@@ -70,7 +70,7 @@ class OrganizationRepository {
 	private static toEntity(row: typeof organizationTable.$inferSelect): Organization {
 		return new Organization({
 			id: row.id,
-			externalBillingAccountId: row.externalBillingAccountId,
+			externalBillingId: row.externalBillingId,
 			name: row.name,
 			email: row.email,
 			createdAt: row.createdAt,

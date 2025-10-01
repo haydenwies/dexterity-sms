@@ -3,30 +3,31 @@ import { EventEmitter2 } from "@nestjs/event-emitter"
 
 import { type CreateOrganizationDto, type UpdateOrganizationDto } from "@repo/types/organization"
 
-import { Event } from "~/event/event.types"
-import { MemberService } from "~/organization/member/member.service"
-import { Organization } from "~/organization/organization.entity"
-import { OrganizationRepository } from "~/organization/organization.repository"
+import { Event } from "~/common/event.types"
+import { Member } from "~/organization/entities/member.entity"
+import { Organization } from "~/organization/entities/organization.entity"
 import { toOrganizationUpdatedEvent } from "~/organization/organization.utils"
+import { MemberRepository } from "~/organization/repositories/member.repository"
+import { OrganizationRepository } from "~/organization/repositories/organization.repository"
 
 @Injectable()
 class OrganizationService {
 	constructor(
 		private readonly organizationRepository: OrganizationRepository,
-		private readonly memberService: MemberService,
+		private readonly memberRepository: MemberRepository,
 		private readonly eventEmitter: EventEmitter2
 	) {}
 
-	async getMany(userId: string): Promise<Organization[]> {
-		// Get all organization users
-		const members = await this.memberService.getAllByUserId(userId)
-		const organizationIds = members.map((member) => member.organizationId)
-		if (organizationIds.length === 0) return []
+	async get(userId: string, id: string): Promise<Organization> {
+		// Get organization user
+		const member = await this.memberRepository.find(userId, id)
+		if (!member) throw new NotFoundException("Organization user not found")
 
-		// Get all organizations
-		const organizations = await this.organizationRepository.findAll(organizationIds)
+		// Get organization
+		const organization = await this.organizationRepository.find(member.organizationId)
+		if (!organization) throw new NotFoundException("Organization not found")
 
-		return organizations
+		return organization
 	}
 
 	async getById(id: string): Promise<Organization> {
@@ -36,22 +37,23 @@ class OrganizationService {
 		return organization
 	}
 
-	async get(userId: string, id: string): Promise<Organization> {
-		// Get organization user
-		const member = await this.memberService.get(userId, id)
-
-		// Get organization
-		const organization = await this.organizationRepository.find(member.organizationId)
+	async getByExternalBillingId(externalBillingId: string): Promise<Organization> {
+		const organization = await this.organizationRepository.findByExternalBillingId(externalBillingId)
 		if (!organization) throw new NotFoundException("Organization not found")
 
 		return organization
 	}
 
-	async getByExternalBillingAccountId(externalBillingAccountId: string): Promise<Organization> {
-		const organization = await this.organizationRepository.findByExternalBillingAccountId(externalBillingAccountId)
-		if (!organization) throw new NotFoundException("Organization not found")
+	async getMany(userId: string): Promise<Organization[]> {
+		// Get all organization users
+		const members = await this.memberRepository.findAllByUserId(userId)
+		const organizationIds = members.map((member) => member.organizationId)
+		if (organizationIds.length === 0) return []
 
-		return organization
+		// Get all organizations
+		const organizations = await this.organizationRepository.findAll(organizationIds)
+
+		return organizations
 	}
 
 	async create(userId: string, dto: CreateOrganizationDto): Promise<Organization> {
@@ -63,14 +65,19 @@ class OrganizationService {
 		const createdOrganization = await this.organizationRepository.create(organization)
 
 		// Create organization user
-		await this.memberService.create(userId, createdOrganization.id)
+		const member = Member.create({
+			userId,
+			organizationId: createdOrganization.id
+		})
+		await this.memberRepository.create(member)
 
 		return createdOrganization
 	}
 
 	async update(userId: string, id: string, dto: UpdateOrganizationDto): Promise<Organization> {
 		// Get organization user
-		const member = await this.memberService.get(userId, id)
+		const member = await this.memberRepository.find(userId, id)
+		if (!member) throw new NotFoundException("Organization user not found")
 
 		// Get organization
 		const organization = await this.organizationRepository.find(member.organizationId)
@@ -89,16 +96,13 @@ class OrganizationService {
 		return updatedOrganization
 	}
 
-	async updateExternalBillingAccountId(
-		organizationId: string,
-		externalBillingAccountId: string
-	): Promise<Organization> {
+	async updateExternalBillingId(organizationId: string, externalBillingAccountId: string): Promise<Organization> {
 		// Get organization
 		const organization = await this.organizationRepository.find(organizationId)
 		if (!organization) throw new NotFoundException("Organization not found")
 
 		// Update organization
-		organization.updateExternalBillingAccountId(externalBillingAccountId)
+		organization.updateExternalBillingId(externalBillingAccountId)
 		const updatedOrganization = await this.organizationRepository.update(organization)
 
 		// Skip emitting organization updated event for security

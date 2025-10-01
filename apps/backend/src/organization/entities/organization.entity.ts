@@ -2,7 +2,7 @@ import z from "zod"
 
 type OrganizationConstructorParams = {
 	id: string
-	externalBillingAccountId?: string | null
+	externalBillingId?: string | null
 	name: string
 	email: string
 	createdAt: Date
@@ -23,7 +23,7 @@ class Organization {
 	public readonly id: string
 	private _name: string
 	private _email: string
-	private _externalBillingAccountId?: string
+	private _externalBillingId?: string
 	public readonly createdAt: Date
 	private _updatedAt: Date
 
@@ -31,7 +31,7 @@ class Organization {
 		this.id = params.id
 		this._name = params.name
 		this._email = params.email
-		this._externalBillingAccountId = params.externalBillingAccountId || undefined
+		this._externalBillingId = params.externalBillingId || undefined
 		this.createdAt = params.createdAt
 		this._updatedAt = params.updatedAt
 	}
@@ -44,8 +44,8 @@ class Organization {
 		return this._email
 	}
 
-	get externalBillingAccountId(): string | undefined {
-		return this._externalBillingAccountId
+	get externalBillingId(): string | undefined {
+		return this._externalBillingId
 	}
 
 	get updatedAt(): Date {
@@ -67,8 +67,8 @@ class Organization {
 		this._updatedAt = new Date()
 	}
 
-	updateExternalBillingAccountId(externalBillingAccountId: string) {
-		this._externalBillingAccountId = externalBillingAccountId
+	updateExternalBillingId(externalBillingAccountId: string) {
+		this._externalBillingId = externalBillingAccountId
 		this._updatedAt = new Date()
 	}
 
