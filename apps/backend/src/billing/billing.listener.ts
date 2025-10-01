@@ -1,27 +1,55 @@
-import { Inject, Injectable, Logger } from "@nestjs/common"
+import { Injectable, Logger } from "@nestjs/common"
+import { ConfigService } from "@nestjs/config"
 import { OnEvent } from "@nestjs/event-emitter"
+import { Stripe } from "stripe"
 
-import { BILLING_PROVIDER, type BillingProvider } from "~/billing/billing.provider"
+import { BillingService } from "~/billing/billing.service"
 import {
-	EVENT_TOPIC,
+	Event,
 	type MessageCreatedEvent,
+	type OrganizationUpdatedEvent,
 	type SenderAddedEvent,
 	type SenderRemovedEvent
 } from "~/event/event.types"
 import { OrganizationService } from "~/organization/organization.service"
-import { BillingService } from "./billing.service"
 
 @Injectable()
 class BillingListener {
 	private readonly logger = new Logger(BillingListener.name)
+	private readonly stripe: Stripe
 
 	constructor(
-		@Inject(BILLING_PROVIDER) private readonly billingProvider: BillingProvider,
+		private readonly configService: ConfigService,
 		private readonly billingService: BillingService,
 		private readonly organizationService: OrganizationService
-	) {}
+	) {
+		this.stripe = new Stripe(this.configService.getOrThrow<string>("billing.stripeApiKey"))
+	}
 
-	@OnEvent(EVENT_TOPIC.MESSAGE_CREATED)
+	@OnEvent(Event.ORGANIZATION_UPDATED)
+	async handleOrganizationUpdated(event: OrganizationUpdatedEvent): Promise<void> {
+		try {
+			// Get Stripe customer ID
+			const customerId = event.externalBillingId
+			if (!customerId) {
+				// Skip if no customer ID is found
+				this.logger.warn(`No billing account found for organization ${event.id}`)
+				return
+			}
+
+			// Sync Stripe customer name and email
+			await this.stripe.customers.update(customerId, {
+				name: event.name,
+				email: event.email
+			})
+
+			this.logger.log(`Billing account updated for organization ${event.id}`)
+		} catch (err: unknown) {
+			this.logger.error(`Failed to update billing account for organization ${event.id}`, err)
+		}
+	}
+
+	@OnEvent(Event.MESSAGE_CREATED)
 	async handleMessageCreated(event: MessageCreatedEvent): Promise<void> {
 		try {
 			// Get organization to find billing account
@@ -44,7 +72,7 @@ class BillingListener {
 
 			// Report SMS credit usage to Stripe (metered billing)
 			// Calculate SMS credits based on message body length (100 chars = 1 credit, rounded up)
-			await this.billingProvider.billing.meterEvents.create({
+			await this.stripe.billing.meterEvents.create({
 				event_name: this.billingService.SMS_CREDIT_METER_ID,
 				payload: {
 					stripe_customer_id: organization.externalBillingAccountId,
@@ -61,7 +89,7 @@ class BillingListener {
 		}
 	}
 
-	@OnEvent(EVENT_TOPIC.SENDER_ADDED)
+	@OnEvent(Event.SENDER_ADDED)
 	async handleSenderAdded(event: SenderAddedEvent): Promise<void> {
 		try {
 			// Get subscription to ensure organization has active billing
@@ -74,7 +102,7 @@ class BillingListener {
 			}
 
 			// Get current subscription items
-			const subscriptionItems = await this.billingProvider.subscriptionItems.list({
+			const subscriptionItems = await this.stripe.subscriptionItems.list({
 				subscription: subscription.externalId
 			})
 
@@ -85,13 +113,13 @@ class BillingListener {
 
 			if (senderItem)
 				// Update existing sender item quantity (immediate effect, no proration)
-				await this.billingProvider.subscriptionItems.update(senderItem.id, {
+				await this.stripe.subscriptionItems.update(senderItem.id, {
 					quantity: (senderItem.quantity || 0) + 1,
 					proration_behavior: "none" // No proration - takes effect immediately
 				})
 			else
 				// Create new sender subscription item
-				await this.billingProvider.subscriptionItems.create({
+				await this.stripe.subscriptionItems.create({
 					subscription: subscription.externalId,
 					price: this.billingService.SENDER_EXTERNAL_ID,
 					quantity: 1,
@@ -107,7 +135,7 @@ class BillingListener {
 		}
 	}
 
-	@OnEvent(EVENT_TOPIC.SENDER_REMOVED)
+	@OnEvent(Event.SENDER_REMOVED)
 	async handleSenderRemoved(event: SenderRemovedEvent): Promise<void> {
 		try {
 			// Get subscription to ensure organization has active billing
@@ -120,7 +148,7 @@ class BillingListener {
 			}
 
 			// Get current subscription items
-			const subscriptionItems = await this.billingProvider.subscriptionItems.list({
+			const subscriptionItems = await this.stripe.subscriptionItems.list({
 				subscription: subscription.externalId
 			})
 
@@ -132,13 +160,13 @@ class BillingListener {
 
 			if (senderItem.quantity && senderItem.quantity > 1)
 				// Decrease quantity (takes effect next billing period)
-				await this.billingProvider.subscriptionItems.update(senderItem.id, {
+				await this.stripe.subscriptionItems.update(senderItem.id, {
 					quantity: senderItem.quantity - 1,
 					proration_behavior: "none" // No proration - takes effect next period
 				})
 			else
 				// Remove the subscription item entirely
-				await this.billingProvider.subscriptionItems.del(senderItem.id, {
+				await this.stripe.subscriptionItems.del(senderItem.id, {
 					proration_behavior: "none"
 				})
 

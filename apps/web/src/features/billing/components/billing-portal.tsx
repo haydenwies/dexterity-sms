@@ -2,11 +2,12 @@
 
 import { use } from "react"
 
+import { type BillingPortalSessionDto } from "@repo/types/billing"
 import { Button } from "@repo/ui/components/button"
 import { Icon, IconName } from "@repo/ui/components/icon"
 
 type BillingPortalButtonProps = {
-	billingPortalSessionPromise: Promise<{ url: string }>
+	billingPortalSessionPromise: Promise<BillingPortalSessionDto>
 	className?: string
 }
 const BillingPortalButton = ({ billingPortalSessionPromise, className }: BillingPortalButtonProps) => {

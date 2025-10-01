@@ -10,9 +10,9 @@ import { Card, CardContent } from "@repo/ui/components/card"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
 import { Separator } from "@repo/ui/components/separator"
-import { getBillingPortalSession } from "~/data/billing/get-billing-portal-session"
-import { getSubscription } from "~/data/billing/get-subscription"
 
+import { createBillingPortalSession } from "~/actions/billing/create-billing-portal-session"
+import { getSubscription } from "~/data/billing/get-subscription"
 import { getOrganization } from "~/data/organization/get-organization"
 import { getSender } from "~/data/sender/get-sender"
 import { BillingPortalButton } from "~/features/billing/components/billing-portal"
@@ -29,7 +29,7 @@ const OrganizationSettingsPage = async ({ params }: PageProps) => {
 	const organizationPromise = getOrganization(organizationId)
 	const senderPromise = getSender(organizationId)
 	const subscriptionPromise = getSubscription(organizationId)
-	const billingPortalSessionPromise = getBillingPortalSession(organizationId)
+	const billingPortalSessionPromise = createBillingPortalSession(organizationId)
 
 	return (
 		<Page>

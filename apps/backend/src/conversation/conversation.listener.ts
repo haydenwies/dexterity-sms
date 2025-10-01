@@ -6,7 +6,7 @@ import { MessageDirection } from "@repo/types/message"
 import { Phone } from "~/common/phone.vo"
 import { Conversation } from "~/conversation/conversation.entity"
 import { ConversationRepository } from "~/conversation/conversation.repository"
-import { EVENT_TOPIC, type MessageCreatedEvent } from "~/event/event.types"
+import { Event, type MessageCreatedEvent } from "~/event/event.types"
 import { MessageService } from "~/message/message.service"
 import { toConversationCreatedEvent, toConversationUpdatedEvent } from "./conversation.utils"
 
@@ -20,7 +20,7 @@ class ConversationListener {
 		private readonly eventEmitter: EventEmitter2
 	) {}
 
-	@OnEvent(EVENT_TOPIC.MESSAGE_CREATED)
+	@OnEvent(Event.MESSAGE_CREATED)
 	async processMessageCreated(payload: MessageCreatedEvent): Promise<void> {
 		try {
 			// Determine the conversation recipient from the message direction
@@ -41,10 +41,7 @@ class ConversationListener {
 				})
 				conversation = await this.conversationRepository.create(conversation)
 
-				await this.eventEmitter.emitAsync(
-					EVENT_TOPIC.CONVERSATION_CREATED,
-					toConversationCreatedEvent(conversation)
-				)
+				await this.eventEmitter.emitAsync(Event.CONVERSATION_CREATED, toConversationCreatedEvent(conversation))
 			}
 
 			// Link the message to the conversation if no conversation ID
@@ -75,7 +72,7 @@ class ConversationListener {
 			if (conversationUpdated) {
 				const updatedConversation = await this.conversationRepository.update(conversation)
 				await this.eventEmitter.emitAsync(
-					EVENT_TOPIC.CONVERSATION_UPDATED,
+					Event.CONVERSATION_UPDATED,
 					toConversationUpdatedEvent(updatedConversation)
 				)
 			}

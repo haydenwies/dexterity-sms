@@ -1,12 +1,5 @@
 import { SubscriptionStatus } from "./billing.enum"
 
-type BillingAccountModel = {
-	id: string
-	subscriptionId?: string
-	createdAt: Date
-	updatedAt: Date
-}
-
 type SubscriptionModel = {
 	organizationId: string
 	status: SubscriptionStatus
@@ -15,4 +8,4 @@ type SubscriptionModel = {
 	updatedAt: Date
 }
 
-export type { BillingAccountModel, SubscriptionModel }
+export type { SubscriptionModel }

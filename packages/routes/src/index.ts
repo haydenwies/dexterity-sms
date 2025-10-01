@@ -17,10 +17,9 @@ const routes = {
 
 		// billing
 		GET_SUBSCRIPTION: (organizationId: string) => `/organizations/${organizationId}/billing/subscription`,
-		GET_BILLING_PORTAL_SESSION: (organizationId: string, searchParams: SearchParams<{ callbackUrl: string }>) =>
-			`/organizations/${organizationId}/billing/billing-portal?${stringifySearchParams(searchParams)}`,
-		GET_CHECKOUT_SESSION: (organizationId: string, searchParams: SearchParams<{ callbackUrl: string }>) =>
-			`/organizations/${organizationId}/billing/checkout?${stringifySearchParams(searchParams)}`,
+		CREATE_BILLING_PORTAL_SESSION: (organizationId: string) =>
+			`/organizations/${organizationId}/billing/billing-portal`,
+		CREATE_CHECKOUT_SESSION: (organizationId: string) => `/organizations/${organizationId}/billing/checkout`,
 
 		// contact
 		GET_ALL_CONTACTS: (organizationId: string) => `/organizations/${organizationId}/contacts`,

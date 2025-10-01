@@ -1,14 +1,24 @@
-import { MessageDirection, MessageStatus } from "@repo/types/message"
+import { type MessageDirection, type MessageStatus } from "@repo/types/message"
 
 import { Phone } from "~/common/phone.vo"
 
-enum EVENT_TOPIC {
+enum Event {
+	ORGANIZATION_UPDATED = "organization.updated",
 	CONVERSATION_CREATED = "conversation.created",
 	CONVERSATION_UPDATED = "conversation.updated",
 	MESSAGE_CREATED = "message.created",
 	MESSAGE_UPDATED = "message.updated",
 	SENDER_ADDED = "sender.added",
 	SENDER_REMOVED = "sender.removed"
+}
+
+type OrganizationUpdatedEvent = {
+	id: string
+	externalBillingId?: string
+	name: string
+	email: string
+	createdAt: Date
+	updatedAt: Date
 }
 
 type ConversationCreatedEvent = {
@@ -70,11 +80,12 @@ type SenderRemovedEvent = {
 }
 
 export {
-	EVENT_TOPIC,
+	Event,
 	type ConversationCreatedEvent,
 	type ConversationUpdatedEvent,
 	type MessageCreatedEvent,
 	type MessageUpdatedEvent,
+	type OrganizationUpdatedEvent,
 	type SenderAddedEvent,
 	type SenderRemovedEvent
 }

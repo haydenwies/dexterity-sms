@@ -1,7 +1,9 @@
-import { toast } from "@repo/ui/components/sonner"
 import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
-import { getCheckoutSession } from "~/data/billing/get-checkout-session"
+
+import { toast } from "@repo/ui/components/sonner"
+
+import { createCheckoutSession } from "~/actions/billing/create-checkout-session"
 
 const useCheckout = () => {
 	const [loading, setLoading] = useState<boolean>(false)
@@ -16,9 +18,7 @@ const useCheckout = () => {
 			const organizationId = params.organizationId
 			if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
 
-			const { url } = await getCheckoutSession(organizationId)
-
-			console.log("here")
+			const { url } = await createCheckoutSession(organizationId)
 
 			router.push(url)
 		} catch {

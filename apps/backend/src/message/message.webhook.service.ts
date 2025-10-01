@@ -7,7 +7,7 @@ import { type InboundWebhookEvent, type StatusWebhookEvent } from "@repo/sms"
 import { MessageDirection, MessageStatus } from "@repo/types/message"
 
 import { Phone } from "~/common/phone.vo"
-import { EVENT_TOPIC, type MessageCreatedEvent } from "~/event/event.types"
+import { Event, type MessageCreatedEvent } from "~/event/event.types"
 import { Message } from "~/message/message.entity"
 import { MESSAGE_QUEUE, MESSAGE_QUEUE_JOB } from "~/message/message.queue"
 import { toMessageCreatedEvent, toMessageUpdatedEvent } from "~/message/message.utils"
@@ -47,7 +47,7 @@ class MessageWebhookService {
 			message.updateStatus(messageStatus)
 			const updatedMessage = await this.messageRepository.update(message)
 
-			await this.eventEmitter.emitAsync(EVENT_TOPIC.MESSAGE_UPDATED, toMessageUpdatedEvent(updatedMessage))
+			await this.eventEmitter.emitAsync(Event.MESSAGE_UPDATED, toMessageUpdatedEvent(updatedMessage))
 
 			this.logger.log(`Successfully updated message ${message.id} status to ${message.status}`)
 		} catch (error: unknown) {
@@ -93,7 +93,7 @@ class MessageWebhookService {
 
 			// Emit message created event to trigger conversation handling
 			const messageCreatedEvent: MessageCreatedEvent = toMessageCreatedEvent(createdMessage)
-			await this.eventEmitter.emitAsync(EVENT_TOPIC.MESSAGE_CREATED, messageCreatedEvent)
+			await this.eventEmitter.emitAsync(Event.MESSAGE_CREATED, messageCreatedEvent)
 
 			this.logger.log(`Emitted message created event for inbound message ${createdMessage.id}`)
 		} catch (err: unknown) {
@@ -182,7 +182,7 @@ class MessageWebhookService {
 
 			// Emit message created event for conversation handling
 			const messageCreatedEvent = toMessageCreatedEvent(createdMessage)
-			await this.eventEmitter.emitAsync(EVENT_TOPIC.MESSAGE_CREATED, messageCreatedEvent)
+			await this.eventEmitter.emitAsync(Event.MESSAGE_CREATED, messageCreatedEvent)
 
 			// Queue for sending with bypass flag (internal only)
 			await this.messageQueue.add(MESSAGE_QUEUE_JOB.SEND, {

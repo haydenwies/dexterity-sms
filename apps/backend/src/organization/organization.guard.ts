@@ -3,6 +3,12 @@ import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common"
 import { AuthRequest } from "~/auth/auth.guard"
 import { MemberService } from "~/organization/member/member.service"
 
+/**
+ * Ensures the user accessing the resource is a member of the specified organization.
+ * Must be used in conjunction with AuthGuard.
+ *
+ * :organizationId route param must be present, otherwise will return false.
+ */
 @Injectable()
 class OrganizationGuard implements CanActivate {
 	constructor(private readonly memberService: MemberService) {}

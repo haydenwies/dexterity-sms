@@ -7,11 +7,11 @@ import { filter, fromEvent, map, merge, mergeMap, Observable } from "rxjs"
 import { Conversation } from "~/conversation/conversation.entity"
 import { ConversationRepository } from "~/conversation/conversation.repository"
 import {
-	ConversationCreatedEvent,
-	ConversationUpdatedEvent,
-	EVENT_TOPIC,
-	MessageUpdatedEvent,
-	type MessageCreatedEvent
+	Event,
+	type ConversationCreatedEvent,
+	type ConversationUpdatedEvent,
+	type MessageCreatedEvent,
+	type MessageUpdatedEvent
 } from "~/event/event.types"
 import { Message } from "~/message/message.entity"
 import { MessageService } from "~/message/message.service"
@@ -47,7 +47,7 @@ export class ConversationService {
 	}
 
 	streamManyConversations(organizationId: string): Observable<Conversation> {
-		const created$ = fromEvent(this.eventEmitter, EVENT_TOPIC.CONVERSATION_CREATED).pipe(
+		const created$ = fromEvent(this.eventEmitter, Event.CONVERSATION_CREATED).pipe(
 			map((conversation) => conversation as ConversationCreatedEvent),
 			filter((conversation) => conversation.organizationId === organizationId),
 			mergeMap(async (conversation) => {
@@ -58,7 +58,7 @@ export class ConversationService {
 			})
 		)
 
-		const updated$ = fromEvent(this.eventEmitter, EVENT_TOPIC.CONVERSATION_UPDATED).pipe(
+		const updated$ = fromEvent(this.eventEmitter, Event.CONVERSATION_UPDATED).pipe(
 			map((conversation) => conversation as ConversationUpdatedEvent),
 			filter((conversation) => conversation.organizationId === organizationId),
 			mergeMap(async (conversation) => {
@@ -80,10 +80,7 @@ export class ConversationService {
 		})
 		const createdConversation = await this.conversationRepository.create(conversation)
 
-		await this.eventEmitter.emitAsync(
-			EVENT_TOPIC.CONVERSATION_CREATED,
-			toConversationCreatedEvent(createdConversation)
-		)
+		await this.eventEmitter.emitAsync(Event.CONVERSATION_CREATED, toConversationCreatedEvent(createdConversation))
 
 		return createdConversation
 	}
@@ -97,13 +94,13 @@ export class ConversationService {
 	}
 
 	streamManyConversationMessages(organizationId: string, conversationId: string): Observable<Message> {
-		const created$ = fromEvent(this.eventEmitter, EVENT_TOPIC.MESSAGE_CREATED).pipe(
+		const created$ = fromEvent(this.eventEmitter, Event.MESSAGE_CREATED).pipe(
 			map((msg) => msg as MessageCreatedEvent),
 			filter((msg) => msg.conversationId === conversationId),
 			mergeMap((msg) => this.messageService.get(organizationId, msg.messageId))
 		)
 
-		const updated$ = fromEvent(this.eventEmitter, EVENT_TOPIC.MESSAGE_UPDATED).pipe(
+		const updated$ = fromEvent(this.eventEmitter, Event.MESSAGE_UPDATED).pipe(
 			map((msg) => msg as MessageUpdatedEvent),
 			filter((msg) => msg.conversationId === conversationId),
 			mergeMap((msg) => this.messageService.get(organizationId, msg.id))
@@ -145,7 +142,7 @@ export class ConversationService {
 		await this.conversationRepository.update(conversation)
 
 		// Emit event
-		await this.eventEmitter.emitAsync(EVENT_TOPIC.CONVERSATION_UPDATED, toConversationUpdatedEvent(conversation))
+		await this.eventEmitter.emitAsync(Event.CONVERSATION_UPDATED, toConversationUpdatedEvent(conversation))
 	}
 
 	async isConversationUnsubscribed(

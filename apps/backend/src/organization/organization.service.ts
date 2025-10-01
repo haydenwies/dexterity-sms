@@ -1,16 +1,20 @@
 import { Injectable, NotFoundException } from "@nestjs/common"
+import { EventEmitter2 } from "@nestjs/event-emitter"
 
 import { type CreateOrganizationDto, type UpdateOrganizationDto } from "@repo/types/organization"
 
+import { Event } from "~/event/event.types"
 import { MemberService } from "~/organization/member/member.service"
 import { Organization } from "~/organization/organization.entity"
 import { OrganizationRepository } from "~/organization/organization.repository"
+import { toOrganizationUpdatedEvent } from "~/organization/organization.utils"
 
 @Injectable()
 class OrganizationService {
 	constructor(
 		private readonly organizationRepository: OrganizationRepository,
-		private readonly memberService: MemberService
+		private readonly memberService: MemberService,
+		private readonly eventEmitter: EventEmitter2
 	) {}
 
 	async getMany(userId: string): Promise<Organization[]> {
@@ -79,6 +83,9 @@ class OrganizationService {
 		})
 		const updatedOrganization = await this.organizationRepository.update(organization)
 
+		// Emit organization updated event
+		await this.eventEmitter.emitAsync(Event.ORGANIZATION_UPDATED, toOrganizationUpdatedEvent(updatedOrganization))
+
 		return updatedOrganization
 	}
 
@@ -86,11 +93,15 @@ class OrganizationService {
 		organizationId: string,
 		externalBillingAccountId: string
 	): Promise<Organization> {
+		// Get organization
 		const organization = await this.organizationRepository.find(organizationId)
 		if (!organization) throw new NotFoundException("Organization not found")
 
+		// Update organization
 		organization.updateExternalBillingAccountId(externalBillingAccountId)
 		const updatedOrganization = await this.organizationRepository.update(organization)
+
+		// Skip emitting organization updated event for security
 
 		return updatedOrganization
 	}

@@ -4,7 +4,7 @@ import { EventEmitter2 } from "@nestjs/event-emitter"
 import { type AddSenderDto } from "@repo/types/sender"
 
 import { Phone } from "~/common/phone.vo"
-import { EVENT_TOPIC } from "~/event/event.types"
+import { Event } from "~/event/event.types"
 import { Sender } from "~/sender/sender.entity"
 import { SenderRepository } from "~/sender/sender.repository"
 import { SMS_PROVIDER, type SmsProvider } from "~/sms/sms.module"
@@ -62,7 +62,7 @@ class SenderService {
 		const createdSender = await this.senderRepository.create(sender)
 
 		// Emit sender added event for billing
-		await this.eventEmitter.emitAsync(EVENT_TOPIC.SENDER_ADDED, toSenderAddedEvent(createdSender))
+		await this.eventEmitter.emitAsync(Event.SENDER_ADDED, toSenderAddedEvent(createdSender))
 	}
 
 	async remove(organizationId: string): Promise<void> {
@@ -70,7 +70,7 @@ class SenderService {
 		if (!sender) throw new NotFoundException("Sender not found")
 
 		// Emit sender removed event for billing (before deletion)
-		await this.eventEmitter.emitAsync(EVENT_TOPIC.SENDER_REMOVED, toSenderRemovedEvent(sender))
+		await this.eventEmitter.emitAsync(Event.SENDER_REMOVED, toSenderRemovedEvent(sender))
 
 		await this.smsProvider.releaseNumber(sender.externalId)
 		await this.senderRepository.delete(sender)

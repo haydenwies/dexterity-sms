@@ -1,6 +1,9 @@
 import { OrganizationModel } from "@repo/types/organization"
 
-import { Organization } from "~/organization/organization.entity"
+import { type OrganizationUpdatedEvent } from "~/event/event.types"
+import { type Organization } from "~/organization/organization.entity"
+
+// #region DTOs
 
 const toOrganizationDto = (organization: Organization): OrganizationModel => {
 	return {
@@ -12,4 +15,21 @@ const toOrganizationDto = (organization: Organization): OrganizationModel => {
 	}
 }
 
-export { toOrganizationDto }
+// #endregion
+
+// #region Events
+
+const toOrganizationUpdatedEvent = (organization: Organization): OrganizationUpdatedEvent => {
+	return {
+		id: organization.id,
+		externalBillingId: organization.externalBillingAccountId,
+		name: organization.name,
+		email: organization.email,
+		createdAt: organization.createdAt,
+		updatedAt: organization.updatedAt
+	}
+}
+
+// #endregion
+
+export { toOrganizationDto, toOrganizationUpdatedEvent }

@@ -6,7 +6,7 @@ import { MessageDirection, MessageStatus } from "@repo/types/message"
 
 import { EventEmitter2 } from "@nestjs/event-emitter"
 import { Phone } from "~/common/phone.vo"
-import { EVENT_TOPIC, type MessageCreatedEvent } from "~/event/event.types"
+import { Event, type MessageCreatedEvent } from "~/event/event.types"
 import { Message } from "~/message/message.entity"
 import { MESSAGE_QUEUE, MESSAGE_QUEUE_JOB } from "~/message/message.queue"
 import { MessageRepository } from "~/message/message.repository"
@@ -56,7 +56,7 @@ class MessageService {
 		message.updateConversationId(conversationId)
 		const updatedMessage = await this.messageRepository.update(message)
 
-		await this.eventEmitter.emitAsync(EVENT_TOPIC.MESSAGE_UPDATED, toMessageUpdatedEvent(updatedMessage))
+		await this.eventEmitter.emitAsync(Event.MESSAGE_UPDATED, toMessageUpdatedEvent(updatedMessage))
 
 		return updatedMessage
 	}
@@ -87,7 +87,7 @@ class MessageService {
 		// Emit message created event
 		// TODO: Remove synchronous event emitter and add mutex handling
 		const messageCreatedEvent: MessageCreatedEvent = toMessageCreatedEvent(createdMessage)
-		await this.eventEmitter.emitAsync(EVENT_TOPIC.MESSAGE_CREATED, messageCreatedEvent)
+		await this.eventEmitter.emitAsync(Event.MESSAGE_CREATED, messageCreatedEvent)
 
 		// Queue for sending
 		await this.messageQueue.add(MESSAGE_QUEUE_JOB.SEND, {

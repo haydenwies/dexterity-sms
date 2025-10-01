@@ -1,18 +1,10 @@
-import {
-	ConflictException,
-	Inject,
-	Injectable,
-	InternalServerErrorException,
-	Logger,
-	NotFoundException,
-	type RawBodyRequest
-} from "@nestjs/common"
+import { ConflictException, Injectable, Logger, NotFoundException, type RawBodyRequest } from "@nestjs/common"
 import { ConfigService } from "@nestjs/config"
 import { type Request } from "express"
+import { Stripe } from "stripe"
 
-import { SubscriptionStatus } from "@repo/types/billing"
+import { CreateBillingPortalSessionDto, type CreateCheckoutSessionDto, SubscriptionStatus } from "@repo/types/billing"
 
-import { BILLING_PROVIDER, type BillingProvider } from "~/billing/billing.provider"
 import {
 	Subscription,
 	SubscriptionCreateParams,
@@ -25,23 +17,28 @@ import { OrganizationService } from "~/organization/organization.service"
 
 @Injectable()
 class BillingService {
+	private readonly stripe: Stripe
+
 	public readonly SENDER_EXTERNAL_ID = "price_1SAsfeRfl3ViJIjUho0R5Y0g"
 	public readonly SMS_CREDIT_EXTERNAL_ID = "price_1SAsdGRfl3ViJIjUkVPpxU8h"
 	public readonly SMS_CREDIT_METER_ID = "sms_credit"
 
 	constructor(
-		@Inject(BILLING_PROVIDER) private readonly billingProvider: BillingProvider,
+		private readonly configService: ConfigService,
 		private readonly subscriptionRepository: SubscriptionRepository,
 		private readonly organizationService: OrganizationService
-	) {}
+	) {
+		this.stripe = new Stripe(this.configService.getOrThrow<string>("billing.stripeApiKey"))
+	}
 
-	async getBillingAccountId(organizationId: string): Promise<string> {
+	private async getStripeCustomerId(organizationId: string): Promise<string> {
 		const organization = await this.organizationService.getById(organizationId)
 
 		let billingAccountId = organization.externalBillingAccountId
 		if (!billingAccountId) {
-			// TODO: Add email
-			const customer = await this.billingProvider.customers.create({
+			const customer = await this.stripe.customers.create({
+				name: organization.name,
+				email: organization.email,
 				metadata: {
 					organizationId: organization.id
 				}
@@ -54,35 +51,35 @@ class BillingService {
 		return billingAccountId
 	}
 
-	async getCheckoutSession(organizationId: string, callbackUrl: string): Promise<{ url: string }> {
-		const billingAccountId = await this.getBillingAccountId(organizationId)
+	async createBillingPortalSession(
+		organizationId: string,
+		dto: CreateBillingPortalSessionDto
+	): Promise<Stripe.BillingPortal.Session> {
+		const billingAccountId = await this.getStripeCustomerId(organizationId)
 
-		const checkoutSession = await this.billingProvider.checkout.sessions.create({
+		const billingPortalSession = await this.stripe.billingPortal.sessions.create({
+			customer: billingAccountId,
+			return_url: dto.callbackUrl
+		})
+
+		return billingPortalSession
+	}
+
+	async createCheckoutSession(
+		organizationId: string,
+		dto: CreateCheckoutSessionDto
+	): Promise<Stripe.Checkout.Session> {
+		const billingAccountId = await this.getStripeCustomerId(organizationId)
+
+		const checkoutSession = await this.stripe.checkout.sessions.create({
 			customer: billingAccountId,
 			mode: "subscription",
-			success_url: callbackUrl,
-			cancel_url: callbackUrl,
+			success_url: dto.callbackUrl,
+			cancel_url: dto.callbackUrl,
 			line_items: [{ price: this.SMS_CREDIT_EXTERNAL_ID }]
 		})
 
-		const url = checkoutSession.url
-		if (!url) throw new InternalServerErrorException("Failed to create checkout session")
-
-		return { url }
-	}
-
-	async getBillingPortalSession(organizationId: string, callbackUrl: string): Promise<{ url: string }> {
-		const billingAccountId = await this.getBillingAccountId(organizationId)
-
-		const billingPortalSession = await this.billingProvider.billingPortal.sessions.create({
-			customer: billingAccountId,
-			return_url: callbackUrl
-		})
-
-		const url = billingPortalSession.url
-		if (!url) throw new InternalServerErrorException("Failed to create billing portal session")
-
-		return { url }
+		return checkoutSession
 	}
 
 	async getSubscription(organizationId: string): Promise<Subscription> {
@@ -134,13 +131,15 @@ class BillingService {
 @Injectable()
 class BillingWebhookService {
 	private readonly logger = new Logger(BillingWebhookService.name)
+	private readonly stripe: Stripe
 
 	constructor(
-		@Inject(BILLING_PROVIDER) private readonly billingProvider: BillingProvider,
 		private readonly billingService: BillingService,
 		private readonly configService: ConfigService,
 		private readonly organizationService: OrganizationService
-	) {}
+	) {
+		this.stripe = new Stripe(this.configService.getOrThrow<string>("billing.stripeApiKey"))
+	}
 
 	async handleWebhookEvent(req: RawBodyRequest<Request>): Promise<void> {
 		const payload = req.rawBody
@@ -151,9 +150,9 @@ class BillingWebhookService {
 
 		const webhookSecret = this.configService.getOrThrow<string>("billing.stripeWebhookSecret")
 
-		let event: ReturnType<BillingProvider["webhooks"]["constructEvent"]>
+		let event: Stripe.Event
 		try {
-			event = this.billingProvider.webhooks.constructEvent(payload, signature, webhookSecret)
+			event = this.stripe.webhooks.constructEvent(payload, signature, webhookSecret)
 		} catch (err: unknown) {
 			this.logger.warn("Failed to construct webhook event with error", err)
 			return
@@ -171,7 +170,7 @@ class BillingWebhookService {
 			return
 		}
 
-		const subscriptions = await this.billingProvider.subscriptions.list({
+		const subscriptions = await this.stripe.subscriptions.list({
 			customer: organization.externalBillingAccountId,
 			limit: 1,
 			status: "all"

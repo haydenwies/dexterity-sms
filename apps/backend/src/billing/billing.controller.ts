@@ -1,11 +1,20 @@
-import { Controller, Get, Param, Post, Query, type RawBodyRequest, Req, UseGuards } from "@nestjs/common"
+import { Body, Controller, Get, Param, Post, type RawBodyRequest, Req, UseGuards } from "@nestjs/common"
 import { type Request } from "express"
 
-import { SubscriptionModel } from "@repo/types/billing"
+import {
+	type BillingPortalSessionDto,
+	type CheckoutSessionDto,
+	type CreateBillingPortalSessionDto,
+	createBillingPortalSessionDtoSchema,
+	type CreateCheckoutSessionDto,
+	createCheckoutSessionDtoSchema,
+	SubscriptionModel
+} from "@repo/types/billing"
 
 import { AuthGuard } from "~/auth/auth.guard"
 import { BillingService, BillingWebhookService } from "~/billing/billing.service"
-import { toSubscriptionDto } from "~/billing/billing.utils"
+import { toBillingPortalSessionDto, toCheckoutSessionDto, toSubscriptionDto } from "~/billing/billing.utils"
+import { ZodValidationPipe } from "~/common/zod-validation.pipe"
 import { OrganizationGuard } from "~/organization/organization.guard"
 
 @UseGuards(AuthGuard, OrganizationGuard)
@@ -13,24 +22,24 @@ import { OrganizationGuard } from "~/organization/organization.guard"
 class BillingController {
 	constructor(private readonly billingService: BillingService) {}
 
-	@Get("checkout")
-	async getCheckoutSession(
+	@Post("billing-portal")
+	async createBillingPortalSession(
 		@Param("organizationId") organizationId: string,
-		@Query("callbackUrl") callbackUrl: string
-	): Promise<{ url: string }> {
-		const { url } = await this.billingService.getCheckoutSession(organizationId, callbackUrl)
+		@Body(new ZodValidationPipe(createBillingPortalSessionDtoSchema)) body: CreateBillingPortalSessionDto
+	): Promise<BillingPortalSessionDto> {
+		const billingPortalSession = await this.billingService.createBillingPortalSession(organizationId, body)
 
-		return { url }
+		return toBillingPortalSessionDto(billingPortalSession)
 	}
 
-	@Get("billing-portal")
-	async getBillingPortalSessionUrl(
+	@Post("checkout")
+	async createCheckoutSession(
 		@Param("organizationId") organizationId: string,
-		@Query("callbackUrl") callbackUrl: string
-	): Promise<{ url: string }> {
-		const { url } = await this.billingService.getBillingPortalSession(organizationId, callbackUrl)
+		@Body(new ZodValidationPipe(createCheckoutSessionDtoSchema)) body: CreateCheckoutSessionDto
+	): Promise<CheckoutSessionDto> {
+		const checkoutSession = await this.billingService.createCheckoutSession(organizationId, body)
 
-		return { url }
+		return toCheckoutSessionDto(checkoutSession)
 	}
 
 	@Get("subscription")
