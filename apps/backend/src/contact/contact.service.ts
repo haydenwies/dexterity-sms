@@ -9,8 +9,8 @@ import {
 	type UploadContactCsvDto
 } from "@repo/types/contact"
 
-import { Contact } from "~/contact/contact.entity"
-import { ContactRepository } from "~/contact/contact.repository"
+import { Contact } from "~/contact/entities/contact.entity"
+import { ContactRepository } from "~/contact/repositories/contact.repository"
 
 @Injectable()
 class ContactService {

@@ -3,7 +3,7 @@ import { and, eq, inArray } from "drizzle-orm"
 
 import { Email } from "~/common/email.vo"
 import { Phone } from "~/common/phone.vo"
-import { Contact } from "~/contact/contact.entity"
+import { Contact } from "~/contact/entities/contact.entity"
 import { DATABASE_PROVIDER, type DatabaseProvider } from "~/database/database.module"
 import { contactTable } from "~/database/database.schema"
 
@@ -17,21 +17,21 @@ class ContactRepository {
 		return rows.map((row) => ContactRepository.toEntity(row))
 	}
 
-	async findMany(organizationId: string, ids: string[]): Promise<Contact[]> {
+	async findMany(organizationId: string, contactIds: string[]): Promise<Contact[]> {
 		const rows = await this.db
 			.select()
 			.from(contactTable)
-			.where(and(eq(contactTable.organizationId, organizationId), inArray(contactTable.id, ids)))
+			.where(and(eq(contactTable.organizationId, organizationId), inArray(contactTable.id, contactIds)))
 		if (!rows) return []
 
 		return rows.map((row) => ContactRepository.toEntity(row))
 	}
 
-	async find(organizationId: string, id: string): Promise<Contact | undefined> {
+	async find(organizationId: string, contactId: string): Promise<Contact | undefined> {
 		const [row] = await this.db
 			.select()
 			.from(contactTable)
-			.where(and(eq(contactTable.organizationId, organizationId), eq(contactTable.id, id)))
+			.where(and(eq(contactTable.organizationId, organizationId), eq(contactTable.id, contactId)))
 			.limit(1)
 		if (!row) return undefined
 
