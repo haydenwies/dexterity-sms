@@ -1,9 +1,9 @@
 import { render, toPlainText } from "@react-email/render"
 
-import ForgotPassword, { ForgotPasswordProps } from "./forgot-password"
+import ResetPassword, { ResetPasswordProps } from "./reset-password"
 
-const forgotPassword = async (params: ForgotPasswordProps): Promise<{ html: string; text: string }> => {
-	const Comp = ForgotPassword(params)
+const resetPassword = async (params: ResetPasswordProps): Promise<{ html: string; text: string }> => {
+	const Comp = ResetPassword(params)
 
 	const html = await render(Comp)
 	const text = toPlainText(html)
@@ -11,4 +11,4 @@ const forgotPassword = async (params: ForgotPasswordProps): Promise<{ html: stri
 	return { html, text }
 }
 
-export { forgotPassword, type ForgotPasswordProps }
+export { resetPassword, type ResetPasswordProps }

@@ -3,7 +3,7 @@ import { ConfigService } from "@nestjs/config"
 
 import { type EmailProvider } from "@repo/email"
 import { AwsSesProvider } from "@repo/email/providers/aws-ses"
-import { forgotPassword, type ForgotPasswordProps } from "@repo/email/templates"
+import { resetPassword, type ResetPasswordProps } from "@repo/email/templates"
 
 @Injectable()
 class EmailService {
@@ -18,16 +18,18 @@ class EmailService {
 			sourceEmail: this.configService.getOrThrow<string>("email.awsSesSourceEmail")
 		})
 	}
-	async sendForgotPassword(to: string, params: ForgotPasswordProps): Promise<void> {
-		const { html, text } = await forgotPassword(params)
+	async sendResetPassword(to: string, params: ResetPasswordProps): Promise<void> {
+		const { html, text } = await resetPassword(params)
 
 		try {
 			await this.emailProvider.send({
 				to,
-				subject: "Forgot Password",
+				subject: "Reset Your Password",
 				html,
 				plainText: text
 			})
+
+			this.logger.log("Forgot password email sent to", to)
 		} catch (err: unknown) {
 			this.logger.error("Error sending forgot password email", err)
 			throw err

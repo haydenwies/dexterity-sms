@@ -93,7 +93,7 @@ class AuthService {
 				searchParams: { token: verificationToken.id }
 			})
 
-		await this.emailService.sendForgotPassword(user.email, { url })
+		await this.emailService.sendResetPassword(user.email, { url })
 	}
 
 	async resetPassword(dto: ResetPasswordDto): Promise<void> {

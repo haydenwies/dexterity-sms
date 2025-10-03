@@ -10,7 +10,6 @@ type VerificationTokenConstructorParams = {
 type VerificationTokenCreateParams = {
 	type: string
 	value: string
-	expiresAt?: Date
 }
 
 class VerificationToken {
@@ -37,7 +36,7 @@ class VerificationToken {
 			id: crypto.randomUUID(),
 			type: params.type,
 			value: params.value,
-			expiresAt: params.expiresAt || new Date(Date.now() + VerificationToken.DEFAULT_EXPIRY_LENGTH),
+			expiresAt: new Date(Date.now() + VerificationToken.DEFAULT_EXPIRY_LENGTH),
 			createdAt: new Date(),
 			updatedAt: new Date()
 		})
