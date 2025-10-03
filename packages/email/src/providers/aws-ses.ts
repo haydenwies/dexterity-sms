@@ -8,7 +8,7 @@ type SesProviderConfig = {
 	sourceEmail: string
 }
 
-class SesProvider implements EmailProvider {
+class AwsSesProvider implements EmailProvider {
 	private readonly client: SESClient
 	private readonly sourceEmail: string
 
@@ -52,4 +52,4 @@ class SesProvider implements EmailProvider {
 	}
 }
 
-export { SesProvider }
+export { AwsSesProvider }

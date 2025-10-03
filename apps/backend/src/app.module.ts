@@ -15,8 +15,8 @@ import { ContactModule } from "~/contact/contact.module"
 import { ConversationModule } from "~/conversation/conversation.module"
 import { MessageModule } from "~/message/message.module"
 import { OrganizationModule } from "~/organization/organization.module"
-import { UnsubscribeModule } from "~/unsubscribe/unsubscribe.module"
 import { billingConfig, billingConfigSchema } from "./config/billing.config"
+import { emailConfig, emailConfigSchema } from "./config/email.config"
 
 @Module({
 	imports: [
@@ -28,16 +28,17 @@ import { billingConfig, billingConfigSchema } from "./config/billing.config"
 				...databaseConfigSchema.shape,
 				...bullmqConfigSchema.shape,
 				...smsConfigSchema.shape,
-				...billingConfigSchema.shape
+				...billingConfigSchema.shape,
+				...emailConfigSchema.shape
 			}).parse,
-			load: [routerConfig, databaseConfig, bullmqConfig, smsConfig, billingConfig]
+			load: [routerConfig, databaseConfig, bullmqConfig, smsConfig, billingConfig, emailConfig]
 		}),
 		BullModule.forRootAsync({
 			inject: [ConfigService],
 			useFactory: (configService: ConfigService) => ({
 				connection: {
 					family: 0, // To work with Railway Redis
-					url: configService.getOrThrow("bullmq.url")
+					url: configService.getOrThrow<string>("bullmq.url")
 				},
 				defaultJobOptions: {
 					attempts: 3,
@@ -53,8 +54,7 @@ import { billingConfig, billingConfigSchema } from "./config/billing.config"
 		ContactModule,
 		MessageModule,
 		ConversationModule,
-		CampaignModule,
-		UnsubscribeModule
+		CampaignModule
 	],
 	controllers: [],
 	providers: []

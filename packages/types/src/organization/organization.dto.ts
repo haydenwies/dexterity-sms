@@ -9,7 +9,7 @@ type CreateOrganizationDto = {
 
 const createOrganizationDtoSchema = z.object({
 	name: z.string().min(1),
-	email: z.string().email()
+	email: z.email()
 })
 
 // #endregion
@@ -23,7 +23,7 @@ type UpdateOrganizationDto = {
 
 const updateOrganizationDtoSchema = z.object({
 	name: z.string().min(1),
-	email: z.string().email()
+	email: z.email()
 })
 
 // #endregion

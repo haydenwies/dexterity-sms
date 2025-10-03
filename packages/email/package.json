@@ -11,8 +11,7 @@
 		"@react-email/components": "^0.5.1",
 		"@react-email/render": "^1.2.1",
 		"react": "^19.0.0",
-		"react-dom": "^19.0.0",
-		"tsx": "^4.20.6"
+		"react-dom": "^19.0.0"
 	},
 	"devDependencies": {
 		"@react-email/preview-server": "4.2.8",
@@ -23,6 +22,14 @@
 		"typescript": "^5.9.2"
 	},
 	"exports": {
+		".": {
+			"types": "./src/types.ts",
+			"default": "./dist/types.js"
+		},
+		"./providers/aws-ses": {
+			"types": "./src/providers/aws-ses.ts",
+			"default": "./dist/providers/aws-ses.js"
+		},
 		"./templates": {
 			"types": "./src/templates/index.ts",
 			"default": "./dist/templates/index.js"

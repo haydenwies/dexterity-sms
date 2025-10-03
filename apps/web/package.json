@@ -9,9 +9,9 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
-		"@hookform/resolvers": "^5.1.1",
+		"@hookform/resolvers": "^5.2.2",
 		"@repo/csv": "workspace:*",
-		"@repo/routes": "workspace:^",
+		"@repo/routes": "workspace:*",
 		"@repo/types": "workspace:*",
 		"@repo/ui": "workspace:*",
 		"@tanstack/react-table": "^8.21.3",
@@ -19,7 +19,7 @@
 		"next": "^15.5.2",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
-		"react-hook-form": "7.60.0",
+		"react-hook-form": "7.63.0",
 		"server-only": "^0.0.1",
 		"zod": "^4.0.5"
 	},
