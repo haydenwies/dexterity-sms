@@ -2,9 +2,9 @@ import { Body, Controller, Logger, Post, UseGuards } from "@nestjs/common"
 
 import { type InboundWebhookEvent, type StatusWebhookEvent } from "@repo/sms"
 
-import { MessageInboundWebhookGuard, MessageStatusWebhookGuard } from "~/message/message.webhook.guard"
-import { MessageInboundWebhookPipe, MessageStatusWebhookPipe } from "~/message/message.webhook.pipe"
+import { MessageInboundWebhookGuard, MessageStatusWebhookGuard } from "~/message/guards/message.webhook.guard"
 import { MessageWebhookService } from "~/message/message.webhook.service"
+import { MessageInboundWebhookPipe, MessageStatusWebhookPipe } from "~/message/pipes/message.webhook.pipe"
 
 @Controller("webhooks/messages")
 class MessageWebhookController {
@@ -20,12 +20,7 @@ class MessageWebhookController {
 			return
 		}
 
-		try {
-			this.logger.log("Received message status webhook")
-			await this.messageWebhookService.handleStatusUpdate(body)
-		} catch (error: unknown) {
-			this.logger.error("Error processing message status webhook", { error })
-		}
+		await this.messageWebhookService.handleStatusUpdate(body)
 	}
 
 	@UseGuards(MessageInboundWebhookGuard)
@@ -36,12 +31,7 @@ class MessageWebhookController {
 			return
 		}
 
-		try {
-			this.logger.log("Received message inbound webhook")
-			await this.messageWebhookService.handleInboundMessage(body)
-		} catch (error: unknown) {
-			this.logger.error("Error processing message inbound webhook", { error })
-		}
+		await this.messageWebhookService.handleInboundMessage(body)
 	}
 }
 

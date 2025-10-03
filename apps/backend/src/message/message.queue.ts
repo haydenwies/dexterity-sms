@@ -6,7 +6,7 @@ import { Job } from "bullmq"
 import { routes } from "@repo/routes"
 import { MessageStatus } from "@repo/types/message"
 
-import { MessageRepository } from "~/message/message.repository"
+import { MessageRepository } from "~/message/repositories/message.repository"
 import { SMS_PROVIDER, type SmsProvider } from "~/sms/sms.module"
 import { UnsubscribeService } from "~/unsubscribe/unsubscribe.service"
 

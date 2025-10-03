@@ -4,8 +4,7 @@ enum MessageStatus {
 	SENT = "sent",
 	DELIVERED = "delivered",
 	FAILED = "failed",
-	RECEIVED = "received",
-	READ = "read"
+	RECEIVED = "received"
 }
 
 enum MessageDirection {

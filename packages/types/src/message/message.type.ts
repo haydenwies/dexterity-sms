@@ -12,7 +12,6 @@ type MessageModel = {
 	body: string
 	sentAt?: Date
 	deliveredAt?: Date
-	readAt?: Date
 	createdAt: Date
 	updatedAt: Date
 }

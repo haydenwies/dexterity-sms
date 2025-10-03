@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common"
 
 import { DatabaseModule } from "~/database/database.module"
-import { UnsubscribeRepository } from "~/unsubscribe/unsubscribe.repository"
+import { UnsubscribeRepository } from "~/unsubscribe/repositories/unsubscribe.repository"
 import { UnsubscribeService } from "~/unsubscribe/unsubscribe.service"
 
 @Module({

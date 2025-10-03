@@ -7,9 +7,9 @@ import { MessageDirection, MessageStatus } from "@repo/types/message"
 import { EventEmitter2 } from "@nestjs/event-emitter"
 import { Event, type MessageCreatedEvent } from "~/common/event.types"
 import { Phone } from "~/common/phone.vo"
-import { Message } from "~/message/message.entity"
+import { Message } from "~/message/entities/message.entity"
 import { MESSAGE_QUEUE, MESSAGE_QUEUE_JOB } from "~/message/message.queue"
-import { MessageRepository } from "~/message/message.repository"
+import { MessageRepository } from "~/message/repositories/message.repository"
 import { toMessageCreatedEvent, toMessageUpdatedEvent } from "./message.utils"
 
 @Injectable()

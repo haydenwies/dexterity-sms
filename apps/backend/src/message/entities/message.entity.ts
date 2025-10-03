@@ -16,7 +16,6 @@ interface IMessage {
 	body: string
 	sentAt?: Date
 	deliveredAt?: Date
-	readAt?: Date
 	createdAt: Date
 	updatedAt: Date
 }
@@ -64,7 +63,6 @@ class Message implements IMessage {
 	public readonly body: string
 	private _sentAt?: Date
 	private _deliveredAt?: Date
-	private _readAt?: Date
 	public readonly createdAt: Date
 	private _updatedAt: Date
 
@@ -84,7 +82,6 @@ class Message implements IMessage {
 		this.to = params.to
 		this._sentAt = params.sentAt || undefined
 		this._deliveredAt = params.deliveredAt || undefined
-		this._readAt = params.readAt || undefined
 		this.createdAt = params.createdAt
 		this._updatedAt = params.updatedAt
 	}
@@ -107,10 +104,6 @@ class Message implements IMessage {
 
 	get deliveredAt(): Date | undefined {
 		return this._deliveredAt
-	}
-
-	get readAt(): Date | undefined {
-		return this._readAt
 	}
 
 	get updatedAt(): Date {
@@ -154,9 +147,6 @@ class Message implements IMessage {
 				break
 			case MessageStatus.DELIVERED:
 				this._deliveredAt = new Date()
-				break
-			case MessageStatus.READ:
-				this._readAt = new Date()
 				break
 		}
 	}

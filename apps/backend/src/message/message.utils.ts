@@ -1,7 +1,7 @@
 import { type MessageModel } from "@repo/types/message"
 import { MessageCreatedEvent, MessageUpdatedEvent } from "~/common/event.types"
 
-import { Message } from "~/message/message.entity"
+import { Message } from "~/message/entities/message.entity"
 
 const toMessageDto = (message: Message): MessageModel => {
 	return {
@@ -14,7 +14,6 @@ const toMessageDto = (message: Message): MessageModel => {
 		to: message.to.value,
 		sentAt: message.sentAt,
 		deliveredAt: message.deliveredAt,
-		readAt: message.readAt,
 		createdAt: message.createdAt,
 		updatedAt: message.updatedAt
 	}

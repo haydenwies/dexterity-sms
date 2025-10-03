@@ -6,7 +6,7 @@ import { MessageStatus } from "@repo/types/message"
 import { Phone } from "~/common/phone.vo"
 import { DATABASE_PROVIDER, type DatabaseProvider } from "~/database/database.module"
 import { messageTable } from "~/database/database.schema"
-import { Message } from "~/message/message.entity"
+import { Message } from "~/message/entities/message.entity"
 
 @Injectable()
 class MessageRepository {
@@ -91,7 +91,6 @@ class MessageRepository {
 				to: message.to.value,
 				sentAt: message.sentAt,
 				deliveredAt: message.deliveredAt,
-				readAt: message.readAt,
 				createdAt: message.createdAt,
 				updatedAt: message.updatedAt
 			})
@@ -110,7 +109,6 @@ class MessageRepository {
 				status: message.status,
 				sentAt: message.sentAt,
 				deliveredAt: message.deliveredAt,
-				readAt: message.readAt,
 				updatedAt: message.updatedAt
 			})
 			.where(and(eq(messageTable.organizationId, message.organizationId), eq(messageTable.id, message.id)))

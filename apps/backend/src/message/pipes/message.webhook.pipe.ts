@@ -1,4 +1,4 @@
-import { ArgumentMetadata, Inject, Injectable, Logger, PipeTransform } from "@nestjs/common"
+import { Inject, Injectable, Logger, PipeTransform } from "@nestjs/common"
 
 import { type InboundWebhookEvent, type StatusWebhookEvent } from "@repo/sms"
 
@@ -10,7 +10,7 @@ class MessageStatusWebhookPipe implements PipeTransform {
 
 	constructor(@Inject(SMS_PROVIDER) private readonly smsProvider: SmsProvider) {}
 
-	transform(value: unknown, metadata: ArgumentMetadata): StatusWebhookEvent | null {
+	transform(value: unknown): StatusWebhookEvent | null {
 		const payload = this.smsProvider.parseStatusWebhookPayload(value)
 		if (!payload) this.logger.warn("Failed to parse message status webhook payload", { value })
 
@@ -24,7 +24,7 @@ class MessageInboundWebhookPipe implements PipeTransform {
 
 	constructor(@Inject(SMS_PROVIDER) private readonly smsProvider: SmsProvider) {}
 
-	transform(value: unknown, metadata: ArgumentMetadata): InboundWebhookEvent | null {
+	transform(value: unknown): InboundWebhookEvent | null {
 		const payload = this.smsProvider.parseInboundWebhookPayload(value)
 		if (!payload) this.logger.warn("Failed to parse message inbound webhook payload", { value })
 

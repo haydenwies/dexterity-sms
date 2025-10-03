@@ -8,12 +8,12 @@ import { MessageDirection, MessageStatus } from "@repo/types/message"
 
 import { Event, type MessageCreatedEvent } from "~/common/event.types"
 import { Phone } from "~/common/phone.vo"
-import { Message } from "~/message/message.entity"
+import { Message } from "~/message/entities/message.entity"
 import { MESSAGE_QUEUE, MESSAGE_QUEUE_JOB } from "~/message/message.queue"
 import { toMessageCreatedEvent, toMessageUpdatedEvent } from "~/message/message.utils"
 import { SenderService } from "~/sender/sender.service"
 import { UnsubscribeService } from "~/unsubscribe/unsubscribe.service"
-import { MessageRepository } from "./message.repository"
+import { MessageRepository } from "./repositories/message.repository"
 
 @Injectable()
 class MessageWebhookService {
@@ -89,7 +89,7 @@ class MessageWebhookService {
 			const createdMessage = await this.messageRepository.create(message)
 
 			// Process unsubscribe/resubscribe keywords directly
-			await this.processUnsubscribeKeywords(payload.body, sender.organizationId, fromPhone, toPhone)
+			await this.processKeywords(sender.organizationId, fromPhone, toPhone, payload.body)
 
 			// Emit message created event to trigger conversation handling
 			const messageCreatedEvent: MessageCreatedEvent = toMessageCreatedEvent(createdMessage)
@@ -97,75 +97,47 @@ class MessageWebhookService {
 
 			this.logger.log(`Emitted message created event for inbound message ${createdMessage.id}`)
 		} catch (err: unknown) {
-			this.logger.error("Failed to create inbound message", {
-				messageId: payload.messageId,
-				organizationId: sender.organizationId,
-				error: err
-			})
+			this.logger.error("Failed to create inbound message", err)
 		}
 	}
 
 	/**
 	 * Process unsubscribe/resubscribe keywords in inbound messages
 	 */
-	private async processUnsubscribeKeywords(
-		messageBody: string,
-		organizationId: string,
-		fromPhone: Phone,
-		toPhone: Phone
-	): Promise<void> {
+	private async processKeywords(organizationId: string, from: Phone, to: Phone, body: string): Promise<void> {
 		try {
 			// Check for unsubscribe keywords
-			if (this.unsubscribeService.isUnsubscribeMessage(messageBody)) {
-				this.logger.log(
-					`Processing unsubscribe request from ${fromPhone.value} for organization ${organizationId}`
-				)
+			if (this.unsubscribeService.isUnsubscribeMessage(body)) {
+				this.logger.log(`Processing unsubscribe request from ${from.value} for organization ${organizationId}`)
 
 				// Unsubscribe the phone number
-				await this.unsubscribeService.unsubscribe(organizationId, fromPhone)
+				await this.unsubscribeService.unsubscribe(organizationId, from)
 
 				// Send confirmation reply
-				await this.sendAutoReply(
-					organizationId,
-					toPhone,
-					fromPhone,
-					this.unsubscribeService.getUnsubscribeReplyMessage()
-				)
+				await this.sendAutoReply(organizationId, to, from, this.unsubscribeService.getUnsubscribeReplyMessage())
 				return
 			}
 
 			// Check for resubscribe keywords
-			if (this.unsubscribeService.isResubscribeMessage(messageBody)) {
-				this.logger.log(
-					`Processing resubscribe request from ${fromPhone.value} for organization ${organizationId}`
-				)
+			if (this.unsubscribeService.isResubscribeMessage(body)) {
+				this.logger.log(`Processing resubscribe request from ${from.value} for organization ${organizationId}`)
 
 				// Resubscribe the phone number
-				await this.unsubscribeService.resubscribe(organizationId, fromPhone)
+				await this.unsubscribeService.resubscribe(organizationId, from)
 
 				// Send confirmation reply
-				await this.sendAutoReply(
-					organizationId,
-					toPhone,
-					fromPhone,
-					this.unsubscribeService.getResubscribeReplyMessage()
-				)
+				await this.sendAutoReply(organizationId, to, from, this.unsubscribeService.getResubscribeReplyMessage())
 				return
 			}
-		} catch (error: unknown) {
-			this.logger.error("Error processing unsubscribe keywords", {
-				organizationId,
-				from: fromPhone.value,
-				messageBody,
-				error
-			})
+		} catch (err: unknown) {
+			this.logger.error("Error processing unsubscribe keywords", err)
 		}
 	}
 
 	/**
 	 * Send auto-reply message (bypasses unsubscribe check)
 	 */
-	private async sendAutoReply(organizationId: string, from: Phone, to: Phone, messageBody: string): Promise<void> {
+	private async sendAutoReply(organizationId: string, from: Phone, to: Phone, body: string): Promise<void> {
 		try {
 			// Create message entity for auto-reply
 			const message = Message.create({
@@ -174,15 +146,14 @@ class MessageWebhookService {
 				status: MessageStatus.PENDING,
 				from,
 				to,
-				body: messageBody
+				body
 			})
 
 			// Save message to database
 			const createdMessage = await this.messageRepository.create(message)
 
 			// Emit message created event for conversation handling
-			const messageCreatedEvent = toMessageCreatedEvent(createdMessage)
-			await this.eventEmitter.emitAsync(Event.MESSAGE_CREATED, messageCreatedEvent)
+			await this.eventEmitter.emitAsync(Event.MESSAGE_CREATED, toMessageCreatedEvent(createdMessage))
 
 			// Queue for sending with bypass flag (internal only)
 			await this.messageQueue.add(MESSAGE_QUEUE_JOB.SEND, {
@@ -190,13 +161,8 @@ class MessageWebhookService {
 				messageId: createdMessage.id,
 				bypassUnsubscribeCheck: true
 			})
-		} catch (error: unknown) {
-			this.logger.error("Failed to queue unsubscribe auto-reply", {
-				organizationId,
-				from: from.value,
-				to: to.value,
-				error
-			})
+		} catch (err: unknown) {
+			this.logger.error("Failed to queue auto-reply", err)
 		}
 	}
 

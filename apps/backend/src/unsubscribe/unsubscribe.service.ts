@@ -1,8 +1,8 @@
 import { Injectable, Logger } from "@nestjs/common"
 
 import { Phone } from "~/common/phone.vo"
-import { Unsubscribe } from "~/unsubscribe/unsubscribe.entity"
-import { UnsubscribeRepository } from "~/unsubscribe/unsubscribe.repository"
+import { Unsubscribe } from "~/unsubscribe/entities/unsubscribe.entity"
+import { UnsubscribeRepository } from "~/unsubscribe/repositories/unsubscribe.repository"
 
 @Injectable()
 class UnsubscribeService {
