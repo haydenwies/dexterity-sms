@@ -54,7 +54,6 @@ const routes = {
 			`/organizations/${organizationId}/conversations/${conversationId}`,
 		STREAM_MANY_CONVERSATIONS: (params: { organizationId: string }) =>
 			`/organizations/${params.organizationId}/conversations/stream`,
-		CREATE_CONVERSATION: (organizationId: string) => `/organizations/${organizationId}/conversations`,
 		GET_CONVERSATION_MESSAGES: (organizationId: string, conversationId: string) =>
 			`/organizations/${organizationId}/conversations/${conversationId}/messages`,
 		STREAM_MANY_CONVERSATION_MESSAGES: (params: { organizationId: string; conversationId: string }) =>
@@ -63,8 +62,6 @@ const routes = {
 			`/organizations/${organizationId}/conversations/${conversationId}/messages`,
 		READ_CONVERSATION: (organizationId: string, conversationId: string) =>
 			`/organizations/${organizationId}/conversations/${conversationId}/read`,
-		IS_CONVERSATION_UNSUBSCRIBED: (organizationId: string, conversationId: string) =>
-			`/organizations/${organizationId}/conversations/${conversationId}/unsubscribed`,
 
 		// sender
 		GET_SENDER: (organizationId: string) => `/organizations/${organizationId}/sender`,

@@ -2,7 +2,7 @@ import { Inject, Injectable } from "@nestjs/common"
 import { and, eq } from "drizzle-orm"
 
 import { Phone } from "~/common/phone.vo"
-import { Conversation } from "~/conversation/conversation.entity"
+import { Conversation } from "~/conversation/entities/conversation.entity"
 import { DATABASE_PROVIDER, type DatabaseProvider } from "~/database/database.module"
 import { conversationTable } from "~/database/database.schema"
 

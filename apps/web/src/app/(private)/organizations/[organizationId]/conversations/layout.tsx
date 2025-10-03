@@ -4,7 +4,6 @@ import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@
 import { getManyContacts } from "~/data/contact/get-many-contacts"
 import { getManyConversations } from "~/data/conversation/get-many-conversations"
 import { AllConversationsList } from "~/features/conversation/components/all-conversations-list"
-import { NewConversationButton } from "~/features/conversation/components/new-conversation"
 
 type LayoutProps = Readonly<{
 	children: React.ReactNode
@@ -23,9 +22,6 @@ const AllMessagesLayout = async ({ children, params }: LayoutProps) => {
 					<PageHeaderGroup>
 						<Icon name={IconName.MESSAGE} />
 						<p className="font-bold">Messages</p>
-					</PageHeaderGroup>
-					<PageHeaderGroup>
-						<NewConversationButton />
 					</PageHeaderGroup>
 				</PageHeaderRow>
 			</PageHeader>

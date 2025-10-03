@@ -1,7 +1,9 @@
 import { type ConversationModel } from "@repo/types/conversation"
 
 import { ConversationUpdatedEvent, type ConversationCreatedEvent } from "~/common/event.types"
-import { type Conversation } from "~/conversation/conversation.entity"
+import { type Conversation } from "~/conversation/entities/conversation.entity"
+
+// #region DTOs
 
 const toConversationDto = (conversation: Conversation): ConversationModel => {
 	return {
@@ -13,6 +15,9 @@ const toConversationDto = (conversation: Conversation): ConversationModel => {
 		lastMessageAt: conversation.lastMessageAt
 	}
 }
+// #endregion
+
+// #region Events
 
 const toConversationCreatedEvent = (conversation: Conversation): ConversationCreatedEvent => {
 	return {
@@ -35,5 +40,7 @@ const toConversationUpdatedEvent = (conversation: Conversation): ConversationUpd
 		updatedAt: conversation.updatedAt
 	}
 }
+
+// #endregion
 
 export { toConversationCreatedEvent, toConversationDto, toConversationUpdatedEvent }

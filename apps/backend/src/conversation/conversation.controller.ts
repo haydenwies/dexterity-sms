@@ -1,21 +1,15 @@
 import { Body, Controller, Get, MessageEvent, Param, Post, Sse, UseGuards } from "@nestjs/common"
 import { map, type Observable } from "rxjs"
 
-import {
-	type ConversationModel,
-	type CreateConversationDto,
-	createConversationDtoSchema,
-	type SendMessageDto,
-	sendMessageDtoSchema
-} from "@repo/types/conversation"
+import { type ConversationModel, type SendMessageDto, sendMessageDtoSchema } from "@repo/types/conversation"
 import { type MessageModel } from "@repo/types/message"
 
 import { AuthGuard } from "~/auth/auth.guard"
 import { SubscriptionGuard } from "~/billing/guards/subscription.guard"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
-import { ConversationGuard } from "~/conversation/conversation.guard"
 import { ConversationService } from "~/conversation/conversation.service"
 import { toConversationDto } from "~/conversation/conversation.utils"
+import { ConversationGuard } from "~/conversation/guards/conversation.guard"
 import { toMessageDto } from "~/message/message.utils"
 import { MemberGuard } from "~/organization/guards/member.guard"
 import { SenderGuard } from "~/sender/sender.guard"
@@ -30,16 +24,6 @@ export class ConversationController {
 		const conversations = await this.conversationService.getMany(organizationId)
 
 		return conversations.map((conversation) => toConversationDto(conversation))
-	}
-
-	@Post()
-	async create(
-		@Param("organizationId") organizationId: string,
-		@Body(new ZodValidationPipe(createConversationDtoSchema)) body: CreateConversationDto
-	): Promise<ConversationModel> {
-		const conversation = await this.conversationService.create(organizationId, body)
-
-		return toConversationDto(conversation)
 	}
 
 	@Sse("stream")
@@ -101,14 +85,5 @@ export class ConversationController {
 		@Param("conversationId") conversationId: string
 	): Promise<void> {
 		await this.conversationService.readConversation(organizationId, conversationId)
-	}
-
-	@UseGuards(ConversationGuard)
-	@Get(":conversationId/unsubscribed")
-	async isUnsubscribed(
-		@Param("organizationId") organizationId: string,
-		@Param("conversationId") conversationId: string
-	): Promise<{ isUnsubscribed: boolean }> {
-		return await this.conversationService.isConversationUnsubscribed(organizationId, conversationId)
 	}
 }

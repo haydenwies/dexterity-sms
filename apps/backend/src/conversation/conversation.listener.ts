@@ -5,10 +5,10 @@ import { MessageDirection } from "@repo/types/message"
 
 import { Event, type MessageCreatedEvent } from "~/common/event.types"
 import { Phone } from "~/common/phone.vo"
-import { Conversation } from "~/conversation/conversation.entity"
-import { ConversationRepository } from "~/conversation/conversation.repository"
+import { toConversationCreatedEvent, toConversationUpdatedEvent } from "~/conversation/conversation.utils"
+import { Conversation } from "~/conversation/entities/conversation.entity"
+import { ConversationRepository } from "~/conversation/repositories/conversation.repository"
 import { MessageService } from "~/message/message.service"
-import { toConversationCreatedEvent, toConversationUpdatedEvent } from "./conversation.utils"
 
 @Injectable()
 class ConversationListener {
@@ -77,7 +77,7 @@ class ConversationListener {
 				)
 			}
 		} catch (err: unknown) {
-			this.logger.error(err) // TODO: Better error handling for listeners
+			this.logger.error("Error processing message created event", err)
 		}
 	}
 }

@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common"
 import { EventEmitter2 } from "@nestjs/event-emitter"
-
-import { type CreateConversationDto, type SendMessageDto } from "@repo/types/conversation"
 import { filter, fromEvent, map, merge, mergeMap, Observable } from "rxjs"
+
+import { type SendMessageDto } from "@repo/types/conversation"
 
 import {
 	Event,
@@ -11,13 +11,13 @@ import {
 	type MessageCreatedEvent,
 	type MessageUpdatedEvent
 } from "~/common/event.types"
-import { Conversation } from "~/conversation/conversation.entity"
-import { ConversationRepository } from "~/conversation/conversation.repository"
+import { toConversationUpdatedEvent } from "~/conversation/conversation.utils"
+import { Conversation } from "~/conversation/entities/conversation.entity"
+import { ConversationRepository } from "~/conversation/repositories/conversation.repository"
 import { Message } from "~/message/message.entity"
 import { MessageService } from "~/message/message.service"
 import { SenderService } from "~/sender/sender.service"
 import { UnsubscribeService } from "~/unsubscribe/unsubscribe.service"
-import { toConversationCreatedEvent, toConversationUpdatedEvent } from "./conversation.utils"
 
 @Injectable()
 export class ConversationService {
@@ -43,7 +43,9 @@ export class ConversationService {
 	}
 
 	async getMany(organizationId: string): Promise<Conversation[]> {
-		return this.conversationRepository.findMany(organizationId)
+		const conversations = await this.conversationRepository.findMany(organizationId)
+
+		return conversations
 	}
 
 	streamManyConversations(organizationId: string): Observable<Conversation> {
@@ -70,19 +72,6 @@ export class ConversationService {
 		)
 
 		return merge(created$, updated$)
-	}
-
-	async create(organizationId: string, dto: CreateConversationDto): Promise<Conversation> {
-		const conversation = Conversation.create({
-			organizationId,
-			// @ts-expect-error - TODO: Add recipient to dto
-			recipient: dto.contactId
-		})
-		const createdConversation = await this.conversationRepository.create(conversation)
-
-		await this.eventEmitter.emitAsync(Event.CONVERSATION_CREATED, toConversationCreatedEvent(createdConversation))
-
-		return createdConversation
 	}
 
 	async getManyConversationMessages(organizationId: string, conversationId: string): Promise<Message[]> {
@@ -117,7 +106,7 @@ export class ConversationService {
 
 		// Check if the recipient is unsubscribed
 		const isUnsubscribed = await this.unsubscribeService.isUnsubscribed(organizationId, conversation.recipient)
-		if (isUnsubscribed) throw new BadRequestException(`Cannot send message to unsubscribed recipient`)
+		if (isUnsubscribed) throw new BadRequestException(`Cannot send message, this recipient is unsubscribed`)
 
 		// Find sender
 		const sender = await this.senderService.get(organizationId)

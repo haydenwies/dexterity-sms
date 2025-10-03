@@ -32,8 +32,9 @@ const useSendMessage = () => {
 			await sendMessage(organizationId, conversationId, data)
 
 			sendConversationMessageForm.reset()
-		} catch {
-			setError("An unexpected error occurred")
+		} catch (err: unknown) {
+			const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred"
+			setError(errorMessage)
 		} finally {
 			setLoading(false)
 		}
