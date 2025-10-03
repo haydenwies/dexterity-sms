@@ -10,9 +10,9 @@ import {
 	type UpdateCampaignDto
 } from "@repo/types/campaign"
 
-import { Campaign } from "~/campaign/campaign.entity"
 import { CAMPAIGN_QUEUE, CAMPAIGN_QUEUE_JOB } from "~/campaign/campaign.queue"
-import { CampaignRepository } from "~/campaign/campaign.repository"
+import { Campaign } from "~/campaign/entities/campaign.entity"
+import { CampaignRepository } from "~/campaign/repositories/campaign.repository"
 import { Phone } from "~/common/phone.vo"
 import { MessageService } from "~/message/message.service"
 import { SenderService } from "~/sender/sender.service"
@@ -82,9 +82,10 @@ class CampaignService {
 		if (!campaign) throw new NotFoundException("Campaign not found")
 
 		const sender = await this.senderService.get(organizationId)
+
 		const to = Phone.create(dto.to)
 
-		const { body } = campaign.getBodyForSending()
+		const body = campaign.getBodyForSending()
 
 		await this.messageService.send(organizationId, {
 			campaignId,
@@ -95,21 +96,24 @@ class CampaignService {
 	}
 
 	async send(organizationId: string, campaignId: string, dto: SendCampaignDto): Promise<void> {
+		// Get the campaign
 		const campaign = await this.campaignRepository.find(organizationId, campaignId)
 		if (!campaign) throw new NotFoundException("Campaign not found")
 
-		// Use centralized state management - schedules campaign and transitions to SCHEDULED
+		// Set the campaign to scheduled
 		campaign.setScheduled(dto.scheduledAt)
 		await this.campaignRepository.update(campaign)
 
-		// Queue the campaign for processing (will transition SCHEDULED -> PROCESSING -> SENT/FAILED)
-		await this.campaignQueue.add(CAMPAIGN_QUEUE_JOB.SEND, {
-			organizationId,
-			campaignId
-		}) // TODO: Add delay
+		// Add delay to the campaign if it is scheduled
+		let delay = undefined
+		if (campaign.scheduledAt) delay = campaign.scheduledAt.getTime() - Date.now()
+
+		// Queue the campaign for processing
+		await this.campaignQueue.add(CAMPAIGN_QUEUE_JOB.SEND, { organizationId, campaignId }, { delay })
 	}
 
 	async cancel(organizationId: string, campaignId: string): Promise<void> {
+		// Get the campaign
 		const campaign = await this.campaignRepository.find(organizationId, campaignId)
 		if (!campaign) throw new NotFoundException("Campaign not found")
 

@@ -82,8 +82,7 @@ class AuthService {
 
 		const verificationToken = await this.verificationTokenService.create({
 			type: "forgot-password",
-			value: user.id,
-			expiresAt: new Date(Date.now() + 1000 * 60 * 60)
+			value: user.id
 		})
 
 		// TODO: Better config service and router

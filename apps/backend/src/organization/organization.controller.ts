@@ -39,21 +39,21 @@ class OrganizationController {
 	}
 
 	@UseGuards(MemberGuard)
-	@Get(":id")
-	async get(@User() user: UserEntity, @Param("id") id: string): Promise<OrganizationModel> {
-		const organization = await this.organizationService.get(user.id, id)
+	@Get(":organizationId")
+	async get(@User() user: UserEntity, @Param("organizationId") organizationId: string): Promise<OrganizationModel> {
+		const organization = await this.organizationService.get(user.id, organizationId)
 
 		return toOrganizationDto(organization)
 	}
 
 	@UseGuards(MemberGuard)
-	@Put(":id")
+	@Put(":organizationId")
 	async update(
 		@User() user: UserEntity,
-		@Param("id") id: string,
+		@Param("organizationId") organizationId: string,
 		@Body(new ZodValidationPipe(updateOrganizationDtoSchema)) body: UpdateOrganizationDto
 	): Promise<OrganizationModel> {
-		const organization = await this.organizationService.update(user.id, id, body)
+		const organization = await this.organizationService.update(user.id, organizationId, body)
 
 		return toOrganizationDto(organization)
 	}

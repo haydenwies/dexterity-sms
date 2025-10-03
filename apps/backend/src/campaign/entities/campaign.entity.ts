@@ -1,4 +1,4 @@
-import { CampaignStatus } from "@repo/types/campaign"
+import { CAMPAIGN_MAX_SCHEDULE_DAYS, CampaignStatus } from "@repo/types/campaign"
 import { isEnumValue } from "@repo/utils"
 import z from "zod"
 
@@ -45,8 +45,6 @@ class Campaign implements ICampaign {
 	private _scheduledAt?: Date
 	public readonly createdAt: Date
 	private _updatedAt: Date
-
-	private static readonly MAX_SCHEDULED_TIME = 1000 * 60 * 60 * 24 * 14
 
 	constructor(params: CampaignConstructorParams) {
 		if (!isEnumValue(CampaignStatus, params.status)) throw new Error("Invalid campaign status")
@@ -102,10 +100,10 @@ class Campaign implements ICampaign {
 	/**
 	 * Returns the campaign body for sending
 	 */
-	getBodyForSending(): { body: string } {
+	getBodyForSending(): string {
 		if (!this._body) throw new Error("Campaign body is required")
 
-		return { body: this._body }
+		return this._body
 	}
 
 	// #region State Managemrnt
@@ -132,8 +130,8 @@ class Campaign implements ICampaign {
 
 		if (!this._body) throw new Error("Campaign body is required")
 		if (scheduledAt && scheduledAt < new Date()) throw new Error("Scheduled date is in the past")
-		if (scheduledAt && scheduledAt.getTime() - new Date().getTime() > Campaign.MAX_SCHEDULED_TIME)
-			throw new Error("Scheduled date is more than 14 days from now")
+		if (scheduledAt && scheduledAt.getDate() - new Date().getDate() > CAMPAIGN_MAX_SCHEDULE_DAYS)
+			throw new Error(`Scheduled date is more than ${CAMPAIGN_MAX_SCHEDULE_DAYS} days from now`)
 
 		this._status = CampaignStatus.SCHEDULED
 		this._scheduledAt = scheduledAt

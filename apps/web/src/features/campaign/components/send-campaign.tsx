@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 
+import { CAMPAIGN_MAX_SCHEDULE_DAYS } from "@repo/types/campaign"
 import { Button } from "@repo/ui/components/button"
 import { Calendar } from "@repo/ui/components/calendar"
 import { Checkbox } from "@repo/ui/components/checkbox"
@@ -34,7 +35,7 @@ const SendCampaignDialog = ({ open, setOpen }: SendCampaignDialogProps) => {
 
 	const getEndMonth = (): Date => {
 		const date = new Date()
-		date.setMonth(date.getMonth() + 2)
+		date.setDate(date.getDate() + CAMPAIGN_MAX_SCHEDULE_DAYS)
 
 		return date
 	}
@@ -45,7 +46,7 @@ const SendCampaignDialog = ({ open, setOpen }: SendCampaignDialogProps) => {
 
 	const getDisabledAfter = (): Date => {
 		const date = new Date()
-		date.setMonth(date.getMonth() + 2)
+		date.setDate(date.getDate() + CAMPAIGN_MAX_SCHEDULE_DAYS)
 
 		return date
 	}

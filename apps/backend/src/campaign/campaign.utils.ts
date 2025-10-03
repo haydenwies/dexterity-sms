@@ -1,6 +1,6 @@
 import { CampaignModel } from "@repo/types/campaign"
 
-import { Campaign } from "~/campaign/campaign.entity"
+import { Campaign } from "~/campaign/entities/campaign.entity"
 
 const toCampaignDto = (campaign: Campaign): CampaignModel => {
 	return {

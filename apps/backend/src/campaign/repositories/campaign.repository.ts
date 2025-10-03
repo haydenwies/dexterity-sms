@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common"
 import { and, eq, inArray } from "drizzle-orm"
 
-import { Campaign } from "~/campaign/campaign.entity"
+import { Campaign } from "~/campaign/entities/campaign.entity"
 import { DATABASE_PROVIDER, type DatabaseProvider } from "~/database/database.module"
 import { campaignTable } from "~/database/database.schema"
 
