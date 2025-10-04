@@ -4,7 +4,7 @@ import { routes } from "@repo/routes"
 import { type SenderModel } from "@repo/types/sender"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/backend"
+import { getBackendUrl } from "~/lib/url"
 
 const getSender = async (organizationId: string): Promise<SenderModel | undefined> => {
 	const sessionToken = await sessionMiddleware()

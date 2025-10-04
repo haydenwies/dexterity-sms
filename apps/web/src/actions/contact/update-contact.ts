@@ -4,7 +4,7 @@ import { routes } from "@repo/routes"
 import { type UpdateContactDto } from "@repo/types/contact"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/backend"
+import { getBackendUrl } from "~/lib/url"
 
 const updateContact = async (organizationId: string, contactId: string, dto: UpdateContactDto): Promise<void> => {
 	const sessionToken = await sessionMiddleware()

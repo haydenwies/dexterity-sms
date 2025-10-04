@@ -3,6 +3,8 @@ import { type SearchParams, stringifySearchParams } from "./lib/search-params"
 const routes = {
 	backend: {
 		// auth
+		GET_USER: "/auth/user",
+		GET_SESSION: "/auth/session",
 		SIGN_IN: "/auth/sign-in",
 		SIGN_UP: "/auth/sign-up",
 		SIGN_OUT: "/auth/sign-out",
@@ -75,18 +77,18 @@ const routes = {
 	},
 	web: {
 		// auth
-		SIGN_IN: "/sign-in",
-		SIGN_UP: "/sign-up",
-		FORGOT_PASSWORD: "/forgot-password",
+		SIGN_IN: "/auth/sign-in",
+		SIGN_UP: "/auth/sign-up",
+		FORGOT_PASSWORD: "/auth/forgot-password",
 		RESET_PASSWORD: (params: { searchParams: SearchParams<{ token: string }> }) =>
-			`/reset-password?${stringifySearchParams(params.searchParams)}`,
+			`/auth/reset-password?${stringifySearchParams(params.searchParams)}`,
 
 		// organization
 		ALL_ORGANIZATIONS: "/organizations",
 		ORGANIZATION: (id: string) => `/organizations/${id}`,
 
 		// home
-		HOME: (organizationId: string) => `/organizations/${organizationId}/home`,
+		HOME: (organizationId: string) => `/organizations/${organizationId}`,
 
 		// campaign
 		ALL_CAMPAIGNS: (organizationId: string) => `/organizations/${organizationId}/campaigns`,

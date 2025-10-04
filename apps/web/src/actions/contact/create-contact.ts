@@ -4,7 +4,7 @@ import { routes } from "@repo/routes"
 import { type CreateContactDto } from "@repo/types/contact"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/backend"
+import { getBackendUrl } from "~/lib/url"
 
 const createContact = async (organizationId: string, dto: CreateContactDto): Promise<void> => {
 	const sessionToken = await sessionMiddleware()

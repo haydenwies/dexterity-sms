@@ -42,6 +42,7 @@ const ResetPasswordForm = ({ token, className }: ResetPasswordFormProps) => {
 							<FormControl>
 								<Input
 									placeholder={placeholders.PASSWORD}
+									type="password"
 									{...field}
 								/>
 							</FormControl>
@@ -58,6 +59,7 @@ const ResetPasswordForm = ({ token, className }: ResetPasswordFormProps) => {
 							<FormControl>
 								<Input
 									placeholder={placeholders.PASSWORD}
+									type="password"
 									{...field}
 								/>
 							</FormControl>

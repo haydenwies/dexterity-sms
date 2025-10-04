@@ -16,7 +16,7 @@ class SubscriptionGuard implements CanActivate {
 
 		const organizationId = request.params?.organizationId
 		if (!organizationId) {
-			this.logger.warn("No organizationId found in request params")
+			this.logger.warn(`No organizationId found in request params while accessing ${request.route}`)
 			return false
 		}
 
@@ -24,25 +24,27 @@ class SubscriptionGuard implements CanActivate {
 			// Get subscription
 			const subscription = await this.billingService.safeGetSubscription(organizationId)
 			if (!subscription) {
-				this.logger.warn(`No subscription found for organization ${organizationId}`)
-				throw new ForbiddenException("Active subscription required")
+				this.logger.warn(
+					`No subscription found for organization ${organizationId} while accessing ${request.route}`
+				)
+				throw new ForbiddenException("An active subscription is required to perform this action")
 			}
 
 			// Check if subscription is in a valid state for usage
 			const validStatuses = [SubscriptionStatus.ACTIVE, SubscriptionStatus.PAST_DUE]
 			if (!validStatuses.includes(subscription.status)) {
 				this.logger.warn(
-					`Invalid subscription status '${subscription.status}' for organization ${organizationId}`
+					`Invalid subscription status '${subscription.status}' found for organization ${organizationId} while accessing ${request.route}`
 				)
-				throw new ForbiddenException("Active subscription required")
+				throw new ForbiddenException("An active subscription is required to perform this action")
 			}
 
 			return true
-		} catch (error) {
-			if (error instanceof ForbiddenException) throw error
+		} catch (err: unknown) {
+			if (err instanceof ForbiddenException) throw err
 
 			// For any other errors (e.g., database issues), fail closed for security
-			this.logger.error(`Unexpected error for organization ${organizationId}`, error)
+			this.logger.error(`Unexpected error for organization ${organizationId}`, err)
 			throw new ForbiddenException("Unable to verify subscription status")
 		}
 	}

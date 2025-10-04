@@ -17,7 +17,7 @@ const Page = ({ className, ...props }: PageProps) => {
 type PageHeaderProps = React.ComponentProps<"div">
 const PageHeader = ({ className, ...props }: PageHeaderProps) => (
 	<div
-		className={cn("sticky top-0", className)}
+		className={cn("bg-background sticky top-0", className)}
 		{...props}
 	/>
 )
@@ -47,7 +47,7 @@ const PageHeaderGroup = ({ className, type = "row", ...props }: PageHeaderGroupP
 type PageContentProps = React.ComponentProps<"div"> & { disableScroll?: boolean }
 const PageContent = ({ className, disableScroll = false, ...props }: PageContentProps) => (
 	<div
-		className={cn("flex flex-1 flex-col px-6 py-4", { "overflow-y-hidden": disableScroll }, className)}
+		className={cn("flex flex-1 flex-col p-6", { "overflow-y-hidden": disableScroll }, className)}
 		{...props}
 	/>
 )

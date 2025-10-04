@@ -4,7 +4,7 @@ import { routes } from "@repo/routes"
 import { DeleteManyCampaignsDto } from "@repo/types/campaign"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/backend"
+import { getBackendUrl } from "~/lib/url"
 
 const deleteManyCampaigns = async (organizationId: string, dto: DeleteManyCampaignsDto): Promise<void> => {
 	const sessionToken = await sessionMiddleware()

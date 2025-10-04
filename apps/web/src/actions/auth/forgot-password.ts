@@ -3,7 +3,7 @@
 import { routes } from "@repo/routes"
 import { type ForgotPasswordDto } from "@repo/types/auth"
 
-import { getBackendUrl } from "~/lib/backend"
+import { getBackendUrl } from "~/lib/url"
 
 const forgotPassword = async (dto: ForgotPasswordDto): Promise<undefined> => {
 	const backendUrl = getBackendUrl()

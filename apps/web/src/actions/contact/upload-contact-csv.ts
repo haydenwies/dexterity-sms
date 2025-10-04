@@ -4,7 +4,7 @@ import { routes } from "@repo/routes"
 import { type UploadContactCsvDto } from "@repo/types/contact"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/backend"
+import { getBackendUrl } from "~/lib/url"
 
 const uploadContactCsv = async (organizationId: string, file: File, dto: UploadContactCsvDto): Promise<void> => {
 	const sessionToken = await sessionMiddleware()

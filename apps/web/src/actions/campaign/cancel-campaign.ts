@@ -3,7 +3,7 @@
 import { routes } from "@repo/routes"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/backend"
+import { getBackendUrl } from "~/lib/url"
 
 const cancelCampaign = async (organizationId: string, campaignId: string): Promise<void> => {
 	const sessionToken = await sessionMiddleware()

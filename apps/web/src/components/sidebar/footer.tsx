@@ -1,8 +1,10 @@
 "use client"
 
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 import { routes } from "@repo/routes"
+import { type UserDto } from "@repo/types/auth"
 import { Avatar, AvatarFallback } from "@repo/ui/components/avatar"
 import {
 	DropdownMenu,
@@ -17,9 +19,14 @@ import { signOut } from "~/actions/auth/sign-out"
 
 type SidebarFooterProps = {
 	organizationId: string
+	user: UserDto
 }
-const SidebarFooter = ({ organizationId }: SidebarFooterProps) => {
+const SidebarFooter = ({ organizationId, user }: SidebarFooterProps) => {
 	const { isMobile, open, toggleSidebar } = SidebarPrimitive.useSidebar()
+	const pathname = usePathname()
+
+	const settingsHref = routes.web.SETTINGS(organizationId)
+	const isSettingsActive = pathname === settingsHref || pathname.startsWith(settingsHref + "/")
 
 	return (
 		<SidebarPrimitive.SidebarFooter>
@@ -27,9 +34,10 @@ const SidebarFooter = ({ organizationId }: SidebarFooterProps) => {
 				<SidebarPrimitive.SidebarMenuItem>
 					<SidebarPrimitive.SidebarMenuButton
 						asChild
+						isActive={isSettingsActive}
 						tooltip="Settings"
 					>
-						<Link href={routes.web.SETTINGS(organizationId)}>
+						<Link href={settingsHref}>
 							<Icon name={IconName.SETTINGS} />
 							Settings
 						</Link>
@@ -57,8 +65,10 @@ const SidebarFooter = ({ organizationId }: SidebarFooterProps) => {
 									</AvatarFallback>
 								</Avatar>
 								<div className="grid flex-1 text-left leading-tight">
-									<span className="truncate font-medium">User name</span>
-									<span className="truncate text-xs">user@example.com</span>
+									<span className="truncate font-medium">
+										{user.firstName} {user.lastName}
+									</span>
+									<span className="truncate text-xs">{user.email}</span>
 								</div>
 								<Icon
 									className="ml-auto"

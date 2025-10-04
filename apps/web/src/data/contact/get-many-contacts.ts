@@ -4,7 +4,7 @@ import { routes } from "@repo/routes"
 import { type ContactModel } from "@repo/types/contact"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/backend"
+import { getBackendUrl } from "~/lib/url"
 
 const getManyContacts = async (organizationId: string): Promise<ContactModel[]> => {
 	const sessionToken = await sessionMiddleware()

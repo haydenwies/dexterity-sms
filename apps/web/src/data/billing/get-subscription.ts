@@ -1,8 +1,10 @@
+import "server-only"
+
 import { routes } from "@repo/routes"
-import { SubscriptionModel } from "@repo/types/billing"
+import { type SubscriptionModel } from "@repo/types/billing"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/backend"
+import { getBackendUrl } from "~/lib/url"
 
 const getSubscription = async (organizationId: string): Promise<SubscriptionModel | undefined> => {
 	const sessionToken = await sessionMiddleware()

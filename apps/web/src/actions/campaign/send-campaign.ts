@@ -4,7 +4,7 @@ import { routes } from "@repo/routes"
 import { type SendCampaignDto } from "@repo/types/campaign"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/backend"
+import { getBackendUrl } from "~/lib/url"
 
 const sendCampaign = async (organizationId: string, campaignId: string, dto: SendCampaignDto): Promise<void> => {
 	const sessionToken = await sessionMiddleware()

@@ -4,7 +4,7 @@ import { routes } from "@repo/routes"
 import { type BillingPortalSessionDto, type CreateBillingPortalSessionDto } from "@repo/types/billing"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl, getFrontendUrl } from "~/lib/backend"
+import { getBackendUrl, getFrontendUrl } from "~/lib/url"
 
 const createBillingPortalSession = async (organizationId: string): Promise<BillingPortalSessionDto> => {
 	const sessionToken = await sessionMiddleware()

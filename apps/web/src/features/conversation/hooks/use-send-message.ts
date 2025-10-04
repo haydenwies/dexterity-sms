@@ -10,7 +10,6 @@ import { sendMessage } from "~/actions/conversation/send-message"
 const useSendMessage = () => {
 	const [loading, setLoading] = useState<boolean>(false)
 	const [error, setError] = useState<string | null>(null)
-
 	const params = useParams()
 
 	const sendConversationMessageForm = useForm<SendMessageDto>({
@@ -24,12 +23,12 @@ const useSendMessage = () => {
 		setLoading(true)
 
 		try {
-			const organizationId = params.organizationId
-			if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
-			const conversationId = params.conversationId
-			if (!conversationId || Array.isArray(conversationId)) throw new Error("Conversation ID is required")
+			if (!params.organizationId || Array.isArray(params.organizationId))
+				throw new Error("Organization ID is required")
+			if (!params.conversationId || Array.isArray(params.conversationId))
+				throw new Error("Conversation ID is required")
 
-			await sendMessage(organizationId, conversationId, data)
+			await sendMessage(params.organizationId, params.conversationId, data)
 
 			sendConversationMessageForm.reset()
 		} catch (err: unknown) {

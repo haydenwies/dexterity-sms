@@ -4,7 +4,7 @@ import { routes } from "@repo/routes"
 import { type MessageModel } from "@repo/types/message"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/backend"
+import { getBackendUrl } from "~/lib/url"
 
 const getManyConversationMessages = async (organizationId: string, conversationId: string): Promise<MessageModel[]> => {
 	const sessionToken = await sessionMiddleware()

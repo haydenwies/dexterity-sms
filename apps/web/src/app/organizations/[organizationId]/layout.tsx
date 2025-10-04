@@ -1,4 +1,5 @@
 import { Sidebar, SidebarProvider } from "~/components/sidebar"
+import { getUser } from "~/data/auth/get-user"
 import { getManyOrganizations } from "~/data/organization/get-many-organizations"
 import { getOrganization } from "~/data/organization/get-organization"
 
@@ -8,9 +9,11 @@ type OrganizationLayoutProps = {
 }
 const OrganizationLayout = async ({ children, params }: OrganizationLayoutProps) => {
 	const { organizationId } = await params
-	const [allOrganizations, organization] = await Promise.all([
+
+	const [allOrganizations, organization, user] = await Promise.all([
 		getManyOrganizations(),
-		getOrganization(organizationId)
+		getOrganization(organizationId),
+		getUser()
 	])
 
 	return (
@@ -18,6 +21,7 @@ const OrganizationLayout = async ({ children, params }: OrganizationLayoutProps)
 			<Sidebar
 				allOrganizations={allOrganizations}
 				organization={organization}
+				user={user}
 			/>
 			{children}
 		</SidebarProvider>

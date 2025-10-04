@@ -35,8 +35,8 @@ type AllMessagesListProps = {
 }
 const AllMessagesList = ({ messagesPromise, className }: AllMessagesListProps) => {
 	const initialMessages = use(messagesPromise)
-	const messages = useStreamManyConversationMessages(initialMessages)
 	const messagesEndRef = useRef<HTMLDivElement>(null)
+	const messages = useStreamManyConversationMessages(initialMessages)
 	const { markAsRead } = useReadConversation()
 
 	// Auto-scroll to bottom when messages update

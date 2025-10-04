@@ -6,7 +6,7 @@ import { routes } from "@repo/routes"
 import { CreateOrganizationDto } from "@repo/types/organization"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/backend"
+import { getBackendUrl } from "~/lib/url"
 
 const createOrganization = async (dto: CreateOrganizationDto): Promise<void> => {
 	const sessionToken = await sessionMiddleware()

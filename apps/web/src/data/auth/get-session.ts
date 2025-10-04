@@ -1,21 +1,29 @@
-"use server"
+import "server-only"
 
 import { routes } from "@repo/routes"
+import { type SessionDto } from "@repo/types/auth"
 
 import { sessionMiddleware } from "~/actions/utils"
 import { getBackendUrl } from "~/lib/url"
 
-const getAvailablePhones = async (organizationId: string): Promise<string[]> => {
-	const sessionToken = await sessionMiddleware()
+const getSession = async (): Promise<SessionDto | undefined> => {
+	let sessionToken: string
+	try {
+		sessionToken = await sessionMiddleware()
+	} catch {
+		return undefined
+	}
 
 	const backendUrl = getBackendUrl()
-	const res = await fetch(`${backendUrl}${routes.backend.GET_AVAILABLE_SENDERS(organizationId)}`, {
+	const res = await fetch(`${backendUrl}${routes.backend.GET_SESSION}`, {
 		method: "GET",
 		headers: {
 			"Authorization": `Bearer ${sessionToken}`
 		}
 	})
 	if (!res.ok) {
+		if (res.status === 404) return undefined
+
 		const errData = await res.json()
 		throw new Error(errData.message)
 	}
@@ -25,4 +33,4 @@ const getAvailablePhones = async (organizationId: string): Promise<string[]> => 
 	return data
 }
 
-export { getAvailablePhones }
+export { getSession }

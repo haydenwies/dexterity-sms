@@ -6,8 +6,8 @@ import { routes } from "@repo/routes"
 import { SESSION_COOKIE } from "@repo/types/auth"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/backend"
 import { deleteCookie } from "~/lib/cookies"
+import { getBackendUrl } from "~/lib/url"
 
 const signOut = async (): Promise<void> => {
 	const sessionToken = await sessionMiddleware()

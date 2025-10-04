@@ -1,15 +1,14 @@
-import Link from "next/link"
-
 import { routes } from "@repo/routes"
 import { Button } from "@repo/ui/components/button"
 import { Icon, IconName } from "@repo/ui/components/icon"
-import { Label } from "@repo/ui/components/label"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
+import Link from "next/link"
 
-type Props = Readonly<{
+type OrganizationPageProps = {
 	params: Promise<{ organizationId: string }>
-}>
-const DashboardPage = async ({ params }: Props) => {
+}
+
+const OrganizationPage = async ({ params }: OrganizationPageProps) => {
 	const { organizationId } = await params
 
 	return (
@@ -27,7 +26,6 @@ const DashboardPage = async ({ params }: Props) => {
 				className="items-center justify-center"
 			>
 				<div className="mx-auto flex max-w-xs flex-col gap-4">
-					<Label>&#40;Dashboard is coming soon...&#41;</Label>
 					<Button
 						asChild
 						size="lg"
@@ -62,6 +60,8 @@ const DashboardPage = async ({ params }: Props) => {
 			</PageContent>
 		</Page>
 	)
+
+	// return redirect(routes.web.HOME(organizationId))
 }
 
-export default DashboardPage
+export default OrganizationPage

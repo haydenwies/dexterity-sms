@@ -1,16 +1,17 @@
-"use server"
+import "server-only"
 
 import { routes } from "@repo/routes"
+import { type UserDto } from "@repo/types/auth"
 
 import { sessionMiddleware } from "~/actions/utils"
 import { getBackendUrl } from "~/lib/url"
 
-const removeSender = async (organizationId: string): Promise<void> => {
+const getUser = async (): Promise<UserDto> => {
 	const sessionToken = await sessionMiddleware()
 
 	const backendUrl = getBackendUrl()
-	const res = await fetch(`${backendUrl}${routes.backend.REMOVE_SENDER(organizationId)}`, {
-		method: "DELETE",
+	const res = await fetch(`${backendUrl}${routes.backend.GET_USER}`, {
+		method: "GET",
 		headers: {
 			"Authorization": `Bearer ${sessionToken}`
 		}
@@ -19,6 +20,10 @@ const removeSender = async (organizationId: string): Promise<void> => {
 		const errData = await res.json()
 		throw new Error(errData.message)
 	}
+
+	const data = await res.json()
+
+	return data
 }
 
-export { removeSender }
+export { getUser }

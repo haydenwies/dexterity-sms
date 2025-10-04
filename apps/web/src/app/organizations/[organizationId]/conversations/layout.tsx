@@ -21,7 +21,7 @@ const AllMessagesLayout = async ({ children, params }: LayoutProps) => {
 				<PageHeaderRow>
 					<PageHeaderGroup>
 						<Icon name={IconName.MESSAGE} />
-						<p className="font-bold">Messages</p>
+						<p className="font-bold">Conversations</p>
 					</PageHeaderGroup>
 				</PageHeaderRow>
 			</PageHeader>

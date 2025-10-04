@@ -34,8 +34,8 @@ const SidebarHeader = ({ allOrganizations, organization: currentOrganization }: 
 								className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
 								size="lg"
 							>
-								<Avatar>
-									<AvatarFallback className="bg-primary text-primary-foreground border-none">
+								<Avatar className="border-none">
+									<AvatarFallback className="bg-primary text-primary-foreground">
 										{currentOrganization.name[0]}
 									</AvatarFallback>
 								</Avatar>
@@ -56,9 +56,12 @@ const SidebarHeader = ({ allOrganizations, organization: currentOrganization }: 
 								if (organization.id === currentOrganization.id)
 									return (
 										<DropdownMenuItem key={organization.id}>
-											<Avatar className="size-6 rounded-sm">
-												<AvatarFallback>{currentOrganization.name[0]}</AvatarFallback>
+											<Avatar className="size-6 rounded-sm border-none">
+												<AvatarFallback className="bg-primary text-primary-foreground">
+													{currentOrganization.name[0]}
+												</AvatarFallback>
 											</Avatar>
+
 											{organization.name}
 											<Icon
 												className="ml-auto"
@@ -85,7 +88,7 @@ const SidebarHeader = ({ allOrganizations, organization: currentOrganization }: 
 							<DropdownMenuSeparator />
 							<DropdownMenuItem asChild>
 								<Link href={routes.web.ALL_ORGANIZATIONS}>
-									<Icon name={IconName.ELLIPSIS}></Icon>
+									<Icon name={IconName.ARROW_RETURN}></Icon>
 									All organizations
 								</Link>
 							</DropdownMenuItem>

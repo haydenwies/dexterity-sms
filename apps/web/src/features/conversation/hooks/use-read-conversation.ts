@@ -6,7 +6,6 @@ import { readConversation } from "~/actions/conversation/read-conversation"
 const useReadConversation = () => {
 	const [loading, setLoading] = useState<boolean>(false)
 	const [error, setError] = useState<string | null>(null)
-
 	const params = useParams()
 
 	const markAsRead = useCallback(async () => {
@@ -14,15 +13,15 @@ const useReadConversation = () => {
 		setError(null)
 
 		try {
-			const organizationId = params.organizationId
-			if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
-			const conversationId = params.conversationId
-			if (!conversationId || Array.isArray(conversationId)) throw new Error("Conversation ID is required")
+			if (!params.organizationId || Array.isArray(params.organizationId))
+				throw new Error("Organization ID is required")
+			if (!params.conversationId || Array.isArray(params.conversationId))
+				throw new Error("Conversation ID is required")
 
-			await readConversation(organizationId, conversationId)
+			await readConversation(params.organizationId, params.conversationId)
 		} catch (err) {
-			const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred"
-			setError(errorMessage)
+			if (err instanceof Error) setError(err.message)
+			else setError("An unexpected error occurred")
 		} finally {
 			setLoading(false)
 		}

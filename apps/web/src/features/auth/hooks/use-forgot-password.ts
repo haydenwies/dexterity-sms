@@ -24,8 +24,9 @@ const useForgotPassword = () => {
 		try {
 			await forgotPassword(data)
 			setSubmitted(true)
-		} catch {
-			setError("An unknown error occurred")
+		} catch (err: unknown) {
+			if (err instanceof Error) setError(err.message)
+			else setError("An unknown error occurred")
 		} finally {
 			setLoading(false)
 		}

@@ -23,8 +23,10 @@ const AllOrganizationsListItem = ({ organization }: AllOrganizationsListItemProp
 		<Link href={routes.web.ORGANIZATION(organization.id)}>
 			<div className="border-border hover:bg-muted flex items-center justify-between rounded-md border p-4">
 				<div className="flex items-center gap-2">
-					<Avatar>
-						<AvatarFallback>{organization.name[0]}</AvatarFallback>
+					<Avatar className="border-none">
+						<AvatarFallback className="bg-primary text-primary-foreground">
+							{organization.name[0]}
+						</AvatarFallback>
 					</Avatar>
 					<p className="font-medium">{organization.name}</p>
 				</div>

@@ -3,7 +3,7 @@
 import { routes } from "@repo/routes"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/backend"
+import { getBackendUrl } from "~/lib/url"
 
 const readConversation = async (organizationId: string, conversationId: string): Promise<void> => {
 	const sessionToken = await sessionMiddleware()

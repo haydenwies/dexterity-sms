@@ -4,7 +4,7 @@ import { routes } from "@repo/routes"
 import { type DeleteManyContactsDto } from "@repo/types/contact"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/backend"
+import { getBackendUrl } from "~/lib/url"
 
 const deleteManyContacts = async (organizationId: string, dto: DeleteManyContactsDto): Promise<void> => {
 	const sessionToken = await sessionMiddleware()

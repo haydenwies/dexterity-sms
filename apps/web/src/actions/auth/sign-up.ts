@@ -5,8 +5,8 @@ import { redirect } from "next/navigation"
 import { routes } from "@repo/routes"
 import { SESSION_COOKIE, type SignUpDto } from "@repo/types/auth"
 
-import { getBackendUrl } from "~/lib/backend"
 import { setCookie } from "~/lib/cookies"
+import { getBackendUrl } from "~/lib/url"
 
 const signUp = async (dto: SignUpDto): Promise<undefined> => {
 	const backendUrl = getBackendUrl()

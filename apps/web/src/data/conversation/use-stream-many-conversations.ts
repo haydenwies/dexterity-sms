@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react"
 import { routes } from "@repo/routes"
 import { type ConversationModel } from "@repo/types/conversation"
 
-import { getBackendUrl } from "~/lib/backend"
+import { getBackendUrl } from "~/lib/url"
 
 const useStreamManyConversations = (initalConversations: ConversationModel[]) => {
 	const [isConnected, setIsConnected] = useState<boolean>(false)

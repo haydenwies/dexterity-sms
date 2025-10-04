@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, Injectable, Logger } from "@nestjs/common"
+import { CanActivate, ExecutionContext, ForbiddenException, Injectable, Logger } from "@nestjs/common"
 
 import { AuthRequest } from "~/auth/auth.guard"
 import { SenderService } from "~/sender/sender.service"
@@ -14,12 +14,15 @@ class SenderGuard implements CanActivate {
 
 		const organizationId = request.params?.organizationId
 		if (!organizationId) {
-			this.logger.warn("No organizationId found in request params")
+			this.logger.warn(`No organizationId found in request params while accessing ${request.route}`)
 			return false
 		}
 
 		const sender = await this.senderService.safeGet(organizationId)
-		if (!sender) return false
+		if (!sender) {
+			this.logger.warn(`No sender found for organization ${organizationId} while accessing ${request.route}`)
+			throw new ForbiddenException("Your organization must have a sender to perform this action")
+		}
 
 		return true
 	}

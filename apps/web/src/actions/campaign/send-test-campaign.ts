@@ -4,7 +4,7 @@ import { routes } from "@repo/routes"
 import { type SendTestCampaignDto } from "@repo/types/campaign"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/backend"
+import { getBackendUrl } from "~/lib/url"
 
 const sendTestCampaign = async (
 	organizationId: string,
