@@ -3,10 +3,12 @@
 import { use } from "react"
 
 import { type OrganizationModel } from "@repo/types/organization"
+import { Field, FieldGroup, FieldLabel, FieldSet } from "@repo/ui/components/field"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
 import { Input } from "@repo/ui/components/input"
 import { cn } from "@repo/ui/lib/utils"
 
+import { Skeleton } from "@repo/ui/components/skeleton"
 import { useUpdateOrganization } from "~/features/organization/hooks/use-update-organization"
 import { placeholders } from "~/lib/placeholders"
 
@@ -60,4 +62,26 @@ const UpdateOrganizationForm = ({ organizationPromise, className }: UpdateOrgani
 	)
 }
 
-export { UpdateOrganizationForm }
+type UpdateOrganizationFormSkeletonProps = {
+	className?: string
+}
+const UpdateOrganizationFormSkeleton = ({ className }: UpdateOrganizationFormSkeletonProps) => {
+	return (
+		<div className={cn("flex flex-col gap-4", className)}>
+			<FieldSet>
+				<FieldGroup>
+					<Field>
+						<FieldLabel>Name</FieldLabel>
+						<Skeleton className="h-10 w-full" />
+					</Field>
+					<Field>
+						<FieldLabel>Email</FieldLabel>
+						<Skeleton className="h-10 w-full" />
+					</Field>
+				</FieldGroup>
+			</FieldSet>
+		</div>
+	)
+}
+
+export { UpdateOrganizationForm, UpdateOrganizationFormSkeleton }

@@ -10,13 +10,14 @@ import { Card, CardContent } from "@repo/ui/components/card"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
 import { Separator } from "@repo/ui/components/separator"
+import { Skeleton } from "@repo/ui/components/skeleton"
+import { Suspense } from "react"
 
-import { createBillingPortalSession } from "~/actions/billing/create-billing-portal-session"
 import { getSubscription } from "~/data/billing/get-subscription"
 import { getOrganization } from "~/data/organization/get-organization"
 import { getSender } from "~/data/sender/get-sender"
 import { BillingPortalButton } from "~/features/billing/components/billing-portal"
-import { SubscriptionCard } from "~/features/billing/components/subscription-card"
+import { SubscriptionCard, SubscriptionCardSkeleton } from "~/features/billing/components/subscription-card"
 import { UpdateOrganizationForm } from "~/features/organization/components/update-organization-form"
 import { ManageSenderInterface } from "~/features/sender/components/manage-sender"
 
@@ -29,7 +30,6 @@ const OrganizationSettingsPage = async ({ params }: PageProps) => {
 	const organizationPromise = getOrganization(organizationId)
 	const senderPromise = getSender(organizationId)
 	const subscriptionPromise = getSubscription(organizationId)
-	const billingPortalSessionPromise = createBillingPortalSession(organizationId)
 
 	return (
 		<Page>
@@ -51,7 +51,16 @@ const OrganizationSettingsPage = async ({ params }: PageProps) => {
 						<AnnotatedContent>
 							<Card>
 								<CardContent>
-									<UpdateOrganizationForm organizationPromise={organizationPromise} />
+									<Suspense
+										fallback={
+											<div className="space-y-4">
+												<Skeleton className="h-10 w-full" />
+												<Skeleton className="h-10 w-full" />
+											</div>
+										}
+									>
+										<UpdateOrganizationForm organizationPromise={organizationPromise} />
+									</Suspense>
 								</CardContent>
 							</Card>
 						</AnnotatedContent>
@@ -65,7 +74,9 @@ const OrganizationSettingsPage = async ({ params }: PageProps) => {
 						<AnnotatedContent>
 							<Card>
 								<CardContent>
-									<ManageSenderInterface senderPromise={senderPromise} />
+									<Suspense fallback={<Skeleton className="h-10 w-full" />}>
+										<ManageSenderInterface senderPromise={senderPromise} />
+									</Suspense>
 								</CardContent>
 							</Card>
 						</AnnotatedContent>
@@ -79,11 +90,13 @@ const OrganizationSettingsPage = async ({ params }: PageProps) => {
 						<AnnotatedContent>
 							<Card>
 								<CardContent className="flex flex-col items-center gap-4">
-									<SubscriptionCard
-										className="w-full"
-										subscriptionPromise={subscriptionPromise}
-									/>
-									<BillingPortalButton billingPortalSessionPromise={billingPortalSessionPromise} />
+									<Suspense fallback={<SubscriptionCardSkeleton />}>
+										<SubscriptionCard
+											className="w-full"
+											subscriptionPromise={subscriptionPromise}
+										/>
+									</Suspense>
+									<BillingPortalButton />
 								</CardContent>
 							</Card>
 						</AnnotatedContent>

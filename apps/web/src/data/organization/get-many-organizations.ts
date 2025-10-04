@@ -18,7 +18,6 @@ const getManyOrganizations = async (): Promise<OrganizationModel[]> => {
 	})
 	if (!res.ok) {
 		const errData = await res.json()
-		console.error(errData)
 		throw new Error(errData.message)
 	}
 

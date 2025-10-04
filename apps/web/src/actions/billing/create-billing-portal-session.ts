@@ -1,3 +1,5 @@
+"use server"
+
 import { routes } from "@repo/routes"
 import { type BillingPortalSessionDto, type CreateBillingPortalSessionDto } from "@repo/types/billing"
 

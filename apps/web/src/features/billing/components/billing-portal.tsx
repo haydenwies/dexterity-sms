@@ -1,28 +1,26 @@
 "use client"
 
-import { use } from "react"
-
-import { type BillingPortalSessionDto } from "@repo/types/billing"
 import { Button } from "@repo/ui/components/button"
 import { Icon, IconName } from "@repo/ui/components/icon"
+import { Spinner } from "@repo/ui/components/spinner"
+
+import { useCreateBillingPortalSession } from "~/features/billing/hooks/use-create-billing-portal-session"
 
 type BillingPortalButtonProps = {
-	billingPortalSessionPromise: Promise<BillingPortalSessionDto>
 	className?: string
 }
-const BillingPortalButton = ({ billingPortalSessionPromise, className }: BillingPortalButtonProps) => {
-	const { url } = use(billingPortalSessionPromise)
+const BillingPortalButton = ({ className }: BillingPortalButtonProps) => {
+	const { loading, redirectToBillingPortalSession } = useCreateBillingPortalSession()
 
 	return (
 		<Button
-			asChild
 			className={className}
+			disabled={loading}
+			onClick={redirectToBillingPortalSession}
 			variant="link"
 		>
-			<a href={url}>
-				<Icon name={IconName.LINK} />
-				Manage billing account
-			</a>
+			{loading ? <Spinner /> : <Icon name={IconName.LINK} />}
+			Manage billing account
 		</Button>
 	)
 }
