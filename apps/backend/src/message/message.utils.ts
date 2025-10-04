@@ -3,6 +3,8 @@ import { MessageCreatedEvent, MessageUpdatedEvent } from "~/common/event.types"
 
 import { Message } from "~/message/entities/message.entity"
 
+// #region DTOs
+
 const toMessageDto = (message: Message): MessageModel => {
 	return {
 		id: message.id,
@@ -18,6 +20,10 @@ const toMessageDto = (message: Message): MessageModel => {
 		updatedAt: message.updatedAt
 	}
 }
+
+// #endregion
+
+// #region Events
 
 const toMessageCreatedEvent = (message: Message): MessageCreatedEvent => {
 	return {
@@ -48,5 +54,7 @@ const toMessageUpdatedEvent = (message: Message): MessageUpdatedEvent => {
 		updatedAt: message.updatedAt
 	}
 }
+
+// #endregion
 
 export { toMessageCreatedEvent, toMessageDto, toMessageUpdatedEvent }

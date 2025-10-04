@@ -1,5 +1,12 @@
 import { Phone } from "~/common/phone.vo"
 
+type ISender = {
+	organizationId: string
+	externalId: string
+	phone: Phone
+	createdAt: Date
+}
+
 type SenderConstructorParams = {
 	organizationId: string
 	externalId: string
@@ -13,7 +20,7 @@ type SenderCreateParams = {
 	phone: Phone
 }
 
-class Sender {
+class Sender implements ISender {
 	public readonly organizationId: string
 	public readonly externalId: string
 	public readonly phone: Phone

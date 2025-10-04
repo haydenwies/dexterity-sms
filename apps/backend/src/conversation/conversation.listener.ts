@@ -77,7 +77,7 @@ class ConversationListener {
 				)
 			}
 		} catch (err: unknown) {
-			this.logger.error("Error processing message created event", err)
+			this.logger.error(`Error processing ${Event.MESSAGE_CREATED}`, err)
 		}
 	}
 }

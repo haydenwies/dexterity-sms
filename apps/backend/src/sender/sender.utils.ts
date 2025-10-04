@@ -1,7 +1,7 @@
 import { SenderModel } from "@repo/types/sender"
 
 import { SenderRemovedEvent, type SenderAddedEvent } from "~/common/event.types"
-import { Sender } from "~/sender/sender.entity"
+import { Sender } from "~/sender/entities/sender.entity"
 
 const toSenderDto = (sender: Sender): SenderModel => {
 	return {

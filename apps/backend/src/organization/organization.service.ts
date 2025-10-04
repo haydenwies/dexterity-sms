@@ -109,6 +109,13 @@ class OrganizationService {
 
 		return updatedOrganization
 	}
+
+	async safeGetMember(userId: string, organizationId: string): Promise<Member | undefined> {
+		const member = await this.memberRepository.find(userId, organizationId)
+		if (!member) return undefined
+
+		return member
+	}
 }
 
 export { OrganizationService }

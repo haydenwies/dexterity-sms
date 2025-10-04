@@ -20,7 +20,7 @@ import { CampaignService } from "~/campaign/campaign.service"
 import { toCampaignDto } from "~/campaign/campaign.utils"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
 import { MemberGuard } from "~/organization/guards/member.guard"
-import { SenderGuard } from "~/sender/sender.guard"
+import { SenderGuard } from "~/sender/guards/sender.guard"
 
 @UseGuards(AuthGuard, MemberGuard)
 @Controller("organizations/:organizationId/campaigns")

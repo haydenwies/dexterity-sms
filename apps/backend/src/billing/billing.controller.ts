@@ -17,6 +17,8 @@ import { toBillingPortalSessionDto, toCheckoutSessionDto, toSubscriptionDto } fr
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"
 import { MemberGuard } from "~/organization/guards/member.guard"
 
+// #region BillingController
+
 @UseGuards(AuthGuard, MemberGuard)
 @Controller("organizations/:organizationId/billing")
 class BillingController {
@@ -50,6 +52,10 @@ class BillingController {
 	}
 }
 
+// #endregion
+
+// #region BillingWebhookController
+
 @Controller("webhooks/billing")
 class BillingWebhookController {
 	constructor(private readonly billingWebhookService: BillingWebhookService) {}
@@ -59,5 +65,7 @@ class BillingWebhookController {
 		await this.billingWebhookService.handleWebhookEvent(req)
 	}
 }
+
+// #endregion
 
 export { BillingController, BillingWebhookController }

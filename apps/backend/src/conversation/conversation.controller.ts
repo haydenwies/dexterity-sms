@@ -12,7 +12,7 @@ import { toConversationDto } from "~/conversation/conversation.utils"
 import { ConversationGuard } from "~/conversation/guards/conversation.guard"
 import { toMessageDto } from "~/message/message.utils"
 import { MemberGuard } from "~/organization/guards/member.guard"
-import { SenderGuard } from "~/sender/sender.guard"
+import { SenderGuard } from "~/sender/guards/sender.guard"
 
 @UseGuards(AuthGuard, MemberGuard)
 @Controller("organizations/:organizationId/conversations")

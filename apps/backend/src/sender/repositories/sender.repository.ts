@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm"
 import { Phone } from "~/common/phone.vo"
 import { DATABASE_PROVIDER, type DatabaseProvider } from "~/database/database.module"
 import { senderTable } from "~/database/database.schema"
-import { Sender } from "~/sender/sender.entity"
+import { Sender } from "~/sender/entities/sender.entity"
 
 @Injectable()
 class SenderRepository {
@@ -29,8 +29,6 @@ class SenderRepository {
 	}
 
 	async create(sender: Sender): Promise<Sender> {
-		if (!sender.organizationId) throw new Error("Organization ID is required to create sender")
-
 		const [row] = await this.db
 			.insert(senderTable)
 			.values({
@@ -46,8 +44,6 @@ class SenderRepository {
 	}
 
 	async delete(sender: Sender): Promise<Sender> {
-		if (!sender.organizationId) throw new Error("Organization ID is required to delete sender")
-
 		const [row] = await this.db
 			.delete(senderTable)
 			.where(eq(senderTable.organizationId, sender.organizationId))

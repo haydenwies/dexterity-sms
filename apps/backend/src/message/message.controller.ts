@@ -3,7 +3,7 @@ import { Body, Controller, Logger, Post, UseGuards } from "@nestjs/common"
 import { type InboundWebhookEvent, type StatusWebhookEvent } from "@repo/sms"
 
 import { MessageInboundWebhookGuard, MessageStatusWebhookGuard } from "~/message/guards/message.webhook.guard"
-import { MessageWebhookService } from "~/message/message.webhook.service"
+import { MessageWebhookService } from "~/message/message.service"
 import { MessageInboundWebhookPipe, MessageStatusWebhookPipe } from "~/message/pipes/message.webhook.pipe"
 
 @Controller("webhooks/messages")

@@ -1,3 +1,4 @@
+import { type StatusWebhookEvent } from "@repo/sms"
 import { MessageDirection, MessageStatus } from "@repo/types/message"
 import { isEnumValue } from "@repo/utils"
 
@@ -148,6 +149,30 @@ class Message implements IMessage {
 			case MessageStatus.DELIVERED:
 				this._deliveredAt = new Date()
 				break
+		}
+	}
+
+	/**
+	 * Updates the message status from SMS provider. Does nothing if the status is unknown.
+	 * @param status - The status from the SMS provider.
+	 * @returns The new message status or null if the status is unknown.
+	 */
+	updateStatusFromProvider(status: StatusWebhookEvent["status"]): MessageStatus | null {
+		switch (status) {
+			case "pending":
+				this._status = MessageStatus.PENDING
+				return MessageStatus.PENDING
+			case "sent":
+				this._status = MessageStatus.SENT
+				return MessageStatus.SENT
+			case "delivered":
+				this._status = MessageStatus.DELIVERED
+				return MessageStatus.DELIVERED
+			case "failed":
+				this._status = MessageStatus.FAILED
+				return MessageStatus.FAILED
+			default:
+				return null
 		}
 	}
 }

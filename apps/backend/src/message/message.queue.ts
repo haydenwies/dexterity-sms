@@ -21,8 +21,8 @@ class MessageQueueConsumer extends WorkerHost {
 	private readonly logger = new Logger(MessageQueueConsumer.name)
 
 	constructor(
-		private readonly configService: ConfigService,
 		private readonly messageRepository: MessageRepository,
+		private readonly configService: ConfigService,
 		@Inject(SMS_PROVIDER) private readonly smsProvider: SmsProvider,
 		private readonly unsubscribeService: UnsubscribeService
 	) {

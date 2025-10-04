@@ -4,17 +4,14 @@ import { AuthModule } from "~/auth/auth.module"
 import { DatabaseModule } from "~/database/database.module"
 import { OrganizationController } from "~/organization/organization.controller"
 import { OrganizationService } from "~/organization/organization.service"
+import { MemberRepository } from "~/organization/repositories/member.repository"
 import { OrganizationRepository } from "~/organization/repositories/organization.repository"
-import { MemberRepository } from "./repositories/member.repository"
 
 @Module({
-	imports: [AuthModule, DatabaseModule],
+	imports: [DatabaseModule, AuthModule],
 	controllers: [OrganizationController],
 	providers: [OrganizationService, OrganizationRepository, MemberRepository],
-	exports: [
-		OrganizationService,
-		MemberRepository // Needed for MemberGuard
-	]
+	exports: [OrganizationService]
 })
 class OrganizationModule {}
 
