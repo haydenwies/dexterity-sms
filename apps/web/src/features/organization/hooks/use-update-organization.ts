@@ -7,12 +7,12 @@ import {
 	type UpdateOrganizationDto,
 	updateOrganizationDtoSchema
 } from "@repo/types/organization"
+import { toast } from "@repo/ui/components/sonner"
 
 import { updateOrganization } from "~/actions/organization/update-organization"
 
 const useUpdateOrganization = (organization: OrganizationModel) => {
 	const [loading, setLoading] = useState<boolean>(false)
-	const [error, setError] = useState<string | null>(null)
 
 	const updateOrganizationForm = useForm<UpdateOrganizationDto>({
 		resolver: zodResolver(updateOrganizationDtoSchema),
@@ -27,8 +27,9 @@ const useUpdateOrganization = (organization: OrganizationModel) => {
 
 		try {
 			await updateOrganization(organization.id, data)
-		} catch {
-			setError("An unknown error occurred")
+		} catch (err: unknown) {
+			if (err instanceof Error) toast.error(err.message)
+			else toast.error("An unknown error occurred")
 		} finally {
 			setLoading(false)
 		}
@@ -36,7 +37,6 @@ const useUpdateOrganization = (organization: OrganizationModel) => {
 
 	return {
 		loading,
-		error,
 		updateOrganizationForm,
 		handleUpdateOrganization
 	}

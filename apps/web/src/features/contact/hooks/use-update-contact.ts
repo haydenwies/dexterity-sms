@@ -4,12 +4,12 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { type ContactModel, type UpdateContactDto, updateContactDtoSchema } from "@repo/types/contact"
+import { toast } from "@repo/ui/components/sonner"
 
 import { updateContact } from "~/actions/contact/update-contact"
 
 const useUpdateContact = (contact: ContactModel) => {
 	const [loading, setLoading] = useState<boolean>(false)
-	const [error, setError] = useState<string | null>(null)
 
 	const params = useParams()
 
@@ -35,18 +35,16 @@ const useUpdateContact = (contact: ContactModel) => {
 		form.handleSubmit(async (data) => {
 			setLoading(true)
 
-			const organizationId = params.organizationId
-			if (!organizationId || Array.isArray(organizationId)) {
-				setError("Organization ID is required")
-				onError?.()
-				return
-			}
-
 			try {
-				await updateContact(organizationId, contact.id, data)
+				if (!params.organizationId || Array.isArray(params.organizationId))
+					throw new Error("Organization ID is required")
+
+				await updateContact(params.organizationId, contact.id, data)
 				onSuccess?.()
-			} catch {
-				setError("An unknown error occurred")
+			} catch (err: unknown) {
+				if (err instanceof Error) toast.error(err.message)
+				else toast.error("An unknown error occurred")
+
 				onError?.()
 			} finally {
 				setLoading(false)
@@ -54,7 +52,7 @@ const useUpdateContact = (contact: ContactModel) => {
 		})()
 	}
 
-	return { loading, error, form, handleReset, handleUpdate }
+	return { loading, form, handleReset, handleUpdate }
 }
 
 export { useUpdateContact }

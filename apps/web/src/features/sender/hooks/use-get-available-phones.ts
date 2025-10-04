@@ -1,11 +1,12 @@
 import { useParams } from "next/navigation"
 import { useCallback, useState } from "react"
 
+import { toast } from "@repo/ui/components/sonner"
+
 import { getAvailablePhones } from "~/actions/sender/get-available-phones"
 
 const useGetAvailablePhones = () => {
 	const [loading, setLoading] = useState<boolean>(false)
-	const [error, setError] = useState<string | null>(null)
 
 	const params = useParams()
 
@@ -19,14 +20,15 @@ const useGetAvailablePhones = () => {
 			const res = await getAvailablePhones(organizationId)
 
 			return res
-		} catch {
-			setError("An unexpected error occurred")
+		} catch (err: unknown) {
+			if (err instanceof Error) toast.error(err.message)
+			else toast.error("An unexpected error occurred")
 		} finally {
 			setLoading(false)
 		}
 	}, [params.organizationId])
 
-	return { loading, error, handleGetAvailablePhones }
+	return { loading, handleGetAvailablePhones }
 }
 
 export { useGetAvailablePhones }

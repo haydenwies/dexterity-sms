@@ -22,8 +22,11 @@ const useCreateCampaign = () => {
 			const campaign = await createCampaign(organizationId, {})
 
 			router.push(routes.web.UPDATE_CAMPAIGN(organizationId, campaign.id))
-		} catch {
-			toast.error("An unknown error occurred")
+		} catch (err: unknown) {
+			if (err instanceof Error) toast.error(err.message)
+			else toast.error("An unknown error occurred")
+		} finally {
+			setLoading(false)
 		}
 	}
 

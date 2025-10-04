@@ -4,12 +4,12 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { type CreateContactDto, createContactDtoSchema } from "@repo/types/contact"
+import { toast } from "@repo/ui/components/sonner"
 
 import { createContact } from "~/actions/contact/create-contact"
 
 const useCreateContact = () => {
 	const [loading, setLoading] = useState<boolean>(false)
-	const [error, setError] = useState<string | null>(null)
 
 	const params = useParams()
 
@@ -36,13 +36,15 @@ const useCreateContact = () => {
 			setLoading(true)
 
 			try {
-				const organizationId = params.organizationId
-				if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
+				if (!params.organizationId || Array.isArray(params.organizationId))
+					throw new Error("Organization ID is required")
 
-				await createContact(organizationId, data)
+				await createContact(params.organizationId, data)
 				onSuccess?.()
-			} catch {
-				setError("An unknown error occurred")
+			} catch (err: unknown) {
+				if (err instanceof Error) toast.error(err.message)
+				else toast.error("An unknown error occurred")
+
 				onError?.()
 			} finally {
 				setLoading(false)
@@ -50,7 +52,7 @@ const useCreateContact = () => {
 		})()
 	}
 
-	return { loading, error, form, handleReset, handleCreate }
+	return { loading, form, handleReset, handleCreate }
 }
 
 export { useCreateContact }

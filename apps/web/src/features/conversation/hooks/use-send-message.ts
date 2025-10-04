@@ -4,12 +4,12 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { type SendMessageDto, sendMessageDtoSchema } from "@repo/types/conversation"
+import { toast } from "@repo/ui/components/sonner"
 
 import { sendMessage } from "~/actions/conversation/send-message"
 
 const useSendMessage = () => {
 	const [loading, setLoading] = useState<boolean>(false)
-	const [error, setError] = useState<string | null>(null)
 	const params = useParams()
 
 	const sendConversationMessageForm = useForm<SendMessageDto>({
@@ -32,16 +32,14 @@ const useSendMessage = () => {
 
 			sendConversationMessageForm.reset()
 		} catch (err: unknown) {
-			const errorMessage = err instanceof Error ? err.message : "An unexpected error occurred"
-			setError(errorMessage)
+			if (err instanceof Error) toast.error(err.message)
+			else toast.error("An unexpected error occurred")
 		} finally {
 			setLoading(false)
 		}
-
-		setError(null)
 	})
 
-	return { loading, error, sendConversationMessageForm, handleSendMessage }
+	return { loading, sendConversationMessageForm, handleSendMessage }
 }
 
 export { useSendMessage }

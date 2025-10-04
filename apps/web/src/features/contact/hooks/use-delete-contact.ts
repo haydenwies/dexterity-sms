@@ -1,13 +1,14 @@
 import { useParams } from "next/navigation"
 import { useState } from "react"
 
+import { toast } from "@repo/ui/components/sonner"
+
 import { deleteManyContacts } from "~/actions/contact/delete-many-contacts"
 
 const useDeleteContact = () => {
 	const params = useParams()
 
 	const [loading, setLoading] = useState<boolean>(false)
-	const [error, setError] = useState<string | null>(null)
 
 	type HandleDeleteManyConfig = {
 		onError?: () => void
@@ -16,25 +17,23 @@ const useDeleteContact = () => {
 	const handleDeleteMany = async (ids: string[], { onError, onSuccess }: HandleDeleteManyConfig) => {
 		setLoading(true)
 
-		const organizationId = params.organizationId
-		if (!organizationId || Array.isArray(organizationId)) {
-			setError("Organization ID is required")
-			onError?.()
-			return
-		}
-
 		try {
-			await deleteManyContacts(organizationId, { ids })
+			if (!params.organizationId || Array.isArray(params.organizationId))
+				throw new Error("Organization ID is required")
+
+			await deleteManyContacts(params.organizationId, { ids })
 			onSuccess?.()
-		} catch {
-			setError("An unknown error occurred")
+		} catch (err: unknown) {
+			if (err instanceof Error) toast.error(err.message)
+			else toast.error("An unknown error occurred")
+
 			onError?.()
 		} finally {
 			setLoading(false)
 		}
 	}
 
-	return { loading, error, handleDeleteMany }
+	return { loading, handleDeleteMany }
 }
 
 export { useDeleteContact }

@@ -5,12 +5,12 @@ import { useForm } from "react-hook-form"
 
 import { CsvParser } from "@repo/csv"
 import { type UploadContactCsvDto, uploadContactCsvDtoSchema } from "@repo/types/contact"
+import { toast } from "@repo/ui/components/sonner"
 
 import { uploadContactCsv } from "~/actions/contact/upload-contact-csv"
 
 const useUploadContactCsv = () => {
 	const [loading, setLoading] = useState<boolean>(false)
-	const [error, setError] = useState<string | null>(null)
 
 	const [csv, setCsv] = useState<File | null>(null)
 	const [csvHeaders, setCsvHeaders] = useState<string[]>([])
@@ -53,18 +53,16 @@ const useUploadContactCsv = () => {
 			if (!csv) return
 			setLoading(true)
 
-			const organizationId = params.organizationId
-			if (!organizationId || Array.isArray(organizationId)) {
-				setError("Organization ID is required")
-				onError?.()
-				return
-			}
-
 			try {
-				await uploadContactCsv(organizationId, csv, data)
+				if (!params.organizationId || Array.isArray(params.organizationId))
+					throw new Error("Organization ID is required")
+
+				await uploadContactCsv(params.organizationId, csv, data)
 				onSuccess?.()
-			} catch {
-				setError("An unknown error occurred")
+			} catch (err: unknown) {
+				if (err instanceof Error) toast.error(err.message)
+				else toast.error("An unknown error occurred")
+
 				onError?.()
 			} finally {
 				setLoading(false)
@@ -74,7 +72,6 @@ const useUploadContactCsv = () => {
 
 	return {
 		loading,
-		error,
 		form,
 		csvHeaders,
 		handleCsvChange,

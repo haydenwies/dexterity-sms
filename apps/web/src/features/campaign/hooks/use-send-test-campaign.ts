@@ -36,8 +36,10 @@ const useSendTestCampaign = () => {
 
 				await sendTestCampaign(organizationId, campaignId, data)
 				onSuccess?.()
-			} catch {
-				toast.error("An unknown error occurred")
+			} catch (err: unknown) {
+				if (err instanceof Error) toast.error(err.message)
+				else toast.error("An unknown error occurred")
+
 				onError?.()
 			} finally {
 				setLoading(false)
