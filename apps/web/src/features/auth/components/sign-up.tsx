@@ -2,20 +2,21 @@
 
 import Link from "next/link"
 
-import { Alert, AlertTitle } from "@repo/ui/components/alert"
+import { routes } from "@repo/routes"
 import { Button } from "@repo/ui/components/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
-import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
 import { cn } from "@repo/ui/lib/utils"
 
-import { routes } from "@repo/routes"
-// import { routes } from "~/lib/routes"
 import { useSignUp } from "~/features/auth/hooks/use-sign-up"
 import { placeholders } from "~/lib/placeholders"
 
-const SignUpForm = ({ className }: { className?: string }) => {
-	const { error, signUpForm, handleSignUp } = useSignUp()
+type SignUpFormProps = Readonly<{
+	className?: string
+}>
+
+const SignUpForm = ({ className }: SignUpFormProps) => {
+	const { signUpForm, handleSignUp } = useSignUp()
 
 	return (
 		<form
@@ -25,13 +26,41 @@ const SignUpForm = ({ className }: { className?: string }) => {
 				handleSignUp()
 			}}
 		>
-			{error && (
-				<Alert variant="destructive">
-					<Icon name={IconName.ALERT_CIRCLE} />
-					<AlertTitle>{error}</AlertTitle>
-				</Alert>
-			)}
 			<Form {...signUpForm}>
+				<div className="flex gap-4">
+					<FormField
+						control={signUpForm.control}
+						name="firstName"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>First name</FormLabel>
+								<FormControl>
+									<Input
+										placeholder={placeholders.FIRST_NAME}
+										{...field}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormField
+						control={signUpForm.control}
+						name="lastName"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Last name</FormLabel>
+								<FormControl>
+									<Input
+										placeholder={placeholders.LAST_NAME}
+										{...field}
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+				</div>
 				<FormField
 					control={signUpForm.control}
 					name="email"

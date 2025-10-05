@@ -34,6 +34,8 @@ class AuthService {
 
 		// Create user
 		const createdUser = await this.userService.create({
+			firstName: dto.firstName,
+			lastName: dto.lastName,
 			email: dto.email
 		})
 

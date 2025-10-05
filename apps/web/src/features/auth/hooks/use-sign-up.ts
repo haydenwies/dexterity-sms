@@ -4,15 +4,17 @@ import { useForm } from "react-hook-form"
 
 import { type SignUpDto, signUpDtoSchema } from "@repo/types/auth"
 
+import { toast } from "@repo/ui/components/sonner"
 import { signUp } from "~/actions/auth/sign-up"
 
 const useSignUp = () => {
 	const [loading, setLoading] = useState<boolean>(false)
-	const [error, setError] = useState<string | null>(null)
 
 	const signUpForm = useForm<SignUpDto>({
 		resolver: zodResolver(signUpDtoSchema),
 		defaultValues: {
+			firstName: "",
+			lastName: "",
 			email: "",
 			password: "",
 			confirmPassword: ""
@@ -25,14 +27,14 @@ const useSignUp = () => {
 		try {
 			await signUp(data)
 		} catch (err: unknown) {
-			if (err instanceof Error) setError(err.message)
-			else setError("An unknown error occurred")
+			if (err instanceof Error) toast.error(err.message)
+			else toast.error("An unknown error occurred")
 		} finally {
 			setLoading(false)
 		}
 	})
 
-	return { loading, error, signUpForm, handleSignUp }
+	return { loading, signUpForm, handleSignUp }
 }
 
 export { useSignUp }

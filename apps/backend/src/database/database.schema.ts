@@ -4,8 +4,8 @@ import { boolean, integer, pgTable, primaryKey, text, timestamp, unique, uuid } 
 
 const userTable = pgTable("user", {
 	id: uuid("id").primaryKey(),
-	firstName: text("first_name"),
-	lastName: text("last_name"),
+	firstName: text("first_name").notNull(),
+	lastName: text("last_name").notNull(),
 	email: text("email").unique().notNull(),
 	createdAt: timestamp("created_at", { mode: "date" }).notNull(),
 	updatedAt: timestamp("updated_at", { mode: "date" }).notNull()

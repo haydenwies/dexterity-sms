@@ -3,16 +3,12 @@ import "server-only"
 import { routes } from "@repo/routes"
 import { type SessionDto } from "@repo/types/auth"
 
-import { sessionMiddleware } from "~/actions/utils"
+import { safeSessionMiddleware } from "~/actions/utils"
 import { getBackendUrl } from "~/lib/url"
 
 const getSession = async (): Promise<SessionDto | undefined> => {
-	let sessionToken: string
-	try {
-		sessionToken = await sessionMiddleware()
-	} catch {
-		return undefined
-	}
+	const sessionToken = await safeSessionMiddleware()
+	if (!sessionToken) return undefined
 
 	const backendUrl = getBackendUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.GET_SESSION}`, {

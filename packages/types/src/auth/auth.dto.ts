@@ -40,6 +40,8 @@ const signInDtoSchema = z.object({
 // #region SignUpDto
 
 type SignUpDto = {
+	firstName: string
+	lastName: string
 	email: string
 	password: string
 	confirmPassword: string
@@ -48,6 +50,8 @@ type SignUpDto = {
 const signUpDtoSchema = z
 	.object({
 		email: z.email("Invalid email address").trim().toLowerCase(),
+		firstName: z.string().min(1, "First name cannot be empty"),
+		lastName: z.string().min(1, "Last name cannot be empty"),
 		password: z.string().min(8, "Password must be at least 8 characters long"),
 		confirmPassword: z.string()
 	})

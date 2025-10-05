@@ -9,4 +9,11 @@ const sessionMiddleware = async (): Promise<string> => {
 	return sessionToken
 }
 
-export { sessionMiddleware }
+const safeSessionMiddleware = async (): Promise<string | undefined> => {
+	const sessionToken = await getCookie(SESSION_COOKIE)
+	if (!sessionToken) return undefined
+
+	return sessionToken
+}
+
+export { safeSessionMiddleware, sessionMiddleware }
