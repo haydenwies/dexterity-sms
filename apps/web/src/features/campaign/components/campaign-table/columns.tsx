@@ -42,7 +42,7 @@ const getCampaignTableColumns = (): ColumnDef<CampaignModel>[] => [
 					<Link href={routes.web.UPDATE_CAMPAIGN(campaign.organizationId, campaign.id)}>
 						<p className="underline">{campaign.name}</p>
 						<p className="text-muted-foreground text-xs">
-							Last updated {formatDate(campaign.createdAt, "MMM d, yyyy")}
+							Last updated {formatDate(campaign.updatedAt, "MMM d, yyyy")}
 						</p>
 					</Link>
 				)
@@ -51,7 +51,7 @@ const getCampaignTableColumns = (): ColumnDef<CampaignModel>[] => [
 				<span>
 					<p>{campaign.name}</p>
 					<p className="text-muted-foreground text-xs">
-						Last updated {formatDate(campaign.createdAt, "MMM d, yyyy")}
+						Last updated {formatDate(campaign.updatedAt, "MMM d, yyyy")}
 					</p>
 				</span>
 			)
