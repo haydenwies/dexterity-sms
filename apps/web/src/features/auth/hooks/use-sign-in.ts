@@ -3,12 +3,12 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { type SignInDto, signInDtoSchema } from "@repo/types/auth"
+import { toast } from "@repo/ui/components/sonner"
 
 import { signIn } from "~/actions/auth/sign-in"
 
 const useSignIn = () => {
 	const [loading, setLoading] = useState<boolean>(false)
-	const [error, setError] = useState<string | null>(null)
 
 	const signInForm = useForm<SignInDto>({
 		resolver: zodResolver(signInDtoSchema),
@@ -24,14 +24,14 @@ const useSignIn = () => {
 		try {
 			await signIn(data)
 		} catch (err: unknown) {
-			if (err instanceof Error) setError(err.message)
-			else setError("An unknown error occurred")
+			if (err instanceof Error) toast.error(err.message)
+			else toast.error("An unknown error occurred")
 		} finally {
 			setLoading(false)
 		}
 	})
 
-	return { loading, error, signInForm, handleSignIn }
+	return { loading, signInForm, handleSignIn }
 }
 
 export { useSignIn }

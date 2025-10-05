@@ -5,13 +5,14 @@ import { Button } from "@repo/ui/components/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
+import { Spinner } from "@repo/ui/components/spinner"
 import { cn } from "@repo/ui/lib/utils"
 
 import { useForgotPassword } from "~/features/auth/hooks/use-forgot-password"
 import { placeholders } from "~/lib/placeholders"
 
 const ForgotPasswordForm = ({ className }: { className?: string }) => {
-	const { error, submitted, forgotPasswordForm, handleForgotPassword } = useForgotPassword()
+	const { loading, submitted, forgotPasswordForm, handleForgotPassword } = useForgotPassword()
 
 	if (submitted)
 		return (
@@ -30,12 +31,6 @@ const ForgotPasswordForm = ({ className }: { className?: string }) => {
 				handleForgotPassword()
 			}}
 		>
-			{error && (
-				<Alert variant="destructive">
-					<Icon name={IconName.ALERT_CIRCLE} />
-					<AlertTitle>{error}</AlertTitle>
-				</Alert>
-			)}
 			<Form {...forgotPasswordForm}>
 				<FormField
 					control={forgotPasswordForm.control}
@@ -45,6 +40,7 @@ const ForgotPasswordForm = ({ className }: { className?: string }) => {
 							<FormLabel>Email</FormLabel>
 							<FormControl>
 								<Input
+									disabled={loading}
 									placeholder={placeholders.EMAIL}
 									{...field}
 								/>
@@ -53,7 +49,10 @@ const ForgotPasswordForm = ({ className }: { className?: string }) => {
 						</FormItem>
 					)}
 				/>
-				<Button>Send reset email</Button>
+				<Button disabled={loading}>
+					{loading && <Spinner />}
+					Send reset email
+				</Button>
 			</Form>
 		</form>
 	)

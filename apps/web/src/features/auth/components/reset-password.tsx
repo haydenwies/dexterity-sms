@@ -1,10 +1,9 @@
 "use client"
 
-import { Alert, AlertTitle } from "@repo/ui/components/alert"
 import { Button } from "@repo/ui/components/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
-import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
+import { Spinner } from "@repo/ui/components/spinner"
 import { cn } from "@repo/ui/lib/utils"
 
 import { useResetPassword } from "~/features/auth/hooks/use-reset-password"
@@ -16,7 +15,7 @@ type ResetPasswordFormProps = {
 }
 
 const ResetPasswordForm = ({ token, className }: ResetPasswordFormProps) => {
-	const { error, resetPasswordForm, handleResetPassword } = useResetPassword(token)
+	const { loading, resetPasswordForm, handleResetPassword } = useResetPassword(token)
 
 	return (
 		<form
@@ -26,12 +25,6 @@ const ResetPasswordForm = ({ token, className }: ResetPasswordFormProps) => {
 				handleResetPassword()
 			}}
 		>
-			{error && (
-				<Alert variant="destructive">
-					<Icon name={IconName.ALERT_CIRCLE} />
-					<AlertTitle>{error}</AlertTitle>
-				</Alert>
-			)}
 			<Form {...resetPasswordForm}>
 				<FormField
 					control={resetPasswordForm.control}
@@ -41,6 +34,7 @@ const ResetPasswordForm = ({ token, className }: ResetPasswordFormProps) => {
 							<FormLabel>New password</FormLabel>
 							<FormControl>
 								<Input
+									disabled={loading}
 									placeholder={placeholders.PASSWORD}
 									type="password"
 									{...field}
@@ -58,6 +52,7 @@ const ResetPasswordForm = ({ token, className }: ResetPasswordFormProps) => {
 							<FormLabel>Confirm new password</FormLabel>
 							<FormControl>
 								<Input
+									disabled={loading}
 									placeholder={placeholders.PASSWORD}
 									type="password"
 									{...field}
@@ -68,7 +63,10 @@ const ResetPasswordForm = ({ token, className }: ResetPasswordFormProps) => {
 					)}
 				/>
 			</Form>
-			<Button>Reset password</Button>
+			<Button disabled={loading}>
+				{loading && <Spinner />}
+				Reset password
+			</Button>
 		</form>
 	)
 }

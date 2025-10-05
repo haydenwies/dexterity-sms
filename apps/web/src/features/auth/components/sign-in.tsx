@@ -3,18 +3,17 @@
 import Link from "next/link"
 
 import { routes } from "@repo/routes"
-import { Alert, AlertTitle } from "@repo/ui/components/alert"
 import { Button } from "@repo/ui/components/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
-import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
+import { Spinner } from "@repo/ui/components/spinner"
 import { cn } from "@repo/ui/lib/utils"
 
 import { useSignIn } from "~/features/auth/hooks/use-sign-in"
 import { placeholders } from "~/lib/placeholders"
 
 const SignInForm = ({ className }: { className?: string }) => {
-	const { error, signInForm, handleSignIn } = useSignIn()
+	const { loading, signInForm, handleSignIn } = useSignIn()
 
 	return (
 		<form
@@ -24,12 +23,6 @@ const SignInForm = ({ className }: { className?: string }) => {
 				handleSignIn()
 			}}
 		>
-			{error && (
-				<Alert variant="destructive">
-					<Icon name={IconName.ALERT_CIRCLE} />
-					<AlertTitle>{error}</AlertTitle>
-				</Alert>
-			)}
 			<Form {...signInForm}>
 				<FormField
 					control={signInForm.control}
@@ -39,6 +32,8 @@ const SignInForm = ({ className }: { className?: string }) => {
 							<FormLabel>Email</FormLabel>
 							<FormControl>
 								<Input
+									disabled={loading}
+									type="email"
 									placeholder={placeholders.EMAIL}
 									{...field}
 								/>
@@ -58,9 +53,9 @@ const SignInForm = ({ className }: { className?: string }) => {
 									<p>Forgot your password?</p>
 								</Link>
 							</div>
-
 							<FormControl>
 								<Input
+									disabled={loading}
 									placeholder={placeholders.PASSWORD}
 									type="password"
 									{...field}
@@ -71,7 +66,10 @@ const SignInForm = ({ className }: { className?: string }) => {
 					)}
 				/>
 			</Form>
-			<Button>Sign in</Button>
+			<Button disabled={loading}>
+				{loading && <Spinner />}
+				Sign in
+			</Button>
 			<p className="text-muted-foreground text-center">
 				Don&apos;t have an account?{" "}
 				<Link

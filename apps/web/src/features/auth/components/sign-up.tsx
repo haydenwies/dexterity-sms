@@ -6,6 +6,7 @@ import { routes } from "@repo/routes"
 import { Button } from "@repo/ui/components/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
 import { Input } from "@repo/ui/components/input"
+import { Spinner } from "@repo/ui/components/spinner"
 import { cn } from "@repo/ui/lib/utils"
 
 import { useSignUp } from "~/features/auth/hooks/use-sign-up"
@@ -16,7 +17,7 @@ type SignUpFormProps = Readonly<{
 }>
 
 const SignUpForm = ({ className }: SignUpFormProps) => {
-	const { signUpForm, handleSignUp } = useSignUp()
+	const { loading, signUpForm, handleSignUp } = useSignUp()
 
 	return (
 		<form
@@ -36,6 +37,7 @@ const SignUpForm = ({ className }: SignUpFormProps) => {
 								<FormLabel>First name</FormLabel>
 								<FormControl>
 									<Input
+										disabled={loading}
 										placeholder={placeholders.FIRST_NAME}
 										{...field}
 									/>
@@ -52,6 +54,7 @@ const SignUpForm = ({ className }: SignUpFormProps) => {
 								<FormLabel>Last name</FormLabel>
 								<FormControl>
 									<Input
+										disabled={loading}
 										placeholder={placeholders.LAST_NAME}
 										{...field}
 									/>
@@ -69,7 +72,9 @@ const SignUpForm = ({ className }: SignUpFormProps) => {
 							<FormLabel>Email</FormLabel>
 							<FormControl>
 								<Input
+									disabled={loading}
 									placeholder={placeholders.EMAIL}
+									type="email"
 									{...field}
 								/>
 							</FormControl>
@@ -85,6 +90,7 @@ const SignUpForm = ({ className }: SignUpFormProps) => {
 							<FormLabel>Password</FormLabel>
 							<FormControl>
 								<Input
+									disabled={loading}
 									placeholder={placeholders.PASSWORD}
 									type="password"
 									{...field}
@@ -102,6 +108,7 @@ const SignUpForm = ({ className }: SignUpFormProps) => {
 							<FormLabel>Confirm password</FormLabel>
 							<FormControl>
 								<Input
+									disabled={loading}
 									placeholder={placeholders.PASSWORD}
 									type="password"
 									{...field}
@@ -112,7 +119,10 @@ const SignUpForm = ({ className }: SignUpFormProps) => {
 					)}
 				/>
 			</Form>
-			<Button>Sign up</Button>
+			<Button disabled={loading}>
+				{loading && <Spinner />}
+				Sign up
+			</Button>
 			<p className="text-muted-foreground text-center">
 				Already have an account?{" "}
 				<Link

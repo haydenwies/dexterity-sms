@@ -3,12 +3,12 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { type ForgotPasswordDto, forgotPasswordDtoSchema } from "@repo/types/auth"
+import { toast } from "@repo/ui/components/sonner"
 
 import { forgotPassword } from "~/actions/auth/forgot-password"
 
 const useForgotPassword = () => {
 	const [loading, setLoading] = useState<boolean>(false)
-	const [error, setError] = useState<string | null>(null)
 	const [submitted, setSubmitted] = useState<boolean>(false)
 
 	const forgotPasswordForm = useForm<ForgotPasswordDto>({
@@ -25,14 +25,14 @@ const useForgotPassword = () => {
 			await forgotPassword(data)
 			setSubmitted(true)
 		} catch (err: unknown) {
-			if (err instanceof Error) setError(err.message)
-			else setError("An unknown error occurred")
+			if (err instanceof Error) toast.error(err.message)
+			else toast.error("An unknown error occurred")
 		} finally {
 			setLoading(false)
 		}
 	})
 
-	return { loading, error, submitted, forgotPasswordForm, handleForgotPassword }
+	return { loading, submitted, forgotPasswordForm, handleForgotPassword }
 }
 
 export { useForgotPassword }
