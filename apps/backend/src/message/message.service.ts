@@ -9,7 +9,7 @@ import { InboundWebhookEvent, StatusWebhookEvent } from "@repo/sms"
 import { Event, type MessageCreatedEvent } from "~/common/event.types"
 import { Phone } from "~/common/phone.vo"
 import { Message } from "~/message/entities/message.entity"
-import { MESSAGE_QUEUE, MESSAGE_QUEUE_JOB } from "~/message/message.queue"
+import { MESSAGE_QUEUE, MessageQueueJob, MessageQueueJobName } from "~/message/message.queue"
 import { MessageRepository } from "~/message/repositories/message.repository"
 import { SenderService } from "~/sender/sender.service"
 import { UnsubscribeService } from "~/unsubscribe/unsubscribe.service"
@@ -20,7 +20,8 @@ import { toMessageCreatedEvent, toMessageUpdatedEvent } from "./message.utils"
 @Injectable()
 class MessageService {
 	constructor(
-		@InjectQueue(MESSAGE_QUEUE) private readonly messageQueue: Queue,
+		@InjectQueue(MESSAGE_QUEUE)
+		private readonly messageQueue: Queue<MessageQueueJob>,
 		private readonly messageRepository: MessageRepository,
 		private readonly eventEmitter: EventEmitter2
 	) {}
@@ -94,7 +95,7 @@ class MessageService {
 		await this.eventEmitter.emitAsync(Event.MESSAGE_CREATED, messageCreatedEvent)
 
 		// Queue for sending
-		await this.messageQueue.add(MESSAGE_QUEUE_JOB.SEND, {
+		await this.messageQueue.add(MessageQueueJobName.SEND, {
 			organizationId: createdMessage.organizationId,
 			messageId: createdMessage.id
 		})
@@ -245,7 +246,7 @@ class MessageWebhookService {
 			await this.eventEmitter.emitAsync(Event.MESSAGE_CREATED, toMessageCreatedEvent(createdMessage))
 
 			// Queue for sending with bypass flag (internal only)
-			await this.messageQueue.add(MESSAGE_QUEUE_JOB.SEND, {
+			await this.messageQueue.add(MessageQueueJobName.SEND, {
 				organizationId: createdMessage.organizationId,
 				messageId: createdMessage.id,
 				bypassUnsubscribeCheck: true

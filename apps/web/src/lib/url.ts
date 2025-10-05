@@ -1,6 +1,6 @@
 const getFrontendUrl = () => {
-	const frontendUrl = process.env.NEXT_PUBLIC_FRONTEND_URL
-	if (!frontendUrl) throw new Error("NEXT_PUBLIC_FRONTEND_URL is not set")
+	const frontendUrl = process.env.NEXT_PUBLIC_WEB_URL
+	if (!frontendUrl) throw new Error("NEXT_PUBLIC_WEB_URL is not set")
 
 	return frontendUrl
 }

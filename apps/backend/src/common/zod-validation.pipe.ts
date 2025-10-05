@@ -4,7 +4,7 @@ import { ZodType } from "zod"
 class ZodValidationPipe implements PipeTransform {
 	constructor(private readonly schema: ZodType) {}
 
-	transform(value: unknown, metadata: ArgumentMetadata) {
+	transform(value: unknown, _metadata: ArgumentMetadata) {
 		const parseRes = this.schema.safeParse(value)
 		if (!parseRes.success) throw new BadRequestException("Invalid request body")
 

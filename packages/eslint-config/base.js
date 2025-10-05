@@ -14,7 +14,17 @@ export const baseConfig = [
 	...tseslint.configs.recommended,
 	{
 		plugins: { turbo: turboPlugin },
-		rules: { "turbo/no-undeclared-env-vars": "warn" }
+		rules: {
+			"turbo/no-undeclared-env-vars": "warn",
+			"@typescript-eslint/no-unused-vars": [
+				"warn",
+				{
+					argsIgnorePattern: "^_",
+					varsIgnorePattern: "^_",
+					caughtErrorsIgnorePattern: "^_"
+				}
+			]
+		}
 	},
 	{ plugins: { onlyWarn } },
 	{ ignores: ["dist/**", "*.config.{js,mjs,ts}"] }

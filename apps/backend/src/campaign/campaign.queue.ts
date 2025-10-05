@@ -13,10 +13,24 @@ import { UnsubscribeService } from "~/unsubscribe/unsubscribe.service"
 
 const CAMPAIGN_QUEUE = "campaign-queue"
 
-enum CAMPAIGN_QUEUE_JOB {
+enum CampaignQueueJobName {
 	SEND = "send",
 	POLL_STATUS = "poll-status"
 }
+
+type CampaignQueueSendJobData = {
+	organizationId: string
+	campaignId: string
+}
+
+type CampaignQueuePollStatusJobData = {
+	organizationId: string
+	campaignId: string
+}
+
+type CampaignQueueJob =
+	| Job<CampaignQueueSendJobData, void, CampaignQueueJobName.SEND>
+	| Job<CampaignQueuePollStatusJobData, void, CampaignQueueJobName.POLL_STATUS>
 
 @Processor(CAMPAIGN_QUEUE)
 class CampaignQueueConsumer extends WorkerHost {
@@ -31,20 +45,21 @@ class CampaignQueueConsumer extends WorkerHost {
 		super()
 	}
 
-	async process(job: Job) {
+	async process(job: CampaignQueueJob) {
 		switch (job.name) {
-			case CAMPAIGN_QUEUE_JOB.SEND: {
-				const { organizationId, campaignId } = job.data //TODO: Validate job data
-				return this.processSend(organizationId, campaignId)
+			case CampaignQueueJobName.SEND: {
+				return this.processSend(job.data)
 			}
-			case CAMPAIGN_QUEUE_JOB.POLL_STATUS: {
-				const { organizationId, campaignId } = job.data //TODO: Validate job data
-				return this.processPollStatus(organizationId, campaignId)
+			case CampaignQueueJobName.POLL_STATUS: {
+				return this.processPollStatus(job.data)
 			}
 		}
 	}
 
-	private async processSend(organizationId: string, campaignId: string): Promise<void> {
+	private async processSend(data: CampaignQueueSendJobData): Promise<void> {
+		// Extract data
+		const { organizationId, campaignId } = data
+
 		const campaign = await this.campaignRepository.find(organizationId, campaignId)
 		if (!campaign) throw new NotFoundException("Campaign not found")
 
@@ -98,10 +113,14 @@ class CampaignQueueConsumer extends WorkerHost {
 
 		// Schedule all polling jobs with appropriate delays
 		for (const delay of pollingIntervals)
-			await this.campaignQueue.add(CAMPAIGN_QUEUE_JOB.POLL_STATUS, { organizationId, campaignId }, { delay })
+			await this.campaignQueue.add(CampaignQueueJobName.POLL_STATUS, { organizationId, campaignId }, { delay })
 	}
 
-	private async processPollStatus(organizationId: string, campaignId: string): Promise<void> {
+	private async processPollStatus(data: CampaignQueuePollStatusJobData): Promise<void> {
+		// Extract data
+		const { organizationId, campaignId } = data
+
+		// Extract data
 		const campaign = await this.campaignRepository.find(organizationId, campaignId)
 		if (!campaign) throw new NotFoundException("Campaign not found")
 
@@ -149,4 +168,4 @@ class CampaignQueueConsumer extends WorkerHost {
 	}
 }
 
-export { CAMPAIGN_QUEUE, CAMPAIGN_QUEUE_JOB, CampaignQueueConsumer }
+export { CAMPAIGN_QUEUE, CampaignQueueConsumer, CampaignQueueJobName, type CampaignQueueJob }

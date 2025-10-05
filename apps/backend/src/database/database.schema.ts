@@ -153,6 +153,10 @@ const campaignTable = pgTable("campaign", {
 	status: text("status").notNull(),
 	name: text("name").notNull(),
 	body: text("body"),
+	scheduledAt: timestamp("scheduled_at", { mode: "date" }),
+	sentAt: timestamp("sent_at", { mode: "date" }),
+	failedAt: timestamp("failed_at", { mode: "date" }),
+	cancelledAt: timestamp("cancelled_at", { mode: "date" }),
 	createdAt: timestamp("created_at", { mode: "date" }).notNull(),
 	updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
 })

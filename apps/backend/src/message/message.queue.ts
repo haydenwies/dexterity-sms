@@ -12,9 +12,17 @@ import { UnsubscribeService } from "~/unsubscribe/unsubscribe.service"
 
 const MESSAGE_QUEUE = "message-queue"
 
-enum MESSAGE_QUEUE_JOB {
+enum MessageQueueJobName {
 	SEND = "send"
 }
+
+type MessageQueueSendJobData = {
+	organizationId: string
+	messageId: string
+	bypassUnsubscribeCheck?: boolean
+}
+
+type MessageQueueJob = Job<MessageQueueSendJobData, void, MessageQueueJobName.SEND>
 
 @Processor(MESSAGE_QUEUE)
 class MessageQueueConsumer extends WorkerHost {
@@ -29,21 +37,18 @@ class MessageQueueConsumer extends WorkerHost {
 		super()
 	}
 
-	async process(job: Job): Promise<void> {
+	async process(job: MessageQueueJob): Promise<void> {
 		switch (job.name) {
-			case MESSAGE_QUEUE_JOB.SEND: {
-				const { organizationId, messageId, bypassUnsubscribeCheck } = job.data // TODO: Validate job data
-
-				return this.processSend(organizationId, messageId, bypassUnsubscribeCheck || false)
+			case MessageQueueJobName.SEND: {
+				return this.processSend(job.data)
 			}
 		}
 	}
 
-	private async processSend(
-		organizationId: string,
-		messageId: string,
-		bypassUnsubscribeCheck = false
-	): Promise<void> {
+	private async processSend(data: MessageQueueSendJobData): Promise<void> {
+		// Extract data
+		const { organizationId, messageId, bypassUnsubscribeCheck = false } = data
+
 		// Find message
 		const message = await this.messageRepository.find(organizationId, messageId)
 		if (!message) throw new NotFoundException("Message not found")
@@ -86,4 +91,4 @@ class MessageQueueConsumer extends WorkerHost {
 	}
 }
 
-export { MESSAGE_QUEUE, MESSAGE_QUEUE_JOB, MessageQueueConsumer }
+export { MESSAGE_QUEUE, MessageQueueConsumer, MessageQueueJobName, type MessageQueueJob }

@@ -10,7 +10,7 @@ import {
 	type UpdateCampaignDto
 } from "@repo/types/campaign"
 
-import { CAMPAIGN_QUEUE, CAMPAIGN_QUEUE_JOB } from "~/campaign/campaign.queue"
+import { CAMPAIGN_QUEUE, CampaignQueueJobName, type CampaignQueueJob } from "~/campaign/campaign.queue"
 import { Campaign } from "~/campaign/entities/campaign.entity"
 import { CampaignRepository } from "~/campaign/repositories/campaign.repository"
 import { Phone } from "~/common/phone.vo"
@@ -20,7 +20,7 @@ import { SenderService } from "~/sender/sender.service"
 @Injectable()
 class CampaignService {
 	constructor(
-		@InjectQueue(CAMPAIGN_QUEUE) private readonly campaignQueue: Queue,
+		@InjectQueue(CAMPAIGN_QUEUE) private readonly campaignQueue: Queue<CampaignQueueJob>,
 		private readonly campaignRepository: CampaignRepository,
 		private readonly senderService: SenderService,
 		private readonly messageService: MessageService
@@ -109,7 +109,7 @@ class CampaignService {
 		if (campaign.scheduledAt) delay = campaign.scheduledAt.getTime() - Date.now()
 
 		// Queue the campaign for processing
-		await this.campaignQueue.add(CAMPAIGN_QUEUE_JOB.SEND, { organizationId, campaignId }, { delay })
+		await this.campaignQueue.add(CampaignQueueJobName.SEND, { organizationId, campaignId }, { delay })
 	}
 
 	async cancel(organizationId: string, campaignId: string): Promise<void> {

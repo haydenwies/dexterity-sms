@@ -1,6 +1,7 @@
+import z from "zod"
+
 import { CAMPAIGN_MAX_SCHEDULE_DAYS, CampaignStatus } from "@repo/types/campaign"
 import { isEnumValue } from "@repo/utils"
-import z from "zod"
 
 interface ICampaign {
 	id: string
@@ -9,6 +10,9 @@ interface ICampaign {
 	name: string
 	body?: string
 	scheduledAt?: Date
+	sentAt?: Date
+	failedAt?: Date
+	cancelledAt?: Date
 	createdAt: Date
 	updatedAt: Date
 }
@@ -19,7 +23,10 @@ type CampaignConstructorParams = {
 	status: CampaignStatus | string
 	name: string
 	body?: string | null
-	scheduledAt?: Date
+	scheduledAt?: Date | null
+	sentAt?: Date | null
+	failedAt?: Date | null
+	cancelledAt?: Date | null
 	createdAt: Date
 	updatedAt: Date
 }
@@ -43,6 +50,9 @@ class Campaign implements ICampaign {
 	private _name: string
 	private _body?: string
 	private _scheduledAt?: Date
+	private _sentAt?: Date
+	private _failedAt?: Date
+	private _cancelledAt?: Date
 	public readonly createdAt: Date
 	private _updatedAt: Date
 
@@ -55,6 +65,9 @@ class Campaign implements ICampaign {
 		this._name = Campaign.parseName(params.name)
 		this._body = Campaign.parseBody(params.body)
 		this._scheduledAt = params.scheduledAt || undefined
+		this._sentAt = params.sentAt || undefined
+		this._failedAt = params.failedAt || undefined
+		this._cancelledAt = params.cancelledAt || undefined
 		this.createdAt = params.createdAt
 		this._updatedAt = params.updatedAt
 	}
@@ -73,6 +86,18 @@ class Campaign implements ICampaign {
 
 	get scheduledAt(): Date | undefined {
 		return this._scheduledAt
+	}
+
+	get sentAt(): Date | undefined {
+		return this._sentAt
+	}
+
+	get failedAt(): Date | undefined {
+		return this._failedAt
+	}
+
+	get cancelledAt(): Date | undefined {
+		return this._cancelledAt
 	}
 
 	get updatedAt(): Date {
@@ -142,6 +167,7 @@ class Campaign implements ICampaign {
 		this.validateTransition(CampaignStatus.CANCELLED)
 
 		this._status = CampaignStatus.CANCELLED
+		this._cancelledAt = new Date()
 		this._updatedAt = new Date()
 	}
 
@@ -157,6 +183,7 @@ class Campaign implements ICampaign {
 		this.validateTransition(CampaignStatus.SENT)
 
 		this._status = CampaignStatus.SENT
+		this._sentAt = new Date()
 		this._updatedAt = new Date()
 	}
 
@@ -164,6 +191,7 @@ class Campaign implements ICampaign {
 		this.validateTransition(CampaignStatus.FAILED)
 
 		this._status = CampaignStatus.FAILED
+		this._failedAt = new Date()
 		this._updatedAt = new Date()
 	}
 
@@ -171,14 +199,14 @@ class Campaign implements ICampaign {
 
 	// #region Validation
 
-	private static parseName(name?: string | null): string {
+	private static parseName(name?: string | null): ICampaign["name"] {
 		const parseRes = z.string().trim().min(1, "Campaign name is required").safeParse(name)
 		if (!parseRes.success) throw new Error("Invalid campaign name")
 
 		return parseRes.data
 	}
 
-	private static parseBody(body?: string | null): string | undefined {
+	private static parseBody(body?: string | null): ICampaign["body"] {
 		if (!body || !body.trim()) return undefined
 
 		const parseRes = z.string().trim().safeParse(body)

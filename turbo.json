@@ -4,6 +4,23 @@
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build"],
+			"env": [
+				"NODE_ENV",
+				"PORT",
+				"BACKEND_URL",
+				"NEXT_PUBLIC_BACKEND_URL",
+				"WEB_URL",
+				"NEXT_PUBLIC_WEB_URL",
+				"DATABASE_URL",
+				"REDIS_URL",
+				"STRIPE_API_KEY",
+				"STRIPE_WEBHOOK_SECRET",
+				"TWILIO_ACCOUNT_SID",
+				"TWILIO_AUTH_TOKEN",
+				"AWS_SES_ACCESS_KEY_ID",
+				"AWS_SES_SECRET_ACCESS_KEY",
+				"AWS_SES_SOURCE_EMAIL"
+			],
 			"inputs": ["$TURBO_DEFAULT$", ".env*"],
 			"outputs": [".next/**", "!.next/cache/**", "dist/**"]
 		},

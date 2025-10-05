@@ -89,6 +89,10 @@ class CampaignRepository {
 			status: row.status,
 			name: row.name,
 			body: row.body,
+			scheduledAt: row.scheduledAt,
+			sentAt: row.sentAt,
+			failedAt: row.failedAt,
+			cancelledAt: row.cancelledAt,
 			createdAt: row.createdAt,
 			updatedAt: row.updatedAt
 		})

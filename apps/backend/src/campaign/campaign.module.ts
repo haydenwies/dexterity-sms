@@ -17,10 +17,10 @@ import { UnsubscribeModule } from "~/unsubscribe/unsubscribe.module"
 @Module({
 	imports: [
 		BullModule.registerQueue({ name: CAMPAIGN_QUEUE }),
-		AuthModule,
-		BillingModule,
-		OrganizationModule,
 		DatabaseModule,
+		AuthModule,
+		OrganizationModule,
+		BillingModule,
 		ContactModule,
 		SenderModule,
 		MessageModule,
