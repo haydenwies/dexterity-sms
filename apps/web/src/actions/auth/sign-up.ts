@@ -8,7 +8,7 @@ import { SESSION_COOKIE, type SignUpDto } from "@repo/types/auth"
 import { setCookie } from "~/lib/cookies"
 import { getBackendUrl } from "~/lib/url"
 
-const signUp = async (dto: SignUpDto): Promise<undefined> => {
+const signUp = async (dto: SignUpDto): Promise<void> => {
 	const backendUrl = getBackendUrl()
 
 	const res = await fetch(`${backendUrl}${routes.backend.SIGN_UP}`, {

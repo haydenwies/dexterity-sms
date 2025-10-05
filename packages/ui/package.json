@@ -4,6 +4,7 @@
 	"type": "module",
 	"private": true,
 	"scripts": {
+		"build": "tsc",
 		"lint": "eslint . --max-warnings 0"
 	},
 	"dependencies": {
@@ -54,8 +55,17 @@
 	"exports": {
 		"./globals.css": "./src/styles/globals.css",
 		"./postcss.config": "./postcss.config.js",
-		"./lib/*": "./src/lib/*.ts",
-		"./components/*": "./src/components/*.tsx",
-		"./hooks/*": "./src/hooks/*.ts"
+		"./lib/*": {
+			"types": "./src/lib/*.ts",
+			"default": "./dist/lib/*.js"
+		},
+		"./components/*": {
+			"types": "./src/components/*.tsx",
+			"default": "./dist/components/*.js"
+		},
+		"./hooks/*": {
+			"types": "./src/hooks/*.ts",
+			"default": "./dist/hooks/*.js"
+		}
 	}
 }

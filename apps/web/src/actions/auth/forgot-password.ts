@@ -5,7 +5,7 @@ import { type ForgotPasswordDto } from "@repo/types/auth"
 
 import { getBackendUrl } from "~/lib/url"
 
-const forgotPassword = async (dto: ForgotPasswordDto): Promise<undefined> => {
+const forgotPassword = async (dto: ForgotPasswordDto): Promise<void> => {
 	const backendUrl = getBackendUrl()
 
 	const res = await fetch(`${backendUrl}${routes.backend.FORGOT_PASSWORD}`, {
