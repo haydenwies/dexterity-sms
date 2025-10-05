@@ -19,16 +19,20 @@ import { OrganizationService } from "~/organization/organization.service"
 class BillingService {
 	private readonly stripe: Stripe
 
-	public readonly SENDER_EXTERNAL_ID = "price_1SAsfeRfl3ViJIjUho0R5Y0g"
-	public readonly SMS_CREDIT_EXTERNAL_ID = "price_1SAsdGRfl3ViJIjUkVPpxU8h"
-	public readonly SMS_CREDIT_METER_ID = "sms_credit"
+	public readonly SENDER_PRICE_ID: string
+	public readonly SMS_CREDIT_PRICE_ID: string
+	public readonly SMS_CREDIT_METER_ID: string
 
 	constructor(
-		private readonly configService: ConfigService,
 		private readonly subscriptionRepository: SubscriptionRepository,
+		private readonly configService: ConfigService,
 		private readonly organizationService: OrganizationService
 	) {
 		this.stripe = new Stripe(this.configService.getOrThrow<string>("billing.stripeApiKey"))
+
+		this.SENDER_PRICE_ID = this.configService.getOrThrow<string>("billing.stripeSenderPriceId")
+		this.SMS_CREDIT_PRICE_ID = this.configService.getOrThrow<string>("billing.stripeSmsCreditPriceId")
+		this.SMS_CREDIT_METER_ID = this.configService.getOrThrow<string>("billing.stripeSmsCreditMeterId")
 	}
 
 	private async getStripeCustomerId(organizationId: string): Promise<string> {
@@ -76,7 +80,7 @@ class BillingService {
 			mode: "subscription",
 			success_url: dto.callbackUrl,
 			cancel_url: dto.callbackUrl,
-			line_items: [{ price: this.SMS_CREDIT_EXTERNAL_ID }]
+			line_items: [{ price: this.SMS_CREDIT_PRICE_ID }]
 		})
 
 		return checkoutSession

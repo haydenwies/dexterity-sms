@@ -108,7 +108,7 @@ class BillingListener {
 
 			// Find the sender subscription item
 			const senderItem = subscriptionItems.data.find(
-				(item) => item.price.id === this.billingService.SENDER_EXTERNAL_ID
+				(item) => item.price.id === this.billingService.SENDER_PRICE_ID
 			)
 
 			if (senderItem)
@@ -121,7 +121,7 @@ class BillingListener {
 				// Create new sender subscription item
 				await this.stripe.subscriptionItems.create({
 					subscription: subscription.externalId,
-					price: this.billingService.SENDER_EXTERNAL_ID,
+					price: this.billingService.SENDER_PRICE_ID,
 					quantity: 1,
 					proration_behavior: "none"
 				})
@@ -154,7 +154,7 @@ class BillingListener {
 
 			// Find the sender subscription item
 			const senderItem = subscriptionItems.data.find(
-				(item) => item.price.id === this.billingService.SENDER_EXTERNAL_ID
+				(item) => item.price.id === this.billingService.SENDER_PRICE_ID
 			)
 			if (!senderItem) return
 
