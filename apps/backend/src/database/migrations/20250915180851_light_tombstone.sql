@@ -1,1 +1,0 @@
-ALTER TABLE "sender" ALTER COLUMN "external_id" SET NOT NULL;
