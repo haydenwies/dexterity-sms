@@ -38,8 +38,11 @@ class TwilioProvider implements SmsProvider {
 		return availableNumbers.map((number) => number.phoneNumber)
 	}
 
-	async buyNumber(phone: string): Promise<Sender> {
-		const res = await this.client.incomingPhoneNumbers.create({ phoneNumber: phone })
+	async buyNumber(phone: string, options?: { inboundCallbackUrl?: string }): Promise<Sender> {
+		const res = await this.client.incomingPhoneNumbers.create({
+			phoneNumber: phone,
+			smsUrl: options?.inboundCallbackUrl
+		})
 
 		return {
 			id: res.sid,

@@ -6,8 +6,10 @@ import {
 	Logger,
 	NotFoundException
 } from "@nestjs/common"
+import { ConfigService } from "@nestjs/config"
 import { EventEmitter2 } from "@nestjs/event-emitter"
 
+import { routes } from "@repo/routes"
 import { type AddSenderDto } from "@repo/types/sender"
 
 import { Event } from "~/common/event.types"
@@ -23,6 +25,7 @@ class SenderService {
 
 	constructor(
 		private readonly senderRepository: SenderRepository,
+		private readonly configService: ConfigService,
 		private readonly eventEmitter: EventEmitter2,
 		@Inject(SMS_PROVIDER) private readonly smsProvider: SmsProvider
 	) {}
@@ -67,8 +70,9 @@ class SenderService {
 		const phone = Phone.create(body.phone)
 
 		try {
-			// Buy new number from provider
-			const res = await this.smsProvider.buyNumber(phone.value)
+			// Buy new number from provider with callback URL
+			const inboundCallbackUrl = `${this.configService.getOrThrow<string>("router.backendUrl")}${routes.backend.INBOUND_MESSAGE_WEBHOOK}`
+			const res = await this.smsProvider.buyNumber(phone.value, { inboundCallbackUrl })
 
 			// Create new sender
 			const sender = Sender.create({
