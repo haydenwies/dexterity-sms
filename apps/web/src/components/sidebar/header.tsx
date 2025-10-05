@@ -39,7 +39,7 @@ const SidebarHeader = ({ allOrganizations, organization: currentOrganization }: 
 										{currentOrganization.name[0]}
 									</AvatarFallback>
 								</Avatar>
-								<span className="font-medium">{currentOrganization.name}</span>
+								<span className="truncate font-medium">{currentOrganization.name}</span>
 								<Icon
 									className="ml-auto"
 									name={IconName.CHEVRONS_UP_DOWN}
