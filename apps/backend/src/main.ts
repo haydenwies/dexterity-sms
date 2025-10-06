@@ -21,7 +21,7 @@ async function bootstrap() {
 	})
 
 	// Binding to hostname :: requied to listen on IPv4 and IPv6
-	await app.listen(process.env.PORT ?? 8080, "::")
+	await app.listen(process.env.PORT ?? 5005, "::")
 }
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
