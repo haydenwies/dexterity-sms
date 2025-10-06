@@ -11,26 +11,22 @@ import { getBackendPrivateUrl } from "~/lib/url"
 const signUp = async (dto: SignUpDto): Promise<void> => {
 	const backendUrl = getBackendPrivateUrl()
 
-	try {
-		const res = await fetch(`${backendUrl}${routes.backend.SIGN_UP}`, {
-			method: "POST",
-			body: JSON.stringify(dto),
-			headers: {
-				"Content-Type": "application/json"
-			}
-		})
-		if (!res.ok) {
-			const errData = await res.json()
-			throw new Error(errData.message)
+	const res = await fetch(`${backendUrl}${routes.backend.SIGN_UP}`, {
+		method: "POST",
+		body: JSON.stringify(dto),
+		headers: {
+			"Content-Type": "application/json"
 		}
-
-		const sessionToken = await res.text()
-		await setCookie(SESSION_COOKIE, sessionToken)
-
-		return redirect(routes.web.ALL_ORGANIZATIONS)
-	} catch (err: unknown) {
-		console.error(err)
+	})
+	if (!res.ok) {
+		const errData = await res.json()
+		throw new Error(errData.message)
 	}
+
+	const sessionToken = await res.text()
+	await setCookie(SESSION_COOKIE, sessionToken)
+
+	return redirect(routes.web.ALL_ORGANIZATIONS)
 }
 
 export { signUp }
