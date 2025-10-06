@@ -20,7 +20,8 @@ async function bootstrap() {
 		allowedHeaders: ["Content-Type", "Authorization"]
 	})
 
-	await app.listen(process.env.PORT ?? 8080)
+	// Binding to hostname :: requied to listen on IPv4 and IPv6
+	await app.listen(process.env.PORT ?? 8080, "::")
 }
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises

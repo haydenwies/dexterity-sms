@@ -11,8 +11,6 @@ import { getBackendUrl } from "~/lib/url"
 const signUp = async (dto: SignUpDto): Promise<void> => {
 	const backendUrl = getBackendUrl()
 
-	console.log(`${backendUrl}${routes.backend.SIGN_UP}`)
-
 	const res = await fetch(`${backendUrl}${routes.backend.SIGN_UP}`, {
 		method: "POST",
 		body: JSON.stringify(dto),
