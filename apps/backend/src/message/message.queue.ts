@@ -67,7 +67,7 @@ class MessageQueueConsumer extends WorkerHost {
 		} else this.logger.log(`Bypassing unsubscribe check for message ${message.id}`)
 
 		try {
-			const statusCallbackUrl = `${this.configService.getOrThrow<string>("router.backendUrl")}${routes.backend.MESSAGE_STATUS_WEBHOOK}`
+			const statusCallbackUrl = `${this.configService.getOrThrow<string>("router.backendPublicUrl")}${routes.backend.MESSAGE_STATUS_WEBHOOK}`
 
 			// Send via SMS provider
 			const result = await this.smsProvider.send({

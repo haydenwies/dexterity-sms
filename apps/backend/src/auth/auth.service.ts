@@ -89,7 +89,7 @@ class AuthService {
 
 		// TODO: Better config service and router
 		const url =
-			this.configService.getOrThrow<string>("router.webUrl") +
+			this.configService.getOrThrow<string>("router.webPublicUrl") +
 			routes.web.RESET_PASSWORD({
 				searchParams: { token: verificationToken.id }
 			})

@@ -71,7 +71,7 @@ class SenderService {
 
 		try {
 			// Buy new number from provider with callback URL
-			const inboundCallbackUrl = `${this.configService.getOrThrow<string>("router.backendUrl")}${routes.backend.INBOUND_MESSAGE_WEBHOOK}`
+			const inboundCallbackUrl = `${this.configService.getOrThrow<string>("router.backendPublicUrl")}${routes.backend.INBOUND_MESSAGE_WEBHOOK}`
 			const res = await this.smsProvider.buyNumber(phone.value, { inboundCallbackUrl })
 
 			// Create new sender

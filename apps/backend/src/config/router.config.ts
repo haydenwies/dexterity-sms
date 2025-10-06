@@ -2,13 +2,13 @@ import { registerAs } from "@nestjs/config"
 import z from "zod"
 
 const routerConfigSchema = z.object({
-	BACKEND_URL: z.url(),
-	WEB_URL: z.url()
+	BACKEND_PUBLIC_URL: z.url(),
+	WEB_PUBLIC_URL: z.url()
 })
 
 const routerConfig = registerAs("router", () => ({
-	backendUrl: process.env.BACKEND_URL,
-	webUrl: process.env.WEB_URL
+	backendPublicUrl: process.env.BACKEND_PUBLIC_URL,
+	webPublicUrl: process.env.WEB_PUBLIC_URL
 }))
 
 export { routerConfig, routerConfigSchema }
