@@ -6,12 +6,12 @@ import { routes } from "@repo/routes"
 import { CreateOrganizationDto } from "@repo/types/organization"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/url"
+import { getBackendPrivateUrl } from "~/lib/url"
 
 const createOrganization = async (dto: CreateOrganizationDto): Promise<void> => {
 	const sessionToken = await sessionMiddleware()
 
-	const backendUrl = getBackendUrl()
+	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.CREATE_ORGANIZATION}`, {
 		method: "POST",
 		body: JSON.stringify(dto),

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react"
 import { routes } from "@repo/routes"
 import { type ConversationModel } from "@repo/types/conversation"
 
-import { getBackendUrl } from "~/lib/url"
+import { getBackendPublicUrl } from "~/lib/url"
 
 const useStreamManyConversations = (initalConversations: ConversationModel[]) => {
 	const [isConnected, setIsConnected] = useState<boolean>(false)
@@ -18,7 +18,7 @@ const useStreamManyConversations = (initalConversations: ConversationModel[]) =>
 			throw new Error("Organization ID is required")
 
 		// Get URL and create event source
-		const url = `${getBackendUrl()}${routes.backend.STREAM_MANY_CONVERSATIONS({
+		const url = `${getBackendPublicUrl()}${routes.backend.STREAM_MANY_CONVERSATIONS({
 			organizationId: params.organizationId
 		})}`
 

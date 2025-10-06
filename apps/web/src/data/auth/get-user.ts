@@ -4,12 +4,12 @@ import { routes } from "@repo/routes"
 import { type UserDto } from "@repo/types/auth"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/url"
+import { getBackendPrivateUrl } from "~/lib/url"
 
 const getUser = async (): Promise<UserDto> => {
 	const sessionToken = await sessionMiddleware()
 
-	const backendUrl = getBackendUrl()
+	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.GET_USER}`, {
 		method: "GET",
 		headers: {

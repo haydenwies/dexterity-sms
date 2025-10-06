@@ -4,12 +4,12 @@ import { routes } from "@repo/routes"
 import { type UpdateCampaignDto } from "@repo/types/campaign"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/url"
+import { getBackendPrivateUrl } from "~/lib/url"
 
 const updateCampaign = async (organizationId: string, campaignId: string, dto: UpdateCampaignDto): Promise<void> => {
 	const sessionToken = await sessionMiddleware()
 
-	const backendUrl = getBackendUrl()
+	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.UPDATE_CAMPAIGN(organizationId, campaignId)}`, {
 		method: "PUT",
 		body: JSON.stringify(dto),

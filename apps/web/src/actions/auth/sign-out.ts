@@ -7,12 +7,12 @@ import { SESSION_COOKIE } from "@repo/types/auth"
 
 import { sessionMiddleware } from "~/actions/utils"
 import { deleteCookie } from "~/lib/cookies"
-import { getBackendUrl } from "~/lib/url"
+import { getBackendPrivateUrl } from "~/lib/url"
 
 const signOut = async (): Promise<void> => {
 	const sessionToken = await sessionMiddleware()
 
-	const backendUrl = getBackendUrl()
+	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.SIGN_OUT}`, {
 		method: "POST",
 		headers: {

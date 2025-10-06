@@ -4,16 +4,16 @@ import { routes } from "@repo/routes"
 import { type CheckoutSessionDto, type CreateCheckoutSessionDto } from "@repo/types/billing"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl, getFrontendUrl } from "~/lib/url"
+import { getBackendPrivateUrl, getWebPublicUrl } from "~/lib/url"
 
 const createCheckoutSession = async (organizationId: string): Promise<CheckoutSessionDto> => {
 	const sessionToken = await sessionMiddleware()
 
 	const dto: CreateCheckoutSessionDto = {
-		callbackUrl: `${getFrontendUrl()}${routes.web.SETTINGS(organizationId)}`
+		callbackUrl: `${getWebPublicUrl()}${routes.web.SETTINGS(organizationId)}`
 	}
 
-	const backendUrl = getBackendUrl()
+	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.CREATE_CHECKOUT_SESSION(organizationId)}`, {
 		method: "POST",
 		body: JSON.stringify(dto),

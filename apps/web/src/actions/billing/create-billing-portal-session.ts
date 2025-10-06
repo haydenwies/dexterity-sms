@@ -4,16 +4,16 @@ import { routes } from "@repo/routes"
 import { type BillingPortalSessionDto, type CreateBillingPortalSessionDto } from "@repo/types/billing"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl, getFrontendUrl } from "~/lib/url"
+import { getBackendPrivateUrl, getWebPublicUrl } from "~/lib/url"
 
 const createBillingPortalSession = async (organizationId: string): Promise<BillingPortalSessionDto> => {
 	const sessionToken = await sessionMiddleware()
 
 	const dto: CreateBillingPortalSessionDto = {
-		callbackUrl: `${getFrontendUrl()}${routes.web.SETTINGS(organizationId)}`
+		callbackUrl: `${getWebPublicUrl()}${routes.web.SETTINGS(organizationId)}`
 	}
 
-	const backendUrl = getBackendUrl()
+	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.CREATE_BILLING_PORTAL_SESSION(organizationId)}`, {
 		method: "POST",
 		body: JSON.stringify(dto),

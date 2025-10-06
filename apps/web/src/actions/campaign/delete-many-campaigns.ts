@@ -4,12 +4,12 @@ import { routes } from "@repo/routes"
 import { DeleteManyCampaignsDto } from "@repo/types/campaign"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/url"
+import { getBackendPrivateUrl } from "~/lib/url"
 
 const deleteManyCampaigns = async (organizationId: string, dto: DeleteManyCampaignsDto): Promise<void> => {
 	const sessionToken = await sessionMiddleware()
 
-	const backendUrl = getBackendUrl()
+	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.DELETE_MANY_CAMPAIGNS(organizationId)}`, {
 		method: "DELETE",
 		body: JSON.stringify(dto),

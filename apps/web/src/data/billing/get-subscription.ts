@@ -4,12 +4,12 @@ import { routes } from "@repo/routes"
 import { type SubscriptionModel } from "@repo/types/billing"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/url"
+import { getBackendPrivateUrl } from "~/lib/url"
 
 const getSubscription = async (organizationId: string): Promise<SubscriptionModel | undefined> => {
 	const sessionToken = await sessionMiddleware()
 
-	const backendUrl = getBackendUrl()
+	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.GET_SUBSCRIPTION(organizationId)}`, {
 		method: "GET",
 		headers: {

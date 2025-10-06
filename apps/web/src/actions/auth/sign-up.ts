@@ -6,10 +6,10 @@ import { routes } from "@repo/routes"
 import { SESSION_COOKIE, type SignUpDto } from "@repo/types/auth"
 
 import { setCookie } from "~/lib/cookies"
-import { getBackendUrl } from "~/lib/url"
+import { getBackendPrivateUrl } from "~/lib/url"
 
 const signUp = async (dto: SignUpDto): Promise<void> => {
-	const backendUrl = getBackendUrl()
+	const backendUrl = getBackendPrivateUrl()
 
 	const res = await fetch(`${backendUrl}${routes.backend.SIGN_UP}`, {
 		method: "POST",

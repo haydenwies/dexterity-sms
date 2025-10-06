@@ -4,12 +4,12 @@ import { routes } from "@repo/routes"
 import { type CreateContactDto } from "@repo/types/contact"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/url"
+import { getBackendPrivateUrl } from "~/lib/url"
 
 const createContact = async (organizationId: string, dto: CreateContactDto): Promise<void> => {
 	const sessionToken = await sessionMiddleware()
 
-	const backendUrl = getBackendUrl()
+	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.CREATE_CONTACT(organizationId)}`, {
 		method: "POST",
 		body: JSON.stringify(dto),

@@ -4,7 +4,7 @@ import { routes } from "@repo/routes"
 import { type SendTestCampaignDto } from "@repo/types/campaign"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/url"
+import { getBackendPrivateUrl } from "~/lib/url"
 
 const sendTestCampaign = async (
 	organizationId: string,
@@ -13,7 +13,7 @@ const sendTestCampaign = async (
 ): Promise<void> => {
 	const sessionToken = await sessionMiddleware()
 
-	const backendUrl = getBackendUrl()
+	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.SEND_TEST_CAMPAIGN(organizationId, campaignId)}`, {
 		method: "POST",
 		body: JSON.stringify(dto),

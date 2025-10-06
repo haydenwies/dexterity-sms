@@ -3,10 +3,10 @@
 import { routes } from "@repo/routes"
 import { type ForgotPasswordDto } from "@repo/types/auth"
 
-import { getBackendUrl } from "~/lib/url"
+import { getBackendPrivateUrl } from "~/lib/url"
 
 const forgotPassword = async (dto: ForgotPasswordDto): Promise<void> => {
-	const backendUrl = getBackendUrl()
+	const backendUrl = getBackendPrivateUrl()
 
 	const res = await fetch(`${backendUrl}${routes.backend.FORGOT_PASSWORD}`, {
 		method: "POST",

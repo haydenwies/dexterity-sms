@@ -5,10 +5,10 @@ import { redirect } from "next/navigation"
 import { routes } from "@repo/routes"
 import { type ResetPasswordDto } from "@repo/types/auth"
 
-import { getBackendUrl } from "~/lib/url"
+import { getBackendPrivateUrl } from "~/lib/url"
 
 const resetPassword = async (dto: ResetPasswordDto): Promise<void> => {
-	const backendUrl = getBackendUrl()
+	const backendUrl = getBackendPrivateUrl()
 
 	const res = await fetch(`${backendUrl}${routes.backend.RESET_PASSWORD}`, {
 		method: "POST",

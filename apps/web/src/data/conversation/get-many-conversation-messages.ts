@@ -4,12 +4,12 @@ import { routes } from "@repo/routes"
 import { type MessageModel } from "@repo/types/message"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/url"
+import { getBackendPrivateUrl } from "~/lib/url"
 
 const getManyConversationMessages = async (organizationId: string, conversationId: string): Promise<MessageModel[]> => {
 	const sessionToken = await sessionMiddleware()
 
-	const backendUrl = getBackendUrl()
+	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(
 		`${backendUrl}${routes.backend.GET_CONVERSATION_MESSAGES(organizationId, conversationId)}`,
 		{

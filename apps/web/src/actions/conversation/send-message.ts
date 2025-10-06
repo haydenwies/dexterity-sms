@@ -4,12 +4,12 @@ import { routes } from "@repo/routes"
 import { type SendMessageDto } from "@repo/types/conversation"
 
 import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/url"
+import { getBackendPrivateUrl } from "~/lib/url"
 
 const sendMessage = async (organizationId: string, conversationId: string, dto: SendMessageDto): Promise<undefined> => {
 	const sessionToken = await sessionMiddleware()
 
-	const backendUrl = getBackendUrl()
+	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.SEND_MESSAGE(organizationId, conversationId)}`, {
 		method: "POST",
 		body: JSON.stringify(dto),
