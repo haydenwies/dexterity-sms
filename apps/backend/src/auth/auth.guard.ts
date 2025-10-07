@@ -21,12 +21,15 @@ class AuthGuard implements CanActivate {
 
 		let sessionToken: string | undefined
 
+		console.log("auth guard for ", request.route)
+
 		const [type, token] = request.headers.authorization?.split(" ") ?? []
 		// Priority 1: Check Authorization header for API clients
 		if (type === "Bearer" && token) sessionToken = token
 		else {
 			// Priority 2: Check session cookie
 			const token = request.cookies?.[SESSION_COOKIE]
+			console.log("checking session cookie: ", token)
 			if (token && typeof token === "string") sessionToken = token
 		}
 
