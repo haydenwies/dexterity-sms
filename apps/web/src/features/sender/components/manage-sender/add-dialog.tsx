@@ -48,11 +48,12 @@ const AddSenderDialog = ({ open, setOpen }: AddSenderDialogProps) => {
 							>
 								<p>{sender}</p>
 								<Button
-									disabled={addSenderLoading}
+									disabled={addSenderLoading || !!selectedSender}
 									onClick={async () => {
 										setSelectedSender(sender)
-										await handleAddSender(sender)
-										setSelectedSender(null)
+										await handleAddSender(sender, {
+											onSuccess: () => setOpen(false)
+										})
 									}}
 									variant="outline"
 								>

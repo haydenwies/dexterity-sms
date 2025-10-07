@@ -17,6 +17,7 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@repo/ui/components/form"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover"
+import { Spinner } from "@repo/ui/components/spinner"
 import { TimeInput } from "@repo/ui/components/time-input"
 import { cn } from "@repo/ui/lib/utils"
 
@@ -157,7 +158,7 @@ const SendCampaignDialog = ({ open, setOpen }: SendCampaignDialogProps) => {
 						disabled={loading}
 						onClick={() => handleSendCampaign()}
 					>
-						<Icon name={IconName.SEND} />
+						{loading ? <Spinner /> : <Icon name={IconName.SEND} />}
 						{formValues.scheduledAt ? "Schedule" : "Send"}
 					</Button>
 				</DialogFooter>

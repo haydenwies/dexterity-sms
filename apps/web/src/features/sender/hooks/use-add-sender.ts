@@ -10,20 +10,29 @@ const useAddSender = () => {
 
 	const params = useParams()
 
-	const handleAddSender = async (phone: string) => {
+	type HandleAddSenderOptions = {
+		onError?: () => void
+		onSuccess?: () => void
+	}
+	const handleAddSender = async (phone: string, options?: HandleAddSenderOptions) => {
 		setLoading(true)
 
 		if (!params.organizationId || Array.isArray(params.organizationId)) {
 			toast.error("Organization ID is required")
+			options?.onError?.()
+			setLoading(false)
 			return
 		}
 
 		const res = await addSender(params.organizationId, { phone })
 		if (!res.success) {
 			toast.error(res.error)
+			options?.onError?.()
 			setLoading(false)
 			return
 		}
+
+		options?.onSuccess?.()
 
 		setLoading(false)
 	}

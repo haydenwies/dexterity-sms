@@ -15,6 +15,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
 import { PhoneInput } from "@repo/ui/components/phone-input"
+import { Spinner } from "@repo/ui/components/spinner"
 
 import { useCreateContact } from "~/features/contact/hooks/use-create-contact"
 import { PLACEHOLDERS } from "~/lib/placeholders"
@@ -131,7 +132,7 @@ const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
 							})
 						}
 					>
-						<Icon name={IconName.PLUS} />
+						{loading ? <Spinner /> : <Icon name={IconName.PLUS} />}
 						Create
 					</Button>
 				</DialogFooter>
