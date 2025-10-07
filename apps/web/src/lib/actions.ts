@@ -1,6 +1,18 @@
-type ActionSuccess<T> = { success: true; data: T }
+type ActionSuccess<T = void> = { success: true; data: T }
 type ActionError = { success: false; error: string }
 
-type ActionResult<T> = ActionSuccess<T> | ActionError
+type ActionResult<T = void> = ActionSuccess<T> | ActionError
 
-export { type ActionError, type ActionResult, type ActionSuccess }
+function actionSuccess(): ActionSuccess<void>
+function actionSuccess<T>(data: T): ActionSuccess<T>
+function actionSuccess<T>(data?: T): ActionSuccess<T> | ActionSuccess<void> {
+	return { success: true, data: data as T }
+}
+
+function actionError(): ActionError
+function actionError(error: string): ActionError
+function actionError(error?: string): ActionError {
+	return { success: false, error: error || "An unknown error occurred" }
+}
+
+export { actionError, actionSuccess, type ActionError, type ActionResult, type ActionSuccess }

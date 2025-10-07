@@ -3,23 +3,33 @@
 import { routes } from "@repo/routes"
 import { SESSION_COOKIE } from "@repo/types/auth"
 
+import { actionError, actionSuccess, type ActionResult } from "~/lib/actions"
 import { getCookie } from "~/lib/cookies"
 import { getBackendPrivateUrl } from "~/lib/url"
 
-const removeSender = async (organizationId: string): Promise<void> => {
+const removeSender = async (organizationId: string): Promise<ActionResult> => {
 	const sessionToken = await getCookie(SESSION_COOKIE)
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()
-	const res = await fetch(`${backendUrl}${routes.backend.REMOVE_SENDER(organizationId)}`, {
-		method: "DELETE",
-		headers: {
-			"Authorization": `Bearer ${sessionToken}`
+
+	try {
+		const res = await fetch(`${backendUrl}${routes.backend.REMOVE_SENDER(organizationId)}`, {
+			method: "DELETE",
+			headers: {
+				"Authorization": `Bearer ${sessionToken}`
+			}
+		})
+		if (!res.ok) {
+			const errData = await res.json()
+			return actionError(errData.message)
 		}
-	})
-	if (!res.ok) {
-		const errData = await res.json()
-		throw new Error(errData.message)
+
+		return actionSuccess()
+	} catch (err: unknown) {
+		if (err instanceof Error) console.error(err.message, err.stack)
+
+		return actionError()
 	}
 }
 

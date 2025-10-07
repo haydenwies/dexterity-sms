@@ -35,20 +35,21 @@ const useUpdateContact = (contact: ContactModel) => {
 		form.handleSubmit(async (data) => {
 			setLoading(true)
 
-			try {
-				if (!params.organizationId || Array.isArray(params.organizationId))
-					throw new Error("Organization ID is required")
-
-				await updateContact(params.organizationId, contact.id, data)
-				onSuccess?.()
-			} catch (err: unknown) {
-				if (err instanceof Error) toast.error(err.message)
-				else toast.error("An unknown error occurred")
-
-				onError?.()
-			} finally {
-				setLoading(false)
+			if (!params.organizationId || Array.isArray(params.organizationId)) {
+				toast.error("Organization ID is required")
+				return
 			}
+
+			const res = await updateContact(params.organizationId, contact.id, data)
+			if (!res.success) {
+				toast.error(res.error)
+				onError?.()
+				return
+			}
+
+			onSuccess?.()
+
+			setLoading(false)
 		})()
 	}
 

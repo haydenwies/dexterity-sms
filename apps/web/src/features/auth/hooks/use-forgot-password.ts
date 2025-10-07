@@ -21,15 +21,13 @@ const useForgotPassword = () => {
 	const handleForgotPassword = forgotPasswordForm.handleSubmit(async (data) => {
 		setLoading(true)
 
-		try {
-			await forgotPassword(data)
-			setSubmitted(true)
-		} catch (err: unknown) {
-			if (err instanceof Error) toast.error(err.message)
-			else toast.error("An unknown error occurred")
-		} finally {
-			setLoading(false)
+		const res = await forgotPassword(data)
+		if (!res.success) {
+			toast.error(res.error)
 		}
+
+		setSubmitted(true)
+		setLoading(false)
 	})
 
 	return { loading, submitted, forgotPasswordForm, handleForgotPassword }

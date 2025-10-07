@@ -11,19 +11,22 @@ const useReadConversation = () => {
 	const markAsRead = useCallback(async () => {
 		setLoading(true)
 
-		try {
-			if (!params.organizationId || Array.isArray(params.organizationId))
-				throw new Error("Organization ID is required")
-			if (!params.conversationId || Array.isArray(params.conversationId))
-				throw new Error("Conversation ID is required")
-
-			await readConversation(params.organizationId, params.conversationId)
-		} catch (err: unknown) {
-			if (err instanceof Error) toast.error(err.message)
-			else toast.error("An unexpected error occurred")
-		} finally {
-			setLoading(false)
+		if (!params.organizationId || Array.isArray(params.organizationId)) {
+			toast.error("Organization ID is required")
+			return
 		}
+		if (!params.conversationId || Array.isArray(params.conversationId)) {
+			toast.error("Conversation ID is required")
+			return
+		}
+
+		const res = await readConversation(params.organizationId, params.conversationId)
+		if (!res.success) {
+			toast.error(res.error)
+			return
+		}
+
+		setLoading(false)
 	}, [params.organizationId, params.conversationId])
 
 	return { loading, markAsRead }

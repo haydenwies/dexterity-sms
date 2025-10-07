@@ -1,35 +1,43 @@
 "use server"
 
-import { redirect } from "next/navigation"
-
 import { routes } from "@repo/routes"
 import { SESSION_COOKIE } from "@repo/types/auth"
-import { type CreateOrganizationDto } from "@repo/types/organization"
+import { OrganizationModel, type CreateOrganizationDto } from "@repo/types/organization"
+import { redirect } from "next/navigation"
 
+import { actionError, type ActionResult } from "~/lib/actions"
 import { getCookie } from "~/lib/cookies"
 import { getBackendPrivateUrl } from "~/lib/url"
 
-const createOrganization = async (dto: CreateOrganizationDto): Promise<void> => {
+const createOrganization = async (dto: CreateOrganizationDto): Promise<ActionResult> => {
 	const sessionToken = await getCookie(SESSION_COOKIE)
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()
-	const res = await fetch(`${backendUrl}${routes.backend.CREATE_ORGANIZATION}`, {
-		method: "POST",
-		body: JSON.stringify(dto),
-		headers: {
-			"Authorization": `Bearer ${sessionToken}`,
-			"Content-Type": "application/json"
+
+	let data: OrganizationModel
+	try {
+		const res = await fetch(`${backendUrl}${routes.backend.CREATE_ORGANIZATION}`, {
+			method: "POST",
+			body: JSON.stringify(dto),
+			headers: {
+				"Authorization": `Bearer ${sessionToken}`,
+				"Content-Type": "application/json"
+			}
+		})
+		if (!res.ok) {
+			const errData = await res.json()
+			return actionError(errData.message)
 		}
-	})
-	if (!res.ok) {
-		const errData = await res.json()
-		throw new Error(errData.message)
+
+		data = await res.json()
+	} catch (err: unknown) {
+		if (err instanceof Error) console.error(err.message, err.stack)
+
+		return actionError()
 	}
 
-	const data = await res.json()
-
-	return redirect(routes.web.ORGANIZATION(data.id))
+	redirect(routes.web.ORGANIZATION(data.id))
 }
 
 export { createOrganization }

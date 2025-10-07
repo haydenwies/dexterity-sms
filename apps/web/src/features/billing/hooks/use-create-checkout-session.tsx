@@ -12,18 +12,20 @@ const useCreateCheckoutSession = () => {
 	const redirectToCheckoutSession = async () => {
 		setLoading(true)
 
-		try {
-			const organizationId = params.organizationId
-			if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
-
-			const checkoutSession = await createCheckoutSession(organizationId)
-
-			// Use window.location.href to redirect to pages outside of the app
-			window.location.href = checkoutSession.url
-		} catch (err: unknown) {
-			if (err instanceof Error) toast.error(err.message)
-			else toast.error("An unknown error occurred")
+		const organizationId = params.organizationId
+		if (!organizationId || Array.isArray(organizationId)) {
+			toast.error("Organization ID is required")
+			return
 		}
+
+		const res = await createCheckoutSession(organizationId)
+		if (!res.success) {
+			toast.error(res.error)
+			return
+		}
+
+		// Use window.location.href to redirect to pages outside of the app
+		window.location.href = res.data.url
 	}
 
 	return { loading, redirectToCheckoutSession }

@@ -27,19 +27,24 @@ const useSendCampaign = () => {
 	const handleSendCampaign = form.handleSubmit(async (data) => {
 		setLoading(true)
 
-		try {
-			const organizationId = params.organizationId
-			if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
-			const campaignId = params.campaignId
-			if (!campaignId || Array.isArray(campaignId)) throw new Error("Campaign ID is required")
-
-			await sendCampaign(organizationId, campaignId, data)
-
-			router.push(routes.web.ALL_CAMPAIGNS(organizationId))
-		} catch (err: unknown) {
-			if (err instanceof Error) toast.error(err.message)
-			else toast.error("An unknown error occurred")
+		const organizationId = params.organizationId
+		if (!organizationId || Array.isArray(organizationId)) {
+			toast.error("Organization ID is required")
+			return
 		}
+		const campaignId = params.campaignId
+		if (!campaignId || Array.isArray(campaignId)) {
+			toast.error("Campaign ID is required")
+			return
+		}
+
+		const res = await sendCampaign(organizationId, campaignId, data)
+		if (!res.success) {
+			toast.error(res.error)
+			return
+		}
+
+		router.push(routes.web.ALL_CAMPAIGNS(organizationId))
 	})
 
 	return { loading, form, formValues, handleSendCampaign }
