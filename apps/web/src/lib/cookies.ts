@@ -6,7 +6,7 @@ const setCookie = async (name: string, value: string): Promise<void> => {
 		httpOnly: true,
 		secure: process.env.NODE_ENV === "production",
 		sameSite: "lax",
-		domain: undefined
+		domain: "railway.app"
 	})
 }
 
