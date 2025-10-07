@@ -1,13 +1,15 @@
 "use server"
 
 import { routes } from "@repo/routes"
+import { SESSION_COOKIE } from "@repo/types/auth"
 import { type UploadContactCsvDto } from "@repo/types/contact"
 
-import { sessionMiddleware } from "~/actions/utils"
+import { getCookie } from "~/lib/cookies"
 import { getBackendPrivateUrl } from "~/lib/url"
 
 const uploadContactCsv = async (organizationId: string, file: File, dto: UploadContactCsvDto): Promise<void> => {
-	const sessionToken = await sessionMiddleware()
+	const sessionToken = await getCookie(SESSION_COOKIE)
+	if (!sessionToken) throw new Error("Unauthorized")
 
 	const formData = new FormData()
 	formData.append("file", file)

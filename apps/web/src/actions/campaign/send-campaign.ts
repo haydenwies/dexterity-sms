@@ -1,13 +1,15 @@
 "use server"
 
 import { routes } from "@repo/routes"
+import { SESSION_COOKIE } from "@repo/types/auth"
 import { type SendCampaignDto } from "@repo/types/campaign"
 
-import { sessionMiddleware } from "~/actions/utils"
+import { getCookie } from "~/lib/cookies"
 import { getBackendPrivateUrl } from "~/lib/url"
 
 const sendCampaign = async (organizationId: string, campaignId: string, dto: SendCampaignDto): Promise<void> => {
-	const sessionToken = await sessionMiddleware()
+	const sessionToken = await getCookie(SESSION_COOKIE)
+	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.SEND_CAMPAIGN(organizationId, campaignId)}`, {
