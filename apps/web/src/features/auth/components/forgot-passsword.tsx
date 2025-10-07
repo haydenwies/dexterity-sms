@@ -9,7 +9,7 @@ import { Spinner } from "@repo/ui/components/spinner"
 import { cn } from "@repo/ui/lib/utils"
 
 import { useForgotPassword } from "~/features/auth/hooks/use-forgot-password"
-import { placeholders } from "~/lib/placeholders"
+import { PLACEHOLDERS } from "~/lib/placeholders"
 
 const ForgotPasswordForm = ({ className }: { className?: string }) => {
 	const { loading, submitted, forgotPasswordForm, handleForgotPassword } = useForgotPassword()
@@ -41,7 +41,7 @@ const ForgotPasswordForm = ({ className }: { className?: string }) => {
 							<FormControl>
 								<Input
 									disabled={loading}
-									placeholder={placeholders.EMAIL}
+									placeholder={PLACEHOLDERS.email}
 									{...field}
 								/>
 							</FormControl>

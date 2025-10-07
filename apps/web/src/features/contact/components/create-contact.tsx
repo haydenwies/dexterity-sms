@@ -17,7 +17,7 @@ import { Input } from "@repo/ui/components/input"
 import { PhoneInput } from "@repo/ui/components/phone-input"
 
 import { useCreateContact } from "~/features/contact/hooks/use-create-contact"
-import { placeholders } from "~/lib/placeholders"
+import { PLACEHOLDERS } from "~/lib/placeholders"
 
 type CreateContactDialogProps = {
 	open: boolean
@@ -52,7 +52,7 @@ const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
 									<FormControl>
 										<Input
 											{...field}
-											placeholder={placeholders.FIRST_NAME}
+											placeholder={PLACEHOLDERS.firstName}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -68,7 +68,7 @@ const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
 									<FormControl>
 										<Input
 											{...field}
-											placeholder={placeholders.LAST_NAME}
+											placeholder={PLACEHOLDERS.lastName}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -84,7 +84,7 @@ const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
 									<FormControl>
 										<Input
 											{...field}
-											placeholder={placeholders.EMAIL}
+											placeholder={PLACEHOLDERS.email}
 											type="email"
 										/>
 									</FormControl>
@@ -102,7 +102,7 @@ const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
 										<PhoneInput
 											{...field}
 											defaultCountry="CA"
-											placeholder={placeholders.PHONE}
+											placeholder={PLACEHOLDERS.phone}
 										/>
 									</FormControl>
 									<FormMessage />

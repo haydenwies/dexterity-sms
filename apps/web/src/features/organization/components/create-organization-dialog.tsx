@@ -14,7 +14,7 @@ import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
 
 import { useCreateOrganization } from "~/features/organization/hooks/use-create-organization"
-import { placeholders } from "~/lib/placeholders"
+import { PLACEHOLDERS } from "~/lib/placeholders"
 
 type CreateOrganizationDialogProps = {
 	open: boolean
@@ -47,7 +47,7 @@ const CreateOrganizationDialog = ({ open, setOpen }: CreateOrganizationDialogPro
 									<FormControl>
 										<Input
 											{...field}
-											placeholder={placeholders.ORGANIZATION_NAME}
+											placeholder={PLACEHOLDERS.organizationName}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -63,7 +63,7 @@ const CreateOrganizationDialog = ({ open, setOpen }: CreateOrganizationDialogPro
 									<FormControl>
 										<Input
 											{...field}
-											placeholder={placeholders.EMAIL}
+											placeholder={PLACEHOLDERS.email}
 											type="email"
 										/>
 									</FormControl>

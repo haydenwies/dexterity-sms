@@ -7,7 +7,7 @@ import { Spinner } from "@repo/ui/components/spinner"
 import { cn } from "@repo/ui/lib/utils"
 
 import { useResetPassword } from "~/features/auth/hooks/use-reset-password"
-import { placeholders } from "~/lib/placeholders"
+import { PLACEHOLDERS } from "~/lib/placeholders"
 
 type ResetPasswordFormProps = {
 	token: string
@@ -35,7 +35,7 @@ const ResetPasswordForm = ({ token, className }: ResetPasswordFormProps) => {
 							<FormControl>
 								<Input
 									disabled={loading}
-									placeholder={placeholders.PASSWORD}
+									placeholder={PLACEHOLDERS.password}
 									type="password"
 									{...field}
 								/>
@@ -53,7 +53,7 @@ const ResetPasswordForm = ({ token, className }: ResetPasswordFormProps) => {
 							<FormControl>
 								<Input
 									disabled={loading}
-									placeholder={placeholders.PASSWORD}
+									placeholder={PLACEHOLDERS.password}
 									type="password"
 									{...field}
 								/>

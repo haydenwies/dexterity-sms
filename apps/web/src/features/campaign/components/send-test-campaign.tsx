@@ -16,7 +16,7 @@ import { Icon, IconName } from "@repo/ui/components/icon"
 import { PhoneInput } from "@repo/ui/components/phone-input"
 
 import { useSendTestCampaign } from "~/features/campaign/hooks/use-send-test-campaign"
-import { placeholders } from "~/lib/placeholders"
+import { PLACEHOLDERS } from "~/lib/placeholders"
 
 type SendTestCampaignDialogProps = {
 	open: boolean
@@ -43,7 +43,7 @@ const SendTestCampaignDialog = ({ open, setOpen }: SendTestCampaignDialogProps) 
 							<FormItem>
 								<FormControl>
 									<PhoneInput
-										placeholder={placeholders.PHONE}
+										placeholder={PLACEHOLDERS.phone}
 										{...field}
 									/>
 								</FormControl>

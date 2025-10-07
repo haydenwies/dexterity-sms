@@ -16,7 +16,7 @@ import { Input } from "@repo/ui/components/input"
 import { PhoneInput } from "@repo/ui/components/phone-input"
 
 import { useUpdateContact } from "~/features/contact/hooks/use-update-contact"
-import { placeholders } from "~/lib/placeholders"
+import { PLACEHOLDERS } from "~/lib/placeholders"
 
 type ContactTableUpdateDialogProps = {
 	contact: ContactModel
@@ -47,7 +47,7 @@ const ContactTableUpdateDialog = ({ contact, open, setOpen }: ContactTableUpdate
 									<FormControl>
 										<Input
 											{...field}
-											placeholder={placeholders.FIRST_NAME}
+											placeholder={PLACEHOLDERS.firstName}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -63,7 +63,7 @@ const ContactTableUpdateDialog = ({ contact, open, setOpen }: ContactTableUpdate
 									<FormControl>
 										<Input
 											{...field}
-											placeholder={placeholders.LAST_NAME}
+											placeholder={PLACEHOLDERS.lastName}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -79,7 +79,7 @@ const ContactTableUpdateDialog = ({ contact, open, setOpen }: ContactTableUpdate
 									<FormControl>
 										<Input
 											{...field}
-											placeholder={placeholders.EMAIL}
+											placeholder={PLACEHOLDERS.email}
 											type="email"
 										/>
 									</FormControl>
@@ -96,7 +96,7 @@ const ContactTableUpdateDialog = ({ contact, open, setOpen }: ContactTableUpdate
 									<FormControl>
 										<PhoneInput
 											{...field}
-											placeholder={placeholders.PHONE}
+											placeholder={PLACEHOLDERS.phone}
 										/>
 									</FormControl>
 									<FormMessage />

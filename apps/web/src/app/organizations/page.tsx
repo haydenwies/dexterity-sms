@@ -3,6 +3,7 @@ import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@
 
 import { getManyOrganizations } from "~/data/organization/get-many-organizations"
 import { AllOrganizationsList } from "~/features/organization/components/all-organizations-list"
+import { APP_INFO } from "~/lib/app"
 
 const AllOrganizationsPage = () => {
 	const organizationsPromise = getManyOrganizations()
@@ -15,7 +16,7 @@ const AllOrganizationsPage = () => {
 						<div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-md">
 							<Icon name={IconName.MEGAPHONE} />
 						</div>
-						<p className="font-bold">Name Pending</p>
+						<p className="font-bold">{APP_INFO.name}</p>
 					</PageHeaderGroup>
 				</PageHeaderRow>
 			</PageHeader>

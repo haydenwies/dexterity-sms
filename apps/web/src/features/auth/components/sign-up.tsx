@@ -10,7 +10,7 @@ import { Spinner } from "@repo/ui/components/spinner"
 import { cn } from "@repo/ui/lib/utils"
 
 import { useSignUp } from "~/features/auth/hooks/use-sign-up"
-import { placeholders } from "~/lib/placeholders"
+import { PLACEHOLDERS } from "~/lib/placeholders"
 
 type SignUpFormProps = Readonly<{
 	className?: string
@@ -38,7 +38,7 @@ const SignUpForm = ({ className }: SignUpFormProps) => {
 								<FormControl>
 									<Input
 										disabled={loading}
-										placeholder={placeholders.FIRST_NAME}
+										placeholder={PLACEHOLDERS.firstName}
 										{...field}
 									/>
 								</FormControl>
@@ -55,7 +55,7 @@ const SignUpForm = ({ className }: SignUpFormProps) => {
 								<FormControl>
 									<Input
 										disabled={loading}
-										placeholder={placeholders.LAST_NAME}
+										placeholder={PLACEHOLDERS.lastName}
 										{...field}
 									/>
 								</FormControl>
@@ -73,7 +73,7 @@ const SignUpForm = ({ className }: SignUpFormProps) => {
 							<FormControl>
 								<Input
 									disabled={loading}
-									placeholder={placeholders.EMAIL}
+									placeholder={PLACEHOLDERS.email}
 									type="email"
 									{...field}
 								/>
@@ -91,7 +91,7 @@ const SignUpForm = ({ className }: SignUpFormProps) => {
 							<FormControl>
 								<Input
 									disabled={loading}
-									placeholder={placeholders.PASSWORD}
+									placeholder={PLACEHOLDERS.password}
 									type="password"
 									{...field}
 								/>
@@ -109,7 +109,7 @@ const SignUpForm = ({ className }: SignUpFormProps) => {
 							<FormControl>
 								<Input
 									disabled={loading}
-									placeholder={placeholders.PASSWORD}
+									placeholder={PLACEHOLDERS.password}
 									type="password"
 									{...field}
 								/>

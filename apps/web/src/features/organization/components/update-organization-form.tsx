@@ -10,7 +10,7 @@ import { cn } from "@repo/ui/lib/utils"
 
 import { Skeleton } from "@repo/ui/components/skeleton"
 import { useUpdateOrganization } from "~/features/organization/hooks/use-update-organization"
-import { placeholders } from "~/lib/placeholders"
+import { PLACEHOLDERS } from "~/lib/placeholders"
 
 type UpdateOrganizationFormProps = {
 	organizationPromise: Promise<OrganizationModel>
@@ -33,7 +33,7 @@ const UpdateOrganizationForm = ({ organizationPromise, className }: UpdateOrgani
 							<FormControl>
 								<Input
 									{...field}
-									placeholder={placeholders.ORGANIZATION_NAME}
+									placeholder={PLACEHOLDERS.organizationName}
 								/>
 							</FormControl>
 							<FormMessage />
@@ -49,7 +49,7 @@ const UpdateOrganizationForm = ({ organizationPromise, className }: UpdateOrgani
 							<FormControl>
 								<Input
 									{...field}
-									placeholder={placeholders.EMAIL}
+									placeholder={PLACEHOLDERS.email}
 									type="email"
 								/>
 							</FormControl>
