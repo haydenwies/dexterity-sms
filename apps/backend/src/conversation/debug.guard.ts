@@ -7,6 +7,7 @@ class DebugGuard implements CanActivate {
 	async canActivate(context: ExecutionContext): Promise<boolean> {
 		const request = context.switchToHttp().getRequest<AuthRequest>()
 
+		console.log("request received")
 		console.log(request.cookies)
 
 		return true
