@@ -13,7 +13,6 @@ import { ConversationGuard } from "~/conversation/guards/conversation.guard"
 import { toMessageDto } from "~/message/message.utils"
 import { MemberGuard } from "~/organization/guards/member.guard"
 import { SenderGuard } from "~/sender/guards/sender.guard"
-import { DebugGuard } from "./debug.guard"
 
 @UseGuards(AuthGuard, MemberGuard)
 @Controller("organizations/:organizationId/conversations")
@@ -27,7 +26,6 @@ export class ConversationController {
 		return conversations.map((conversation) => toConversationDto(conversation))
 	}
 
-	@UseGuards(DebugGuard)
 	@Sse("stream")
 	streamManyConversations(
 		@Param("organizationId") organizationId: string
