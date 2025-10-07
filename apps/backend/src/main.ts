@@ -14,7 +14,8 @@ async function bootstrap() {
 
 	// Configure CORS to allow credentials
 	app.enableCors({
-		origin: process.env.WEB_PUBLIC_URL || "http://localhost:3000",
+		origin: "*",
+		// origin: process.env.WEB_PUBLIC_URL || "http://localhost:3000",
 		credentials: true,
 		methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
 		allowedHeaders: ["Content-Type", "Authorization"]
