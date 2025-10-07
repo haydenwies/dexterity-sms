@@ -4,7 +4,8 @@ const setCookie = async (name: string, value: string): Promise<void> => {
 	const cookieStore = await cookies()
 	cookieStore.set(name, value, {
 		httpOnly: true,
-		secure: process.env.NODE_ENV === "production"
+		secure: process.env.NODE_ENV === "production",
+		sameSite: "lax"
 	})
 }
 
