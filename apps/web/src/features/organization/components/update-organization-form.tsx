@@ -8,7 +8,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@repo/ui/components/input"
 import { cn } from "@repo/ui/lib/utils"
 
+import { Button } from "@repo/ui/components/button"
 import { Skeleton } from "@repo/ui/components/skeleton"
+import { Spinner } from "@repo/ui/components/spinner"
 import { useUpdateOrganization } from "~/features/organization/hooks/use-update-organization"
 import { PLACEHOLDERS } from "~/lib/placeholders"
 
@@ -19,7 +21,7 @@ type UpdateOrganizationFormProps = {
 const UpdateOrganizationForm = ({ organizationPromise, className }: UpdateOrganizationFormProps) => {
 	const organization = use(organizationPromise)
 
-	const { updateOrganizationForm } = useUpdateOrganization(organization)
+	const { loading, updateOrganizationForm, handleUpdateOrganization } = useUpdateOrganization(organization)
 
 	return (
 		<form className={cn("flex flex-col gap-4", className)}>
@@ -57,6 +59,15 @@ const UpdateOrganizationForm = ({ organizationPromise, className }: UpdateOrgani
 						</FormItem>
 					)}
 				/>
+				<Button
+					className="self-end"
+					disabled={loading || !updateOrganizationForm.formState.isDirty}
+					onClick={handleUpdateOrganization}
+					variant="secondary"
+				>
+					{loading && <Spinner />}
+					Save
+				</Button>
 			</Form>
 		</form>
 	)

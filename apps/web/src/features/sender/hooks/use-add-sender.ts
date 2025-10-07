@@ -21,6 +21,7 @@ const useAddSender = () => {
 		const res = await addSender(params.organizationId, { phone })
 		if (!res.success) {
 			toast.error(res.error)
+			setLoading(false)
 			return
 		}
 

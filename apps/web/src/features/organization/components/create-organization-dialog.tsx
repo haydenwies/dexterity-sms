@@ -12,6 +12,7 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
+import { Spinner } from "@repo/ui/components/spinner"
 
 import { useCreateOrganization } from "~/features/organization/hooks/use-create-organization"
 import { PLACEHOLDERS } from "~/lib/placeholders"
@@ -78,7 +79,7 @@ const CreateOrganizationDialog = ({ open, setOpen }: CreateOrganizationDialogPro
 						disabled={loading}
 						onClick={handleCreateOrganization}
 					>
-						{loading ? <Icon name={IconName.SPINNER} /> : <Icon name={IconName.PLUS} />}
+						{loading ? <Spinner /> : <Icon name={IconName.PLUS} />}
 						Create
 					</Button>
 				</DialogFooter>
