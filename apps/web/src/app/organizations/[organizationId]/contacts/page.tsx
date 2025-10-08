@@ -1,8 +1,11 @@
+import { Suspense } from "react"
+
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
 
 import { getManyContacts } from "~/data/contact/get-many-contacts"
 import { ContactTable } from "~/features/contact/components/contact-table"
+import { ContactTableSkeleton } from "~/features/contact/components/contact-table/skeleton"
 import { CreateContactButton } from "~/features/contact/components/create-contact"
 import { UploadContactCsvButton } from "~/features/contact/components/upload-contact-csv"
 
@@ -29,7 +32,9 @@ const AllContactsPage = async ({ params }: AllContactsPageProps) => {
 				</PageHeaderRow>
 			</PageHeader>
 			<PageContent>
-				<ContactTable contactsPromise={contactsPromise} />
+				<Suspense fallback={<ContactTableSkeleton />}>
+					<ContactTable contactsPromise={contactsPromise} />
+				</Suspense>
 			</PageContent>
 		</Page>
 	)

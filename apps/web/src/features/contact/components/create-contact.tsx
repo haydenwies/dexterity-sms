@@ -130,7 +130,7 @@ const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
 						Reset
 					</Button>
 					<Button
-						disabled={loading}
+						disabled={loading || !form.formState.isDirty}
 						form={FORM_ID}
 						onClick={() =>
 							handleCreate({
@@ -142,7 +142,7 @@ const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
 						}
 						type="submit"
 					>
-						{loading ? <Spinner /> : <Icon name={IconName.PLUS} />}
+						{loading && <Spinner />}
 						Create
 					</Button>
 				</DialogFooter>

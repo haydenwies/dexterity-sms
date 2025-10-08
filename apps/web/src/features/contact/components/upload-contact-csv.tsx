@@ -199,7 +199,7 @@ const UploadContactCsvDialog = ({ open, setOpen }: UploadContactCsvDialogProps) 
 						form={FORM_ID}
 						type="submit"
 					>
-						{loading ? <Spinner /> : <Icon name={IconName.ARROW_UP} />}
+						{loading && <Spinner />}
 						Upload
 					</Button>
 				</DialogFooter>

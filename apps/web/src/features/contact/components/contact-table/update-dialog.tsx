@@ -131,7 +131,7 @@ const ContactTableUpdateDialog = ({ contact, open, setOpen }: ContactTableUpdate
 						form={FORM_ID}
 						type="submit"
 					>
-						{loading ? <Spinner /> : <Icon name={IconName.SAVE} />}
+						{loading && <Spinner />}
 						Save
 					</Button>
 				</DialogFooter>

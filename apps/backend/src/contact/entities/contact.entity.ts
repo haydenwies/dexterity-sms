@@ -110,7 +110,9 @@ class Contact implements IContact {
 
 		const parseRes = z
 			.string()
+			.trim()
 			.min(1)
+			.max(50)
 			.transform((val) => val.replace(/\s+/g, " "))
 			.safeParse(firstName)
 		if (!parseRes.success) throw new Error("Invalid first name")
@@ -123,7 +125,9 @@ class Contact implements IContact {
 
 		const parseRes = z
 			.string()
+			.trim()
 			.min(1)
+			.max(50)
 			.transform((val) => val.replace(/\s+/g, " "))
 			.safeParse(lastName)
 		if (!parseRes.success) throw new Error("Invalid last name")
