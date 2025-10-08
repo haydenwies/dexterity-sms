@@ -7,7 +7,6 @@ import { type MessageModel } from "@repo/types/message"
 import { getBackendPublicUrl } from "~/lib/url"
 
 const useStreamManyConversationMessages = (initalMessages: MessageModel[]) => {
-	const [isConnected, setIsConnected] = useState<boolean>(false)
 	const [messages, setMessages] = useState<MessageModel[]>(initalMessages)
 
 	const params = useParams()
@@ -35,15 +34,9 @@ const useStreamManyConversationMessages = (initalMessages: MessageModel[]) => {
 	useEffect(() => {
 		const eventSource = connect()
 
-		eventSource.onopen = () => {
-			setIsConnected(true)
-			console.log("message stream opened")
-		}
-
 		// Handle on message event
 		eventSource.onmessage = (ev: MessageEvent) => {
 			const data: MessageModel = JSON.parse(ev.data)
-			console.log("message received: ", data)
 
 			setMessages((prev) => {
 				const existingMessage = prev.find((message) => message.id === data.id)
@@ -52,17 +45,8 @@ const useStreamManyConversationMessages = (initalMessages: MessageModel[]) => {
 			})
 		}
 
-		// Handle on error event
-		eventSource.onerror = (error) => {
-			console.error("EventSource error:", error)
-			setIsConnected(false)
-		}
-
 		// Clean up
-		return () => {
-			eventSource.close()
-			setIsConnected(false)
-		}
+		return () => eventSource.close()
 	}, [connect])
 
 	return messages

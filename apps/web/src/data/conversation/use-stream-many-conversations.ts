@@ -7,7 +7,6 @@ import { type ConversationModel } from "@repo/types/conversation"
 import { getBackendPublicUrl } from "~/lib/url"
 
 const useStreamManyConversations = (initalConversations: ConversationModel[]) => {
-	const [isConnected, setIsConnected] = useState<boolean>(false)
 	const [conversations, setConversations] = useState<ConversationModel[]>(initalConversations)
 
 	const params = useParams()
@@ -32,9 +31,6 @@ const useStreamManyConversations = (initalConversations: ConversationModel[]) =>
 	useEffect(() => {
 		const eventSource = connect()
 
-		// Handle on open event
-		eventSource.onopen = () => setIsConnected(true)
-
 		// Handle on message event
 		eventSource.onmessage = (ev: MessageEvent) => {
 			const data: ConversationModel = JSON.parse(ev.data)
@@ -47,17 +43,8 @@ const useStreamManyConversations = (initalConversations: ConversationModel[]) =>
 			})
 		}
 
-		// Handle on error event
-		eventSource.onerror = (error) => {
-			console.error("EventSource error:", error)
-			setIsConnected(false)
-		}
-
 		// Clean up
-		return () => {
-			eventSource.close()
-			setIsConnected(false)
-		}
+		return () => eventSource.close()
 	}, [connect])
 
 	return conversations
