@@ -8,7 +8,7 @@ const setCookie = async (name: string, value: string): Promise<void> => {
 	else if (process.env.NODE_ENV === "test") secure = true
 	else secure = false
 
-	let sameSite: "lax" | "none" | "strict"
+	let sameSite: "strict" | "lax" | "none"
 	if (process.env.NODE_ENV === "production") sameSite = "lax"
 	else if (process.env.NODE_ENV === "test") sameSite = "none"
 	else sameSite = "lax"
