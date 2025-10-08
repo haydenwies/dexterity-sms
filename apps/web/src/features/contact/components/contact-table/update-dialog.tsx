@@ -1,5 +1,7 @@
 "use client"
 
+import { useId } from "react"
+
 import { type ContactModel } from "@repo/types/contact"
 import { Button } from "@repo/ui/components/button"
 import {
@@ -25,7 +27,7 @@ type ContactTableUpdateDialogProps = {
 	setOpen: (open: boolean) => void
 }
 const ContactTableUpdateDialog = ({ contact, open, setOpen }: ContactTableUpdateDialogProps) => {
-	const FORM_ID = "update-contact-form"
+	const FORM_ID = useId()
 
 	const { loading, form, handleReset, handleUpdate } = useUpdateContact(contact)
 
@@ -37,11 +39,15 @@ const ContactTableUpdateDialog = ({ contact, open, setOpen }: ContactTableUpdate
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>Update Contact</DialogTitle>
-					<DialogDescription>Update the contact information for the selected contact.</DialogDescription>
+					<DialogDescription>Update information for the selected contact.</DialogDescription>
 				</DialogHeader>
 				<form
 					className="flex flex-col gap-4"
 					id={FORM_ID}
+					onSubmit={(e) => {
+						e.preventDefault()
+						handleUpdate({ onSuccess: () => setOpen(false) })
+					}}
 				>
 					<Form {...form}>
 						<FormField
@@ -121,9 +127,8 @@ const ContactTableUpdateDialog = ({ contact, open, setOpen }: ContactTableUpdate
 						Reset
 					</Button>
 					<Button
-						disabled={loading}
+						disabled={loading || !form.formState.isDirty}
 						form={FORM_ID}
-						onClick={() => handleUpdate({ onSuccess: () => setOpen(false) })}
 						type="submit"
 					>
 						{loading ? <Spinner /> : <Icon name={IconName.SAVE} />}

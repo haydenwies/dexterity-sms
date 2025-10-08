@@ -108,7 +108,11 @@ class Contact implements IContact {
 	private static parseFirstName(firstName?: string | null): string | undefined {
 		if (!firstName || !firstName.trim()) return undefined
 
-		const parseRes = z.string().trim().min(1).safeParse(firstName)
+		const parseRes = z
+			.string()
+			.min(1)
+			.transform((val) => val.replace(/\s+/g, " "))
+			.safeParse(firstName)
 		if (!parseRes.success) throw new Error("Invalid first name")
 
 		return parseRes.data
@@ -117,7 +121,11 @@ class Contact implements IContact {
 	private static parseLastName(lastName?: string | null): string | undefined {
 		if (!lastName || !lastName.trim()) return undefined
 
-		const parseRes = z.string().trim().min(1).safeParse(lastName)
+		const parseRes = z
+			.string()
+			.min(1)
+			.transform((val) => val.replace(/\s+/g, " "))
+			.safeParse(lastName)
 		if (!parseRes.success) throw new Error("Invalid last name")
 
 		return parseRes.data

@@ -11,6 +11,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle
 } from "@repo/ui/components/alert-dialog"
+import { Spinner } from "@repo/ui/components/spinner"
 
 import { useDeleteContact } from "~/features/contact/hooks/use-delete-contact"
 
@@ -47,6 +48,7 @@ const ContactTableDeleteDialog = ({ contacts, open, setOpen }: ContactTableDelet
 							)
 						}}
 					>
+						{loading && <Spinner />}
 						Delete
 					</AlertDialogAction>
 				</AlertDialogFooter>

@@ -37,6 +37,8 @@ const useUpdateContact = (contact: ContactModel) => {
 
 			if (!params.organizationId || Array.isArray(params.organizationId)) {
 				toast.error("Organization ID is required")
+				onError?.()
+				setLoading(false)
 				return
 			}
 
@@ -44,6 +46,7 @@ const useUpdateContact = (contact: ContactModel) => {
 			if (!res.success) {
 				toast.error(res.error)
 				onError?.()
+				setLoading(false)
 				return
 			}
 

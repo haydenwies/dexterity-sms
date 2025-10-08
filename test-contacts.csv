@@ -1,0 +1,49 @@
+First Name,Last Name,Email,Phone,Notes
+John,Doe,john.doe@example.com,+12025551234,Fully populated valid contact
+Jane,Smith,jane.smith@example.com,+14155552345,Another complete contact
+Bob,Johnson,bob@company.io,+447700900123,UK phone number
+Alice,Williams,alice.w@test.co.uk,+61412345678,Australian phone
+Charlie,,charlie.noname@email.com,+33612345678,Missing last name
+,Brown,missing.first@example.com,+12125551234,Missing first name
+Sarah,Davis,sarah@example.com,,Valid email but no phone
+Mike,Wilson,,+15555551234,Valid phone but no email
+Lisa,,lisa@example.com,,Only first name and email
+,Thompson,,+18885551234,Only last name and phone
+Robert,Lee,robert.lee@example.com,+12345678901,All fields present
+invalid-email,Test,not-an-email,+12025559999,Invalid email format
+Phone,Invalid,valid@email.com,1234567890,Phone missing + prefix
+Special,Chars,test+tag@example.com,+12025558888,Email with plus sign
+Apostrophe,O'Brien,obrien@example.com,+14155559999,Name with apostrophe
+Hyphen,Smith-Jones,hyphen@example.com,+19175551234,Hyphenated last name
+Number,User123,numbers@example.com,+13105551234,Numbers in name
+Spaces,Lots  Of  Spaces,spaces@example.com,+16265551234,Extra spaces in name
+Case,TEST,CAPS@EXAMPLE.COM,+13235551234,All caps data
+Unicode,Müller,unicode@example.com,+498912345678,German characters
+Emoji,😀,emoji@example.com,+12025551111,Emoji in name (should handle or fail gracefully)
+Empty,Fields,,,Missing both email and phone (INVALID)
+,,,+12025550000,Only phone provided
+NoData,,,,All empty (INVALID)
+Trailing,Comma,test@example.com,+12025559000,
+Extra,Columns,extra@example.com,+12025558000,This column should be ignored
+Long,Name,verylongemailaddressthatmightcauseproblemswithvalidation@subdomain.example.com,+12025557777,Very long email
+Whitespace,  Padded  ,  padded@example.com  ,  +12025556666  ,Fields with whitespace padding
+Comma,In"Name",comma@example.com,+12025555555,Quoted field test
+Duplicate,Contact,john.doe@example.com,+12025551234,Same email as first contact
+New,Line,newline@example.com,+12025554444,Normal contact
+Tab	Separated,Name,tab@example.com,+12025553333,Testing tabs
+Michael,Chen,michael.chen@startup.com,+8613812345678,Chinese phone number
+Maria,Garcia,maria@example.es,+34612345678,Spanish phone number
+Pierre,Dubois,pierre@example.fr,+33601020304,French phone number
+Invalid,Phone,test@example.com,+1-202-555-1234,Phone with dashes (invalid E.164)
+Invalid,Phone2,test2@example.com,(202) 555-1234,Phone with parens (invalid E.164)
+Invalid,Phone3,test3@example.com,202.555.1234,Phone with dots (invalid E.164)
+Multiple,Domains,user@sub.domain.example.com,+12025552222,Subdomain email
+Plus,Sign,user+tag+another@example.com,+12025551212,Multiple plus signs in email
+Short,Email,a@b.c,+12025559876,Very short email
+Max,Length,maxlength@thisisaverylongdomainnamethatmighttestmaximumlengthvalidationrulesforemaildomain.com,+12025558765,Long domain name
+Missing,Domain,nodomain@,+12025557654,Missing domain (invalid)
+Missing,At,nodomain.com,+12025556543,Missing @ symbol (invalid)
+Multiple,At,user@@example.com,+12025555432,Double @ symbol (invalid)
+Dot,Start,.startdot@example.com,+12025554321,Email starts with dot (invalid)
+Dot,End,enddot.@example.com,+12025553210,Email ends with dot (invalid)
+Consecutive,Dots,consecutive..dots@example.com,+12025552109,Consecutive dots (invalid)

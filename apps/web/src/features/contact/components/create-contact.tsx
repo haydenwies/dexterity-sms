@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useId, useState } from "react"
 
 import { Button } from "@repo/ui/components/button"
 import {
@@ -25,7 +25,7 @@ type CreateContactDialogProps = {
 	setOpen: (open: boolean) => void
 }
 const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
-	const FORM_ID = "create-contact-form"
+	const FORM_ID = useId()
 
 	const { loading, form, handleReset, handleCreate } = useCreateContact()
 
@@ -35,7 +35,6 @@ const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
 			onOpenChange={(o) => {
 				if (loading) return
 				setOpen(o)
-
 				if (!o) handleReset()
 			}}
 		>
@@ -47,6 +46,10 @@ const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
 				<form
 					className="flex flex-col gap-4"
 					id={FORM_ID}
+					onSubmit={(e) => {
+						e.preventDefault()
+						handleCreate({ onSuccess: () => setOpen(false) })
+					}}
 				>
 					<Form {...form}>
 						<FormField

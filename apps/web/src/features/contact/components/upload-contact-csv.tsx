@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useId, useState } from "react"
 
 import { Button } from "@repo/ui/components/button"
 import {
@@ -24,7 +24,7 @@ type UploadContactCsvDialogProps = {
 	setOpen: (open: boolean) => void
 }
 const UploadContactCsvDialog = ({ open, setOpen }: UploadContactCsvDialogProps) => {
-	const FORM_ID = "upload-contact-csv-form"
+	const FORM_ID = useId()
 
 	const { loading, form, csvHeaders, handleCsvChange, handleReset, handleUploadCsv } = useUploadContactCsv()
 
@@ -34,7 +34,6 @@ const UploadContactCsvDialog = ({ open, setOpen }: UploadContactCsvDialogProps) 
 			onOpenChange={(o) => {
 				if (loading) return
 				setOpen(o)
-
 				if (!o) handleReset()
 			}}
 		>
@@ -42,12 +41,16 @@ const UploadContactCsvDialog = ({ open, setOpen }: UploadContactCsvDialogProps) 
 				<DialogHeader>
 					<DialogTitle>Upload CSV</DialogTitle>
 					<DialogDescription>
-						Provide a CSV file and select the corresponding columns to create new contacts.
+						Provide a CSV file and select the corresponding columns to upload new contacts.
 					</DialogDescription>
 				</DialogHeader>
 				<form
 					className="flex flex-col gap-4"
 					id={FORM_ID}
+					onSubmit={(e) => {
+						e.preventDefault()
+						handleUploadCsv({ onSuccess: () => setOpen(false) })
+					}}
 				>
 					<Input
 						accept="text/csv"
@@ -194,14 +197,6 @@ const UploadContactCsvDialog = ({ open, setOpen }: UploadContactCsvDialogProps) 
 					<Button
 						disabled={loading || csvHeaders.length === 0}
 						form={FORM_ID}
-						onClick={() =>
-							handleUploadCsv({
-								onSuccess: () => {
-									setOpen(false)
-									handleReset()
-								}
-							})
-						}
 						type="submit"
 					>
 						{loading ? <Spinner /> : <Icon name={IconName.ARROW_UP} />}

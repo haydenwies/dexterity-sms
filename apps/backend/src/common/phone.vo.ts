@@ -12,7 +12,7 @@ class Phone {
 	}
 
 	private static parseValue(value: string): string {
-		const parseRes = z.e164().safeParse(value)
+		const parseRes = z.e164().trim().safeParse(value)
 		if (!parseRes.success) throw new Error("Invalid phone")
 
 		return parseRes.data

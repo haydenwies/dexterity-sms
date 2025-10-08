@@ -28,7 +28,7 @@ const ContactTable = ({ contactsPromise }: ContactTableProps) => {
 	})
 
 	return (
-		<div className="overflow-hidden rounded-md border">
+		<div className="rounded-md border">
 			<Table>
 				<TableHeader>
 					{table.getHeaderGroups().map((headerGroup) => (

@@ -66,8 +66,8 @@ class ContactRepository {
 					organizationId: contact.organizationId,
 					firstName: contact.firstName,
 					lastName: contact.lastName,
-					email: contact.email?.value || null,
-					phone: contact.phone?.value || null,
+					email: contact.email?.value,
+					phone: contact.phone?.value,
 					createdAt: contact.createdAt,
 					updatedAt: contact.updatedAt
 				}))
@@ -82,8 +82,8 @@ class ContactRepository {
 		const [row] = await this.db
 			.update(contactTable)
 			.set({
-				firstName: contact.firstName,
-				lastName: contact.lastName,
+				firstName: contact.firstName || null,
+				lastName: contact.lastName || null,
 				email: contact.email?.value || null,
 				phone: contact.phone?.value || null,
 				updatedAt: contact.updatedAt
