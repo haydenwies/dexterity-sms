@@ -5,11 +5,21 @@ const setCookie = async (name: string, value: string): Promise<void> => {
 
 	const appEnv = process.env.APP_ENV || "development"
 
+	// Set secure cookies for staging and production
+	let secure: boolean = true
+	if (appEnv === "development") secure = false
+
+	// Set domain for staging and production
+	// Required so cookie does not set "sameHost" to true
+	// Allows cookie to be passed to other subdomains
+	let domain: string | undefined = undefined
+	if (appEnv !== "development") domain = `.${process.env.DOMAIN}`
+
 	cookieStore.set(name, value, {
 		httpOnly: true,
-		secure: appEnv !== "development",
-		sameSite: appEnv === "development" ? "lax" : "none",
-		domain: appEnv !== "development" ? ".bytte.io" : undefined
+		secure,
+		sameSite: "lax",
+		domain
 	})
 }
 
