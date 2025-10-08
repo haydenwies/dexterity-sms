@@ -11,7 +11,7 @@ const setCookie = async (name: string, value: string): Promise<void> => {
 
 	// Set domain for staging and production
 	// Required so cookie does not set "sameHost" to true
-	// Allows cookie to be passed to other subdomains
+	// Allows cookie to be passed to backend subdomain from client
 	let domain: string | undefined = undefined
 	if (appEnv !== "development") domain = `.${process.env.DOMAIN}`
 
