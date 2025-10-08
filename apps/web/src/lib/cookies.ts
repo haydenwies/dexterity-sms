@@ -6,7 +6,7 @@ const setCookie = async (name: string, value: string): Promise<void> => {
 	cookieStore.set(name, value, {
 		httpOnly: true,
 		secure: process.env.APP_ENV === "development" ? false : true,
-		sameSite: "lax"
+		sameSite: "none"
 	})
 }
 
