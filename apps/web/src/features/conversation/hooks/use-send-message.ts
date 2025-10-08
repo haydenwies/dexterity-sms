@@ -37,6 +37,7 @@ const useSendMessage = () => {
 			return
 		}
 
+		sendConversationMessageForm.reset()
 		setLoading(false)
 	})
 

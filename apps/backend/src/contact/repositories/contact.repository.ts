@@ -66,8 +66,8 @@ class ContactRepository {
 					organizationId: contact.organizationId,
 					firstName: contact.firstName,
 					lastName: contact.lastName,
-					email: contact.email?.value || undefined,
-					phone: contact.phone?.value || undefined,
+					email: contact.email?.value || null,
+					phone: contact.phone?.value || null,
 					createdAt: contact.createdAt,
 					updatedAt: contact.updatedAt
 				}))
@@ -84,8 +84,8 @@ class ContactRepository {
 			.set({
 				firstName: contact.firstName,
 				lastName: contact.lastName,
-				email: contact.email?.value || undefined,
-				phone: contact.phone?.value || undefined,
+				email: contact.email?.value || null,
+				phone: contact.phone?.value || null,
 				updatedAt: contact.updatedAt
 			})
 			.where(eq(contactTable.id, contact.id))

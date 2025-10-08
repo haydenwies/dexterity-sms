@@ -7,6 +7,7 @@ import { BillingService } from "~/billing/billing.service"
 import {
 	Event,
 	type MessageCreatedEvent,
+	type OrganizationCreatedEvent,
 	type OrganizationUpdatedEvent,
 	type SenderAddedEvent,
 	type SenderRemovedEvent
@@ -24,6 +25,31 @@ class BillingListener {
 		private readonly organizationService: OrganizationService
 	) {
 		this.stripe = new Stripe(this.configService.getOrThrow<string>("billing.stripeApiKey"))
+	}
+
+	@OnEvent(Event.ORGANIZATION_CREATED)
+	async handleOrganizationCreated(event: OrganizationCreatedEvent): Promise<void> {
+		try {
+			// Get Stripe customer ID
+			const customerId = event.externalBillingId
+			if (customerId) return
+
+			// Create Stripe customer
+			const customer = await this.stripe.customers.create({
+				name: event.name,
+				email: event.email,
+				metadata: {
+					organizationId: event.id
+				}
+			})
+
+			// Update organization with Stripe customer ID
+			await this.organizationService.updateExternalBillingId(event.id, customer.id)
+
+			this.logger.log(`Billing account created for organization ${event.id}`)
+		} catch (err: unknown) {
+			this.logger.error(`Failed to create billing account for organization ${event.id}`, err)
+		}
 	}
 
 	@OnEvent(Event.ORGANIZATION_UPDATED)

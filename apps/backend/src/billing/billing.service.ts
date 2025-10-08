@@ -17,6 +17,7 @@ import { OrganizationService } from "~/organization/organization.service"
 
 @Injectable()
 class BillingService {
+	private readonly logger = new Logger(BillingService.name)
 	private readonly stripe: Stripe
 
 	public readonly SENDER_PRICE_ID: string
@@ -40,6 +41,8 @@ class BillingService {
 
 		let billingAccountId = organization.externalBillingId
 		if (!billingAccountId) {
+			this.logger.warn(`No billing account found for organization ${organizationId}, creating one`)
+
 			const customer = await this.stripe.customers.create({
 				name: organization.name,
 				email: organization.email,

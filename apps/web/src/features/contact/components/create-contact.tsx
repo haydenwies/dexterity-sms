@@ -25,6 +25,8 @@ type CreateContactDialogProps = {
 	setOpen: (open: boolean) => void
 }
 const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
+	const FORM_ID = "create-contact-form"
+
 	const { loading, form, handleReset, handleCreate } = useCreateContact()
 
 	return (
@@ -42,7 +44,10 @@ const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
 					<DialogTitle>Create Contact</DialogTitle>
 					<DialogDescription>Provide some information to create a new contact.</DialogDescription>
 				</DialogHeader>
-				<form className="flex flex-col gap-4">
+				<form
+					className="flex flex-col gap-4"
+					id={FORM_ID}
+				>
 					<Form {...form}>
 						<FormField
 							control={form.control}
@@ -123,6 +128,7 @@ const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
 					</Button>
 					<Button
 						disabled={loading}
+						form={FORM_ID}
 						onClick={() =>
 							handleCreate({
 								onSuccess: () => {
@@ -131,6 +137,7 @@ const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
 								}
 							})
 						}
+						type="submit"
 					>
 						{loading ? <Spinner /> : <Icon name={IconName.PLUS} />}
 						Create

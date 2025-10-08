@@ -14,6 +14,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
 import { PhoneInput } from "@repo/ui/components/phone-input"
+import { Spinner } from "@repo/ui/components/spinner"
 
 import { useUpdateContact } from "~/features/contact/hooks/use-update-contact"
 import { PLACEHOLDERS } from "~/lib/placeholders"
@@ -24,6 +25,8 @@ type ContactTableUpdateDialogProps = {
 	setOpen: (open: boolean) => void
 }
 const ContactTableUpdateDialog = ({ contact, open, setOpen }: ContactTableUpdateDialogProps) => {
+	const FORM_ID = "update-contact-form"
+
 	const { loading, form, handleReset, handleUpdate } = useUpdateContact(contact)
 
 	return (
@@ -36,7 +39,10 @@ const ContactTableUpdateDialog = ({ contact, open, setOpen }: ContactTableUpdate
 					<DialogTitle>Update Contact</DialogTitle>
 					<DialogDescription>Update the contact information for the selected contact.</DialogDescription>
 				</DialogHeader>
-				<form className="flex flex-col gap-4">
+				<form
+					className="flex flex-col gap-4"
+					id={FORM_ID}
+				>
 					<Form {...form}>
 						<FormField
 							control={form.control}
@@ -116,9 +122,11 @@ const ContactTableUpdateDialog = ({ contact, open, setOpen }: ContactTableUpdate
 					</Button>
 					<Button
 						disabled={loading}
+						form={FORM_ID}
 						onClick={() => handleUpdate({ onSuccess: () => setOpen(false) })}
+						type="submit"
 					>
-						<Icon name={IconName.SAVE} />
+						{loading ? <Spinner /> : <Icon name={IconName.SAVE} />}
 						Save
 					</Button>
 				</DialogFooter>

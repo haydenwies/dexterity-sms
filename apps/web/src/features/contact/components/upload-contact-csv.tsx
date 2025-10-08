@@ -15,6 +15,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui/components/select"
+import { Spinner } from "@repo/ui/components/spinner"
 
 import { useUploadContactCsv } from "~/features/contact/hooks/use-contact-csv"
 
@@ -23,6 +24,8 @@ type UploadContactCsvDialogProps = {
 	setOpen: (open: boolean) => void
 }
 const UploadContactCsvDialog = ({ open, setOpen }: UploadContactCsvDialogProps) => {
+	const FORM_ID = "upload-contact-csv-form"
+
 	const { loading, form, csvHeaders, handleCsvChange, handleReset, handleUploadCsv } = useUploadContactCsv()
 
 	return (
@@ -42,7 +45,10 @@ const UploadContactCsvDialog = ({ open, setOpen }: UploadContactCsvDialogProps) 
 						Provide a CSV file and select the corresponding columns to create new contacts.
 					</DialogDescription>
 				</DialogHeader>
-				<form className="flex flex-col gap-4">
+				<form
+					className="flex flex-col gap-4"
+					id={FORM_ID}
+				>
 					<Input
 						accept="text/csv"
 						multiple={false}
@@ -187,6 +193,7 @@ const UploadContactCsvDialog = ({ open, setOpen }: UploadContactCsvDialogProps) 
 					</Button>
 					<Button
 						disabled={loading || csvHeaders.length === 0}
+						form={FORM_ID}
 						onClick={() =>
 							handleUploadCsv({
 								onSuccess: () => {
@@ -195,8 +202,9 @@ const UploadContactCsvDialog = ({ open, setOpen }: UploadContactCsvDialogProps) 
 								}
 							})
 						}
+						type="submit"
 					>
-						<Icon name={IconName.ARROW_UP} />
+						{loading ? <Spinner /> : <Icon name={IconName.ARROW_UP} />}
 						Upload
 					</Button>
 				</DialogFooter>
