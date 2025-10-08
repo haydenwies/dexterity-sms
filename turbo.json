@@ -5,7 +5,7 @@
 		"build": {
 			"dependsOn": ["^build"],
 			"env": [
-				"NODE_ENV",
+				"APP_ENV",
 				"PORT",
 				"BACKEND_PRIVATE_URL",
 				"BACKEND_PUBLIC_URL",

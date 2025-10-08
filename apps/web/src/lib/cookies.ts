@@ -4,18 +4,14 @@ const setCookie = async (name: string, value: string): Promise<void> => {
 	const cookieStore = await cookies()
 
 	let secure: boolean
-	if (process.env.NODE_ENV === "production") secure = true
-	else if (process.env.NODE_ENV === "test") secure = true
+	if (process.env.APP_ENV === "production") secure = true
+	else if (process.env.APP_ENV === "test") secure = true
 	else secure = false
 
 	let sameSite: "strict" | "lax" | "none"
-	if (process.env.NODE_ENV === "production") sameSite = "lax"
-	else if (process.env.NODE_ENV === "test") sameSite = "none"
+	if (process.env.APP_ENV === "production") sameSite = "lax"
+	else if (process.env.APP_ENV === "staging") sameSite = "none"
 	else sameSite = "lax"
-
-	console.log("NODE_ENV: ", process.env.NODE_ENV)
-	console.log("secure: ", secure)
-	console.log("sameSite: ", sameSite)
 
 	cookieStore.set(name, value, {
 		httpOnly: true,
