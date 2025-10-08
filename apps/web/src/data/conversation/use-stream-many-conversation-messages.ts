@@ -37,7 +37,10 @@ const useStreamManyConversationMessages = (initalMessages: MessageModel[]) => {
 
 		const eventSource = connect()
 
-		eventSource.onopen = () => setIsConnected(true)
+		eventSource.onopen = () => {
+			setIsConnected(true)
+			console.log("message stream opened")
+		}
 
 		// Handle on message event
 		eventSource.onmessage = (ev: MessageEvent) => {
