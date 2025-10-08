@@ -3,7 +3,8 @@ const isEnumValue = <T extends Record<string, string>>(e: T, val: string): val i
 }
 
 /**
- * Extract the registrable domain (eTLD) from a domain
+ * Extract the effective top-level domain (eTLD) from a domain.
+ *
  * Examples:
  *   - "app.example.com" → "example.com"
  *   - "example.com" → "example.com"
