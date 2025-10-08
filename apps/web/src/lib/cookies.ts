@@ -13,6 +13,8 @@ const setCookie = async (name: string, value: string): Promise<void> => {
 	else if (process.env.NODE_ENV === "test") sameSite = "none"
 	else sameSite = "lax"
 
+	console.log("sameSite: ", sameSite)
+
 	cookieStore.set(name, value, {
 		httpOnly: true,
 		secure,
