@@ -9,7 +9,6 @@ import { getBackendPrivateUrl } from "~/lib/url"
 
 const getManyOrganizations = async (): Promise<OrganizationModel[]> => {
 	const sessionToken = await getCookie(SESSION_COOKIE)
-	console.log("sessionToken: ", sessionToken)
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()
