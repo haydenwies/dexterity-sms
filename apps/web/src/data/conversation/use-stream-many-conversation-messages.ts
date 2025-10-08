@@ -33,8 +33,6 @@ const useStreamManyConversationMessages = (initalMessages: MessageModel[]) => {
 	}, [params.organizationId, params.conversationId])
 
 	useEffect(() => {
-		if (isConnected) return
-
 		const eventSource = connect()
 
 		eventSource.onopen = () => {
@@ -55,8 +53,8 @@ const useStreamManyConversationMessages = (initalMessages: MessageModel[]) => {
 		}
 
 		// Handle on error event
-		eventSource.onerror = () => {
-			eventSource.close()
+		eventSource.onerror = (error) => {
+			console.error("EventSource error:", error)
 			setIsConnected(false)
 		}
 
@@ -65,7 +63,7 @@ const useStreamManyConversationMessages = (initalMessages: MessageModel[]) => {
 			eventSource.close()
 			setIsConnected(false)
 		}
-	}, [isConnected, connect])
+	}, [connect])
 
 	return messages
 }
