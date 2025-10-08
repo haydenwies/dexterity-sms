@@ -9,7 +9,7 @@ async function bootstrap() {
 		rawBody: true
 	})
 
-	// Enable cookie parsing
+	// Enable cookie parsing (for auth)
 	app.use(cookieParser())
 
 	// Configure CORS to allow credentials
