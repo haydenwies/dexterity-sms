@@ -12,7 +12,6 @@ async function bootstrap() {
 	// Enable cookie parsing
 	app.use(cookieParser())
 
-	// TEST CHANGE
 	// Configure CORS to allow credentials
 	app.enableCors({
 		origin: process.env.WEB_PUBLIC_URL || "http://localhost:3000",
