@@ -41,9 +41,8 @@ const useStreamManyConversationMessages = (initalMessages: MessageModel[]) => {
 
 		// Handle on message event
 		eventSource.onmessage = (ev: MessageEvent) => {
-			// const data: MessageModel = JSON.parse(ev.data)
-			const parsed = JSON.parse(ev.data)
-			const data: MessageModel = parsed.data
+			const data: MessageModel = JSON.parse(ev.data)
+			console.log("message received: ", data)
 
 			setMessages((prev) => {
 				const existingMessage = prev.find((message) => message.id === data.id)
