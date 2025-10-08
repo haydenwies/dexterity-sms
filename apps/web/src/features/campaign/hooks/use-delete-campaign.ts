@@ -20,6 +20,8 @@ const useDeleteCampaign = () => {
 		const organizationId = params.organizationId
 		if (!organizationId || Array.isArray(organizationId)) {
 			toast.error("Organization ID is required")
+			onError?.()
+			setLoading(false)
 			return
 		}
 
@@ -27,6 +29,7 @@ const useDeleteCampaign = () => {
 		if (!res.success) {
 			toast.error(res.error)
 			onError?.()
+			setLoading(false)
 			return
 		}
 

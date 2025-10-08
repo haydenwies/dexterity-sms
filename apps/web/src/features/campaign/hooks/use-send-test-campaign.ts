@@ -31,11 +31,15 @@ const useSendTestCampaign = () => {
 			const organizationId = params.organizationId
 			if (!organizationId || Array.isArray(organizationId)) {
 				toast.error("Organization ID is required")
+				onError?.()
+				setLoading(false)
 				return
 			}
 			const campaignId = params.campaignId
 			if (!campaignId || Array.isArray(campaignId)) {
 				toast.error("Campaign ID is required")
+				onError?.()
+				setLoading(false)
 				return
 			}
 
@@ -43,9 +47,11 @@ const useSendTestCampaign = () => {
 			if (!res.success) {
 				toast.error(res.error)
 				onError?.()
+				setLoading(false)
 				return
 			}
 
+			toast.success("Your test has been sent")
 			onSuccess?.()
 
 			setLoading(false)

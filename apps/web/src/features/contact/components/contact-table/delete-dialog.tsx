@@ -47,6 +47,7 @@ const ContactTableDeleteDialog = ({ contacts, open, setOpen }: ContactTableDelet
 								{ onSuccess: () => setOpen(false) }
 							)
 						}}
+						variant="destructive"
 					>
 						{loading && <Spinner />}
 						Delete

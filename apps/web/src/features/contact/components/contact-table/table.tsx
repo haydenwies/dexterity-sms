@@ -63,9 +63,9 @@ const ContactTable = ({ contactsPromise }: ContactTableProps) => {
 						<TableRow>
 							<TableCell
 								colSpan={columns.length}
-								className="h-24 text-center"
+								className="text-muted-foreground h-24 text-center"
 							>
-								No results.
+								No results
 							</TableCell>
 						</TableRow>
 					)}

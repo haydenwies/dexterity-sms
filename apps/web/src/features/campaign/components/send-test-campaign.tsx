@@ -14,6 +14,7 @@ import {
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@repo/ui/components/form"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { PhoneInput } from "@repo/ui/components/phone-input"
+import { Spinner } from "@repo/ui/components/spinner"
 
 import { useSendTestCampaign } from "~/features/campaign/hooks/use-send-test-campaign"
 import { PLACEHOLDERS } from "~/lib/placeholders"
@@ -32,7 +33,7 @@ const SendTestCampaignDialog = ({ open, setOpen }: SendTestCampaignDialogProps) 
 		>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Test campaign</DialogTitle>
+					<DialogTitle>Test Campaign</DialogTitle>
 					<DialogDescription>Provide a phone number to send a test message.</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
@@ -44,6 +45,7 @@ const SendTestCampaignDialog = ({ open, setOpen }: SendTestCampaignDialogProps) 
 								<FormControl>
 									<PhoneInput
 										placeholder={PLACEHOLDERS.phone}
+										type="tel"
 										{...field}
 									/>
 								</FormControl>
@@ -64,15 +66,8 @@ const SendTestCampaignDialog = ({ open, setOpen }: SendTestCampaignDialogProps) 
 						disabled={loading}
 						onClick={() => handleSendTest({ onSuccess: () => setOpen(false) })}
 					>
-						{loading ? (
-							<Icon
-								className="animate-spin"
-								name={IconName.SPINNER}
-							/>
-						) : (
-							<Icon name={IconName.SEND} />
-						)}
-						Send Test
+						{loading && <Spinner />}
+						Send test
 					</Button>
 				</DialogFooter>
 			</DialogContent>

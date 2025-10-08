@@ -11,6 +11,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle
 } from "@repo/ui/components/alert-dialog"
+import { Spinner } from "@repo/ui/components/spinner"
 
 import { useDeleteCampaign } from "~/features/campaign/hooks/use-delete-campaign"
 
@@ -48,6 +49,7 @@ const CampaignTableDeleteDialog = ({ campaigns, open, setOpen }: CampaignTableDe
 							)
 						}}
 					>
+						{loading && <Spinner />}
 						Delete
 					</AlertDialogAction>
 				</AlertDialogFooter>

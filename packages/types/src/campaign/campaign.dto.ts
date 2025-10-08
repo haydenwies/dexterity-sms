@@ -47,7 +47,7 @@ type SendTestCampaignDto = {
 }
 
 const sendTestCampaignDtoSchema = z.object({
-	to: z.e164()
+	to: z.e164("Invalid phone number")
 })
 
 // #endregion

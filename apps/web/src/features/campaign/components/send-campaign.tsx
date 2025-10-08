@@ -59,7 +59,7 @@ const SendCampaignDialog = ({ open, setOpen }: SendCampaignDialogProps) => {
 		>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Send campaign</DialogTitle>
+					<DialogTitle>Send Campaign</DialogTitle>
 					<DialogDescription>Send or schedule this campaign.</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
@@ -158,7 +158,7 @@ const SendCampaignDialog = ({ open, setOpen }: SendCampaignDialogProps) => {
 						disabled={loading}
 						onClick={() => handleSendCampaign()}
 					>
-						{loading ? <Spinner /> : <Icon name={IconName.SEND} />}
+						{loading && <Spinner />}
 						{formValues.scheduledAt ? "Schedule" : "Send"}
 					</Button>
 				</DialogFooter>
@@ -173,8 +173,8 @@ const SendCampaignButton = () => {
 	return (
 		<>
 			<Button onClick={() => setOpen(true)}>
-				<Icon name={IconName.ARROW_RIGHT} />
-				Continue
+				<Icon name={IconName.SEND} />
+				Send or schedule
 			</Button>
 			<SendCampaignDialog
 				open={open}
