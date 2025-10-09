@@ -57,7 +57,7 @@ const sendTestCampaignDtoSchema = z.object({
 type SendCampaignDto = {
 	scheduledAt?: Date
 }
-
+// TODO: Remove this
 const sendCampaignDtoSchema = z.object({
 	scheduledAt: z.union([z.string().trim().pipe(z.coerce.date()), z.date().optional()])
 })
