@@ -1,4 +1,4 @@
-import z from "zod"
+import z, { ZodType } from "zod"
 
 // #region CreateCampaignDto
 
@@ -58,7 +58,7 @@ type SendCampaignDto = {
 	scheduledAt?: Date
 }
 // TODO: Remove this
-const sendCampaignDtoSchema = z.object({
+const sendCampaignDtoSchema: ZodType<SendCampaignDto> = z.object({
 	scheduledAt: z.union([z.string().trim().pipe(z.coerce.date()), z.date().optional()])
 })
 

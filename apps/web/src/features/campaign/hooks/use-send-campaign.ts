@@ -4,9 +4,10 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { routes } from "@repo/routes"
-import { sendCampaignDtoSchema, type SendCampaignDto } from "@repo/types/campaign"
+import { type SendCampaignDto } from "@repo/types/campaign"
 import { toast } from "@repo/ui/components/sonner"
 
+import z from "zod"
 import { sendCampaign } from "~/actions/campaign/send-campaign"
 
 const useSendCampaign = () => {
@@ -15,8 +16,11 @@ const useSendCampaign = () => {
 	const router = useRouter()
 	const params = useParams()
 
+	// TODO: Fix this
+	// Required because sendCampaignDtoSchema includes `z.coerce.date()`
+	// zodResolver doesn't support this right now
 	const form = useForm<SendCampaignDto>({
-		resolver: zodResolver(sendCampaignDtoSchema),
+		resolver: zodResolver(z.object({ scheduledAt: z.date().optional() })),
 		defaultValues: {
 			scheduledAt: undefined
 		}
