@@ -102,9 +102,9 @@ class AuthService {
 			throw new BadRequestException("Verification failed")
 		}
 
-		await this.verificationTokenService.delete(verificationToken)
-
 		await this.accountService.updatePassword(verificationToken.value, dto.password)
+
+		await this.verificationTokenService.delete(verificationToken)
 	}
 }
 
