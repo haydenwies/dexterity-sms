@@ -1,5 +1,7 @@
 "use client"
 
+import { useId } from "react"
+
 import { Button } from "@repo/ui/components/button"
 import {
 	Dialog,
@@ -10,7 +12,6 @@ import {
 	DialogTitle
 } from "@repo/ui/components/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
-import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
 import { Spinner } from "@repo/ui/components/spinner"
 
@@ -22,6 +23,8 @@ type CreateOrganizationDialogProps = {
 	setOpen: (open: boolean) => void
 }
 const CreateOrganizationDialog = ({ open, setOpen }: CreateOrganizationDialogProps) => {
+	const FORM_ID = useId()
+
 	const { loading, createOrganizationForm, handleCreateOrganization } = useCreateOrganization()
 
 	return (
@@ -37,7 +40,14 @@ const CreateOrganizationDialog = ({ open, setOpen }: CreateOrganizationDialogPro
 						these later.
 					</DialogDescription>
 				</DialogHeader>
-				<form className="flex flex-col gap-4">
+				<form
+					className="flex flex-col gap-4"
+					id={FORM_ID}
+					onSubmit={async (e) => {
+						e.preventDefault()
+						await handleCreateOrganization()
+					}}
+				>
 					<Form {...createOrganizationForm}>
 						<FormField
 							control={createOrganizationForm.control}
@@ -77,9 +87,10 @@ const CreateOrganizationDialog = ({ open, setOpen }: CreateOrganizationDialogPro
 				<DialogFooter>
 					<Button
 						disabled={loading}
-						onClick={handleCreateOrganization}
+						form={FORM_ID}
+						type="submit"
 					>
-						{loading ? <Spinner /> : <Icon name={IconName.PLUS} />}
+						{loading && <Spinner />}
 						Create
 					</Button>
 				</DialogFooter>
