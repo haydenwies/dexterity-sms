@@ -16,11 +16,13 @@ import { Icon, IconName } from "@repo/ui/components/icon"
 import { routes } from "@repo/routes"
 import Link from "next/link"
 import { CampaignTableDeleteDialog } from "~/features/campaign/components/campaign-table/delete-dialog"
+import { CampaignTableCancelDialog } from "./candel-dialog"
 
 type CampaignTableActionsProps =
 	| { type: "header"; data: { campaigns: CampaignModel[] } }
 	| { type: "cell"; data: { campaign: CampaignModel } }
 const CampaignTableActions = ({ type, data }: CampaignTableActionsProps) => {
+	const [cancelOpen, setCancelOpen] = useState<boolean>(false)
 	const [deleteOpen, setDeleteOpen] = useState<boolean>(false)
 
 	return (
@@ -42,6 +44,14 @@ const CampaignTableActions = ({ type, data }: CampaignTableActionsProps) => {
 						</Link>
 					</DropdownMenuItem>
 				)}
+				{type === "cell" && data.campaign.status === CampaignStatus.SCHEDULED && (
+					<DropdownMenuItem
+						onClick={() => setCancelOpen(true)}
+						variant="destructive"
+					>
+						<Icon name={IconName.CALENDAR_X} /> Cancel
+					</DropdownMenuItem>
+				)}
 				<DropdownMenuSeparator className="first:hidden" />
 				<DropdownMenuItem
 					onClick={() => setDeleteOpen(true)}
@@ -50,6 +60,13 @@ const CampaignTableActions = ({ type, data }: CampaignTableActionsProps) => {
 					<Icon name={IconName.TRASH} /> Delete
 				</DropdownMenuItem>
 			</DropdownMenuContent>
+			{type === "cell" && data.campaign.status === CampaignStatus.SCHEDULED && (
+				<CampaignTableCancelDialog
+					campaign={data.campaign}
+					open={cancelOpen}
+					setOpen={setCancelOpen}
+				/>
+			)}
 			<CampaignTableDeleteDialog
 				campaigns={type === "header" ? data.campaigns : [data.campaign]}
 				open={deleteOpen}

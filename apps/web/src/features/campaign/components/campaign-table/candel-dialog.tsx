@@ -13,15 +13,15 @@ import {
 } from "@repo/ui/components/alert-dialog"
 import { Spinner } from "@repo/ui/components/spinner"
 
-import { useDeleteCampaign } from "~/features/campaign/hooks/use-delete-campaign"
+import { useCancelCampaign } from "../../hooks/use-cancel-campaign"
 
-type CampaignTableDeleteDialogProps = {
-	campaigns: CampaignModel[]
+type CampaignTableCancelDialogProps = {
+	campaign: CampaignModel
 	open: boolean
 	setOpen: (open: boolean) => void
 }
-const CampaignTableDeleteDialog = ({ campaigns, open, setOpen }: CampaignTableDeleteDialogProps) => {
-	const { loading, handleDeleteMany } = useDeleteCampaign()
+const CampaignTableCancelDialog = ({ campaign, open, setOpen }: CampaignTableCancelDialogProps) => {
+	const { loading, handleCancelCampaign } = useCancelCampaign(campaign)
 
 	return (
 		<AlertDialog
@@ -30,27 +30,23 @@ const CampaignTableDeleteDialog = ({ campaigns, open, setOpen }: CampaignTableDe
 		>
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle>Delete Campaign{campaigns.length > 1 && "s"}?</AlertDialogTitle>
+					<AlertDialogTitle>Cancel Campaign?</AlertDialogTitle>
 					<AlertDialogDescription>
-						Are you sure you want to delete {campaigns.length > 1 ? campaigns.length : "this"} campaign
-						{campaigns.length > 1 && "s"}? This action cannot be undone.
+						Are you sure you want to cancel this campaign? This action cannot be undone.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel disabled={loading}>Cancel</AlertDialogCancel>
+					<AlertDialogCancel disabled={loading}>Back</AlertDialogCancel>
 					<AlertDialogAction
 						disabled={loading}
 						variant="destructive"
 						onClick={async (e) => {
 							e.preventDefault()
-							await handleDeleteMany(
-								campaigns.map((campaign) => campaign.id),
-								{ onSuccess: () => setOpen(false) }
-							)
+							await handleCancelCampaign({ onSuccess: () => setOpen(false) })
 						}}
 					>
 						{loading && <Spinner />}
-						Delete
+						Cancel
 					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>
@@ -58,4 +54,4 @@ const CampaignTableDeleteDialog = ({ campaigns, open, setOpen }: CampaignTableDe
 	)
 }
 
-export { CampaignTableDeleteDialog }
+export { CampaignTableCancelDialog }
