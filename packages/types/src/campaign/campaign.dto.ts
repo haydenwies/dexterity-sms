@@ -59,7 +59,7 @@ type SendCampaignDto = {
 }
 
 const sendCampaignDtoSchema = z.object({
-	scheduledAt: z.date().optional()
+	scheduledAt: z.union([z.string().trim().pipe(z.coerce.date()), z.date().optional()])
 })
 
 // #endregion
