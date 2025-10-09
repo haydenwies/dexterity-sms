@@ -207,7 +207,7 @@ class BillingListener {
 				customer: organization.externalBillingId,
 				subscription: subscription.externalId,
 				pricing: {
-					price: this.billingService.SENDER_PRICE_ID
+					price: this.billingService.SENDER_REMOVAL_PRICE_ID
 				},
 				description: `Sender removal for ${event.phone} - ${new Date().toLocaleDateString()}`
 			})

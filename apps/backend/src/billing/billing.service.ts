@@ -21,6 +21,7 @@ class BillingService {
 	private readonly stripe: Stripe
 
 	public readonly SENDER_PRICE_ID: string
+	public readonly SENDER_REMOVAL_PRICE_ID: string
 	public readonly SMS_CREDIT_PRICE_ID: string
 	public readonly SMS_CREDIT_METER_ID: string
 
@@ -32,6 +33,7 @@ class BillingService {
 		this.stripe = new Stripe(this.configService.getOrThrow<string>("billing.stripeApiKey"))
 
 		this.SENDER_PRICE_ID = this.configService.getOrThrow<string>("billing.stripeSenderPriceId")
+		this.SENDER_REMOVAL_PRICE_ID = this.configService.getOrThrow<string>("billing.stripeSenderRemovalPriceId")
 		this.SMS_CREDIT_PRICE_ID = this.configService.getOrThrow<string>("billing.stripeSmsCreditPriceId")
 		this.SMS_CREDIT_METER_ID = this.configService.getOrThrow<string>("billing.stripeSmsCreditMeterId")
 	}
