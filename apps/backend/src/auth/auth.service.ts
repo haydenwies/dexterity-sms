@@ -80,19 +80,17 @@ class AuthService {
 	}
 
 	async forgotPassword(dto: ForgotPasswordDto): Promise<void> {
-		const user = await this.userService.getByEmail(dto.email)
+		const user = await this.userService.findByEmail(dto.email)
+		if (!user) return
 
 		const verificationToken = await this.verificationTokenService.create({
 			type: "forgot-password",
 			value: user.id
 		})
 
-		// TODO: Better config service and router
 		const url =
 			this.configService.getOrThrow<string>("router.webPublicUrl") +
-			routes.web.RESET_PASSWORD({
-				searchParams: { token: verificationToken.id }
-			})
+			routes.web.RESET_PASSWORD({ searchParams: { token: verificationToken.id } })
 
 		await this.emailService.sendResetPassword(user.email, { url })
 	}
@@ -103,6 +101,8 @@ class AuthService {
 			await this.verificationTokenService.delete(verificationToken)
 			throw new BadRequestException("Verification failed")
 		}
+
+		await this.verificationTokenService.delete(verificationToken)
 
 		await this.accountService.updatePassword(verificationToken.value, dto.password)
 	}

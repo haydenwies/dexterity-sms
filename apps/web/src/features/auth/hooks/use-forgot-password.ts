@@ -24,6 +24,8 @@ const useForgotPassword = () => {
 		const res = await forgotPassword(data)
 		if (!res.success) {
 			toast.error(res.error)
+			setLoading(false)
+			return
 		}
 
 		setSubmitted(true)
