@@ -209,7 +209,7 @@ class BillingListener {
 				pricing: {
 					price: this.billingService.SENDER_REMOVAL_PRICE_ID
 				},
-				description: `Sender removal for ${event.phone} - ${new Date().toLocaleDateString()}`
+				description: `Removed sender (${event.phone})`
 			})
 
 			this.logger.log(
