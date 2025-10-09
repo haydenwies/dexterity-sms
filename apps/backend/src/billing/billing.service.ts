@@ -165,15 +165,15 @@ class BillingWebhookService {
 			return
 		}
 
-		const { customer: externalBillingAccountId } = event?.data?.object as { customer?: string }
-		if (!externalBillingAccountId) {
-			this.logger.warn("No external billing account ID found in webhook event")
+		const { customer: externalBillingId } = event?.data?.object as { customer?: string }
+		if (!externalBillingId) {
+			this.logger.warn("No external billing ID found in webhook event")
 			return
 		}
 
-		const organization = await this.organizationService.getByExternalBillingId(externalBillingAccountId)
+		const organization = await this.organizationService.getByExternalBillingId(externalBillingId)
 		if (!organization.externalBillingId) {
-			this.logger.warn(`No organization found with external billing account ID ${externalBillingAccountId}`)
+			this.logger.warn(`No organization found with external billing account ID ${externalBillingId}`)
 			return
 		}
 

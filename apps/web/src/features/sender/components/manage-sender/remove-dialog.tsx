@@ -11,6 +11,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle
 } from "@repo/ui/components/alert-dialog"
+import { Spinner } from "@repo/ui/components/spinner"
 
 import { useRemoveSender } from "~/features/sender/hooks/use-remove-sender"
 
@@ -19,6 +20,7 @@ type RemoveSenderDialogProps = {
 	open: boolean
 	setOpen: (open: boolean) => void
 }
+
 const RemoveSenderDialog = ({ sender, open, setOpen }: RemoveSenderDialogProps) => {
 	const { loading, handleRemoveSender } = useRemoveSender()
 
@@ -46,6 +48,7 @@ const RemoveSenderDialog = ({ sender, open, setOpen }: RemoveSenderDialogProps) 
 						}}
 						variant="destructive"
 					>
+						{loading && <Spinner />}
 						Release
 					</AlertDialogAction>
 				</AlertDialogFooter>

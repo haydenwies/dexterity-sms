@@ -141,7 +141,7 @@ class BillingListener {
 				// Update existing sender item quantity (immediate effect, no proration)
 				await this.stripe.subscriptionItems.update(senderItem.id, {
 					quantity: (senderItem.quantity || 0) + 1,
-					proration_behavior: "none" // No proration - takes effect immediately
+					proration_behavior: "none"
 				})
 			else
 				// Create new sender subscription item
@@ -195,6 +195,22 @@ class BillingListener {
 				await this.stripe.subscriptionItems.del(senderItem.id, {
 					proration_behavior: "none"
 				})
+
+			// Invoice the customer for the removed sender
+			const organization = await this.organizationService.getById(event.organizationId)
+			if (!organization.externalBillingId) {
+				this.logger.warn(`No billing account for organization ${event.organizationId}`)
+				return
+			}
+
+			await this.stripe.invoiceItems.create({
+				customer: organization.externalBillingId,
+				subscription: subscription.externalId,
+				pricing: {
+					price: this.billingService.SENDER_PRICE_ID
+				},
+				description: `Sender removal for ${event.phone} - ${new Date().toLocaleDateString()}`
+			})
 
 			this.logger.log(
 				`Sender removed from subscription for organization ${event.organizationId}, phone ${event.phone}`
