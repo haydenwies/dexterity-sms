@@ -1,7 +1,8 @@
+import { cookies } from "next/headers"
+
 import { eTLD } from "@repo/utils"
 
-import { cookies } from "next/headers"
-import { getWebPublicUrl } from "./url"
+import { getWebPublicUrl } from "~/lib/url"
 
 const setCookie = async (name: string, value: string): Promise<void> => {
 	const cookieStore = await cookies()
@@ -38,7 +39,18 @@ const getCookie = async (name: string): Promise<string | undefined> => {
 
 const deleteCookie = async (name: string): Promise<void> => {
 	const cookieStore = await cookies()
-	cookieStore.delete(name)
+
+	const appEnv = process.env.APP_ENV || "development"
+
+	// Must match the same domain as when cookie was set
+	let domain: string | undefined = undefined
+	if (appEnv !== "development") {
+		const webUrl = getWebPublicUrl()
+		const domainETLD = eTLD(webUrl)
+		domain = `.${domainETLD}`
+	}
+
+	cookieStore.delete({ name, domain })
 }
 
 export { deleteCookie, getCookie, setCookie }
