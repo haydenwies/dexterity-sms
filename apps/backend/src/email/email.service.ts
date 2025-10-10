@@ -11,13 +11,6 @@ class EmailService {
 	private readonly emailProvider: EmailProvider
 
 	constructor(private readonly configService: ConfigService) {
-		// this.emailProvider = new AwsSesProvider({
-		// 	region: "us-east-1",
-		// 	accessKeyId: this.configService.getOrThrow<string>("email.awsSesAccessKeyId"),
-		// 	secretAccessKey: this.configService.getOrThrow<string>("email.awsSesSecretAccessKey"),
-		// 	sourceEmail: this.configService.getOrThrow<string>("email.awsSesSourceEmail")
-		// })
-
 		this.emailProvider = new ResendProvider({
 			apiKey: this.configService.getOrThrow<string>("email.resendApiKey"),
 			from: this.configService.getOrThrow<string>("email.resendFrom")
