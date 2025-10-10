@@ -11,7 +11,8 @@
 		"@react-email/components": "^0.5.1",
 		"@react-email/render": "^1.2.1",
 		"react": "^19.0.0",
-		"react-dom": "^19.0.0"
+		"react-dom": "^19.0.0",
+		"resend": "^6.1.2"
 	},
 	"devDependencies": {
 		"@react-email/preview-server": "4.2.8",
@@ -29,6 +30,10 @@
 		"./providers/aws-ses": {
 			"types": "./src/providers/aws-ses.ts",
 			"default": "./dist/providers/aws-ses.js"
+		},
+		"./providers/resend": {
+			"types": "./src/providers/resend.ts",
+			"default": "./dist/providers/resend.js"
 		},
 		"./templates": {
 			"types": "./src/templates/index.ts",
