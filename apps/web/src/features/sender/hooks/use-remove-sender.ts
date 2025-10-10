@@ -13,17 +13,18 @@ const useRemoveSender = () => {
 	const handleRemoveSender = async () => {
 		setLoading(true)
 
-		try {
-			const organizationId = params.organizationId
-			if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
-
-			await removeSender(organizationId)
-		} catch (err: unknown) {
-			if (err instanceof Error) toast.error(err.message)
-			else toast.error("An unexpected error occurred")
-		} finally {
-			setLoading(false)
+		if (!params.organizationId || Array.isArray(params.organizationId)) {
+			toast.error("Organization ID is required")
+			return
 		}
+
+		const res = await removeSender(params.organizationId)
+		if (!res.success) {
+			toast.error(res.error)
+			return
+		}
+
+		setLoading(false)
 	}
 
 	return { loading, handleRemoveSender }

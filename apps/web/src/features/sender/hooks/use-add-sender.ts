@@ -8,29 +8,36 @@ import { addSender } from "~/actions/sender/add-sender"
 const useAddSender = () => {
 	const [loading, setLoading] = useState<boolean>(false)
 
-	const [selectedPhone, setSelectedPhone] = useState<string | null>(null)
-
 	const params = useParams()
 
-	const handleAddSender = async (phone: string) => {
-		setSelectedPhone(phone)
+	type HandleAddSenderOptions = {
+		onError?: () => void
+		onSuccess?: () => void
+	}
+	const handleAddSender = async (phone: string, options?: HandleAddSenderOptions) => {
 		setLoading(true)
 
-		try {
-			const organizationId = params.organizationId
-			if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
-
-			await addSender(organizationId, { phone })
-		} catch (err: unknown) {
-			if (err instanceof Error) toast.error(err.message)
-			else toast.error("An unexpected error occurred")
-		} finally {
-			setSelectedPhone(null)
+		if (!params.organizationId || Array.isArray(params.organizationId)) {
+			toast.error("Organization ID is required")
+			options?.onError?.()
 			setLoading(false)
+			return
 		}
+
+		const res = await addSender(params.organizationId, { phone })
+		if (!res.success) {
+			toast.error(res.error)
+			options?.onError?.()
+			setLoading(false)
+			return
+		}
+
+		options?.onSuccess?.()
+
+		setLoading(false)
 	}
 
-	return { loading, selectedPhone, handleAddSender }
+	return { loading, handleAddSender }
 }
 
 export { useAddSender }

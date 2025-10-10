@@ -7,6 +7,7 @@ import { BillingService } from "~/billing/billing.service"
 import {
 	Event,
 	type MessageCreatedEvent,
+	type OrganizationCreatedEvent,
 	type OrganizationUpdatedEvent,
 	type SenderAddedEvent,
 	type SenderRemovedEvent
@@ -24,6 +25,31 @@ class BillingListener {
 		private readonly organizationService: OrganizationService
 	) {
 		this.stripe = new Stripe(this.configService.getOrThrow<string>("billing.stripeApiKey"))
+	}
+
+	@OnEvent(Event.ORGANIZATION_CREATED)
+	async handleOrganizationCreated(event: OrganizationCreatedEvent): Promise<void> {
+		try {
+			// Get Stripe customer ID
+			const customerId = event.externalBillingId
+			if (customerId) return
+
+			// Create Stripe customer
+			const customer = await this.stripe.customers.create({
+				name: event.name,
+				email: event.email,
+				metadata: {
+					organizationId: event.id
+				}
+			})
+
+			// Update organization with Stripe customer ID
+			await this.organizationService.updateExternalBillingId(event.id, customer.id)
+
+			this.logger.log(`Billing account created for organization ${event.id}`)
+		} catch (err: unknown) {
+			this.logger.error(`Failed to create billing account for organization ${event.id}`, err)
+		}
 	}
 
 	@OnEvent(Event.ORGANIZATION_UPDATED)
@@ -108,20 +134,20 @@ class BillingListener {
 
 			// Find the sender subscription item
 			const senderItem = subscriptionItems.data.find(
-				(item) => item.price.id === this.billingService.SENDER_EXTERNAL_ID
+				(item) => item.price.id === this.billingService.SENDER_PRICE_ID
 			)
 
 			if (senderItem)
 				// Update existing sender item quantity (immediate effect, no proration)
 				await this.stripe.subscriptionItems.update(senderItem.id, {
 					quantity: (senderItem.quantity || 0) + 1,
-					proration_behavior: "none" // No proration - takes effect immediately
+					proration_behavior: "none"
 				})
 			else
 				// Create new sender subscription item
 				await this.stripe.subscriptionItems.create({
 					subscription: subscription.externalId,
-					price: this.billingService.SENDER_EXTERNAL_ID,
+					price: this.billingService.SENDER_PRICE_ID,
 					quantity: 1,
 					proration_behavior: "none"
 				})
@@ -154,7 +180,7 @@ class BillingListener {
 
 			// Find the sender subscription item
 			const senderItem = subscriptionItems.data.find(
-				(item) => item.price.id === this.billingService.SENDER_EXTERNAL_ID
+				(item) => item.price.id === this.billingService.SENDER_PRICE_ID
 			)
 			if (!senderItem) return
 
@@ -169,6 +195,22 @@ class BillingListener {
 				await this.stripe.subscriptionItems.del(senderItem.id, {
 					proration_behavior: "none"
 				})
+
+			// Invoice the customer for the removed sender
+			const organization = await this.organizationService.getById(event.organizationId)
+			if (!organization.externalBillingId) {
+				this.logger.warn(`No billing account for organization ${event.organizationId}`)
+				return
+			}
+
+			await this.stripe.invoiceItems.create({
+				customer: organization.externalBillingId,
+				subscription: subscription.externalId,
+				pricing: {
+					price: this.billingService.SENDER_REMOVAL_PRICE_ID
+				},
+				description: `Removed sender (${event.phone})`
+			})
 
 			this.logger.log(
 				`Sender removed from subscription for organization ${event.organizationId}, phone ${event.phone}`

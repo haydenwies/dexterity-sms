@@ -1,15 +1,17 @@
 import "server-only"
 
 import { routes } from "@repo/routes"
+import { SESSION_COOKIE } from "@repo/types/auth"
 import { type OrganizationModel } from "@repo/types/organization"
 
-import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/url"
+import { getCookie } from "~/lib/cookies"
+import { getBackendPrivateUrl } from "~/lib/url"
 
 const getOrganization = async (organizationId: string): Promise<OrganizationModel> => {
-	const sessionToken = await sessionMiddleware()
+	const sessionToken = await getCookie(SESSION_COOKIE)
+	if (!sessionToken) throw new Error("Unauthorized")
 
-	const backendUrl = getBackendUrl()
+	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.GET_ORGANIZATION(organizationId)}`, {
 		method: "GET",
 		headers: {

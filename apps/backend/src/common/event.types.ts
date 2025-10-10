@@ -3,6 +3,7 @@ import { type MessageDirection, type MessageStatus } from "@repo/types/message"
 import { Phone } from "~/common/phone.vo"
 
 enum Event {
+	ORGANIZATION_CREATED = "organization.created",
 	ORGANIZATION_UPDATED = "organization.updated",
 	CONVERSATION_CREATED = "conversation.created",
 	CONVERSATION_UPDATED = "conversation.updated",
@@ -10,6 +11,15 @@ enum Event {
 	MESSAGE_UPDATED = "message.updated",
 	SENDER_ADDED = "sender.added",
 	SENDER_REMOVED = "sender.removed"
+}
+
+type OrganizationCreatedEvent = {
+	id: string
+	externalBillingId?: string
+	name: string
+	email: string
+	createdAt: Date
+	updatedAt: Date
 }
 
 type OrganizationUpdatedEvent = {
@@ -85,6 +95,7 @@ export {
 	type ConversationUpdatedEvent,
 	type MessageCreatedEvent,
 	type MessageUpdatedEvent,
+	type OrganizationCreatedEvent,
 	type OrganizationUpdatedEvent,
 	type SenderAddedEvent,
 	type SenderRemovedEvent

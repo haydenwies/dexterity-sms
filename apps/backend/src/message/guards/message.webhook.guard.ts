@@ -28,7 +28,7 @@ class MessageStatusWebhookGuard implements CanActivate {
 		const body = request.body
 
 		// Construct the URL for the webhook
-		const url = `${this.configService.getOrThrow<string>("router.backendUrl")}${routes.backend.MESSAGE_STATUS_WEBHOOK}`
+		const url = `${this.configService.getOrThrow<string>("router.backendPublicUrl")}${routes.backend.MESSAGE_STATUS_WEBHOOK}`
 
 		// Use the SMS provider to validate the webhook
 		const isValid = this.smsProvider.validateWebhook(headers, body, url)
@@ -62,7 +62,7 @@ class MessageInboundWebhookGuard implements CanActivate {
 		const body = request.body
 
 		// Construct the URL for the webhook
-		const url = `${this.configService.getOrThrow<string>("router.backendUrl")}${routes.backend.INBOUND_MESSAGE_WEBHOOK}`
+		const url = `${this.configService.getOrThrow<string>("router.backendPublicUrl")}${routes.backend.INBOUND_MESSAGE_WEBHOOK}`
 
 		// Use the SMS provider to validate the webhook
 		const isValid = this.smsProvider.validateWebhook(headers, body, url)

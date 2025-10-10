@@ -1,5 +1,7 @@
 "use client"
 
+import { useId } from "react"
+
 import { Button } from "@repo/ui/components/button"
 import {
 	Dialog,
@@ -10,17 +12,19 @@ import {
 	DialogTitle
 } from "@repo/ui/components/dialog"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
-import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
+import { Spinner } from "@repo/ui/components/spinner"
 
 import { useCreateOrganization } from "~/features/organization/hooks/use-create-organization"
-import { placeholders } from "~/lib/placeholders"
+import { PLACEHOLDERS } from "~/lib/placeholders"
 
 type CreateOrganizationDialogProps = {
 	open: boolean
 	setOpen: (open: boolean) => void
 }
 const CreateOrganizationDialog = ({ open, setOpen }: CreateOrganizationDialogProps) => {
+	const FORM_ID = useId()
+
 	const { loading, createOrganizationForm, handleCreateOrganization } = useCreateOrganization()
 
 	return (
@@ -36,7 +40,14 @@ const CreateOrganizationDialog = ({ open, setOpen }: CreateOrganizationDialogPro
 						these later.
 					</DialogDescription>
 				</DialogHeader>
-				<form className="flex flex-col gap-4">
+				<form
+					className="flex flex-col gap-4"
+					id={FORM_ID}
+					onSubmit={async (e) => {
+						e.preventDefault()
+						await handleCreateOrganization()
+					}}
+				>
 					<Form {...createOrganizationForm}>
 						<FormField
 							control={createOrganizationForm.control}
@@ -47,7 +58,7 @@ const CreateOrganizationDialog = ({ open, setOpen }: CreateOrganizationDialogPro
 									<FormControl>
 										<Input
 											{...field}
-											placeholder={placeholders.ORGANIZATION_NAME}
+											placeholder={PLACEHOLDERS.organizationName}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -63,7 +74,7 @@ const CreateOrganizationDialog = ({ open, setOpen }: CreateOrganizationDialogPro
 									<FormControl>
 										<Input
 											{...field}
-											placeholder={placeholders.EMAIL}
+											placeholder={PLACEHOLDERS.email}
 											type="email"
 										/>
 									</FormControl>
@@ -76,9 +87,10 @@ const CreateOrganizationDialog = ({ open, setOpen }: CreateOrganizationDialogPro
 				<DialogFooter>
 					<Button
 						disabled={loading}
-						onClick={handleCreateOrganization}
+						form={FORM_ID}
+						type="submit"
 					>
-						{loading ? <Icon name={IconName.SPINNER} /> : <Icon name={IconName.PLUS} />}
+						{loading && <Spinner />}
 						Create
 					</Button>
 				</DialogFooter>

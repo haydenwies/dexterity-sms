@@ -5,28 +5,36 @@ import { redirect } from "next/navigation"
 import { routes } from "@repo/routes"
 import { SESSION_COOKIE } from "@repo/types/auth"
 
-import { sessionMiddleware } from "~/actions/utils"
-import { deleteCookie } from "~/lib/cookies"
-import { getBackendUrl } from "~/lib/url"
+import { actionError, ActionResult } from "~/lib/actions"
+import { deleteCookie, getCookie } from "~/lib/cookies"
+import { getBackendPrivateUrl } from "~/lib/url"
 
-const signOut = async (): Promise<void> => {
-	const sessionToken = await sessionMiddleware()
+const signOut = async (): Promise<ActionResult> => {
+	const sessionToken = await getCookie(SESSION_COOKIE)
+	if (!sessionToken) throw new Error("Unauthorized")
 
-	const backendUrl = getBackendUrl()
-	const res = await fetch(`${backendUrl}${routes.backend.SIGN_OUT}`, {
-		method: "POST",
-		headers: {
-			"Authorization": `Bearer ${sessionToken}`
+	const backendUrl = getBackendPrivateUrl()
+
+	try {
+		const res = await fetch(`${backendUrl}${routes.backend.SIGN_OUT}`, {
+			method: "POST",
+			headers: {
+				"Authorization": `Bearer ${sessionToken}`
+			}
+		})
+		if (!res.ok) {
+			const errData = await res.json()
+			return actionError(errData.message)
 		}
-	})
-	if (!res.ok) {
-		const errData = await res.json()
-		throw new Error(errData.message)
+
+		await deleteCookie(SESSION_COOKIE)
+	} catch (err: unknown) {
+		if (err instanceof Error) console.error(err.message, err.stack)
+
+		return actionError()
 	}
 
-	await deleteCookie(SESSION_COOKIE)
-
-	return redirect(routes.web.SIGN_IN)
+	redirect(routes.web.SIGN_IN)
 }
 
 export { signOut }

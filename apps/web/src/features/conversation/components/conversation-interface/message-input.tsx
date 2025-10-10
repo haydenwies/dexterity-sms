@@ -5,7 +5,8 @@ import { Form, FormControl, FormField, FormItem } from "@repo/ui/components/form
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
 import { cn } from "@repo/ui/lib/utils"
-import { useSendMessage } from "../../hooks/use-send-message"
+
+import { useSendMessage } from "~/features/conversation/hooks/use-send-message"
 
 type MessageInputProps = {
 	className?: string

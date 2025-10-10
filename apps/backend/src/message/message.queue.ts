@@ -19,7 +19,6 @@ enum MessageQueueJobName {
 type MessageQueueSendJobData = {
 	organizationId: string
 	messageId: string
-	bypassUnsubscribeCheck?: boolean
 }
 
 type MessageQueueJob = Job<MessageQueueSendJobData, void, MessageQueueJobName.SEND>
@@ -47,27 +46,25 @@ class MessageQueueConsumer extends WorkerHost {
 
 	private async processSend(data: MessageQueueSendJobData): Promise<void> {
 		// Extract data
-		const { organizationId, messageId, bypassUnsubscribeCheck = false } = data
+		const { organizationId, messageId } = data
 
 		// Find message
 		const message = await this.messageRepository.find(organizationId, messageId)
 		if (!message) throw new NotFoundException("Message not found")
 
 		// Check if the recipient is unsubscribed (unless bypassed)
-		if (!bypassUnsubscribeCheck) {
-			const isUnsubscribed = await this.unsubscribeService.isUnsubscribed(organizationId, message.to)
-			if (isUnsubscribed) {
-				this.logger.warn(`Cannot send message ${message.id} to unsubscribed phone number: ${message.to.value}`)
+		const isUnsubscribed = await this.unsubscribeService.isUnsubscribed(organizationId, message.to)
+		if (isUnsubscribed) {
+			this.logger.warn(`Cannot send message ${message.id} to unsubscribed phone number: ${message.to.value}`)
 
-				// Mark message as failed due to unsubscribe
-				message.updateStatus(MessageStatus.FAILED)
-				await this.messageRepository.update(message)
-				return
-			}
-		} else this.logger.log(`Bypassing unsubscribe check for message ${message.id}`)
+			// Mark message as failed due to unsubscribe
+			message.updateStatus(MessageStatus.FAILED)
+			await this.messageRepository.update(message)
+			return
+		}
 
 		try {
-			const statusCallbackUrl = `${this.configService.getOrThrow<string>("router.backendUrl")}${routes.backend.MESSAGE_STATUS_WEBHOOK}`
+			const statusCallbackUrl = `${this.configService.getOrThrow<string>("router.backendPublicUrl")}${routes.backend.MESSAGE_STATUS_WEBHOOK}`
 
 			// Send via SMS provider
 			const result = await this.smsProvider.send({

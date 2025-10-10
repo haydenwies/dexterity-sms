@@ -42,12 +42,13 @@ const UpdateCampaignProvider = ({ organizationId, campaign, children }: UpdateCa
 		form.handleSubmit(async (data: UpdateCampaignDto) => {
 			setSaveState(SaveState.SAVING)
 
-			try {
-				await updateCampaign(organizationId, campaign.id, data)
-				setSaveState(SaveState.SAVED)
-			} catch {
+			const res = await updateCampaign(organizationId, campaign.id, data)
+			if (!res.success) {
 				setSaveState(SaveState.ERROR)
+				return
 			}
+
+			setSaveState(SaveState.SAVED)
 		})
 	)
 

@@ -1,5 +1,7 @@
 "use client"
 
+import { useId } from "react"
+
 import { type ContactModel } from "@repo/types/contact"
 import { Button } from "@repo/ui/components/button"
 import {
@@ -14,9 +16,10 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
 import { PhoneInput } from "@repo/ui/components/phone-input"
+import { Spinner } from "@repo/ui/components/spinner"
 
 import { useUpdateContact } from "~/features/contact/hooks/use-update-contact"
-import { placeholders } from "~/lib/placeholders"
+import { PLACEHOLDERS } from "~/lib/placeholders"
 
 type ContactTableUpdateDialogProps = {
 	contact: ContactModel
@@ -24,6 +27,8 @@ type ContactTableUpdateDialogProps = {
 	setOpen: (open: boolean) => void
 }
 const ContactTableUpdateDialog = ({ contact, open, setOpen }: ContactTableUpdateDialogProps) => {
+	const FORM_ID = useId()
+
 	const { loading, form, handleReset, handleUpdate } = useUpdateContact(contact)
 
 	return (
@@ -34,9 +39,16 @@ const ContactTableUpdateDialog = ({ contact, open, setOpen }: ContactTableUpdate
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>Update Contact</DialogTitle>
-					<DialogDescription>Update the contact information for the selected contact.</DialogDescription>
+					<DialogDescription>Update information for the selected contact.</DialogDescription>
 				</DialogHeader>
-				<form className="flex flex-col gap-4">
+				<form
+					className="flex flex-col gap-4"
+					id={FORM_ID}
+					onSubmit={(e) => {
+						e.preventDefault()
+						handleUpdate({ onSuccess: () => setOpen(false) })
+					}}
+				>
 					<Form {...form}>
 						<FormField
 							control={form.control}
@@ -47,7 +59,7 @@ const ContactTableUpdateDialog = ({ contact, open, setOpen }: ContactTableUpdate
 									<FormControl>
 										<Input
 											{...field}
-											placeholder={placeholders.FIRST_NAME}
+											placeholder={PLACEHOLDERS.firstName}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -63,7 +75,7 @@ const ContactTableUpdateDialog = ({ contact, open, setOpen }: ContactTableUpdate
 									<FormControl>
 										<Input
 											{...field}
-											placeholder={placeholders.LAST_NAME}
+											placeholder={PLACEHOLDERS.lastName}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -79,7 +91,7 @@ const ContactTableUpdateDialog = ({ contact, open, setOpen }: ContactTableUpdate
 									<FormControl>
 										<Input
 											{...field}
-											placeholder={placeholders.EMAIL}
+											placeholder={PLACEHOLDERS.email}
 											type="email"
 										/>
 									</FormControl>
@@ -96,7 +108,7 @@ const ContactTableUpdateDialog = ({ contact, open, setOpen }: ContactTableUpdate
 									<FormControl>
 										<PhoneInput
 											{...field}
-											placeholder={placeholders.PHONE}
+											placeholder={PLACEHOLDERS.phone}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -115,10 +127,11 @@ const ContactTableUpdateDialog = ({ contact, open, setOpen }: ContactTableUpdate
 						Reset
 					</Button>
 					<Button
-						disabled={loading}
-						onClick={() => handleUpdate({ onSuccess: () => setOpen(false) })}
+						disabled={loading || !form.formState.isDirty}
+						form={FORM_ID}
+						type="submit"
 					>
-						<Icon name={IconName.SAVE} />
+						{loading && <Spinner />}
 						Save
 					</Button>
 				</DialogFooter>

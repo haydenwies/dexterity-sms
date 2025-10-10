@@ -14,13 +14,14 @@ async function bootstrap() {
 
 	// Configure CORS to allow credentials
 	app.enableCors({
-		origin: process.env.WEB_URL || "http://localhost:3000",
+		origin: process.env.WEB_PUBLIC_URL || "http://localhost:3000",
 		credentials: true,
 		methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
 		allowedHeaders: ["Content-Type", "Authorization"]
 	})
 
-	await app.listen(process.env.PORT ?? 8080)
+	// Binding to hostname :: requied to listen on IPv4 and IPv6
+	await app.listen(process.env.PORT ?? 5005, "::")
 }
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises

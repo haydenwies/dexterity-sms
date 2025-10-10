@@ -53,20 +53,24 @@ const useUploadContactCsv = () => {
 			if (!csv) return
 			setLoading(true)
 
-			try {
-				if (!params.organizationId || Array.isArray(params.organizationId))
-					throw new Error("Organization ID is required")
-
-				await uploadContactCsv(params.organizationId, csv, data)
-				onSuccess?.()
-			} catch (err: unknown) {
-				if (err instanceof Error) toast.error(err.message)
-				else toast.error("An unknown error occurred")
-
+			if (!params.organizationId || Array.isArray(params.organizationId)) {
+				toast.error("Organization ID is required")
 				onError?.()
-			} finally {
 				setLoading(false)
+				return
 			}
+
+			const res = await uploadContactCsv(params.organizationId, csv, data)
+			if (!res.success) {
+				toast.error(res.error)
+				onError?.()
+				setLoading(false)
+				return
+			}
+
+			onSuccess?.()
+
+			setLoading(false)
 		})()
 	}
 

@@ -1,16 +1,16 @@
 import "server-only"
 
 import { routes } from "@repo/routes"
-import { type SessionDto } from "@repo/types/auth"
+import { SESSION_COOKIE, type SessionDto } from "@repo/types/auth"
 
-import { safeSessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/url"
+import { getCookie } from "~/lib/cookies"
+import { getBackendPrivateUrl } from "~/lib/url"
 
 const getSession = async (): Promise<SessionDto | undefined> => {
-	const sessionToken = await safeSessionMiddleware()
+	const sessionToken = await getCookie(SESSION_COOKIE)
 	if (!sessionToken) return undefined
 
-	const backendUrl = getBackendUrl()
+	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.GET_SESSION}`, {
 		method: "GET",
 		headers: {

@@ -64,6 +64,7 @@ class Organization {
 
 	update(params: OrganizationUpdateParams) {
 		this._name = params.name
+		this._email = params.email
 		this._updatedAt = new Date()
 	}
 

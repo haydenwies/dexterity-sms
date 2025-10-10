@@ -12,7 +12,12 @@ class Email {
 	}
 
 	private static parseValue(value: string): string {
-		const parseRes = z.email().safeParse(value)
+		const parseRes = z
+			.email()
+			.trim()
+			.toLowerCase()
+			.max(40, "Email must be less than 40 characters")
+			.safeParse(value)
 		if (!parseRes.success) throw new Error("Invalid email")
 
 		return parseRes.data

@@ -3,8 +3,8 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { type SignUpDto, signUpDtoSchema } from "@repo/types/auth"
-
 import { toast } from "@repo/ui/components/sonner"
+
 import { signUp } from "~/actions/auth/sign-up"
 
 const useSignUp = () => {
@@ -24,14 +24,12 @@ const useSignUp = () => {
 	const handleSignUp = signUpForm.handleSubmit(async (data) => {
 		setLoading(true)
 
-		try {
-			await signUp(data)
-		} catch (err: unknown) {
-			if (err instanceof Error) toast.error(err.message)
-			else toast.error("An unknown error occurred")
-		} finally {
-			setLoading(false)
+		const res = await signUp(data)
+		if (!res.success) {
+			toast.error(res.error)
 		}
+
+		setLoading(false)
 	})
 
 	return { loading, signUpForm, handleSignUp }

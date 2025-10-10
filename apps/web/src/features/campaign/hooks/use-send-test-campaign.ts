@@ -28,22 +28,33 @@ const useSendTestCampaign = () => {
 		form.handleSubmit(async (data) => {
 			setLoading(true)
 
-			try {
-				const organizationId = params.organizationId
-				if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
-				const campaignId = params.campaignId
-				if (!campaignId || Array.isArray(campaignId)) throw new Error("Campaign ID is required")
-
-				await sendTestCampaign(organizationId, campaignId, data)
-				onSuccess?.()
-			} catch (err: unknown) {
-				if (err instanceof Error) toast.error(err.message)
-				else toast.error("An unknown error occurred")
-
+			const organizationId = params.organizationId
+			if (!organizationId || Array.isArray(organizationId)) {
+				toast.error("Organization ID is required")
 				onError?.()
-			} finally {
 				setLoading(false)
+				return
 			}
+			const campaignId = params.campaignId
+			if (!campaignId || Array.isArray(campaignId)) {
+				toast.error("Campaign ID is required")
+				onError?.()
+				setLoading(false)
+				return
+			}
+
+			const res = await sendTestCampaign(organizationId, campaignId, data)
+			if (!res.success) {
+				toast.error(res.error)
+				onError?.()
+				setLoading(false)
+				return
+			}
+
+			toast.success("Your test has been sent")
+			onSuccess?.()
+
+			setLoading(false)
 		})()
 	}
 

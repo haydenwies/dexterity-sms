@@ -3,10 +3,11 @@ import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { sendCampaignDtoSchema, type SendCampaignDto } from "@repo/types/campaign"
+import { routes } from "@repo/routes"
+import { type SendCampaignDto } from "@repo/types/campaign"
 import { toast } from "@repo/ui/components/sonner"
 
-import { routes } from "@repo/routes"
+import z from "zod"
 import { sendCampaign } from "~/actions/campaign/send-campaign"
 
 const useSendCampaign = () => {
@@ -15,8 +16,11 @@ const useSendCampaign = () => {
 	const router = useRouter()
 	const params = useParams()
 
+	// TODO: Fix this
+	// Required because sendCampaignDtoSchema includes `z.coerce.date()`
+	// zodResolver doesn't support this right now
 	const form = useForm<SendCampaignDto>({
-		resolver: zodResolver(sendCampaignDtoSchema),
+		resolver: zodResolver(z.object({ scheduledAt: z.date().optional() })),
 		defaultValues: {
 			scheduledAt: undefined
 		}
@@ -27,19 +31,29 @@ const useSendCampaign = () => {
 	const handleSendCampaign = form.handleSubmit(async (data) => {
 		setLoading(true)
 
-		try {
-			const organizationId = params.organizationId
-			if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
-			const campaignId = params.campaignId
-			if (!campaignId || Array.isArray(campaignId)) throw new Error("Campaign ID is required")
-
-			await sendCampaign(organizationId, campaignId, data)
-
-			router.push(routes.web.ALL_CAMPAIGNS(organizationId))
-		} catch (err: unknown) {
-			if (err instanceof Error) toast.error(err.message)
-			else toast.error("An unknown error occurred")
+		const organizationId = params.organizationId
+		if (!organizationId || Array.isArray(organizationId)) {
+			toast.error("Organization ID is required")
+			setLoading(false)
+			return
 		}
+		const campaignId = params.campaignId
+		if (!campaignId || Array.isArray(campaignId)) {
+			toast.error("Campaign ID is required")
+			setLoading(false)
+			return
+		}
+
+		const res = await sendCampaign(organizationId, campaignId, data)
+		if (!res.success) {
+			toast.error(res.error)
+			setLoading(false)
+			return
+		}
+
+		toast.success("Your campaign has been scheduled for sending")
+
+		router.push(routes.web.ALL_CAMPAIGNS(organizationId))
 	})
 
 	return { loading, form, formValues, handleSendCampaign }

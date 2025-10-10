@@ -206,9 +206,6 @@ class MessageWebhookService {
 
 				// Unsubscribe the phone number
 				await this.unsubscribeService.unsubscribe(organizationId, from)
-
-				// Send confirmation reply
-				await this.sendAutoReply(organizationId, to, from, this.unsubscribeService.getUnsubscribeReplyMessage())
 			}
 
 			// Check for resubscribe keywords
@@ -217,42 +214,9 @@ class MessageWebhookService {
 
 				// Resubscribe the phone number
 				await this.unsubscribeService.resubscribe(organizationId, from)
-
-				// Send confirmation reply
-				await this.sendAutoReply(organizationId, to, from, this.unsubscribeService.getResubscribeReplyMessage())
 			}
 		} catch (err: unknown) {
 			this.logger.error("Error processing unsubscribe keywords", err)
-		}
-	}
-
-	/**
-	 * Send auto-reply message (bypasses unsubscribe check)
-	 */
-	private async sendAutoReply(organizationId: string, from: Phone, to: Phone, body: string): Promise<void> {
-		// Create message for auto-reply
-		const message = Message.create({
-			organizationId,
-			direction: MessageDirection.OUTBOUND,
-			from,
-			to,
-			body
-		})
-
-		try {
-			const createdMessage = await this.messageRepository.create(message)
-
-			// Emit message created event for conversation handling
-			await this.eventEmitter.emitAsync(Event.MESSAGE_CREATED, toMessageCreatedEvent(createdMessage))
-
-			// Queue for sending with bypass flag (internal only)
-			await this.messageQueue.add(MessageQueueJobName.SEND, {
-				organizationId: createdMessage.organizationId,
-				messageId: createdMessage.id,
-				bypassUnsubscribeCheck: true
-			})
-		} catch (err: unknown) {
-			this.logger.error("Failed to queue auto-reply", err)
 		}
 	}
 }

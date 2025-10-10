@@ -17,18 +17,25 @@ import { OrganizationService } from "~/organization/organization.service"
 
 @Injectable()
 class BillingService {
+	private readonly logger = new Logger(BillingService.name)
 	private readonly stripe: Stripe
 
-	public readonly SENDER_EXTERNAL_ID = "price_1SAsfeRfl3ViJIjUho0R5Y0g"
-	public readonly SMS_CREDIT_EXTERNAL_ID = "price_1SAsdGRfl3ViJIjUkVPpxU8h"
-	public readonly SMS_CREDIT_METER_ID = "sms_credit"
+	public readonly SENDER_PRICE_ID: string
+	public readonly SENDER_REMOVAL_PRICE_ID: string
+	public readonly SMS_CREDIT_PRICE_ID: string
+	public readonly SMS_CREDIT_METER_ID: string
 
 	constructor(
-		private readonly configService: ConfigService,
 		private readonly subscriptionRepository: SubscriptionRepository,
+		private readonly configService: ConfigService,
 		private readonly organizationService: OrganizationService
 	) {
 		this.stripe = new Stripe(this.configService.getOrThrow<string>("billing.stripeApiKey"))
+
+		this.SENDER_PRICE_ID = this.configService.getOrThrow<string>("billing.stripeSenderPriceId")
+		this.SENDER_REMOVAL_PRICE_ID = this.configService.getOrThrow<string>("billing.stripeSenderRemovalPriceId")
+		this.SMS_CREDIT_PRICE_ID = this.configService.getOrThrow<string>("billing.stripeSmsCreditPriceId")
+		this.SMS_CREDIT_METER_ID = this.configService.getOrThrow<string>("billing.stripeSmsCreditMeterId")
 	}
 
 	private async getStripeCustomerId(organizationId: string): Promise<string> {
@@ -36,6 +43,8 @@ class BillingService {
 
 		let billingAccountId = organization.externalBillingId
 		if (!billingAccountId) {
+			this.logger.warn(`No billing account found for organization ${organizationId}, creating one`)
+
 			const customer = await this.stripe.customers.create({
 				name: organization.name,
 				email: organization.email,
@@ -76,7 +85,7 @@ class BillingService {
 			mode: "subscription",
 			success_url: dto.callbackUrl,
 			cancel_url: dto.callbackUrl,
-			line_items: [{ price: this.SMS_CREDIT_EXTERNAL_ID }]
+			line_items: [{ price: this.SMS_CREDIT_PRICE_ID }]
 		})
 
 		return checkoutSession
@@ -158,15 +167,15 @@ class BillingWebhookService {
 			return
 		}
 
-		const { customer: externalBillingAccountId } = event?.data?.object as { customer?: string }
-		if (!externalBillingAccountId) {
-			this.logger.warn("No external billing account ID found in webhook event")
+		const { customer: externalBillingId } = event?.data?.object as { customer?: string }
+		if (!externalBillingId) {
+			this.logger.warn("No external billing ID found in webhook event")
 			return
 		}
 
-		const organization = await this.organizationService.getByExternalBillingId(externalBillingAccountId)
+		const organization = await this.organizationService.getByExternalBillingId(externalBillingId)
 		if (!organization.externalBillingId) {
-			this.logger.warn(`No organization found with external billing account ID ${externalBillingAccountId}`)
+			this.logger.warn(`No organization found with external billing account ID ${externalBillingId}`)
 			return
 		}
 

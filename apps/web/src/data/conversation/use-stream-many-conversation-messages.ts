@@ -4,10 +4,9 @@ import { useCallback, useEffect, useState } from "react"
 import { routes } from "@repo/routes"
 import { type MessageModel } from "@repo/types/message"
 
-import { getBackendUrl } from "~/lib/url"
+import { getBackendPublicUrl } from "~/lib/url"
 
 const useStreamManyConversationMessages = (initalMessages: MessageModel[]) => {
-	const [isConnected, setIsConnected] = useState<boolean>(false)
 	const [messages, setMessages] = useState<MessageModel[]>(initalMessages)
 
 	const params = useParams()
@@ -20,7 +19,7 @@ const useStreamManyConversationMessages = (initalMessages: MessageModel[]) => {
 			throw new Error("Conversation ID is required")
 
 		// Get URL and create event source
-		const url = `${getBackendUrl()}${routes.backend.STREAM_MANY_CONVERSATION_MESSAGES({
+		const url = `${getBackendPublicUrl()}${routes.backend.STREAM_MANY_CONVERSATION_MESSAGES({
 			organizationId: params.organizationId,
 			conversationId: params.conversationId
 		})}`
@@ -33,11 +32,7 @@ const useStreamManyConversationMessages = (initalMessages: MessageModel[]) => {
 	}, [params.organizationId, params.conversationId])
 
 	useEffect(() => {
-		if (isConnected) return
-
 		const eventSource = connect()
-
-		eventSource.onopen = () => setIsConnected(true)
 
 		// Handle on message event
 		eventSource.onmessage = (ev: MessageEvent) => {
@@ -50,18 +45,9 @@ const useStreamManyConversationMessages = (initalMessages: MessageModel[]) => {
 			})
 		}
 
-		// Handle on error event
-		eventSource.onerror = () => {
-			eventSource.close()
-			setIsConnected(false)
-		}
-
 		// Clean up
-		return () => {
-			eventSource.close()
-			setIsConnected(false)
-		}
-	}, [isConnected, connect])
+		return () => eventSource.close()
+	}, [connect])
 
 	return messages
 }

@@ -9,8 +9,17 @@ class UnsubscribeService {
 	private readonly logger = new Logger(UnsubscribeService.name)
 
 	// Configuration constants
-	private readonly UNSUBSCRIBE_KEYWORDS = ["STOP", "QUIT"]
-	private readonly RESUBSCRIBE_KEYWORDS = ["START"]
+	private readonly UNSUBSCRIBE_KEYWORDS = [
+		"STOP",
+		"STOPALL",
+		"UNSUBSCRIBE",
+		"CANCEL",
+		"END",
+		"REVOKE",
+		"OPTOUT",
+		"QUIT"
+	]
+	private readonly RESUBSCRIBE_KEYWORDS = ["START", "YES", "UNSTOP"]
 	private readonly UNSUBSCRIBE_REPLY = "You have been unsubscribed. Reply START to resubscribe."
 	private readonly RESUBSCRIBE_REPLY = "You have been resubscribed to messages."
 
@@ -83,20 +92,6 @@ class UnsubscribeService {
 	isResubscribeMessage(body: string): boolean {
 		const normalizedBody = body.trim().toUpperCase()
 		return this.RESUBSCRIBE_KEYWORDS.includes(normalizedBody)
-	}
-
-	/**
-	 * Get the appropriate auto-reply message for unsubscribe
-	 */
-	getUnsubscribeReplyMessage(): string {
-		return this.UNSUBSCRIBE_REPLY
-	}
-
-	/**
-	 * Get the appropriate auto-reply message for resubscribe
-	 */
-	getResubscribeReplyMessage(): string {
-		return this.RESUBSCRIBE_REPLY
 	}
 }
 

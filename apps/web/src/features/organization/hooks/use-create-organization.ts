@@ -21,14 +21,13 @@ const useCreateOrganization = () => {
 	const handleCreateOrganization = createOrganizationForm.handleSubmit(async (data) => {
 		setLoading(true)
 
-		try {
-			await createOrganization(data)
-		} catch (err: unknown) {
-			if (err instanceof Error) toast.error(err.message)
-			else toast.error("An unknown error occurred")
-		} finally {
-			setLoading(false)
+		const res = await createOrganization(data)
+		if (!res.success) {
+			toast.error(res.error)
+			return
 		}
+
+		setLoading(false)
 	})
 
 	return {

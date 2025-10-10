@@ -6,7 +6,7 @@ import { type CreateOrganizationDto, type UpdateOrganizationDto } from "@repo/ty
 import { Event } from "~/common/event.types"
 import { Member } from "~/organization/entities/member.entity"
 import { Organization } from "~/organization/entities/organization.entity"
-import { toOrganizationUpdatedEvent } from "~/organization/organization.utils"
+import { toOrganizationCreatedEvent, toOrganizationUpdatedEvent } from "~/organization/organization.utils"
 import { MemberRepository } from "~/organization/repositories/member.repository"
 import { OrganizationRepository } from "~/organization/repositories/organization.repository"
 
@@ -70,6 +70,9 @@ class OrganizationService {
 			organizationId: createdOrganization.id
 		})
 		await this.memberRepository.create(member)
+
+		// Emit organization created event
+		await this.eventEmitter.emitAsync(Event.ORGANIZATION_CREATED, toOrganizationCreatedEvent(createdOrganization))
 
 		return createdOrganization
 	}

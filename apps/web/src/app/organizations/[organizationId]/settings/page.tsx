@@ -90,7 +90,7 @@ const OrganizationSettingsPage = async ({ params }: PageProps) => {
 						<AnnotatedContent>
 							<Card>
 								<CardContent className="flex flex-col items-center gap-4">
-									<Suspense fallback={<SubscriptionCardSkeleton />}>
+									<Suspense fallback={<SubscriptionCardSkeleton className="w-full" />}>
 										<SubscriptionCard
 											className="w-full"
 											subscriptionPromise={subscriptionPromise}

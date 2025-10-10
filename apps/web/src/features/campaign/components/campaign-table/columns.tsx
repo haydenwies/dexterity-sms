@@ -67,7 +67,7 @@ const getCampaignTableColumns = (): ColumnDef<CampaignModel>[] => [
 
 			if (!campaign.body) return <p className="text-muted-foreground">--</p>
 
-			return <p>{campaign.body}</p>
+			return <p className="max-w-lg whitespace-normal break-words">{campaign.body}</p>
 		}
 	},
 	{

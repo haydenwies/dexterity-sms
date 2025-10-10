@@ -36,6 +36,7 @@ const getContactTableColumns = (): ColumnDef<ContactModel>[] => {
 
 				return (
 					<span>
+						{!contact.firstName && !contact.lastName && <p className="text-muted-foreground">--</p>}
 						{contact.firstName} <span className="font-semibold">{contact.lastName}</span>
 						<p className="text-muted-foreground text-xs">
 							Last updated {formatDate(contact.updatedAt, "MMM d, yyyy")}

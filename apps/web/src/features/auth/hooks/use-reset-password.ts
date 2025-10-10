@@ -22,14 +22,12 @@ const useResetPassword = (token: string) => {
 	const handleResetPassword = resetPasswordForm.handleSubmit(async (data) => {
 		setLoading(true)
 
-		try {
-			await resetPassword(data)
-		} catch (err: unknown) {
-			if (err instanceof Error) toast.error(err.message)
-			else toast.error("An unknown error occurred")
-		} finally {
-			setLoading(false)
+		const res = await resetPassword(data)
+		if (!res.success) {
+			toast.error(res.error)
 		}
+
+		setLoading(false)
 	})
 
 	return { loading, resetPasswordForm, handleResetPassword }

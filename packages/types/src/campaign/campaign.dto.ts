@@ -1,4 +1,4 @@
-import z from "zod"
+import z, { ZodType } from "zod"
 
 // #region CreateCampaignDto
 
@@ -47,7 +47,7 @@ type SendTestCampaignDto = {
 }
 
 const sendTestCampaignDtoSchema = z.object({
-	to: z.e164()
+	to: z.e164("Invalid phone number")
 })
 
 // #endregion
@@ -58,8 +58,8 @@ type SendCampaignDto = {
 	scheduledAt?: Date
 }
 
-const sendCampaignDtoSchema = z.object({
-	scheduledAt: z.date().optional()
+const sendCampaignDtoSchema: ZodType<SendCampaignDto> = z.object({
+	scheduledAt: z.union([z.string().trim().pipe(z.coerce.date()), z.date().optional()])
 })
 
 // #endregion

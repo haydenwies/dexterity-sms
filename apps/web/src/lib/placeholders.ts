@@ -1,10 +1,10 @@
-const placeholders = {
-	EMAIL: "contact@acmeinc.com",
-	PASSWORD: "••••••••",
-	FIRST_NAME: "John",
-	LAST_NAME: "Doe",
-	ORGANIZATION_NAME: "Acme Inc",
-	PHONE: "(123) 456-7890"
-}
+const PLACEHOLDERS = {
+	email: "contact@acmeinc.com",
+	password: "••••••••",
+	firstName: "John",
+	lastName: "Doe",
+	organizationName: "Acme Inc",
+	phone: "(123) 456-7890"
+} as const
 
-export { placeholders }
+export { PLACEHOLDERS }

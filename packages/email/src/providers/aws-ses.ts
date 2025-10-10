@@ -1,4 +1,5 @@
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses"
+
 import { EmailPayload, EmailProvider } from "../types"
 
 type SesProviderConfig = {

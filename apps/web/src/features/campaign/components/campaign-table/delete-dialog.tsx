@@ -11,6 +11,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle
 } from "@repo/ui/components/alert-dialog"
+import { Spinner } from "@repo/ui/components/spinner"
 
 import { useDeleteCampaign } from "~/features/campaign/hooks/use-delete-campaign"
 
@@ -29,7 +30,7 @@ const CampaignTableDeleteDialog = ({ campaigns, open, setOpen }: CampaignTableDe
 		>
 			<AlertDialogContent>
 				<AlertDialogHeader>
-					<AlertDialogTitle>Delete campaign{campaigns.length > 1 && "s"}?</AlertDialogTitle>
+					<AlertDialogTitle>Delete Campaign{campaigns.length > 1 && "s"}?</AlertDialogTitle>
 					<AlertDialogDescription>
 						Are you sure you want to delete {campaigns.length > 1 ? campaigns.length : "this"} campaign
 						{campaigns.length > 1 && "s"}? This action cannot be undone.
@@ -48,6 +49,7 @@ const CampaignTableDeleteDialog = ({ campaigns, open, setOpen }: CampaignTableDe
 							)
 						}}
 					>
+						{loading && <Spinner />}
 						Delete
 					</AlertDialogAction>
 				</AlertDialogFooter>

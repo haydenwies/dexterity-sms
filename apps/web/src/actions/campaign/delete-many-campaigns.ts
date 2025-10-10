@@ -1,26 +1,38 @@
 "use server"
 
 import { routes } from "@repo/routes"
-import { DeleteManyCampaignsDto } from "@repo/types/campaign"
+import { SESSION_COOKIE } from "@repo/types/auth"
+import { type DeleteManyCampaignsDto } from "@repo/types/campaign"
 
-import { sessionMiddleware } from "~/actions/utils"
-import { getBackendUrl } from "~/lib/url"
+import { actionError, type ActionResult, actionSuccess } from "~/lib/actions"
+import { getCookie } from "~/lib/cookies"
+import { getBackendPrivateUrl } from "~/lib/url"
 
-const deleteManyCampaigns = async (organizationId: string, dto: DeleteManyCampaignsDto): Promise<void> => {
-	const sessionToken = await sessionMiddleware()
+const deleteManyCampaigns = async (organizationId: string, dto: DeleteManyCampaignsDto): Promise<ActionResult> => {
+	const sessionToken = await getCookie(SESSION_COOKIE)
+	if (!sessionToken) throw new Error("Unauthorized")
 
-	const backendUrl = getBackendUrl()
-	const res = await fetch(`${backendUrl}${routes.backend.DELETE_MANY_CAMPAIGNS(organizationId)}`, {
-		method: "DELETE",
-		body: JSON.stringify(dto),
-		headers: {
-			"Authorization": `Bearer ${sessionToken}`,
-			"Content-Type": "application/json"
+	const backendUrl = getBackendPrivateUrl()
+
+	try {
+		const res = await fetch(`${backendUrl}${routes.backend.DELETE_MANY_CAMPAIGNS(organizationId)}`, {
+			method: "DELETE",
+			body: JSON.stringify(dto),
+			headers: {
+				"Authorization": `Bearer ${sessionToken}`,
+				"Content-Type": "application/json"
+			}
+		})
+		if (!res.ok) {
+			const errData = await res.json()
+			return actionError(errData.message)
 		}
-	})
-	if (!res.ok) {
-		const errData = await res.json()
-		throw new Error(errData.message)
+
+		return actionSuccess()
+	} catch (err: unknown) {
+		if (err instanceof Error) console.error(err.message, err.stack)
+
+		return actionError()
 	}
 }
 

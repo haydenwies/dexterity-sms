@@ -192,11 +192,11 @@ const messageTable = pgTable("message", {
 		.notNull(),
 	conversationId: uuid("conversation_id").references(() => conversationTable.id, {
 		onUpdate: "cascade",
-		onDelete: "cascade"
+		onDelete: "set null"
 	}),
 	campaignId: uuid("campaign_id").references(() => campaignTable.id, {
 		onUpdate: "cascade",
-		onDelete: "cascade"
+		onDelete: "set null"
 	}),
 	direction: text("direction").notNull(),
 	status: text("status").notNull(),
@@ -205,7 +205,6 @@ const messageTable = pgTable("message", {
 	body: text("body").notNull(),
 	sentAt: timestamp("sent_at", { mode: "date" }),
 	deliveredAt: timestamp("delivered_at", { mode: "date" }),
-	readAt: timestamp("read_at", { mode: "date" }),
 	createdAt: timestamp("created_at", { mode: "date" }).notNull(),
 	updatedAt: timestamp("updated_at", { mode: "date" }).notNull()
 })

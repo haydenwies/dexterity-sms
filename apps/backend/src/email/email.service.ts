@@ -2,7 +2,7 @@ import { Injectable, Logger } from "@nestjs/common"
 import { ConfigService } from "@nestjs/config"
 
 import { type EmailProvider } from "@repo/email"
-import { AwsSesProvider } from "@repo/email/providers/aws-ses"
+import { ResendProvider } from "@repo/email/providers/resend"
 import { resetPassword, type ResetPasswordProps } from "@repo/email/templates"
 
 @Injectable()
@@ -11,11 +11,9 @@ class EmailService {
 	private readonly emailProvider: EmailProvider
 
 	constructor(private readonly configService: ConfigService) {
-		this.emailProvider = new AwsSesProvider({
-			region: "us-east-1",
-			accessKeyId: this.configService.getOrThrow<string>("email.awsSesAccessKeyId"),
-			secretAccessKey: this.configService.getOrThrow<string>("email.awsSesSecretAccessKey"),
-			sourceEmail: this.configService.getOrThrow<string>("email.awsSesSourceEmail")
+		this.emailProvider = new ResendProvider({
+			apiKey: this.configService.getOrThrow<string>("email.resendApiKey"),
+			from: this.configService.getOrThrow<string>("email.resendFrom")
 		})
 	}
 	async sendResetPassword(to: string, params: ResetPasswordProps): Promise<void> {

@@ -17,6 +17,7 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@repo/ui/components/form"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover"
+import { Spinner } from "@repo/ui/components/spinner"
 import { TimeInput } from "@repo/ui/components/time-input"
 import { cn } from "@repo/ui/lib/utils"
 
@@ -58,7 +59,7 @@ const SendCampaignDialog = ({ open, setOpen }: SendCampaignDialogProps) => {
 		>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Send campaign</DialogTitle>
+					<DialogTitle>Send Campaign</DialogTitle>
 					<DialogDescription>Send or schedule this campaign.</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
@@ -157,7 +158,7 @@ const SendCampaignDialog = ({ open, setOpen }: SendCampaignDialogProps) => {
 						disabled={loading}
 						onClick={() => handleSendCampaign()}
 					>
-						<Icon name={IconName.SEND} />
+						{loading && <Spinner />}
 						{formValues.scheduledAt ? "Schedule" : "Send"}
 					</Button>
 				</DialogFooter>
@@ -172,8 +173,8 @@ const SendCampaignButton = () => {
 	return (
 		<>
 			<Button onClick={() => setOpen(true)}>
-				<Icon name={IconName.ARROW_RIGHT} />
-				Continue
+				<Icon name={IconName.SEND} />
+				Send or schedule
 			</Button>
 			<SendCampaignDialog
 				open={open}

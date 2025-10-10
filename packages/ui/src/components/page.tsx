@@ -6,7 +6,7 @@ type PageProps = React.ComponentProps<"div">
 const Page = ({ className, ...props }: PageProps) => {
 	return (
 		<div
-			className={cn("mx-auto flex h-svh w-full flex-col", className)}
+			className={cn("mx-auto flex h-svh w-full flex-col overflow-x-hidden", className)}
 			{...props}
 		/>
 	)
@@ -17,7 +17,7 @@ const Page = ({ className, ...props }: PageProps) => {
 type PageHeaderProps = React.ComponentProps<"div">
 const PageHeader = ({ className, ...props }: PageHeaderProps) => (
 	<div
-		className={cn("bg-background sticky top-0", className)}
+		className={cn("bg-background sticky top-0 z-10", className)}
 		{...props}
 	/>
 )

@@ -12,18 +12,20 @@ const useCreateBillingPortalSession = () => {
 	const redirectToBillingPortalSession = async () => {
 		setLoading(true)
 
-		try {
-			const organizationId = params.organizationId
-			if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
-
-			const billingPortalSession = await createBillingPortalSession(organizationId)
-
-			// Use window.location.href to redirect to pages outside of the app
-			window.location.href = billingPortalSession.url
-		} catch (err: unknown) {
-			if (err instanceof Error) toast.error(err.message)
-			else toast.error("An unknown error occurred")
+		const organizationId = params.organizationId
+		if (!organizationId || Array.isArray(organizationId)) {
+			toast.error("Organization ID is required")
+			return
 		}
+
+		const res = await createBillingPortalSession(organizationId)
+		if (!res.success) {
+			toast.error(res.error)
+			return
+		}
+
+		// Use window.location.href to redirect to pages outside of the app
+		window.location.href = res.data.url
 	}
 
 	return { loading, redirectToBillingPortalSession }

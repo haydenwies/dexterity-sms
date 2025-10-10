@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useId, useState } from "react"
 
 import { Button } from "@repo/ui/components/button"
 import {
@@ -15,15 +15,18 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
 import { PhoneInput } from "@repo/ui/components/phone-input"
+import { Spinner } from "@repo/ui/components/spinner"
 
 import { useCreateContact } from "~/features/contact/hooks/use-create-contact"
-import { placeholders } from "~/lib/placeholders"
+import { PLACEHOLDERS } from "~/lib/placeholders"
 
 type CreateContactDialogProps = {
 	open: boolean
 	setOpen: (open: boolean) => void
 }
 const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
+	const FORM_ID = useId()
+
 	const { loading, form, handleReset, handleCreate } = useCreateContact()
 
 	return (
@@ -32,7 +35,6 @@ const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
 			onOpenChange={(o) => {
 				if (loading) return
 				setOpen(o)
-
 				if (!o) handleReset()
 			}}
 		>
@@ -41,7 +43,14 @@ const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
 					<DialogTitle>Create Contact</DialogTitle>
 					<DialogDescription>Provide some information to create a new contact.</DialogDescription>
 				</DialogHeader>
-				<form className="flex flex-col gap-4">
+				<form
+					className="flex flex-col gap-4"
+					id={FORM_ID}
+					onSubmit={(e) => {
+						e.preventDefault()
+						handleCreate({ onSuccess: () => setOpen(false) })
+					}}
+				>
 					<Form {...form}>
 						<FormField
 							control={form.control}
@@ -52,7 +61,7 @@ const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
 									<FormControl>
 										<Input
 											{...field}
-											placeholder={placeholders.FIRST_NAME}
+											placeholder={PLACEHOLDERS.firstName}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -68,7 +77,7 @@ const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
 									<FormControl>
 										<Input
 											{...field}
-											placeholder={placeholders.LAST_NAME}
+											placeholder={PLACEHOLDERS.lastName}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -84,7 +93,7 @@ const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
 									<FormControl>
 										<Input
 											{...field}
-											placeholder={placeholders.EMAIL}
+											placeholder={PLACEHOLDERS.email}
 											type="email"
 										/>
 									</FormControl>
@@ -102,7 +111,7 @@ const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
 										<PhoneInput
 											{...field}
 											defaultCountry="CA"
-											placeholder={placeholders.PHONE}
+											placeholder={PLACEHOLDERS.phone}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -121,7 +130,8 @@ const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
 						Reset
 					</Button>
 					<Button
-						disabled={loading}
+						disabled={loading || !form.formState.isDirty}
+						form={FORM_ID}
 						onClick={() =>
 							handleCreate({
 								onSuccess: () => {
@@ -130,8 +140,9 @@ const CreateContactDialog = ({ open, setOpen }: CreateContactDialogProps) => {
 								}
 							})
 						}
+						type="submit"
 					>
-						<Icon name={IconName.PLUS} />
+						{loading && <Spinner />}
 						Create
 					</Button>
 				</DialogFooter>

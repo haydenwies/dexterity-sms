@@ -132,7 +132,6 @@ class MessageRepository {
 			to: Phone.create(row.to),
 			sentAt: row.sentAt,
 			deliveredAt: row.deliveredAt,
-			readAt: row.readAt,
 			createdAt: row.createdAt,
 			updatedAt: row.updatedAt
 		})

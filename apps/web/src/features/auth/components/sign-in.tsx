@@ -10,7 +10,7 @@ import { Spinner } from "@repo/ui/components/spinner"
 import { cn } from "@repo/ui/lib/utils"
 
 import { useSignIn } from "~/features/auth/hooks/use-sign-in"
-import { placeholders } from "~/lib/placeholders"
+import { PLACEHOLDERS } from "~/lib/placeholders"
 
 const SignInForm = ({ className }: { className?: string }) => {
 	const { loading, signInForm, handleSignIn } = useSignIn()
@@ -34,7 +34,7 @@ const SignInForm = ({ className }: { className?: string }) => {
 								<Input
 									disabled={loading}
 									type="email"
-									placeholder={placeholders.EMAIL}
+									placeholder={PLACEHOLDERS.email}
 									{...field}
 								/>
 							</FormControl>
@@ -56,7 +56,7 @@ const SignInForm = ({ className }: { className?: string }) => {
 							<FormControl>
 								<Input
 									disabled={loading}
-									placeholder={placeholders.PASSWORD}
+									placeholder={PLACEHOLDERS.password}
 									type="password"
 									{...field}
 								/>

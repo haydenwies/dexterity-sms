@@ -83,7 +83,7 @@ const SidebarFooter = ({ organizationId, user }: SidebarFooterProps) => {
 						>
 							<DropdownMenuItem onClick={signOut}>
 								<Icon name={IconName.LOG_OUT} />
-								Log out
+								Sign out
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>

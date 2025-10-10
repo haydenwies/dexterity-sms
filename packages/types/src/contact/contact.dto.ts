@@ -16,12 +16,12 @@ const createContactDtoSchema = z
 		email: z
 			.string()
 			.trim()
-			.pipe(z.union([z.email().toLowerCase(), z.literal("")]))
+			.pipe(z.union([z.email("Invalid email").trim().toLowerCase(), z.literal("")]))
 			.optional(),
 		phone: z
 			.string()
 			.trim()
-			.pipe(z.union([z.e164(), z.literal("")]))
+			.pipe(z.union([z.e164("Invalid phone number").trim(), z.literal("")]))
 			.optional()
 	})
 	.refine(
@@ -82,12 +82,12 @@ const updateContactDtoSchema = z
 		email: z
 			.string()
 			.trim()
-			.pipe(z.union([z.email().toLowerCase(), z.literal("")]))
+			.pipe(z.union([z.email("Invalid email").trim().toLowerCase(), z.literal("")]))
 			.optional(),
 		phone: z
 			.string()
 			.trim()
-			.pipe(z.union([z.e164(), z.literal("")]))
+			.pipe(z.union([z.e164("Invalid phone number").trim(), z.literal("")]))
 			.optional()
 	})
 	.refine(

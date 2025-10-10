@@ -17,20 +17,25 @@ const useDeleteCampaign = () => {
 	const handleDeleteMany = async (ids: string[], { onError, onSuccess }: HandleDeleteManyConfig) => {
 		setLoading(true)
 
-		try {
-			const organizationId = params.organizationId
-			if (!organizationId || Array.isArray(organizationId)) throw new Error("Organization ID is required")
-
-			await deleteManyCampaigns(organizationId, { ids })
-			onSuccess?.()
-		} catch (err: unknown) {
-			if (err instanceof Error) toast.error(err.message)
-			else toast.error("An unknown error occurred")
-
+		const organizationId = params.organizationId
+		if (!organizationId || Array.isArray(organizationId)) {
+			toast.error("Organization ID is required")
 			onError?.()
-		} finally {
 			setLoading(false)
+			return
 		}
+
+		const res = await deleteManyCampaigns(organizationId, { ids })
+		if (!res.success) {
+			toast.error(res.error)
+			onError?.()
+			setLoading(false)
+			return
+		}
+
+		onSuccess?.()
+
+		setLoading(false)
 	}
 
 	return { loading, handleDeleteMany }
