@@ -1,14 +1,13 @@
 import "server-only"
 
 import { routes } from "@repo/routes"
-import { SESSION_COOKIE } from "@repo/types/auth"
 import { type OrganizationModel } from "@repo/types/organization"
 
-import { getCookie } from "~/lib/cookies"
+import { getSessionToken } from "~/lib/session"
 import { getBackendPrivateUrl } from "~/lib/url"
 
 const getOrganization = async (organizationId: string): Promise<OrganizationModel> => {
-	const sessionToken = await getCookie(SESSION_COOKIE)
+	const sessionToken = await getSessionToken()
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()

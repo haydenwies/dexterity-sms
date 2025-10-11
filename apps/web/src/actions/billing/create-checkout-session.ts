@@ -1,15 +1,14 @@
 "use server"
 
 import { routes } from "@repo/routes"
-import { SESSION_COOKIE } from "@repo/types/auth"
 import { type CheckoutSessionDto, type CreateCheckoutSessionDto } from "@repo/types/billing"
 
 import { type ActionResult, actionError, actionSuccess } from "~/lib/actions"
-import { getCookie } from "~/lib/cookies"
+import { getSessionToken } from "~/lib/session"
 import { getBackendPrivateUrl, getWebPublicUrl } from "~/lib/url"
 
 const createCheckoutSession = async (organizationId: string): Promise<ActionResult<CheckoutSessionDto>> => {
-	const sessionToken = await getCookie(SESSION_COOKIE)
+	const sessionToken = await getSessionToken()
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()

@@ -1,11 +1,10 @@
 "use server"
 
 import { routes } from "@repo/routes"
-import { SESSION_COOKIE } from "@repo/types/auth"
 import { type SendMessageDto } from "@repo/types/conversation"
 
 import { actionError, actionSuccess, type ActionResult } from "~/lib/actions"
-import { getCookie } from "~/lib/cookies"
+import { getSessionToken } from "~/lib/session"
 import { getBackendPrivateUrl } from "~/lib/url"
 
 const sendMessage = async (
@@ -13,7 +12,7 @@ const sendMessage = async (
 	conversationId: string,
 	dto: SendMessageDto
 ): Promise<ActionResult> => {
-	const sessionToken = await getCookie(SESSION_COOKIE)
+	const sessionToken = await getSessionToken()
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()

@@ -1,15 +1,14 @@
 import "server-only"
 
 import { routes } from "@repo/routes"
-import { SESSION_COOKIE } from "@repo/types/auth"
 import { type SenderModel } from "@repo/types/sender"
 
 import { CACHE_TAGS } from "~/lib/cache"
-import { getCookie } from "~/lib/cookies"
+import { getSessionToken } from "~/lib/session"
 import { getBackendPrivateUrl } from "~/lib/url"
 
 const getSender = async (organizationId: string): Promise<SenderModel | undefined> => {
-	const sessionToken = await getCookie(SESSION_COOKIE)
+	const sessionToken = await getSessionToken()
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()

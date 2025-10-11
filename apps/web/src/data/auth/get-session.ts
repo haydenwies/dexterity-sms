@@ -1,13 +1,13 @@
 import "server-only"
 
 import { routes } from "@repo/routes"
-import { SESSION_COOKIE, type SessionDto } from "@repo/types/auth"
+import { type SessionDto } from "@repo/types/auth"
 
-import { getCookie } from "~/lib/cookies"
+import { getSessionToken } from "~/lib/session"
 import { getBackendPrivateUrl } from "~/lib/url"
 
 const getSession = async (): Promise<SessionDto | undefined> => {
-	const sessionToken = await getCookie(SESSION_COOKIE)
+	const sessionToken = await getSessionToken()
 	if (!sessionToken) return undefined
 
 	const backendUrl = getBackendPrivateUrl()

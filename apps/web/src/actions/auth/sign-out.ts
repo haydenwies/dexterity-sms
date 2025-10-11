@@ -3,14 +3,13 @@
 import { redirect } from "next/navigation"
 
 import { routes } from "@repo/routes"
-import { SESSION_COOKIE } from "@repo/types/auth"
 
 import { actionError, ActionResult } from "~/lib/actions"
-import { deleteCookie, getCookie } from "~/lib/cookies"
+import { deleteSessionToken, getSessionToken } from "~/lib/session"
 import { getBackendPrivateUrl } from "~/lib/url"
 
 const signOut = async (): Promise<ActionResult> => {
-	const sessionToken = await getCookie(SESSION_COOKIE)
+	const sessionToken = await getSessionToken()
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()
@@ -27,7 +26,7 @@ const signOut = async (): Promise<ActionResult> => {
 			return actionError(errData.message)
 		}
 
-		await deleteCookie(SESSION_COOKIE)
+		await deleteSessionToken()
 	} catch (err: unknown) {
 		if (err instanceof Error) console.error(err.message, err.stack)
 

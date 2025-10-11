@@ -3,12 +3,11 @@
 import { revalidateTag } from "next/cache"
 
 import { routes } from "@repo/routes"
-import { SESSION_COOKIE } from "@repo/types/auth"
 import { type SendCampaignDto } from "@repo/types/campaign"
 
 import { actionError, type ActionResult, actionSuccess } from "~/lib/actions"
 import { CACHE_TAGS } from "~/lib/cache"
-import { getCookie } from "~/lib/cookies"
+import { getSessionToken } from "~/lib/session"
 import { getBackendPrivateUrl } from "~/lib/url"
 
 const sendCampaign = async (
@@ -16,7 +15,7 @@ const sendCampaign = async (
 	campaignId: string,
 	dto: SendCampaignDto
 ): Promise<ActionResult> => {
-	const sessionToken = await getCookie(SESSION_COOKIE)
+	const sessionToken = await getSessionToken()
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()
