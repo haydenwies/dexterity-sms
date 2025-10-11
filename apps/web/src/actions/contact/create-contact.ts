@@ -1,10 +1,13 @@
 "use server"
 
+import { revalidateTag } from "next/cache"
+
 import { routes } from "@repo/routes"
 import { SESSION_COOKIE } from "@repo/types/auth"
 import { type CreateContactDto } from "@repo/types/contact"
 
 import { actionError, type ActionResult, actionSuccess } from "~/lib/actions"
+import { CACHE_TAGS } from "~/lib/cache"
 import { getCookie } from "~/lib/cookies"
 import { getBackendPrivateUrl } from "~/lib/url"
 
@@ -27,6 +30,8 @@ const createContact = async (organizationId: string, dto: CreateContactDto): Pro
 			const errData = await res.json()
 			return actionError(errData.message)
 		}
+
+		revalidateTag(CACHE_TAGS.contacts(organizationId))
 
 		return actionSuccess()
 	} catch (err: unknown) {

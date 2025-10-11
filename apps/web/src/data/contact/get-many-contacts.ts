@@ -4,6 +4,7 @@ import { routes } from "@repo/routes"
 import { SESSION_COOKIE } from "@repo/types/auth"
 import { type ContactModel } from "@repo/types/contact"
 
+import { CACHE_TAGS } from "~/lib/cache"
 import { getCookie } from "~/lib/cookies"
 import { getBackendPrivateUrl } from "~/lib/url"
 
@@ -14,9 +15,8 @@ const getManyContacts = async (organizationId: string): Promise<ContactModel[]> 
 	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.GET_ALL_CONTACTS(organizationId)}`, {
 		method: "GET",
-		headers: {
-			"Authorization": `Bearer ${sessionToken}`
-		}
+		headers: { "Authorization": `Bearer ${sessionToken}` },
+		next: { tags: [CACHE_TAGS.contacts(organizationId)] }
 	})
 	if (!res.ok) {
 		const errData = await res.json()

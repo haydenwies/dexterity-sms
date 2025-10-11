@@ -15,7 +15,8 @@ const getUser = async (): Promise<UserDto> => {
 		method: "GET",
 		headers: {
 			"Authorization": `Bearer ${sessionToken}`
-		}
+		},
+		cache: "no-store"
 	})
 	if (!res.ok) {
 		const errData = await res.json()

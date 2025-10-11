@@ -14,9 +14,8 @@ const getOrganization = async (organizationId: string): Promise<OrganizationMode
 	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.GET_ORGANIZATION(organizationId)}`, {
 		method: "GET",
-		headers: {
-			"Authorization": `Bearer ${sessionToken}`
-		}
+		headers: { "Authorization": `Bearer ${sessionToken}` },
+		cache: "no-store"
 	})
 	if (!res.ok) {
 		const errData = await res.json()

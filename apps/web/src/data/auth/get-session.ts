@@ -15,7 +15,8 @@ const getSession = async (): Promise<SessionDto | undefined> => {
 		method: "GET",
 		headers: {
 			"Authorization": `Bearer ${sessionToken}`
-		}
+		},
+		cache: "no-store"
 	})
 	if (!res.ok) {
 		if (res.status === 404) return undefined
