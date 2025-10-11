@@ -1,10 +1,10 @@
 import { useCallback, useRef } from "react"
 
-type Config = {
+type UseDebounceConfig = {
 	delay?: number
 }
 
-const useDebounce = ({ delay = 300 }: Config = {}) => {
+const useDebounce = ({ delay = 300 }: UseDebounceConfig = {}) => {
 	const timeoutRef = useRef<NodeJS.Timeout | null>(null)
 
 	const debouncedFn = useCallback(

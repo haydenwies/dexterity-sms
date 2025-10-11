@@ -12,7 +12,8 @@ const getManyContacts = async (organizationId: string): Promise<ContactModel[]> 
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()
-	const res = await fetch(`${backendUrl}${routes.backend.GET_ALL_CONTACTS(organizationId)}`, {
+	const url = `${backendUrl}${routes.backend.GET_ALL_CONTACTS(organizationId)}`
+	const res = await fetch(url, {
 		method: "GET",
 		headers: { "Authorization": `Bearer ${sessionToken}` },
 		next: { tags: [CACHE_TAGS.allContacts(organizationId)] }

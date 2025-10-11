@@ -12,7 +12,8 @@ const getSender = async (organizationId: string): Promise<SenderModel | undefine
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()
-	const res = await fetch(`${backendUrl}${routes.backend.GET_SENDER(organizationId)}`, {
+	const url = `${backendUrl}${routes.backend.GET_SENDER(organizationId)}`
+	const res = await fetch(url, {
 		method: "GET",
 		headers: { "Authorization": `Bearer ${sessionToken}` },
 		next: { tags: [CACHE_TAGS.senders(organizationId)] }
