@@ -1,3 +1,2 @@
-import { CampaignTable } from "~/features/campaign/components/campaign-table/table"
-
-export { CampaignTable }
+export { CampaignTableSkeleton } from "./skeleton"
+export { CampaignTable } from "./table"

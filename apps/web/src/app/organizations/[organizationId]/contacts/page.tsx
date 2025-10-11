@@ -4,8 +4,7 @@ import { Icon, IconName } from "@repo/ui/components/icon"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
 
 import { getManyContacts } from "~/data/contact/get-many-contacts"
-import { ContactTable } from "~/features/contact/components/contact-table"
-import { ContactTableSkeleton } from "~/features/contact/components/contact-table/skeleton"
+import { ContactTable, ContactTableSkeleton } from "~/features/contact/components/contact-table"
 import { CreateContactButton } from "~/features/contact/components/create-contact"
 import { UploadContactCsvButton } from "~/features/contact/components/upload-contact-csv"
 

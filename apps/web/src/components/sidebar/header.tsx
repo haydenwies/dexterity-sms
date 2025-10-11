@@ -47,40 +47,30 @@ const SidebarHeader = ({ allOrganizations, organization: currentOrganization }: 
 							</SidebarPrimitive.SidebarMenuButton>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent
-							className="w-(--radix-dropdown-menu-trigger-width)"
+							className="w-2xs"
 							align="start"
 							side={isMobile ? "bottom" : "right"}
 						>
 							<DropdownMenuLabel>Organizations</DropdownMenuLabel>
 							{allOrganizations.map((organization) => {
-								if (organization.id === currentOrganization.id)
-									return (
-										<DropdownMenuItem key={organization.id}>
-											<Avatar className="size-6 rounded-sm border-none">
-												<AvatarFallback className="bg-primary text-primary-foreground">
-													{currentOrganization.name[0]}
-												</AvatarFallback>
-											</Avatar>
-
-											{organization.name}
-											<Icon
-												className="ml-auto"
-												name={IconName.CHECK}
-											/>
-										</DropdownMenuItem>
-									)
 								return (
 									<DropdownMenuItem
 										asChild
 										key={organization.id}
 									>
 										<Link href={routes.web.ORGANIZATION(organization.id)}>
-											<Avatar className="size-6 rounded-sm">
+											<Avatar className="size-6 rounded-sm border-none">
 												<AvatarFallback className="bg-primary text-primary-foreground">
-													{currentOrganization.name[0]}
+													{organization.name[0]}
 												</AvatarFallback>
 											</Avatar>
 											{organization.name}
+											{organization.id === currentOrganization.id && (
+												<Icon
+													className="ml-auto"
+													name={IconName.CHECK}
+												/>
+											)}
 										</Link>
 									</DropdownMenuItem>
 								)
