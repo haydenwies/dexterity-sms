@@ -1,9 +1,8 @@
-import { Icon, IconName } from "@repo/ui/components/icon"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
+import Image from "next/image"
 
 import { getManyOrganizations } from "~/data/organization/get-many-organizations"
 import { AllOrganizationsList } from "~/features/organization/components/all-organizations-list"
-import { APP_INFO } from "~/lib/app"
 
 const AllOrganizationsPage = () => {
 	const organizationsPromise = getManyOrganizations()
@@ -13,10 +12,12 @@ const AllOrganizationsPage = () => {
 			<PageHeader>
 				<PageHeaderRow className="justify-around">
 					<PageHeaderGroup>
-						<div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-md">
-							<Icon name={IconName.MEGAPHONE} />
-						</div>
-						<p className="font-bold">{APP_INFO.name}</p>
+						<Image
+							src="/logo.svg"
+							alt="Logo"
+							width={36}
+							height={36}
+						/>
 					</PageHeaderGroup>
 				</PageHeaderRow>
 			</PageHeader>

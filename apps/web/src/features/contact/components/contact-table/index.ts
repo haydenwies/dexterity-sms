@@ -1,3 +1,2 @@
-import { ContactTable } from "./table"
-
-export { ContactTable }
+export { ContactTableSkeleton } from "./skeleton"
+export { ContactTable } from "./table"
