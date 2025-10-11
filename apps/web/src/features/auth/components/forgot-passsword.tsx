@@ -1,20 +1,40 @@
 "use client"
 
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+
+import { type ForgotPasswordDto, forgotPasswordDtoSchema } from "@repo/types/auth"
 import { Alert, AlertDescription, AlertTitle } from "@repo/ui/components/alert"
 import { Button } from "@repo/ui/components/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Input } from "@repo/ui/components/input"
+import { toast } from "@repo/ui/components/sonner"
 import { Spinner } from "@repo/ui/components/spinner"
 import { cn } from "@repo/ui/lib/utils"
 
-import { useForgotPassword } from "~/features/auth/hooks/use-forgot-password"
+import { forgotPassword } from "~/actions/auth/forgot-password"
 import { PLACEHOLDERS } from "~/lib/placeholders"
 
-const ForgotPasswordForm = ({ className }: { className?: string }) => {
-	const { loading, submitted, forgotPasswordForm, handleForgotPassword } = useForgotPassword()
+type ForgotPasswordFormProps = Readonly<{
+	className?: string
+}>
 
-	if (submitted)
+const ForgotPasswordForm = ({ className }: ForgotPasswordFormProps) => {
+	const form = useForm<ForgotPasswordDto>({
+		resolver: zodResolver(forgotPasswordDtoSchema),
+		defaultValues: {
+			email: ""
+		}
+	})
+	const { isSubmitting, isSubmitSuccessful } = form.formState
+
+	const handleSubmit = form.handleSubmit(async (data: ForgotPasswordDto) => {
+		const res = await forgotPassword(data)
+		if (!res.success) toast.error(res.error)
+	})
+
+	if (isSubmitSuccessful)
 		return (
 			<Alert>
 				<Icon name={IconName.CHECK_CIRCLE} />
@@ -28,19 +48,19 @@ const ForgotPasswordForm = ({ className }: { className?: string }) => {
 			className={cn("flex flex-col gap-6", className)}
 			onSubmit={async (e) => {
 				e.preventDefault()
-				handleForgotPassword()
+				handleSubmit()
 			}}
 		>
-			<Form {...forgotPasswordForm}>
+			<Form {...form}>
 				<FormField
-					control={forgotPasswordForm.control}
+					control={form.control}
 					name="email"
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>Email</FormLabel>
 							<FormControl>
 								<Input
-									disabled={loading}
+									disabled={isSubmitting}
 									placeholder={PLACEHOLDERS.email}
 									{...field}
 								/>
@@ -49,8 +69,8 @@ const ForgotPasswordForm = ({ className }: { className?: string }) => {
 						</FormItem>
 					)}
 				/>
-				<Button disabled={loading}>
-					{loading && <Spinner />}
+				<Button disabled={isSubmitting}>
+					{isSubmitting && <Spinner />}
 					Send reset email
 				</Button>
 			</Form>

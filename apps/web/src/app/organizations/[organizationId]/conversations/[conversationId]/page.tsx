@@ -10,6 +10,7 @@ import {
 type PageProps = Readonly<{
 	params: Promise<{ organizationId: string; conversationId: string }>
 }>
+
 const ConversationPage = async ({ params }: PageProps) => {
 	const { organizationId, conversationId } = await params
 
@@ -30,7 +31,10 @@ const ConversationPage = async ({ params }: PageProps) => {
 					messagesPromise={messagesPromise}
 				/>
 			</div>
-			<MessageInput className="px-6 py-4" />
+			<MessageInput
+				className="px-6 py-4"
+				params={{ organizationId, conversationId }}
+			/>
 		</div>
 	)
 }
