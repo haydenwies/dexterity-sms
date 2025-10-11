@@ -1,22 +1,21 @@
 import "server-only"
 
 import { routes } from "@repo/routes"
-import { SESSION_COOKIE } from "@repo/types/auth"
 import { type CampaignModel } from "@repo/types/campaign"
 
-import { getCookie } from "~/lib/cookies"
+import { CACHE_TAGS } from "~/lib/cache"
+import { getSessionToken } from "~/lib/session"
 import { getBackendPrivateUrl } from "~/lib/url"
 
 const getCampaign = async (organizationId: string, campaignId: string): Promise<CampaignModel> => {
-	const sessionToken = await getCookie(SESSION_COOKIE)
+	const sessionToken = await getSessionToken()
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.GET_CAMPAIGN(organizationId, campaignId)}`, {
 		method: "GET",
-		headers: {
-			"Authorization": `Bearer ${sessionToken}`
-		}
+		headers: { "Authorization": `Bearer ${sessionToken}` },
+		next: { tags: [CACHE_TAGS.campaign(organizationId, campaignId)] }
 	})
 	if (!res.ok) {
 		const errData = await res.json()

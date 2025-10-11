@@ -1,15 +1,17 @@
 "use server"
 
+import { revalidateTag } from "next/cache"
+
 import { routes } from "@repo/routes"
-import { SESSION_COOKIE } from "@repo/types/auth"
 import { type AddSenderDto } from "@repo/types/sender"
 
 import { actionError, actionSuccess, type ActionResult } from "~/lib/actions"
-import { getCookie } from "~/lib/cookies"
+import { CACHE_TAGS } from "~/lib/cache"
+import { getSessionToken } from "~/lib/session"
 import { getBackendPrivateUrl } from "~/lib/url"
 
 const addSender = async (organizationId: string, dto: AddSenderDto): Promise<ActionResult> => {
-	const sessionToken = await getCookie(SESSION_COOKIE)
+	const sessionToken = await getSessionToken()
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()
@@ -27,6 +29,8 @@ const addSender = async (organizationId: string, dto: AddSenderDto): Promise<Act
 			const errData = await res.json()
 			return actionError(errData.message)
 		}
+
+		revalidateTag(CACHE_TAGS.senders(organizationId))
 
 		return actionSuccess()
 	} catch (err: unknown) {

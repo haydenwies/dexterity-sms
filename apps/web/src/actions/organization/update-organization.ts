@@ -1,15 +1,14 @@
 "use server"
 
 import { routes } from "@repo/routes"
-import { SESSION_COOKIE } from "@repo/types/auth"
 import { type UpdateOrganizationDto } from "@repo/types/organization"
 
 import { actionError, actionSuccess, type ActionResult } from "~/lib/actions"
-import { getCookie } from "~/lib/cookies"
+import { getSessionToken } from "~/lib/session"
 import { getBackendPrivateUrl } from "~/lib/url"
 
 const updateOrganization = async (organizationId: string, dto: UpdateOrganizationDto): Promise<ActionResult> => {
-	const sessionToken = await getCookie(SESSION_COOKIE)
+	const sessionToken = await getSessionToken()
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()

@@ -1,15 +1,17 @@
 "use server"
 
+import { revalidateTag } from "next/cache"
+
 import { routes } from "@repo/routes"
-import { SESSION_COOKIE } from "@repo/types/auth"
 import { CampaignModel, type CreateCampaignDto } from "@repo/types/campaign"
 
 import { actionError, actionSuccess, type ActionResult } from "~/lib/actions"
-import { getCookie } from "~/lib/cookies"
+import { CACHE_TAGS } from "~/lib/cache"
+import { getSessionToken } from "~/lib/session"
 import { getBackendPrivateUrl } from "~/lib/url"
 
 const createCampaign = async (organizationId: string, dto: CreateCampaignDto): Promise<ActionResult<CampaignModel>> => {
-	const sessionToken = await getCookie(SESSION_COOKIE)
+	const sessionToken = await getSessionToken()
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()
@@ -29,6 +31,8 @@ const createCampaign = async (organizationId: string, dto: CreateCampaignDto): P
 		}
 
 		const data = await res.json()
+
+		revalidateTag(CACHE_TAGS.allCampaigns(organizationId))
 
 		return actionSuccess(data)
 	} catch (err: unknown) {

@@ -1,22 +1,21 @@
 import "server-only"
 
 import { routes } from "@repo/routes"
-import { SESSION_COOKIE } from "@repo/types/auth"
 import { type ContactModel } from "@repo/types/contact"
 
-import { getCookie } from "~/lib/cookies"
+import { CACHE_TAGS } from "~/lib/cache"
+import { getSessionToken } from "~/lib/session"
 import { getBackendPrivateUrl } from "~/lib/url"
 
 const getManyContacts = async (organizationId: string): Promise<ContactModel[]> => {
-	const sessionToken = await getCookie(SESSION_COOKIE)
+	const sessionToken = await getSessionToken()
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.GET_ALL_CONTACTS(organizationId)}`, {
 		method: "GET",
-		headers: {
-			"Authorization": `Bearer ${sessionToken}`
-		}
+		headers: { "Authorization": `Bearer ${sessionToken}` },
+		next: { tags: [CACHE_TAGS.allContacts(organizationId)] }
 	})
 	if (!res.ok) {
 		const errData = await res.json()
