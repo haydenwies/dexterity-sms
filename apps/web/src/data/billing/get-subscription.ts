@@ -14,9 +14,8 @@ const getSubscription = async (organizationId: string): Promise<SubscriptionMode
 	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.GET_SUBSCRIPTION(organizationId)}`, {
 		method: "GET",
-		headers: {
-			"Authorization": `Bearer ${sessionToken}`
-		}
+		headers: { "Authorization": `Bearer ${sessionToken}` },
+		cache: "no-store"
 	})
 	if (!res.ok) {
 		if (res.status === 404) return undefined

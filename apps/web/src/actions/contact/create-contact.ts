@@ -31,7 +31,7 @@ const createContact = async (organizationId: string, dto: CreateContactDto): Pro
 			return actionError(errData.message)
 		}
 
-		revalidateTag(CACHE_TAGS.contacts(organizationId))
+		revalidateTag(CACHE_TAGS.allContacts(organizationId))
 
 		return actionSuccess()
 	} catch (err: unknown) {

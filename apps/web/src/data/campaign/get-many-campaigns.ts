@@ -4,6 +4,7 @@ import { routes } from "@repo/routes"
 import { SESSION_COOKIE } from "@repo/types/auth"
 import { type CampaignModel } from "@repo/types/campaign"
 
+import { CACHE_TAGS } from "~/lib/cache"
 import { getCookie } from "~/lib/cookies"
 import { getBackendPrivateUrl } from "~/lib/url"
 
@@ -14,9 +15,8 @@ const getManyCampaigns = async (organizationId: string): Promise<CampaignModel[]
 	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.GET_MANY_CAMPAIGNS(organizationId)}`, {
 		method: "GET",
-		headers: {
-			"Authorization": `Bearer ${sessionToken}`
-		}
+		headers: { "Authorization": `Bearer ${sessionToken}` },
+		next: { tags: [CACHE_TAGS.allCampaigns(organizationId)] }
 	})
 	if (!res.ok) {
 		const errData = await res.json()

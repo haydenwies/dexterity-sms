@@ -4,6 +4,7 @@ import { routes } from "@repo/routes"
 import { SESSION_COOKIE } from "@repo/types/auth"
 import { type SenderModel } from "@repo/types/sender"
 
+import { CACHE_TAGS } from "~/lib/cache"
 import { getCookie } from "~/lib/cookies"
 import { getBackendPrivateUrl } from "~/lib/url"
 
@@ -14,9 +15,8 @@ const getSender = async (organizationId: string): Promise<SenderModel | undefine
 	const backendUrl = getBackendPrivateUrl()
 	const res = await fetch(`${backendUrl}${routes.backend.GET_SENDER(organizationId)}`, {
 		method: "GET",
-		headers: {
-			"Authorization": `Bearer ${sessionToken}`
-		}
+		headers: { "Authorization": `Bearer ${sessionToken}` },
+		next: { tags: [CACHE_TAGS.senders(organizationId)] }
 	})
 	if (!res.ok) {
 		if (res.status === 404) return undefined
