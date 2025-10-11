@@ -11,11 +11,10 @@ const getConversation = async (organizationId: string, conversationId: string): 
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()
-	const res = await fetch(`${backendUrl}${routes.backend.GET_CONVERSATION(organizationId, conversationId)}`, {
+	const url = `${backendUrl}${routes.backend.GET_CONVERSATION(organizationId, conversationId)}`
+	const res = await fetch(url, {
 		method: "GET",
-		headers: {
-			"Authorization": `Bearer ${sessionToken}`
-		}
+		headers: { "Authorization": `Bearer ${sessionToken}` }
 	})
 	if (!res.ok) {
 		const errData = await res.json()

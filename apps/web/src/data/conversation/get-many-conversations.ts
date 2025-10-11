@@ -11,11 +11,10 @@ const getManyConversations = async (organizationId: string): Promise<Conversatio
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()
-	const res = await fetch(`${backendUrl}${routes.backend.GET_ALL_CONVERSATIONS(organizationId)}`, {
+	const url = `${backendUrl}${routes.backend.GET_ALL_CONVERSATIONS(organizationId)}`
+	const res = await fetch(url, {
 		method: "GET",
-		headers: {
-			"Authorization": `Bearer ${sessionToken}`
-		}
+		headers: { "Authorization": `Bearer ${sessionToken}` }
 	})
 	if (!res.ok) {
 		const errData = await res.json()

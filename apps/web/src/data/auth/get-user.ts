@@ -11,11 +11,10 @@ const getUser = async (): Promise<UserDto> => {
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()
-	const res = await fetch(`${backendUrl}${routes.backend.GET_USER}`, {
+	const url = `${backendUrl}${routes.backend.GET_USER}`
+	const res = await fetch(url, {
 		method: "GET",
-		headers: {
-			"Authorization": `Bearer ${sessionToken}`
-		},
+		headers: { "Authorization": `Bearer ${sessionToken}` },
 		cache: "no-store"
 	})
 	if (!res.ok) {

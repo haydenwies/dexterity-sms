@@ -12,7 +12,8 @@ const getManyCampaigns = async (organizationId: string): Promise<CampaignModel[]
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()
-	const res = await fetch(`${backendUrl}${routes.backend.GET_MANY_CAMPAIGNS(organizationId)}`, {
+	const url = `${backendUrl}${routes.backend.GET_MANY_CAMPAIGNS(organizationId)}`
+	const res = await fetch(url, {
 		method: "GET",
 		headers: { "Authorization": `Bearer ${sessionToken}` },
 		next: { tags: [CACHE_TAGS.allCampaigns(organizationId)] }

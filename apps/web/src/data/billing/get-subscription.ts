@@ -11,7 +11,8 @@ const getSubscription = async (organizationId: string): Promise<SubscriptionMode
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()
-	const res = await fetch(`${backendUrl}${routes.backend.GET_SUBSCRIPTION(organizationId)}`, {
+	const url = `${backendUrl}${routes.backend.GET_SUBSCRIPTION(organizationId)}`
+	const res = await fetch(url, {
 		method: "GET",
 		headers: { "Authorization": `Bearer ${sessionToken}` },
 		cache: "no-store"

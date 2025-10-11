@@ -11,7 +11,8 @@ const getManyOrganizations = async (): Promise<OrganizationModel[]> => {
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()
-	const res = await fetch(`${backendUrl}${routes.backend.GET_ALL_ORGANIZATIONS}`, {
+	const url = `${backendUrl}${routes.backend.GET_ALL_ORGANIZATIONS}`
+	const res = await fetch(url, {
 		method: "GET",
 		headers: { "Authorization": `Bearer ${sessionToken}` },
 		cache: "no-store"
