@@ -1,39 +1,58 @@
 "use client"
 
+import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
+import { useForm } from "react-hook-form"
 
 import { routes } from "@repo/routes"
+import { type SignInDto, signInDtoSchema } from "@repo/types/auth"
 import { Button } from "@repo/ui/components/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
 import { Input } from "@repo/ui/components/input"
+import { toast } from "@repo/ui/components/sonner"
 import { Spinner } from "@repo/ui/components/spinner"
 import { cn } from "@repo/ui/lib/utils"
 
-import { useSignIn } from "~/features/auth/hooks/use-sign-in"
+import { signIn } from "~/actions/auth/sign-in"
 import { PLACEHOLDERS } from "~/lib/placeholders"
 
-const SignInForm = ({ className }: { className?: string }) => {
-	const { loading, signInForm, handleSignIn } = useSignIn()
+type SignInFormProps = Readonly<{
+	className?: string
+}>
+
+const SignInForm = ({ className }: SignInFormProps) => {
+	const form = useForm<SignInDto>({
+		resolver: zodResolver(signInDtoSchema),
+		defaultValues: {
+			email: "",
+			password: ""
+		}
+	})
+	const { isSubmitting } = form.formState
+
+	const handleSubmit = form.handleSubmit(async (data: SignInDto) => {
+		const res = await signIn(data)
+		if (!res.success) toast.error(res.error)
+	})
 
 	return (
 		<form
 			className={cn("flex flex-col gap-6", className)}
 			onSubmit={(e) => {
 				e.preventDefault()
-				handleSignIn()
+				handleSubmit()
 			}}
 		>
-			<Form {...signInForm}>
+			<Form {...form}>
 				<FormField
-					control={signInForm.control}
+					control={form.control}
 					name="email"
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>Email</FormLabel>
 							<FormControl>
 								<Input
-									disabled={loading}
-									type="email"
+									disabled={isSubmitting}
 									placeholder={PLACEHOLDERS.email}
 									{...field}
 								/>
@@ -43,7 +62,7 @@ const SignInForm = ({ className }: { className?: string }) => {
 					)}
 				/>
 				<FormField
-					control={signInForm.control}
+					control={form.control}
 					name="password"
 					render={({ field }) => (
 						<FormItem>
@@ -55,7 +74,7 @@ const SignInForm = ({ className }: { className?: string }) => {
 							</div>
 							<FormControl>
 								<Input
-									disabled={loading}
+									disabled={isSubmitting}
 									placeholder={PLACEHOLDERS.password}
 									type="password"
 									{...field}
@@ -66,8 +85,8 @@ const SignInForm = ({ className }: { className?: string }) => {
 					)}
 				/>
 			</Form>
-			<Button disabled={loading}>
-				{loading && <Spinner />}
+			<Button disabled={isSubmitting}>
+				{isSubmitting && <Spinner />}
 				Sign in
 			</Button>
 			<p className="text-muted-foreground text-center">

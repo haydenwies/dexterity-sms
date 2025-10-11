@@ -1,40 +1,58 @@
 "use client"
 
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+
+import { type ResetPasswordDto, resetPasswordDtoSchema } from "@repo/types/auth"
 import { Button } from "@repo/ui/components/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
 import { Input } from "@repo/ui/components/input"
+import { toast } from "@repo/ui/components/sonner"
 import { Spinner } from "@repo/ui/components/spinner"
 import { cn } from "@repo/ui/lib/utils"
 
-import { useResetPassword } from "~/features/auth/hooks/use-reset-password"
+import { resetPassword } from "~/actions/auth/reset-password"
 import { PLACEHOLDERS } from "~/lib/placeholders"
 
-type ResetPasswordFormProps = {
+type ResetPasswordFormProps = Readonly<{
 	token: string
 	className?: string
-}
+}>
 
 const ResetPasswordForm = ({ token, className }: ResetPasswordFormProps) => {
-	const { loading, resetPasswordForm, handleResetPassword } = useResetPassword(token)
+	const form = useForm<ResetPasswordDto>({
+		resolver: zodResolver(resetPasswordDtoSchema),
+		defaultValues: {
+			token,
+			password: "",
+			confirmPassword: ""
+		}
+	})
+	const { isSubmitting } = form.formState
+
+	const handleSubmit = form.handleSubmit(async (data: ResetPasswordDto) => {
+		const res = await resetPassword(data)
+		if (!res.success) toast.error(res.error)
+	})
 
 	return (
 		<form
 			className={cn("flex flex-col gap-6", className)}
 			onSubmit={(e) => {
 				e.preventDefault()
-				handleResetPassword()
+				handleSubmit()
 			}}
 		>
-			<Form {...resetPasswordForm}>
+			<Form {...form}>
 				<FormField
-					control={resetPasswordForm.control}
+					control={form.control}
 					name="password"
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>New password</FormLabel>
 							<FormControl>
 								<Input
-									disabled={loading}
+									disabled={isSubmitting}
 									placeholder={PLACEHOLDERS.password}
 									type="password"
 									{...field}
@@ -45,14 +63,14 @@ const ResetPasswordForm = ({ token, className }: ResetPasswordFormProps) => {
 					)}
 				/>
 				<FormField
-					control={resetPasswordForm.control}
+					control={form.control}
 					name="confirmPassword"
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>Confirm new password</FormLabel>
 							<FormControl>
 								<Input
-									disabled={loading}
+									disabled={isSubmitting}
 									placeholder={PLACEHOLDERS.password}
 									type="password"
 									{...field}
@@ -63,8 +81,8 @@ const ResetPasswordForm = ({ token, className }: ResetPasswordFormProps) => {
 					)}
 				/>
 			</Form>
-			<Button disabled={loading}>
-				{loading && <Spinner />}
+			<Button disabled={isSubmitting}>
+				{isSubmitting && <Spinner />}
 				Reset password
 			</Button>
 		</form>
