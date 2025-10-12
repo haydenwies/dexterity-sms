@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import { useParams } from "next/navigation"
 import { use, useMemo } from "react"
 
 import { routes } from "@repo/routes"
@@ -13,19 +12,12 @@ import { cn } from "@repo/ui/lib/utils"
 import { useStreamManyConversations } from "~/data/conversation/use-stream-many-conversations"
 
 type AllConversationsListItemProps = {
-	organizationId: string
+	params: { organizationId: string; conversationId?: string }
 	conversation: ConversationModel
 	contacts: ContactModel[]
 	className?: string
 }
-const AllConvesationsListItem = ({
-	organizationId,
-	conversation,
-	contacts,
-	className
-}: AllConversationsListItemProps) => {
-	const params = useParams()
-
+const AllConvesationsListItem = ({ params, conversation, contacts, className }: AllConversationsListItemProps) => {
 	const displayName = useMemo((): string | undefined => {
 		const contact = contacts.find((contact) => contact.phone === conversation.recipient)
 		if (!contact) return undefined
@@ -36,7 +28,7 @@ const AllConvesationsListItem = ({
 
 	return (
 		<Link
-			href={routes.web.CONVERSATION(organizationId, conversation.id)}
+			href={routes.web.CONVERSATION(params.organizationId, conversation.id)}
 			className="block w-full"
 		>
 			<div
@@ -67,13 +59,13 @@ const AllConvesationsListItem = ({
 
 type AllConversationsListProps = {
 	className?: string
-	organizationId: string
+	params: { organizationId: string; conversationId?: string }
 	conversationsPromise: Promise<ConversationModel[]>
 	contactsPromise: Promise<ContactModel[]>
 }
 const AllConversationsList = ({
 	className,
-	organizationId,
+	params,
 	conversationsPromise,
 	contactsPromise
 }: AllConversationsListProps) => {
@@ -87,7 +79,7 @@ const AllConversationsList = ({
 			{conversations.map((conversation) => (
 				<AllConvesationsListItem
 					key={conversation.id}
-					organizationId={organizationId}
+					params={params}
 					conversation={conversation}
 					contacts={contacts}
 				/>
