@@ -10,6 +10,7 @@ const getConversation = async (organizationId: string, conversationId: string): 
 	const sessionToken = await getSessionToken()
 	if (!sessionToken) throw new Error("Unauthorized")
 
+	console.log("[CACHE CHECK] getConversation - Starting fetch")
 	const backendUrl = getBackendPrivateUrl()
 	const url = `${backendUrl}${routes.backend.GET_CONVERSATION(organizationId, conversationId)}`
 	const res = await fetch(url, {
@@ -17,6 +18,7 @@ const getConversation = async (organizationId: string, conversationId: string): 
 		headers: { "Authorization": `Bearer ${sessionToken}` },
 		cache: "no-store"
 	})
+	console.log("[CACHE CHECK] getConversation - Response status:", res.status)
 	if (!res.ok) {
 		const errData = await res.json()
 		throw new Error(errData.message)
