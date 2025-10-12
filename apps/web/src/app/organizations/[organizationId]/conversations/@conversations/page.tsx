@@ -12,6 +12,8 @@ const RouteSegment = async ({ params }: RouteSegmentParams) => {
 	const conversationsPromise = getManyConversations(organizationId)
 	const contactsPromise = getManyContacts(organizationId)
 
+	console.log("mounted /conversations pannel")
+
 	return (
 		<AllConversationsList
 			className="w-[300px]"
