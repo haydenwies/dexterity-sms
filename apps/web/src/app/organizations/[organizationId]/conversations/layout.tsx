@@ -5,10 +5,13 @@ import { getManyContacts } from "~/data/contact/get-many-contacts"
 import { getManyConversations } from "~/data/conversation/get-many-conversations"
 import { AllConversationsList } from "~/features/conversation/components/all-conversations-list"
 
+export const dynamic = "force-dynamic"
+
 type LayoutProps = Readonly<{
 	children: React.ReactNode
 	params: Promise<{ organizationId: string }>
 }>
+
 const AllMessagesLayout = async ({ children, params }: LayoutProps) => {
 	const { organizationId } = await params
 
