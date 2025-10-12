@@ -1,5 +1,6 @@
 import { Icon, IconName } from "@repo/ui/components/icon"
 import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
+import { Suspense } from "react"
 
 import { getManyContacts } from "~/data/contact/get-many-contacts"
 import { getManyConversations } from "~/data/conversation/get-many-conversations"
@@ -32,12 +33,14 @@ const AllMessagesLayout = async ({ children, params }: LayoutProps) => {
 				className="grid grid-cols-[auto_1fr] p-0"
 				disableScroll
 			>
-				<AllConversationsList
-					className="w-[300px]"
-					organizationId={organizationId}
-					conversationsPromise={conversationsPromise}
-					contactsPromise={contactsPromise}
-				/>
+				<Suspense>
+					<AllConversationsList
+						className="w-[300px]"
+						organizationId={organizationId}
+						conversationsPromise={conversationsPromise}
+						contactsPromise={contactsPromise}
+					/>
+				</Suspense>
 				{children}
 			</PageContent>
 		</Page>
