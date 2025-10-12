@@ -14,7 +14,8 @@ const getConversation = async (organizationId: string, conversationId: string): 
 	const url = `${backendUrl}${routes.backend.GET_CONVERSATION(organizationId, conversationId)}`
 	const res = await fetch(url, {
 		method: "GET",
-		headers: { "Authorization": `Bearer ${sessionToken}` }
+		headers: { "Authorization": `Bearer ${sessionToken}` },
+		cache: "no-store"
 	})
 	if (!res.ok) {
 		const errData = await res.json()

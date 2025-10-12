@@ -30,6 +30,7 @@ const MessageInput = ({ className, params }: MessageInputProps) => {
 	const handleSubmit = form.handleSubmit(async (data: SendMessageDto) => {
 		const res = await sendMessage(params.organizationId, params.conversationId, data)
 		if (!res.success) toast.error(res.error)
+		else form.reset()
 	})
 
 	return (
