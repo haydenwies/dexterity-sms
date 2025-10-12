@@ -9,8 +9,8 @@ type RouteSegmentParams = Readonly<{
 const RouteSegment = async ({ params }: RouteSegmentParams) => {
 	const { organizationId } = await params
 
-	const conversationsPromise = getManyConversations(organizationId)
-	const contactsPromise = getManyContacts(organizationId)
+	const conversationsPromise = getManyConversations(organizationId, { from: "conversations" })
+	const contactsPromise = getManyContacts(organizationId, { from: "conversations" })
 
 	return (
 		<AllConversationsList
