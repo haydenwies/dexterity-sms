@@ -11,7 +11,6 @@ const getManyCampaigns = async (organizationId: string): Promise<CampaignModel[]
 	const sessionToken = await getSessionToken()
 	if (!sessionToken) throw new Error("Unauthorized")
 
-	console.log("[CACHE CHECK] getManyCampaigns - Starting fetch")
 	const backendUrl = getBackendPrivateUrl()
 	const url = `${backendUrl}${routes.backend.GET_MANY_CAMPAIGNS(organizationId)}`
 	const res = await fetch(url, {
@@ -20,7 +19,6 @@ const getManyCampaigns = async (organizationId: string): Promise<CampaignModel[]
 		cache: "force-cache",
 		next: { tags: [CACHE_TAGS.allCampaigns(organizationId)] }
 	})
-	console.log("[CACHE CHECK] getManyCampaigns - Response status:", res.status)
 	if (!res.ok) {
 		const errData = await res.json()
 		throw new Error(errData.message)
