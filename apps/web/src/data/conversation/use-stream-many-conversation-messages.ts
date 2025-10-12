@@ -2,8 +2,9 @@ import { useParams } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
 
 import { routes } from "@repo/routes"
-import { type MessageModel } from "@repo/types/message"
+import { MessageDirection, type MessageModel } from "@repo/types/message"
 
+import { readConversation } from "~/actions/conversation/read-conversation"
 import { getBackendPublicUrl } from "~/lib/url"
 
 const useStreamManyConversationMessages = (initalMessages: MessageModel[]) => {
@@ -43,11 +44,17 @@ const useStreamManyConversationMessages = (initalMessages: MessageModel[]) => {
 				if (existingMessage) return prev.map((message) => (message.id === data.id ? data : message))
 				else return [...prev, data]
 			})
+
+			if (data.direction === MessageDirection.INBOUND) {
+				if (!params.organizationId || Array.isArray(params.organizationId)) return
+				if (!params.conversationId || Array.isArray(params.conversationId)) return
+				void readConversation(params.organizationId, params.conversationId)
+			}
 		}
 
 		// Clean up
 		return () => eventSource.close()
-	}, [connect])
+	}, [connect, params.organizationId, params.conversationId])
 
 	return messages
 }
