@@ -11,13 +11,16 @@ const getCampaign = async (organizationId: string, campaignId: string): Promise<
 	const sessionToken = await getSessionToken()
 	if (!sessionToken) throw new Error("Unauthorized")
 
+	console.log("[CACHE CHECK] getCampaign - Starting fetch")
 	const backendUrl = getBackendPrivateUrl()
 	const url = `${backendUrl}${routes.backend.GET_CAMPAIGN(organizationId, campaignId)}`
 	const res = await fetch(url, {
 		method: "GET",
 		headers: { "Authorization": `Bearer ${sessionToken}` },
+		cache: "force-cache",
 		next: { tags: [CACHE_TAGS.campaign(organizationId, campaignId)] }
 	})
+	console.log("[CACHE CHECK] getCampaign - Response status:", res.status)
 	if (!res.ok) {
 		const errData = await res.json()
 		throw new Error(errData.message)
