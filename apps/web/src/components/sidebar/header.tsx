@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { use } from "react"
 
 import { Avatar, AvatarFallback } from "@repo/ui/components/avatar"
 import {
@@ -17,12 +18,16 @@ import * as SidebarPrimitive from "@repo/ui/components/sidebar"
 import { routes } from "@repo/routes"
 import { OrganizationModel } from "@repo/types/organization"
 
-type SidebarHeaderProps = {
-	allOrganizations: OrganizationModel[]
-	organization: OrganizationModel
-}
-const SidebarHeader = ({ allOrganizations, organization: currentOrganization }: SidebarHeaderProps) => {
+type SidebarHeaderProps = Readonly<{
+	allOrganizationsPromise: Promise<OrganizationModel[]>
+	organizationPromise: Promise<OrganizationModel>
+}>
+
+const SidebarHeader = ({ allOrganizationsPromise, organizationPromise }: SidebarHeaderProps) => {
 	const { isMobile } = SidebarPrimitive.useSidebar()
+
+	const allOrganizations = use(allOrganizationsPromise)
+	const organization = use(organizationPromise)
 
 	return (
 		<SidebarPrimitive.SidebarHeader>
@@ -36,10 +41,10 @@ const SidebarHeader = ({ allOrganizations, organization: currentOrganization }: 
 							>
 								<Avatar className="border-none">
 									<AvatarFallback className="bg-primary text-primary-foreground">
-										{currentOrganization.name[0]}
+										{organization.name[0]}
 									</AvatarFallback>
 								</Avatar>
-								<span className="truncate font-medium">{currentOrganization.name}</span>
+								<span className="truncate font-medium">{organization.name}</span>
 								<Icon
 									className="ml-auto"
 									name={IconName.CHEVRONS_UP_DOWN}
@@ -52,20 +57,20 @@ const SidebarHeader = ({ allOrganizations, organization: currentOrganization }: 
 							side={isMobile ? "bottom" : "right"}
 						>
 							<DropdownMenuLabel>Organizations</DropdownMenuLabel>
-							{allOrganizations.map((organization) => {
+							{allOrganizations.map((o) => {
 								return (
 									<DropdownMenuItem
 										asChild
-										key={organization.id}
+										key={o.id}
 									>
-										<Link href={routes.web.ORGANIZATION(organization.id)}>
+										<Link href={routes.web.ORGANIZATION(o.id)}>
 											<Avatar className="size-6 rounded-sm border-none">
 												<AvatarFallback className="bg-primary text-primary-foreground">
-													{organization.name[0]}
+													{o.name[0]}
 												</AvatarFallback>
 											</Avatar>
-											{organization.name}
-											{organization.id === currentOrganization.id && (
+											{o.name}
+											{o.id === organization.id && (
 												<Icon
 													className="ml-auto"
 													name={IconName.CHECK}

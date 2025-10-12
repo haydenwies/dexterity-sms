@@ -2,9 +2,11 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { use } from "react"
 
 import { routes } from "@repo/routes"
 import { type UserDto } from "@repo/types/auth"
+import { OrganizationModel } from "@repo/types/organization"
 import { Avatar, AvatarFallback } from "@repo/ui/components/avatar"
 import {
 	DropdownMenu,
@@ -16,17 +18,20 @@ import { Icon, IconName } from "@repo/ui/components/icon"
 import * as SidebarPrimitive from "@repo/ui/components/sidebar"
 
 import { signOut } from "~/actions/auth/sign-out"
+import { isPathActive } from "~/components/sidebar/utils"
 
-type SidebarFooterProps = {
-	organizationId: string
-	user: UserDto
-}
-const SidebarFooter = ({ organizationId, user }: SidebarFooterProps) => {
-	const { isMobile, open, toggleSidebar } = SidebarPrimitive.useSidebar()
+type SidebarFooterProps = Readonly<{
+	organizationPromise: Promise<OrganizationModel>
+	userPromise: Promise<UserDto>
+}>
+
+const SidebarFooter = ({ organizationPromise, userPromise }: SidebarFooterProps) => {
+	const organization = use(organizationPromise)
+	const user = use(userPromise)
+
 	const pathname = usePathname()
 
-	const settingsHref = routes.web.SETTINGS(organizationId)
-	const isSettingsActive = pathname === settingsHref || pathname.startsWith(settingsHref + "/")
+	const { isMobile, open, toggleSidebar } = SidebarPrimitive.useSidebar()
 
 	return (
 		<SidebarPrimitive.SidebarFooter>
@@ -34,10 +39,10 @@ const SidebarFooter = ({ organizationId, user }: SidebarFooterProps) => {
 				<SidebarPrimitive.SidebarMenuItem>
 					<SidebarPrimitive.SidebarMenuButton
 						asChild
-						isActive={isSettingsActive}
+						isActive={isPathActive(pathname, routes.web.SETTINGS(organization.id))}
 						tooltip="Settings"
 					>
-						<Link href={settingsHref}>
+						<Link href={routes.web.SETTINGS(organization.id)}>
 							<Icon name={IconName.SETTINGS} />
 							Settings
 						</Link>
