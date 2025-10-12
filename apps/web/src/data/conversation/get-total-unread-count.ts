@@ -5,7 +5,7 @@ import { routes } from "@repo/routes"
 import { getSessionToken } from "~/lib/session"
 import { getBackendPrivateUrl } from "~/lib/url"
 
-const getTotalUnreadCount = async (organizationId: string): Promise<number> => {
+const getManyConversationsUnreadCount = async (organizationId: string): Promise<{ count: number }> => {
 	const sessionToken = await getSessionToken()
 	if (!sessionToken) throw new Error("Unauthorized")
 
@@ -14,8 +14,7 @@ const getTotalUnreadCount = async (organizationId: string): Promise<number> => {
 	const res = await fetch(url, {
 		method: "GET",
 		headers: { "Authorization": `Bearer ${sessionToken}` },
-		cache: "no-store",
-		next: { revalidate: 0 }
+		cache: "no-store"
 	})
 	if (!res.ok) {
 		const errData = await res.json()
@@ -24,7 +23,7 @@ const getTotalUnreadCount = async (organizationId: string): Promise<number> => {
 
 	const data = await res.json()
 
-	return data.count
+	return data
 }
 
-export { getTotalUnreadCount }
+export { getManyConversationsUnreadCount }

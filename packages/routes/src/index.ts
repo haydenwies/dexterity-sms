@@ -92,7 +92,7 @@ const routes = {
 		ORGANIZATION: (id: string) => `/organizations/${id}`,
 
 		// home
-		HOME: (organizationId: string) => `/organizations/${organizationId}`,
+		HOME: (organizationId: string) => `/organizations/${organizationId}/home`,
 
 		// campaign
 		ALL_CAMPAIGNS: (organizationId: string) => `/organizations/${organizationId}/campaigns`,
