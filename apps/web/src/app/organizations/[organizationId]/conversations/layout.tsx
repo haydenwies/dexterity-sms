@@ -6,6 +6,7 @@ import { getManyConversations } from "~/data/conversation/get-many-conversations
 import { AllConversationsList } from "~/features/conversation/components/all-conversations-list"
 
 export const dynamic = "force-dynamic"
+export const revalidate = 0
 
 type LayoutProps = Readonly<{
 	children: React.ReactNode
