@@ -10,6 +10,7 @@ const getManyConversationMessages = async (organizationId: string, conversationI
 	const sessionToken = await getSessionToken()
 	if (!sessionToken) throw new Error("Unauthorized")
 
+	console.log("[CACHE CHECK] getManyConversationMessages - Starting fetch")
 	const backendUrl = getBackendPrivateUrl()
 	const url = `${backendUrl}${routes.backend.GET_CONVERSATION_MESSAGES(organizationId, conversationId)}`
 	const res = await fetch(url, {
@@ -17,6 +18,7 @@ const getManyConversationMessages = async (organizationId: string, conversationI
 		headers: { "Authorization": `Bearer ${sessionToken}` },
 		cache: "no-store"
 	})
+	console.log("[CACHE CHECK] getManyConversationMessages - Response status:", res.status)
 	if (!res.ok) {
 		const errData = await res.json()
 		throw new Error(errData.message)

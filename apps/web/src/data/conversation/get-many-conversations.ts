@@ -10,6 +10,7 @@ const getManyConversations = async (organizationId: string): Promise<Conversatio
 	const sessionToken = await getSessionToken()
 	if (!sessionToken) throw new Error("Unauthorized")
 
+	console.log("[CACHE CHECK] getManyConversations - Starting fetch")
 	const backendUrl = getBackendPrivateUrl()
 	const url = `${backendUrl}${routes.backend.GET_ALL_CONVERSATIONS(organizationId)}`
 	const res = await fetch(url, {
@@ -17,6 +18,7 @@ const getManyConversations = async (organizationId: string): Promise<Conversatio
 		headers: { "Authorization": `Bearer ${sessionToken}` },
 		cache: "no-store"
 	})
+	console.log("[CACHE CHECK] getManyConversations - Response status:", res.status)
 	if (!res.ok) {
 		const errData = await res.json()
 		throw new Error(errData.message)
