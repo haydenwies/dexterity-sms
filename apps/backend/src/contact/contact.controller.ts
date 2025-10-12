@@ -36,6 +36,7 @@ class ContactController {
 
 	@Get()
 	async getAll(@Param("organizationId") organizationId: string): Promise<ContactModel[]> {
+		console.log("[CACHE CHECK] getAll - Getting contacts")
 		const contacts = await this.contactService.getAll(organizationId)
 
 		return contacts.map(this.contactService.toDto)
