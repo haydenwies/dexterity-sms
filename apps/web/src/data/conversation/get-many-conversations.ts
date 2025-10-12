@@ -15,8 +15,7 @@ const getManyConversations = async (organizationId: string, ctx?: { from: string
 	const url = `${backendUrl}${routes.backend.GET_ALL_CONVERSATIONS(organizationId)}`
 	const res = await fetch(url, {
 		method: "GET",
-		headers: { "Authorization": `Bearer ${sessionToken}` },
-		cache: "no-store"
+		headers: { "Authorization": `Bearer ${sessionToken}` }
 	})
 	console.log("[CACHE CHECK] getManyConversations - Response status:", res.status)
 	if (!res.ok) {
