@@ -14,8 +14,7 @@ const getManyConversationsUnreadCount = async (organizationId: string): Promise<
 	const url = `${backendUrl}${routes.backend.GET_TOTAL_UNREAD_COUNT(organizationId)}`
 	const res = await fetch(url, {
 		method: "GET",
-		headers: { "Authorization": `Bearer ${sessionToken}` },
-		cache: "no-store"
+		headers: { "Authorization": `Bearer ${sessionToken}` }
 	})
 	console.log("[CACHE CHECK] getManyConversationsUnreadCount - Response status:", res.status)
 	if (!res.ok) {
