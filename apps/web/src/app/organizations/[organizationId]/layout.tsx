@@ -1,5 +1,6 @@
 import { Sidebar, SidebarProvider } from "~/components/sidebar"
 import { getUser } from "~/data/auth/get-user"
+import { getTotalUnreadCount } from "~/data/conversation/get-total-unread-count"
 import { getManyOrganizations } from "~/data/organization/get-many-organizations"
 import { getOrganization } from "~/data/organization/get-organization"
 
@@ -10,10 +11,11 @@ type OrganizationLayoutProps = {
 const OrganizationLayout = async ({ children, params }: OrganizationLayoutProps) => {
 	const { organizationId } = await params
 
-	const [allOrganizations, organization, user] = await Promise.all([
+	const [allOrganizations, organization, user, initialUnreadCount] = await Promise.all([
 		getManyOrganizations(),
 		getOrganization(organizationId),
-		getUser()
+		getUser(),
+		getTotalUnreadCount(organizationId)
 	])
 
 	return (
@@ -22,6 +24,7 @@ const OrganizationLayout = async ({ children, params }: OrganizationLayoutProps)
 				allOrganizations={allOrganizations}
 				organization={organization}
 				user={user}
+				initialUnreadCount={initialUnreadCount}
 			/>
 			{children}
 		</SidebarProvider>

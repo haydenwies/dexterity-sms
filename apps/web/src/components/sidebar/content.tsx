@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
+import { Badge } from "@repo/ui/components/badge"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@repo/ui/components/collapsible"
 import { Icon, IconName } from "@repo/ui/components/icon"
 import * as SidebarPrimitive from "@repo/ui/components/sidebar"
@@ -13,6 +14,7 @@ import {
 	type SidebarItemLink as SidebarItemLinkType,
 	SidebarItemType
 } from "~/components/sidebar/items"
+import { useStreamTotalUnreadCount } from "~/data/conversation/use-stream-total-unread-count"
 
 const isPathActive = (pathname: string, itemHref: string): boolean => {
 	// Exact match for the item href
@@ -49,7 +51,15 @@ const SidebarItemLink = ({ pathname, ...item }: SidebarItemLinkProps) => {
 			>
 				<Link href={item.href}>
 					{item.icon && <Icon name={item.icon} />}
-					{item.title}
+					<span>{item.title}</span>
+					{item.badge !== undefined && item.badge > 0 && (
+						<Badge
+							variant="default"
+							className="ml-auto rounded-full px-2 py-0.5 text-xs"
+						>
+							{item.badge > 99 ? "99+" : item.badge}
+						</Badge>
+					)}
 				</Link>
 			</SidebarPrimitive.SidebarMenuButton>
 		</SidebarPrimitive.SidebarMenuItem>
@@ -108,17 +118,27 @@ const SidebarItemFolder = ({ pathname, ...item }: SidebarItemFolderProps) => {
 
 type SidebarContentProps = {
 	organizationId: string
+	initialUnreadCount: number
 }
-const SidebarContent = ({ organizationId }: SidebarContentProps) => {
+const SidebarContent = ({ organizationId, initialUnreadCount }: SidebarContentProps) => {
 	const pathname = usePathname()
+	const unreadCount = useStreamTotalUnreadCount(initialUnreadCount)
 	const items = getSidebarItems(organizationId)
+
+	// Update the Conversations item with the unread count badge
+	const itemsWithBadge = items.map((item) => {
+		if (item.type === SidebarItemType.LINK && item.title === "Conversations") {
+			return { ...item, badge: unreadCount }
+		}
+		return item
+	})
 
 	return (
 		<SidebarPrimitive.SidebarContent>
 			<SidebarPrimitive.SidebarGroup>
 				<SidebarPrimitive.SidebarGroupContent>
 					<SidebarPrimitive.SidebarMenu>
-						{items.map((item) => {
+						{itemsWithBadge.map((item) => {
 							if (item.type === SidebarItemType.LINK)
 								return (
 									<SidebarItemLink
