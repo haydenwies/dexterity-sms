@@ -13,6 +13,7 @@ type SidebarItemLink = {
 	title: string
 	href: string
 	icon?: IconName
+	badge?: number
 }
 
 type SidebarItemFolder = {

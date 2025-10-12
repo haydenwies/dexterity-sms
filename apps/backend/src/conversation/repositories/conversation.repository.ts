@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common"
-import { and, eq } from "drizzle-orm"
+import { and, eq, sum } from "drizzle-orm"
 
 import { Phone } from "~/common/phone.vo"
 import { Conversation } from "~/conversation/entities/conversation.entity"
@@ -44,6 +44,15 @@ export class ConversationRepository {
 			.where(eq(conversationTable.organizationId, organizationId))
 
 		return rows.map((row) => ConversationRepository.toEntity(row))
+	}
+
+	async getTotalUnreadCount(organizationId: string): Promise<number> {
+		const [result] = await this.db
+			.select({ total: sum(conversationTable.unreadCount) })
+			.from(conversationTable)
+			.where(eq(conversationTable.organizationId, organizationId))
+
+		return Number(result?.total || 0)
 	}
 
 	async create(conversation: Conversation): Promise<Conversation> {
