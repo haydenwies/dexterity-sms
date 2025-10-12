@@ -7,7 +7,6 @@ import { getManyContacts } from "~/data/contact/get-many-contacts"
 import { ContactTable, ContactTableSkeleton } from "~/features/contact/components/contact-table"
 import { CreateContactButton } from "~/features/contact/components/create-contact"
 import { UploadContactCsvButton } from "~/features/contact/components/upload-contact-csv"
-import { TestComp } from "./test-comp"
 
 type AllContactsPageProps = Readonly<{
 	params: Promise<{ organizationId: string }>
@@ -32,7 +31,6 @@ const AllContactsPage = async ({ params }: AllContactsPageProps) => {
 				</PageHeaderRow>
 			</PageHeader>
 			<PageContent>
-				<TestComp />
 				<Suspense fallback={<ContactTableSkeleton />}>
 					<ContactTable contactsPromise={contactsPromise} />
 				</Suspense>
