@@ -15,7 +15,8 @@ const getConversation = async (organizationId: string, conversationId: string): 
 	const res = await fetch(url, {
 		method: "GET",
 		headers: { "Authorization": `Bearer ${sessionToken}` },
-		cache: "no-store"
+		cache: "no-store",
+		next: { revalidate: 0 }
 	})
 	if (!res.ok) {
 		const errData = await res.json()
