@@ -8,6 +8,7 @@ import {
 } from "~/features/conversation/components/conversation-interface"
 
 export const dynamic = "force-dynamic"
+export const revalidate = 0
 
 type PageProps = Readonly<{
 	params: Promise<{ organizationId: string; conversationId: string }>
