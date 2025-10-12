@@ -6,18 +6,16 @@ import { type ConversationModel } from "@repo/types/conversation"
 import { getSessionToken } from "~/lib/session"
 import { getBackendPrivateUrl } from "~/lib/url"
 
-const getManyConversations = async (organizationId: string, ctx?: { from: string }): Promise<ConversationModel[]> => {
+const getManyConversations = async (organizationId: string): Promise<ConversationModel[]> => {
 	const sessionToken = await getSessionToken()
 	if (!sessionToken) throw new Error("Unauthorized")
 
-	console.log("[CACHE CHECK] getManyConversations - Starting fetch from", ctx?.from)
 	const backendUrl = getBackendPrivateUrl()
 	const url = `${backendUrl}${routes.backend.GET_ALL_CONVERSATIONS(organizationId)}`
 	const res = await fetch(url, {
 		method: "GET",
 		headers: { "Authorization": `Bearer ${sessionToken}` }
 	})
-	console.log("[CACHE CHECK] getManyConversations - Response status:", res.status)
 	if (!res.ok) {
 		const errData = await res.json()
 		throw new Error(errData.message)
