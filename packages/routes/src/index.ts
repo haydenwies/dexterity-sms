@@ -54,6 +54,10 @@ const routes = {
 		GET_ALL_CONVERSATIONS: (organizationId: string) => `/organizations/${organizationId}/conversations`,
 		GET_CONVERSATION: (organizationId: string, conversationId: string) =>
 			`/organizations/${organizationId}/conversations/${conversationId}`,
+		GET_TOTAL_UNREAD_COUNT: (organizationId: string) =>
+			`/organizations/${organizationId}/conversations/unread-count`,
+		STREAM_TOTAL_UNREAD_COUNT: (params: { organizationId: string }) =>
+			`/organizations/${params.organizationId}/conversations/unread-count/stream`,
 		STREAM_MANY_CONVERSATIONS: (params: { organizationId: string }) =>
 			`/organizations/${params.organizationId}/conversations/stream`,
 		GET_CONVERSATION_MESSAGES: (organizationId: string, conversationId: string) =>

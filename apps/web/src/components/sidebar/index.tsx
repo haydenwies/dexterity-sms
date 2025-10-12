@@ -12,15 +12,19 @@ type SidebarProps = {
 	allOrganizations: OrganizationModel[]
 	organization: OrganizationModel
 	user: UserDto
+	initialUnreadCount: number
 }
-const Sidebar = ({ allOrganizations, organization, user }: SidebarProps) => {
+const Sidebar = ({ allOrganizations, organization, user, initialUnreadCount }: SidebarProps) => {
 	return (
 		<SidebarPrimitive.Sidebar collapsible="icon">
 			<SidebarHeader
 				allOrganizations={allOrganizations}
 				organization={organization}
 			/>
-			<SidebarContent organizationId={organization.id} />
+			<SidebarContent
+				organizationId={organization.id}
+				initialUnreadCount={initialUnreadCount}
+			/>
 			<SidebarFooter
 				organizationId={organization.id}
 				user={user}

@@ -26,6 +26,22 @@ export class ConversationController {
 		return conversations.map((conversation) => toConversationDto(conversation))
 	}
 
+	@Get("unread-count")
+	async getTotalUnreadCount(@Param("organizationId") organizationId: string): Promise<{ count: number }> {
+		const count = await this.conversationService.getTotalUnreadCount(organizationId)
+
+		return { count }
+	}
+
+	@Sse("unread-count/stream")
+	streamTotalUnreadCount(
+		@Param("organizationId") organizationId: string
+	): Observable<MessageEvent & { data: { count: number } }> {
+		return this.conversationService
+			.streamTotalUnreadCount(organizationId)
+			.pipe(map((count) => ({ data: { count } })))
+	}
+
 	@Sse("stream")
 	streamManyConversations(
 		@Param("organizationId") organizationId: string
