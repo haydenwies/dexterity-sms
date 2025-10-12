@@ -2,11 +2,11 @@ import { getManyContacts } from "~/data/contact/get-many-contacts"
 import { getManyConversations } from "~/data/conversation/get-many-conversations"
 import { AllConversationsList } from "~/features/conversation/components/all-conversations-list"
 
-type ConversationsRouteSegmentParams = Readonly<{
+type RouteSegmentParams = Readonly<{
 	params: Promise<{ organizationId: string }>
 }>
 
-const ConversationsRouteSegment = async ({ params }: ConversationsRouteSegmentParams) => {
+const RouteSegment = async ({ params }: RouteSegmentParams) => {
 	const { organizationId } = await params
 
 	const conversationsPromise = getManyConversations(organizationId)
@@ -22,4 +22,4 @@ const ConversationsRouteSegment = async ({ params }: ConversationsRouteSegmentPa
 	)
 }
 
-export default ConversationsRouteSegment
+export default RouteSegment
