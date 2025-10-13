@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { use } from "react"
+import { use, useState } from "react"
 
 import { routes } from "@repo/routes"
 import { type OrganizationModel } from "@repo/types/organization"
@@ -11,7 +11,8 @@ import { Icon, IconName } from "@repo/ui/components/icon"
 import * as SidebarPrimitive from "@repo/ui/components/sidebar"
 
 import { isPathActive } from "~/components/sidebar/utils"
-import { useStreamTotalUnreadCount } from "~/data/conversation/use-stream-total-unread-count"
+import { streamManyConversationsUnreadCount } from "~/data/conversation/stream-many-conversations-unread-count"
+import { useSse } from "~/hooks/use-sse"
 
 type SidebarContentProps = Readonly<{
 	organizationPromise: Promise<OrganizationModel>
@@ -24,7 +25,14 @@ const SidebarContent = ({ organizationPromise, conversationUnreadCountPromise }:
 
 	const pathname = usePathname()
 
-	const conversationUnreadCount = useStreamTotalUnreadCount(initialConversationUnreadCount.count)
+	const [conversationUnreadCount, setConversationUnreadCount] = useState<number>(initialConversationUnreadCount.count)
+	useSse<{ count: number }>(() => streamManyConversationsUnreadCount(organization.id), {
+		onMessage: (data) => {
+			setConversationUnreadCount(data.count)
+		}
+	})
+
+	// const conversationUnreadCount = useStreamTotalUnreadCount(initialConversationUnreadCount.count)
 
 	return (
 		<SidebarPrimitive.SidebarContent>

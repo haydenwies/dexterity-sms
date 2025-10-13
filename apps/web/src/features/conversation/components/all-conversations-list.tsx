@@ -74,8 +74,6 @@ const AllConversationsList = ({
 	const initialConversations = use(conversationsPromise)
 	const contacts = use(contactsPromise)
 
-	// const conversations = useStreamManyConversations(initialConversations)
-
 	const [conversations, setConversations] = useState<ConversationModel[]>(initialConversations)
 
 	useSse<ConversationModel>(() => streamManyConversations(params.organizationId), {
