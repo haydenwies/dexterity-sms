@@ -119,7 +119,7 @@ class Message implements IMessage {
 			conversationId: params.conversationId,
 			campaignId: params.campaignId,
 			direction: params.direction,
-			status: params.status || MessageStatus.PENDING,
+			status: params.status || MessageStatus.PROCESSING,
 			body: params.body,
 			from: params.from,
 			to: params.to,
@@ -160,8 +160,8 @@ class Message implements IMessage {
 	updateStatusFromProvider(status: StatusWebhookEvent["status"]): MessageStatus | null {
 		switch (status) {
 			case "pending":
-				this._status = MessageStatus.PENDING
-				return MessageStatus.PENDING
+				this._status = MessageStatus.PROCESSING
+				return MessageStatus.PROCESSING
 			case "sent":
 				this._status = MessageStatus.SENT
 				return MessageStatus.SENT

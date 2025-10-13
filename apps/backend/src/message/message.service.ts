@@ -83,7 +83,7 @@ class MessageService {
 			conversationId: payload.conversationId,
 			campaignId: payload.campaignId,
 			direction: MessageDirection.OUTBOUND,
-			status: MessageStatus.PENDING,
+			status: MessageStatus.PROCESSING,
 			from: payload.from,
 			to: payload.to,
 			body: payload.body
