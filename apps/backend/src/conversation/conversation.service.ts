@@ -48,23 +48,23 @@ export class ConversationService {
 		return conversations
 	}
 
-	async getTotalUnreadCount(organizationId: string): Promise<number> {
-		const count = await this.conversationRepository.getTotalUnreadCount(organizationId)
+	async getUnreadCount(organizationId: string): Promise<number> {
+		const count = await this.conversationRepository.getUnreadCount(organizationId)
 
 		return count
 	}
 
-	streamTotalUnreadCount(organizationId: string): Observable<number> {
+	streamUnreadCount(organizationId: string): Observable<number> {
 		const created$ = fromEvent(this.eventEmitter, Event.CONVERSATION_CREATED).pipe(
 			map((conversation) => conversation as ConversationCreatedEvent),
 			filter((conversation) => conversation.organizationId === organizationId),
-			mergeMap(async () => await this.conversationRepository.getTotalUnreadCount(organizationId))
+			mergeMap(async () => await this.conversationRepository.getUnreadCount(organizationId))
 		)
 
 		const updated$ = fromEvent(this.eventEmitter, Event.CONVERSATION_UPDATED).pipe(
 			map((conversation) => conversation as ConversationUpdatedEvent),
 			filter((conversation) => conversation.organizationId === organizationId),
-			mergeMap(async () => await this.conversationRepository.getTotalUnreadCount(organizationId))
+			mergeMap(async () => await this.conversationRepository.getUnreadCount(organizationId))
 		)
 
 		return merge(created$, updated$)

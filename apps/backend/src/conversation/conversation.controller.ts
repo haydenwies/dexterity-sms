@@ -27,23 +27,21 @@ export class ConversationController {
 	}
 
 	@Get("unread-count")
-	async getTotalUnreadCount(@Param("organizationId") organizationId: string): Promise<{ count: number }> {
-		const count = await this.conversationService.getTotalUnreadCount(organizationId)
+	async getUnreadCount(@Param("organizationId") organizationId: string): Promise<{ count: number }> {
+		const count = await this.conversationService.getUnreadCount(organizationId)
 
 		return { count }
 	}
 
 	@Sse("unread-count/stream")
-	streamTotalUnreadCount(
+	streamUnreadCount(
 		@Param("organizationId") organizationId: string
 	): Observable<MessageEvent & { data: { count: number } }> {
-		return this.conversationService
-			.streamTotalUnreadCount(organizationId)
-			.pipe(map((count) => ({ data: { count } })))
+		return this.conversationService.streamUnreadCount(organizationId).pipe(map((count) => ({ data: { count } })))
 	}
 
 	@Sse("stream")
-	streamManyConversations(
+	streamMany(
 		@Param("organizationId") organizationId: string
 	): Observable<MessageEvent & { data: ConversationModel }> {
 		return this.conversationService

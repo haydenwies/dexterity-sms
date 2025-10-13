@@ -11,7 +11,7 @@ const getManyConversationMessages = async (organizationId: string, conversationI
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()
-	const url = `${backendUrl}${routes.backend.GET_CONVERSATION_MESSAGES(organizationId, conversationId)}`
+	const url = `${backendUrl}${routes.backend.GET_MANY_CONVERSATION_MESSAGES(organizationId, conversationId)}`
 	const res = await fetch(url, {
 		method: "GET",
 		headers: { "Authorization": `Bearer ${sessionToken}` }
