@@ -72,7 +72,17 @@ class TwilioProvider implements SmsProvider {
 			// Validate and map message status
 			const twilioStatus = payload["MessageStatus"]
 			if (!twilioStatus || typeof twilioStatus !== "string") return null
-			const status = this.mapTwilioStatusToGeneric(twilioStatus)
+			const statusMap = {
+				PENDING: ["accepted", "scheduled", "queued", "sending"],
+				SENT: ["sent"],
+				DELIVERED: ["delivered"],
+				FAILED: ["failed", "undelivered", "delivery_unknown"]
+			}
+			let status: StatusWebhookEvent["status"] | null = null
+			if (statusMap.PENDING.includes(twilioStatus)) status = "pending"
+			else if (statusMap.SENT.includes(twilioStatus)) status = "sent"
+			else if (statusMap.DELIVERED.includes(twilioStatus)) status = "delivered"
+			else if (statusMap.FAILED.includes(twilioStatus)) status = "failed"
 			if (!status) return null
 
 			// Validate error code
@@ -123,21 +133,6 @@ class TwilioProvider implements SmsProvider {
 		} catch {
 			return null
 		}
-	}
-
-	private mapTwilioStatusToGeneric(twilioStatus: string): StatusWebhookEvent["status"] | null {
-		const statusMap = {
-			PENDING: ["accepted", "scheduled", "queued", "sending"],
-			SENT: ["sent"],
-			DELIVERED: ["delivered"],
-			FAILED: ["failed", "undelivered", "delivery_unknown"]
-		}
-
-		if (statusMap.PENDING.includes(twilioStatus)) return "pending"
-		else if (statusMap.SENT.includes(twilioStatus)) return "sent"
-		else if (statusMap.DELIVERED.includes(twilioStatus)) return "delivered"
-		else if (statusMap.FAILED.includes(twilioStatus)) return "failed"
-		else return null
 	}
 }
 

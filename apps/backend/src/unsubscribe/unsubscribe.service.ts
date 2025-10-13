@@ -20,8 +20,6 @@ class UnsubscribeService {
 		"QUIT"
 	]
 	private readonly RESUBSCRIBE_KEYWORDS = ["START", "YES", "UNSTOP"]
-	private readonly UNSUBSCRIBE_REPLY = "You have been unsubscribed. Reply START to resubscribe."
-	private readonly RESUBSCRIBE_REPLY = "You have been resubscribed to messages."
 
 	constructor(private readonly unsubscribeRepository: UnsubscribeRepository) {}
 
@@ -39,7 +37,7 @@ class UnsubscribeService {
 		// Check if already unsubscribed (idempotent operation)
 		const existingUnsubscribe = await this.unsubscribeRepository.findByPhone(organizationId, phone)
 		if (existingUnsubscribe) {
-			this.logger.log(`Phone ${phone.value} is already unsubscribed for organization ${organizationId}`)
+			this.logger.warn(`Phone ${phone.value} is already unsubscribed for organization ${organizationId}`)
 			return
 		}
 
@@ -61,7 +59,7 @@ class UnsubscribeService {
 		// Check if currently unsubscribed
 		const existingUnsubscribe = await this.unsubscribeRepository.findByPhone(organizationId, phone)
 		if (!existingUnsubscribe) {
-			this.logger.log(`Phone ${phone.value} is not unsubscribed for organization ${organizationId}`)
+			this.logger.warn(`Phone ${phone.value} is not unsubscribed for organization ${organizationId}`)
 			return
 		}
 
