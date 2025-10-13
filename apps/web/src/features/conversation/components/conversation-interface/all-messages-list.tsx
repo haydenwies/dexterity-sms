@@ -1,12 +1,13 @@
 "use client"
 
-import { use, useEffect, useRef } from "react"
+import { use, useEffect, useRef, useState } from "react"
 
 import { MessageDirection, type MessageModel } from "@repo/types/message"
 import { cn } from "@repo/ui/lib/utils"
 
-import { useStreamManyConversationMessages } from "~/data/conversation/use-stream-many-conversation-messages"
-import { useReadConversation } from "~/features/conversation/hooks/use-read-conversation"
+import { readConversation } from "~/actions/conversation/read-conversation"
+import { streamManyConversationMessages } from "~/data/conversation/stream-many-conversation-messages"
+import { useSse } from "~/hooks/use-sse"
 
 type MessageBubbleProps = {
 	message: MessageModel
@@ -30,14 +31,29 @@ const MessageBubble = ({ message, className }: MessageBubbleProps) => {
 }
 
 type AllMessagesListProps = {
-	messagesPromise: Promise<MessageModel[]>
 	className?: string
+	params: { organizationId: string; conversationId: string }
+	messagesPromise: Promise<MessageModel[]>
 }
-const AllMessagesList = ({ messagesPromise, className }: AllMessagesListProps) => {
+const AllMessagesList = ({ className, params, messagesPromise }: AllMessagesListProps) => {
 	const initialMessages = use(messagesPromise)
+
 	const messagesEndRef = useRef<HTMLDivElement>(null)
-	const messages = useStreamManyConversationMessages(initialMessages)
-	const { markAsRead } = useReadConversation()
+	const [messages, setMessages] = useState<MessageModel[]>(initialMessages)
+	// const messages = useStreamManyConversationMessages(initialMessages)
+
+	useSse<MessageModel>(() => streamManyConversationMessages(params.organizationId, params.conversationId), {
+		onMessage: async (data) => {
+			setMessages((prev) => {
+				const existingMessage = prev.find((m) => m.id === data.id)
+				if (existingMessage) return prev.map((m) => (m.id === data.id ? data : m))
+				else return [...prev, data]
+			})
+
+			if (data.direction === MessageDirection.INBOUND)
+				await readConversation(params.organizationId, params.conversationId)
+		}
+	})
 
 	// Auto-scroll to bottom when messages update
 	useEffect(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }), [messages])

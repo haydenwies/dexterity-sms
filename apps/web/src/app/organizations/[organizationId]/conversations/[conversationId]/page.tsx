@@ -38,6 +38,7 @@ const ConversationPage = async ({ params }: PageProps) => {
 				<div className="min-h-0 flex-1 overflow-hidden">
 					<AllMessagesList
 						className="px-6 py-4"
+						params={{ organizationId, conversationId }}
 						messagesPromise={messagesPromise}
 					/>
 				</div>
