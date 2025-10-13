@@ -186,8 +186,7 @@ class MessageWebhookService {
 			await this.processKeywords(sender.organizationId, fromPhone, toPhone, payload.body)
 
 			// Emit message created event to trigger conversation handling
-			const messageCreatedEvent: MessageCreatedEvent = toMessageCreatedEvent(createdMessage)
-			await this.eventEmitter.emitAsync(Event.MESSAGE_CREATED, messageCreatedEvent)
+			await this.eventEmitter.emitAsync(Event.MESSAGE_CREATED, toMessageCreatedEvent(createdMessage))
 
 			this.logger.log(`Emitted ${Event.MESSAGE_CREATED} for inbound message ${createdMessage.id}`)
 		} catch (err: unknown) {
