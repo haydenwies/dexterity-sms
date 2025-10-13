@@ -25,7 +25,7 @@ const ConversationPage = async ({ params }: PageProps) => {
 		<>
 			<AllConversationsList
 				className="w-[300px]"
-				params={{ organizationId }}
+				params={{ organizationId, conversationId }}
 				conversationsPromise={conversationsPromise}
 				contactsPromise={contactsPromise}
 			/>
