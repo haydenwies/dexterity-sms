@@ -39,9 +39,8 @@ const AllMessagesList = ({ className, params, messagesPromise }: AllMessagesList
 	const initialMessages = use(messagesPromise)
 
 	const messagesEndRef = useRef<HTMLDivElement>(null)
-	const [messages, setMessages] = useState<MessageModel[]>(initialMessages)
-	// const messages = useStreamManyConversationMessages(initialMessages)
 
+	const [messages, setMessages] = useState<MessageModel[]>(initialMessages)
 	useSse<MessageModel>(() => streamManyConversationMessages(params.organizationId, params.conversationId), {
 		onMessage: async (data) => {
 			setMessages((prev) => {
@@ -57,11 +56,6 @@ const AllMessagesList = ({ className, params, messagesPromise }: AllMessagesList
 
 	// Auto-scroll to bottom when messages update
 	useEffect(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }), [messages])
-
-	// Mark conversation as read when component mounts (user views the conversation)
-	// useEffect(() => {
-	// 	markAsRead()
-	// }, [markAsRead])
 
 	if (messages.length === 0)
 		return (

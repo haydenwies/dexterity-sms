@@ -75,7 +75,6 @@ const AllConversationsList = ({
 	const contacts = use(contactsPromise)
 
 	const [conversations, setConversations] = useState<ConversationModel[]>(initialConversations)
-
 	useSse<ConversationModel>(() => streamManyConversations(params.organizationId), {
 		onOpen: async () => {
 			if (params.conversationId) await readConversation(params.organizationId, params.conversationId)
