@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { use, useMemo } from "react"
+import { use, useMemo, useState } from "react"
 
 import { routes } from "@repo/routes"
 import { type ContactModel } from "@repo/types/contact"
@@ -9,7 +9,8 @@ import { type ConversationModel } from "@repo/types/conversation"
 import { Badge } from "@repo/ui/components/badge"
 import { cn } from "@repo/ui/lib/utils"
 
-import { useStreamManyConversations } from "~/data/conversation/use-stream-many-conversations"
+import { streamManyConversations } from "~/data/conversation/stream-many-conversations"
+import { useSse } from "~/hooks/use-sse"
 
 type AllConversationsListItemProps = {
 	params: { organizationId: string; conversationId?: string }
@@ -72,7 +73,20 @@ const AllConversationsList = ({
 	const initialConversations = use(conversationsPromise)
 	const contacts = use(contactsPromise)
 
-	const conversations = useStreamManyConversations(initialConversations)
+	// const conversations = useStreamManyConversations(initialConversations)
+
+	const [conversations, setConversations] = useState<ConversationModel[]>(initialConversations)
+
+	useSse<ConversationModel>(() => streamManyConversations(params.organizationId), {
+		onMessage: (data) => {
+			setConversations((prev) => {
+				const existingConversation = prev.find((conversation) => conversation.id === data.id)
+				if (existingConversation)
+					return prev.map((conversation) => (conversation.id === data.id ? data : conversation))
+				else return [...prev, data]
+			})
+		}
+	})
 
 	return (
 		<div className={cn("border-border flex h-full w-full flex-col gap-1 overflow-y-auto border-r p-2", className)}>
