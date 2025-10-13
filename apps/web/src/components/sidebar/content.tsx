@@ -32,8 +32,6 @@ const SidebarContent = ({ organizationPromise, conversationUnreadCountPromise }:
 		}
 	})
 
-	// const conversationUnreadCount = useStreamTotalUnreadCount(initialConversationUnreadCount.count)
-
 	return (
 		<SidebarPrimitive.SidebarContent>
 			<SidebarPrimitive.SidebarGroup>
