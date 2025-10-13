@@ -13,13 +13,14 @@ import { readConversation } from "~/actions/conversation/read-conversation"
 import { streamManyConversations } from "~/data/conversation/stream-many-conversations"
 import { useSse } from "~/hooks/use-sse"
 
-type AllConversationsListItemProps = {
+type AllConversationsListItemProps = Readonly<{
+	className?: string
 	params: { organizationId: string; conversationId?: string }
 	conversation: ConversationModel
 	contacts: ContactModel[]
-	className?: string
-}
-const AllConvesationsListItem = ({ params, conversation, contacts, className }: AllConversationsListItemProps) => {
+}>
+
+const AllConvesationsListItem = ({ className, params, conversation, contacts }: AllConversationsListItemProps) => {
 	const displayName = useMemo((): string | undefined => {
 		const contact = contacts.find((contact) => contact.phone === conversation.recipient)
 		if (!contact) return undefined
@@ -40,16 +41,17 @@ const AllConvesationsListItem = ({ params, conversation, contacts, className }: 
 					className
 				)}
 			>
-				<div className="min-w-0 flex-1">
+				<span>
 					<p className="truncate font-medium">{displayName || conversation.recipient}</p>
 					<p className="text-muted-foreground truncate text-xs">
 						{conversation.lastMessagePreview || "No messages"}
 					</p>
-				</div>
+				</span>
 				{conversation.unreadCount > 0 && (
 					<Badge
+						className="ml-auto"
 						variant="destructive"
-						className="rounded-full p-1 py-0"
+						size="sm"
 					>
 						{conversation.unreadCount > 99 ? "99+" : conversation.unreadCount}
 					</Badge>
@@ -59,12 +61,13 @@ const AllConvesationsListItem = ({ params, conversation, contacts, className }: 
 	)
 }
 
-type AllConversationsListProps = {
+type AllConversationsListProps = Readonly<{
 	className?: string
 	params: { organizationId: string; conversationId?: string }
 	conversationsPromise: Promise<ConversationModel[]>
 	contactsPromise: Promise<ContactModel[]>
-}
+}>
+
 const AllConversationsList = ({
 	className,
 	params,

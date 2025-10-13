@@ -72,8 +72,9 @@ const SidebarContent = ({ organizationPromise, conversationUnreadCountPromise }:
 									Conversations
 									{conversationUnreadCount > 0 && (
 										<Badge
-											variant="default"
-											className="ml-auto rounded-full px-2 py-0.5 text-xs"
+											className="ml-auto"
+											variant="destructive"
+											size="sm"
 										>
 											{conversationUnreadCount > 99 ? "99+" : conversationUnreadCount}
 										</Badge>
