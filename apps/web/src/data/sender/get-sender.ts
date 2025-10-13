@@ -16,7 +16,7 @@ const getSender = async (organizationId: string): Promise<SenderModel | undefine
 	const res = await fetch(url, {
 		method: "GET",
 		headers: { "Authorization": `Bearer ${sessionToken}` },
-		next: { tags: [CACHE_TAGS.senders(organizationId)] }
+		next: { tags: [CACHE_TAGS.senders(organizationId)], revalidate: 60 * 5 }
 	})
 	if (!res.ok) {
 		if (res.status === 404) return undefined

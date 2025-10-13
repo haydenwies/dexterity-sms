@@ -17,7 +17,7 @@ const getCampaign = async (organizationId: string, campaignId: string): Promise<
 		method: "GET",
 		headers: { "Authorization": `Bearer ${sessionToken}` },
 		cache: "force-cache",
-		next: { tags: [CACHE_TAGS.campaign(organizationId, campaignId)] }
+		next: { tags: [CACHE_TAGS.campaign(organizationId, campaignId)], revalidate: 60 * 5 }
 	})
 	if (!res.ok) {
 		const errData = await res.json()

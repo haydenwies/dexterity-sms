@@ -17,7 +17,7 @@ const getManyCampaigns = async (organizationId: string): Promise<CampaignModel[]
 		method: "GET",
 		headers: { "Authorization": `Bearer ${sessionToken}` },
 		cache: "force-cache",
-		next: { tags: [CACHE_TAGS.allCampaigns(organizationId)] }
+		next: { tags: [CACHE_TAGS.allCampaigns(organizationId)], revalidate: 60 * 5 }
 	})
 	if (!res.ok) {
 		const errData = await res.json()
