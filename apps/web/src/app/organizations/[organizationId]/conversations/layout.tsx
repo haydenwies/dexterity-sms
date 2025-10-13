@@ -4,10 +4,9 @@ import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@
 type LayoutProps = Readonly<{
 	children: React.ReactNode
 	params: Promise<{ organizationId: string }>
-	conversations: React.ReactNode // Parallel route
 }>
 
-const AllMessagesLayout = async ({ children, conversations }: LayoutProps) => {
+const AllMessagesLayout = async ({ children }: LayoutProps) => {
 	return (
 		<Page>
 			<PageHeader className="border-border border-b">
@@ -22,7 +21,6 @@ const AllMessagesLayout = async ({ children, conversations }: LayoutProps) => {
 				className="grid grid-cols-[auto_1fr] p-0"
 				disableScroll
 			>
-				{conversations}
 				{children}
 			</PageContent>
 		</Page>
