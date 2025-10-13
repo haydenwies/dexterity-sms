@@ -1,5 +1,4 @@
 enum MessageStatus {
-	PENDING = "processing", // TODO: Change to processing
 	PROCESSING = "processing",
 	SENT = "sent",
 	DELIVERED = "delivered",

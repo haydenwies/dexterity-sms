@@ -139,9 +139,6 @@ class CampaignQueueConsumer extends WorkerHost {
 
 		messages.forEach((message) => {
 			switch (message.status) {
-				case MessageStatus.PENDING: // TODO: Remove this
-					statusCounts.processing++
-					break
 				case MessageStatus.PROCESSING:
 					statusCounts.processing++
 					break
