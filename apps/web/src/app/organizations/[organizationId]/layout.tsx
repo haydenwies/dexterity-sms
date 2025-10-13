@@ -1,6 +1,6 @@
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarProvider } from "~/components/sidebar"
 import { getUser } from "~/data/auth/get-user"
-import { getManyConversationsUnreadCount } from "~/data/conversation/get-total-unread-count"
+import { getManyConversationsUnreadCount } from "~/data/conversation/get-many-conversations-unread-count"
 import { getManyOrganizations } from "~/data/organization/get-many-organizations"
 import { getOrganization } from "~/data/organization/get-organization"
 

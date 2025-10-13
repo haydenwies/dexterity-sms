@@ -10,7 +10,7 @@ const getManyConversationsUnreadCount = async (organizationId: string): Promise<
 	if (!sessionToken) throw new Error("Unauthorized")
 
 	const backendUrl = getBackendPrivateUrl()
-	const url = `${backendUrl}${routes.backend.GET_TOTAL_UNREAD_COUNT(organizationId)}`
+	const url = `${backendUrl}${routes.backend.GET_MANY_CONVERSATIONS_UNREAD_COUNT(organizationId)}`
 	const res = await fetch(url, {
 		method: "GET",
 		headers: { "Authorization": `Bearer ${sessionToken}` }

@@ -16,7 +16,7 @@ const useStreamTotalUnreadCount = (initialCount: number): number => {
 			throw new Error("Organization ID is required")
 
 		// Get URL and create event source
-		const url = `${getBackendPublicUrl()}${routes.backend.STREAM_TOTAL_UNREAD_COUNT({
+		const url = `${getBackendPublicUrl()}${routes.backend.STREAM_MANY_CONVERSATIONS_UNREAD_COUNT({
 			organizationId: params.organizationId
 		})}`
 

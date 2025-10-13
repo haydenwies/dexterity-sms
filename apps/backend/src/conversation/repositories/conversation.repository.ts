@@ -46,7 +46,7 @@ export class ConversationRepository {
 		return rows.map((row) => ConversationRepository.toEntity(row))
 	}
 
-	async getTotalUnreadCount(organizationId: string): Promise<number> {
+	async getUnreadCount(organizationId: string): Promise<number> {
 		const [result] = await this.db
 			.select({ total: sum(conversationTable.unreadCount) })
 			.from(conversationTable)
