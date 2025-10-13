@@ -43,9 +43,9 @@ const AllMessagesList = ({ messagesPromise, className }: AllMessagesListProps) =
 	useEffect(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }), [messages])
 
 	// Mark conversation as read when component mounts (user views the conversation)
-	useEffect(() => {
-		markAsRead()
-	}, [markAsRead])
+	// useEffect(() => {
+	// 	markAsRead()
+	// }, [markAsRead])
 
 	if (messages.length === 0)
 		return (

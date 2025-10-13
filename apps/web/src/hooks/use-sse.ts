@@ -1,8 +1,8 @@
 import { useCallback, useEffect } from "react"
 
 type useSseMethods<T> = {
-	onOpen?: () => void
-	onMessage?: (data: T) => void
+	onOpen?: () => void | Promise<void>
+	onMessage?: (data: T) => void | Promise<void>
 }
 
 const useSse = <T>(eventSourceFn: () => EventSource, methods?: useSseMethods<T>) => {

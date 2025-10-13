@@ -9,6 +9,7 @@ import { type ConversationModel } from "@repo/types/conversation"
 import { Badge } from "@repo/ui/components/badge"
 import { cn } from "@repo/ui/lib/utils"
 
+import { readConversation } from "~/actions/conversation/read-conversation"
 import { streamManyConversations } from "~/data/conversation/stream-many-conversations"
 import { useSse } from "~/hooks/use-sse"
 
@@ -78,11 +79,13 @@ const AllConversationsList = ({
 	const [conversations, setConversations] = useState<ConversationModel[]>(initialConversations)
 
 	useSse<ConversationModel>(() => streamManyConversations(params.organizationId), {
+		onOpen: async () => {
+			if (params.conversationId) await readConversation(params.organizationId, params.conversationId)
+		},
 		onMessage: (data) => {
 			setConversations((prev) => {
-				const existingConversation = prev.find((conversation) => conversation.id === data.id)
-				if (existingConversation)
-					return prev.map((conversation) => (conversation.id === data.id ? data : conversation))
+				const existingConversation = prev.find((c) => c.id === data.id)
+				if (existingConversation) return prev.map((c) => (c.id === data.id ? data : c))
 				else return [...prev, data]
 			})
 		}
