@@ -1,6 +1,6 @@
 const APP_INFO = {
 	name: "Dexterity SMS",
-	description: "" // TODO: Add description
+	description: "SMS communication for your business made easy."
 } as const
 
 export { APP_INFO }
