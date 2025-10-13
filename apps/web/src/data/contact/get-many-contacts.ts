@@ -17,7 +17,7 @@ const getManyContacts = async (organizationId: string): Promise<ContactModel[]> 
 		method: "GET",
 		headers: { "Authorization": `Bearer ${sessionToken}` },
 		cache: "force-cache",
-		next: { tags: [CACHE_TAGS.allContacts(organizationId)] }
+		next: { tags: [CACHE_TAGS.allContacts(organizationId)], revalidate: 60 * 5 }
 	})
 	if (!res.ok) {
 		const errData = await res.json()
