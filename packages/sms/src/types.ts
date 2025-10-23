@@ -1,3 +1,5 @@
+import { MessageErrorCode, MessageStatus } from "@repo/types/message"
+
 type SmsPayload = {
 	from: string
 	to: string
@@ -19,10 +21,9 @@ type Sender = {
 
 type StatusWebhookEvent = {
 	messageId: string // External ID from provider
-	status: "pending" | "sent" | "delivered" | "failed"
+	status: MessageStatus
 	timestamp: Date
-	errorCode?: string
-	errorMessage?: string
+	errorCode?: MessageErrorCode
 }
 
 type InboundWebhookEvent = {

@@ -2,7 +2,7 @@ import { InjectQueue } from "@nestjs/bullmq"
 import { Injectable, Logger, NotFoundException } from "@nestjs/common"
 import { Queue } from "bullmq"
 
-import { MessageDirection, MessageStatus } from "@repo/types/message"
+import { MessageDirection, MessageErrorCode, MessageStatus } from "@repo/types/message"
 
 import { EventEmitter2 } from "@nestjs/event-emitter"
 import { InboundWebhookEvent, StatusWebhookEvent } from "@repo/sms"
@@ -131,10 +131,22 @@ class MessageWebhookService {
 		}
 
 		// Map webhook status to internal message status
-		const newStatus = message.updateStatusFromProvider(payload.status)
-		if (!newStatus) {
-			this.logger.warn(`Unknown webhook status found when mapping ${payload.messageId} to message status`)
-			return
+		message.updateStatus(payload.status, payload.errorCode)
+
+		// Create unsubscribe if message error code meets criteria
+		const unsubscribeErrorCodes = [
+			MessageErrorCode.UNSUBSCRIBED,
+			MessageErrorCode.PERMANENT_UNREACHABLE_DESTINATION
+		]
+		if (message.errorCode && unsubscribeErrorCodes.includes(message.errorCode)) {
+			this.logger.log(
+				`Automatically unsubscribing ${message.to.value} because of error code ${message.errorCode} from message ${message.id}`
+			)
+			try {
+				await this.unsubscribeService.unsubscribe(message.organizationId, message.to)
+			} catch (error: unknown) {
+				this.logger.error("Failed to unsubscribe", { error })
+			}
 		}
 
 		// Update message status

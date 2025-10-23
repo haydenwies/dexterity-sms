@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common"
-import { and, eq, sum } from "drizzle-orm"
+import { and, desc, eq, sum } from "drizzle-orm"
 
 import { Phone } from "~/common/phone.vo"
 import { Conversation } from "~/conversation/entities/conversation.entity"
@@ -42,6 +42,7 @@ export class ConversationRepository {
 			.select()
 			.from(conversationTable)
 			.where(eq(conversationTable.organizationId, organizationId))
+			.orderBy(desc(conversationTable.lastMessageAt))
 
 		return rows.map((row) => ConversationRepository.toEntity(row))
 	}

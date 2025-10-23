@@ -1,5 +1,6 @@
 import twilio, { validateRequest, type Twilio } from "twilio"
 
+import { MessageErrorCode, MessageStatus } from "@repo/types/message"
 import type { InboundWebhookEvent, Message, Sender, SmsPayload, SmsProvider, StatusWebhookEvent } from "../types"
 
 type TwilioConfig = {
@@ -10,6 +11,27 @@ type TwilioConfig = {
 class TwilioProvider implements SmsProvider {
 	private readonly authToken: string
 	private readonly client: Twilio
+
+	private readonly statusMap: Record<string, MessageStatus> = {
+		"accepted": MessageStatus.PROCESSING,
+		"scheduled": MessageStatus.PROCESSING,
+		"queued": MessageStatus.PROCESSING,
+		"sending": MessageStatus.PROCESSING,
+		"sent": MessageStatus.SENT,
+		"delivered": MessageStatus.DELIVERED,
+		"failed": MessageStatus.FAILED,
+		"undelivered": MessageStatus.FAILED,
+		"delivery_unknown": MessageStatus.FAILED
+	}
+
+	private readonly errorCodeMap: Record<string, MessageErrorCode> = {
+		"21610": MessageErrorCode.UNSUBSCRIBED,
+		"30003": MessageErrorCode.TEMPORARY_UNREACHABLE_DESTINATION,
+		"30005": MessageErrorCode.PERMANENT_UNREACHABLE_DESTINATION,
+		"30006": MessageErrorCode.PERMANENT_UNREACHABLE_DESTINATION,
+		"30007": MessageErrorCode.MESSAGE_FILTERED,
+		"30008": MessageErrorCode.UNKNOWN
+	}
 
 	constructor(config: TwilioConfig) {
 		this.authToken = config.authToken
@@ -31,6 +53,8 @@ class TwilioProvider implements SmsProvider {
 			body: message.body
 		}
 	}
+
+	// #region Sender
 
 	async getAvailableNumbers(): Promise<string[]> {
 		const availableNumbers = await this.client.availablePhoneNumbers("CA").local.list({ smsEnabled: true })
@@ -54,6 +78,10 @@ class TwilioProvider implements SmsProvider {
 		await this.client.incomingPhoneNumbers(senderId).remove()
 	}
 
+	// #endregion
+
+	// #region Webhook
+
 	validateWebhook(headers: Record<string, string>, body: any, url: string): boolean {
 		const twilioHeader = headers["x-twilio-signature"]
 		if (!twilioHeader) return false
@@ -69,36 +97,27 @@ class TwilioProvider implements SmsProvider {
 			const messageId = payload["MessageSid"]
 			if (!messageId || typeof messageId !== "string") return null
 
-			// Validate and map message status
+			// Map message status
 			const twilioStatus = payload["MessageStatus"]
-			if (!twilioStatus || typeof twilioStatus !== "string") return null
-			const statusMap = {
-				PENDING: ["accepted", "scheduled", "queued", "sending"],
-				SENT: ["sent"],
-				DELIVERED: ["delivered"],
-				FAILED: ["failed", "undelivered", "delivery_unknown"]
-			}
-			let status: StatusWebhookEvent["status"] | null = null
-			if (statusMap.PENDING.includes(twilioStatus)) status = "pending"
-			else if (statusMap.SENT.includes(twilioStatus)) status = "sent"
-			else if (statusMap.DELIVERED.includes(twilioStatus)) status = "delivered"
-			else if (statusMap.FAILED.includes(twilioStatus)) status = "failed"
+			if (!twilioStatus) return null
+			const twilioStatusStr = String(twilioStatus)
+			const status = this.statusMap[twilioStatusStr]
 			if (!status) return null
 
-			// Validate error code
-			const errorCode = payload["ErrorCode"]
-			if (errorCode && typeof errorCode !== "string") return null
-
-			// Validate error message
-			const errorMessage = payload["ErrorMessage"]
-			if (errorMessage && typeof errorMessage !== "string") return null
+			// Map error code
+			let errorCode: MessageErrorCode | undefined = undefined
+			const twilioErrorCode = payload["ErrorCode"]
+			if (twilioErrorCode) {
+				const twilioErrorCodeStr = String(twilioErrorCode)
+				errorCode = this.errorCodeMap[twilioErrorCodeStr]
+				if (!errorCode) errorCode = MessageErrorCode.UNKNOWN
+			}
 
 			return {
 				messageId,
 				status,
-				timestamp: new Date(), // Twilio doesn't provide timestamp in webhook, use current time
-				errorCode,
-				errorMessage
+				timestamp: new Date(),
+				errorCode
 			}
 		} catch {
 			return null
@@ -134,6 +153,8 @@ class TwilioProvider implements SmsProvider {
 			return null
 		}
 	}
+
+	// #endregion
 }
 
 export { TwilioProvider }

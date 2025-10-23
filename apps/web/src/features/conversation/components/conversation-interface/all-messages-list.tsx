@@ -24,7 +24,7 @@ const MessageBubble = ({ message, className }: MessageBubbleProps) => {
 					"bg-secondary text-secondary-foreground rounded-bl-md": !isOutbound
 				})}
 			>
-				<p className="whitespace-pre-wrap break-words">{message.body}</p>
+				<p className="wrap-break-words whitespace-pre-wrap">{message.body}</p>
 			</div>
 		</div>
 	)

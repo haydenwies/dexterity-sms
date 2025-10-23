@@ -1,5 +1,4 @@
-import { type StatusWebhookEvent } from "@repo/sms"
-import { MessageDirection, MessageStatus } from "@repo/types/message"
+import { MessageDirection, MessageErrorCode, MessageStatus } from "@repo/types/message"
 import { isEnumValue } from "@repo/utils"
 
 import { Phone } from "~/common/phone.vo"
@@ -15,6 +14,7 @@ interface IMessage {
 	from: Phone
 	to: Phone
 	body: string
+	errorCode?: MessageErrorCode
 	sentAt?: Date
 	deliveredAt?: Date
 	createdAt: Date
@@ -32,6 +32,7 @@ type MessageConstructorParams = {
 	from: Phone
 	to: Phone
 	body: string
+	errorCode?: MessageErrorCode | string | null
 	sentAt?: Date | null
 	deliveredAt?: Date | null
 	readAt?: Date | null
@@ -62,6 +63,7 @@ class Message implements IMessage {
 	public readonly from: Phone
 	public readonly to: Phone
 	public readonly body: string
+	private _errorCode?: MessageErrorCode
 	private _sentAt?: Date
 	private _deliveredAt?: Date
 	public readonly createdAt: Date
@@ -70,6 +72,12 @@ class Message implements IMessage {
 	constructor(params: MessageConstructorParams) {
 		if (!isEnumValue(MessageDirection, params.direction)) throw new Error("Invalid message direction")
 		if (!isEnumValue(MessageStatus, params.status)) throw new Error("Invalid message status")
+		if (
+			params.errorCode !== undefined &&
+			params.errorCode !== null &&
+			!isEnumValue(MessageErrorCode, params.errorCode)
+		)
+			throw new Error("Invalid message error code")
 
 		this.id = params.id
 		this.organizationId = params.organizationId
@@ -81,6 +89,7 @@ class Message implements IMessage {
 		this.body = params.body
 		this.from = params.from
 		this.to = params.to
+		this._errorCode = params.errorCode || undefined
 		this._sentAt = params.sentAt || undefined
 		this._deliveredAt = params.deliveredAt || undefined
 		this.createdAt = params.createdAt
@@ -97,6 +106,10 @@ class Message implements IMessage {
 
 	get status(): MessageStatus {
 		return this._status
+	}
+
+	get errorCode(): MessageErrorCode | undefined {
+		return this._errorCode
 	}
 
 	get sentAt(): Date | undefined {
@@ -138,7 +151,7 @@ class Message implements IMessage {
 		this._updatedAt = new Date()
 	}
 
-	updateStatus(status: MessageStatus): void {
+	updateStatus(status: MessageStatus, errorCode?: MessageErrorCode): void {
 		this._status = status
 		this._updatedAt = new Date()
 
@@ -149,30 +162,10 @@ class Message implements IMessage {
 			case MessageStatus.DELIVERED:
 				this._deliveredAt = new Date()
 				break
-		}
-	}
-
-	/**
-	 * Updates the message status from SMS provider. Does nothing if the status is unknown.
-	 * @param status - The status from the SMS provider.
-	 * @returns The new message status or null if the status is unknown.
-	 */
-	updateStatusFromProvider(status: StatusWebhookEvent["status"]): MessageStatus | null {
-		switch (status) {
-			case "pending":
-				this._status = MessageStatus.PROCESSING
-				return MessageStatus.PROCESSING
-			case "sent":
-				this._status = MessageStatus.SENT
-				return MessageStatus.SENT
-			case "delivered":
-				this._status = MessageStatus.DELIVERED
-				return MessageStatus.DELIVERED
-			case "failed":
-				this._status = MessageStatus.FAILED
-				return MessageStatus.FAILED
-			default:
-				return null
+			case MessageStatus.FAILED:
+				if (errorCode) this._errorCode = errorCode
+				else this._errorCode = MessageErrorCode.UNKNOWN
+				break
 		}
 	}
 }

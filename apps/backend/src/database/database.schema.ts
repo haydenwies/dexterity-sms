@@ -203,6 +203,7 @@ const messageTable = pgTable("message", {
 	from: text("from").notNull(),
 	to: text("to").notNull(),
 	body: text("body").notNull(),
+	errorCode: text("error_code"),
 	sentAt: timestamp("sent_at", { mode: "date" }),
 	deliveredAt: timestamp("delivered_at", { mode: "date" }),
 	createdAt: timestamp("created_at", { mode: "date" }).notNull(),
