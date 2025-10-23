@@ -11,4 +11,12 @@ enum MessageDirection {
 	OUTBOUND = "outbound"
 }
 
-export { MessageDirection, MessageStatus }
+enum MessageErrorCode {
+	UNSUBSCRIBED = "unsubscribed",
+	TEMPORARY_UNREACHABLE_DESTINATION = "temporary-unreachable-destination",
+	PERMANENT_UNREACHABLE_DESTINATION = "permanent-unreachable-destination",
+	MESSAGE_FILTERED = "message-filtered",
+	UNKNOWN = "unknown"
+}
+
+export { MessageDirection, MessageErrorCode, MessageStatus }

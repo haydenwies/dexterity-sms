@@ -5,7 +5,11 @@
 	"scripts": {
 		"build": "tsc"
 	},
+	"dependencies": {
+		"twilio": "^5.9.0"
+	},
 	"devDependencies": {
+		"@repo/types": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"typescript": "^5.9.2"
 	},
@@ -14,8 +18,5 @@
 			"types": "./src/index.ts",
 			"default": "./dist/index.js"
 		}
-	},
-	"dependencies": {
-		"twilio": "^5.9.0"
 	}
 }
