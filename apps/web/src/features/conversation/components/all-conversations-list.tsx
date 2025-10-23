@@ -43,7 +43,7 @@ const AllConvesationsListItem = ({ className, params, conversation, contacts }: 
 			>
 				<span>
 					<p className="truncate font-medium">{displayName || conversation.recipient}</p>
-					<p className="text-muted-foreground text-ellipsis text-xs">
+					<p className="text-muted-foreground truncate text-xs">
 						{conversation.lastMessagePreview || "No messages"}
 					</p>
 				</span>
