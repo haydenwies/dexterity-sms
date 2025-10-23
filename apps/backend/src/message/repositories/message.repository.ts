@@ -89,6 +89,7 @@ class MessageRepository {
 				body: message.body,
 				from: message.from.value,
 				to: message.to.value,
+				errorCode: message.errorCode,
 				sentAt: message.sentAt,
 				deliveredAt: message.deliveredAt,
 				createdAt: message.createdAt,
@@ -107,6 +108,7 @@ class MessageRepository {
 				externalId: message.externalId,
 				conversationId: message.conversationId,
 				status: message.status,
+				errorCode: message.errorCode,
 				sentAt: message.sentAt,
 				deliveredAt: message.deliveredAt,
 				updatedAt: message.updatedAt
@@ -130,6 +132,7 @@ class MessageRepository {
 			body: row.body,
 			from: Phone.create(row.from),
 			to: Phone.create(row.to),
+			errorCode: row.errorCode,
 			sentAt: row.sentAt,
 			deliveredAt: row.deliveredAt,
 			createdAt: row.createdAt,
