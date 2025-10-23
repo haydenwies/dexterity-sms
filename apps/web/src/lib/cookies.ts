@@ -22,6 +22,7 @@ const setCookie = async (name: string, value: string): Promise<void> => {
 		const webUrl = getWebPublicUrl()
 		const domainETLD = eTLD(webUrl)
 		domain = `.${domainETLD}`
+		console.log(domain)
 	}
 
 	cookieStore.set(name, value, {
