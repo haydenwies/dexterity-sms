@@ -36,7 +36,7 @@ const AllConvesationsListItem = ({ className, params, conversation, contacts }: 
 		>
 			<div
 				className={cn(
-					"hover:bg-accent hover:text-accent-foreground grid grid-cols-[1fr_auto] items-start gap-2 rounded-md px-4 py-2 transition-colors hover:cursor-pointer",
+					"hover:bg-accent hover:text-accent-foreground grid grid-cols-[1fr_auto] items-start gap-2 overflow-hidden rounded-md px-4 py-2 transition-colors hover:cursor-pointer",
 					{ "bg-accent": params.conversationId === conversation.id },
 					className
 				)}
