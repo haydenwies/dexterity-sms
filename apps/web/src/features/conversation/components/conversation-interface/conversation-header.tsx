@@ -2,9 +2,9 @@
 
 import { use, useMemo } from "react"
 
-import { type ContactModel } from "@repo/types/contact"
-import { type ConversationModel } from "@repo/types/conversation"
-import { cn } from "@repo/ui/lib/utils"
+import { type ContactModel } from "@dexterity-sms/core/contact"
+import { type ConversationModel } from "@dexterity-sms/core/conversation"
+import { cn } from "@dexterity-sms/ui/lib/utils"
 
 type ConversationHeaderProps = {
 	conversationPromise: Promise<ConversationModel>

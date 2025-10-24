@@ -2,8 +2,8 @@
 
 import { redirect } from "next/navigation"
 
-import { routes } from "@repo/routes"
-import { type ResetPasswordDto } from "@repo/types/auth"
+import { type ResetPasswordDto } from "@dexterity-sms/core/auth"
+import { routes } from "@dexterity-sms/routes"
 
 import { ActionResult, actionError } from "~/lib/actions"
 import { getBackendPrivateUrl } from "~/lib/url"

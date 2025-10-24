@@ -1,7 +1,7 @@
 "use server"
 
-import { routes } from "@repo/routes"
-import { type CheckoutSessionDto, type CreateCheckoutSessionDto } from "@repo/types/billing"
+import { type CheckoutSessionDto, type CreateCheckoutSessionDto } from "@dexterity-sms/core/billing"
+import { routes } from "@dexterity-sms/routes"
 
 import { type ActionResult, actionError, actionSuccess } from "~/lib/actions"
 import { getSessionToken } from "~/lib/session"

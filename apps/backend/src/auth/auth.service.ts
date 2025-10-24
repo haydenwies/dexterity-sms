@@ -1,14 +1,14 @@
 import { BadRequestException, ConflictException, Injectable, UnauthorizedException } from "@nestjs/common"
 import { ConfigService } from "@nestjs/config"
 
-import { routes } from "@repo/routes"
 import {
 	AccountProvider,
 	type ForgotPasswordDto,
 	type ResetPasswordDto,
 	type SignInDto,
 	type SignUpDto
-} from "@repo/types/auth"
+} from "@dexterity-sms/core/auth"
+import { routes } from "@dexterity-sms/routes"
 
 import { SessionService } from "~/auth/session/session.service"
 import { UserService } from "~/auth/user/user.service"

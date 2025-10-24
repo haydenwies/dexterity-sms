@@ -1,6 +1,6 @@
 "use server"
 
-import { routes } from "@repo/routes"
+import { routes } from "@dexterity-sms/routes"
 import { revalidateTag } from "next/cache"
 
 import { actionError, actionSuccess, type ActionResult } from "~/lib/actions"

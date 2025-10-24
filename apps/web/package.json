@@ -1,6 +1,5 @@
 {
-	"name": "web",
-	"version": "1.0.0",
+	"name": "@dexterity-sms/web",
 	"private": true,
 	"scripts": {
 		"dev": "next dev --turbopack",
@@ -10,11 +9,11 @@
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^5.2.2",
-		"@repo/csv": "workspace:*",
-		"@repo/routes": "workspace:*",
-		"@repo/types": "workspace:*",
-		"@repo/ui": "workspace:*",
-		"@repo/utils": "workspace:*",
+		"@dexterity-sms/csv": "workspace:*",
+		"@dexterity-sms/routes": "workspace:*",
+		"@dexterity-sms/core": "workspace:*",
+		"@dexterity-sms/ui": "workspace:*",
+		"@dexterity-sms/utils": "workspace:*",
 		"@tanstack/react-table": "^8.21.3",
 		"date-fns": "^4.1.0",
 		"next": "^15.5.2",
@@ -25,8 +24,8 @@
 		"zod": "^4.0.5"
 	},
 	"devDependencies": {
-		"@repo/eslint-config": "workspace:*",
-		"@repo/typescript-config": "workspace:*",
+		"@dexterity-sms/eslint-config": "workspace:*",
+		"@dexterity-sms/typescript-config": "workspace:*",
 		"@types/node": "^20",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",

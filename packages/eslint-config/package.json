@@ -1,14 +1,7 @@
 {
-	"name": "@repo/eslint-config",
-	"version": "1.0.0",
-	"type": "module",
+	"name": "@dexterity-sms/eslint-config",
 	"private": true,
-	"exports": {
-		"./base": "./base.js",
-		"./nest-js": "./nest.js",
-		"./next-js": "./next.js",
-		"./react-internal": "./react-internal.js"
-	},
+	"type": "module",
 	"devDependencies": {
 		"@eslint/js": "^9.30.0",
 		"@next/eslint-plugin-next": "^15.3.0",
@@ -20,5 +13,11 @@
 		"eslint-plugin-turbo": "^2.5.0",
 		"globals": "^16.3.0",
 		"typescript-eslint": "^8.39.1"
+	},
+	"exports": {
+		"./base": "./base.js",
+		"./nest-js": "./nest.js",
+		"./next-js": "./next.js",
+		"./react-internal": "./react-internal.js"
 	}
 }

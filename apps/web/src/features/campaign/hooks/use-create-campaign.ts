@@ -1,8 +1,8 @@
 import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 
-import { routes } from "@repo/routes"
-import { toast } from "@repo/ui/components/sonner"
+import { routes } from "@dexterity-sms/routes"
+import { toast } from "@dexterity-sms/ui/components/sonner"
 
 import { createCampaign } from "~/actions/campaign/create-campaign"
 

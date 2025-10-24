@@ -1,5 +1,5 @@
-import { Icon, IconName } from "@repo/ui/components/icon"
-import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
+import { Icon, IconName } from "@dexterity-sms/ui/components/icon"
+import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@dexterity-sms/ui/components/page"
 
 type LayoutProps = Readonly<{
 	children: React.ReactNode

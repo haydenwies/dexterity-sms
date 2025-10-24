@@ -1,5 +1,5 @@
+import { CsvParser } from "@dexterity-sms/csv"
 import { Injectable, NotFoundException } from "@nestjs/common"
-import { CsvParser } from "@repo/csv"
 
 import {
 	type ContactModel,
@@ -7,7 +7,7 @@ import {
 	type DeleteManyContactsDto,
 	type UpdateContactDto,
 	type UploadContactCsvDto
-} from "@repo/types/contact"
+} from "@dexterity-sms/core/contact"
 
 import { Contact } from "~/contact/entities/contact.entity"
 import { ContactRepository } from "~/contact/repositories/contact.repository"

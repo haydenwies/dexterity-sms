@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from "@nestjs/common"
 
-import { addSenderDtoSchema, type AddSenderDto, type SenderModel } from "@repo/types/sender"
+import { addSenderDtoSchema, type AddSenderDto, type SenderModel } from "@dexterity-sms/core/sender"
 
 import { AuthGuard } from "~/auth/auth.guard"
 import { SubscriptionGuard } from "~/billing/guards/subscription.guard"

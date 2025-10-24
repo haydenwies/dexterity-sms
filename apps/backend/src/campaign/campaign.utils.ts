@@ -1,4 +1,4 @@
-import { CampaignModel } from "@repo/types/campaign"
+import { CampaignModel } from "@dexterity-sms/core/campaign"
 
 import { Campaign } from "~/campaign/entities/campaign.entity"
 

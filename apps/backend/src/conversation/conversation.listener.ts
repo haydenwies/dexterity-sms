@@ -1,7 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common"
 import { EventEmitter2, OnEvent } from "@nestjs/event-emitter"
 
-import { MessageDirection } from "@repo/types/message"
+import { MessageDirection } from "@dexterity-sms/core/message"
 
 import { Event, type MessageCreatedEvent } from "~/common/event.types"
 import { Phone } from "~/common/phone.vo"

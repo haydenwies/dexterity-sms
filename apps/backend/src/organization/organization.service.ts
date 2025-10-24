@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common"
 import { EventEmitter2 } from "@nestjs/event-emitter"
 
-import { type CreateOrganizationDto, type UpdateOrganizationDto } from "@repo/types/organization"
+import { type CreateOrganizationDto, type UpdateOrganizationDto } from "@dexterity-sms/core/organization"
 
 import { Event } from "~/common/event.types"
 import { Member } from "~/organization/entities/member.entity"

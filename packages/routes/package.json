@@ -1,12 +1,11 @@
 {
-	"name": "@repo/routes",
-	"version": "1.0.0",
+	"name": "@dexterity-sms/routes",
 	"private": true,
 	"scripts": {
 		"build": "tsc"
 	},
 	"devDependencies": {
-		"@repo/typescript-config": "workspace:*",
+		"@dexterity-sms/typescript-config": "workspace:*",
 		"typescript": "^5.9.2"
 	},
 	"exports": {

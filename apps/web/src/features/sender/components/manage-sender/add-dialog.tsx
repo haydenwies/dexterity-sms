@@ -2,9 +2,15 @@
 
 import { useState } from "react"
 
-import { Button } from "@repo/ui/components/button"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@repo/ui/components/dialog"
-import { Icon, IconName } from "@repo/ui/components/icon"
+import { Button } from "@dexterity-sms/ui/components/button"
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle
+} from "@dexterity-sms/ui/components/dialog"
+import { Icon, IconName } from "@dexterity-sms/ui/components/icon"
 
 import { useAddSender } from "~/features/sender/hooks/use-add-sender"
 import { useGetAvailableSenders } from "~/features/sender/hooks/use-get-available-senders"

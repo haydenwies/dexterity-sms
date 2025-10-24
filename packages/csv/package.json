@@ -1,6 +1,5 @@
 {
-	"name": "@repo/csv",
-	"version": "1.0.0",
+	"name": "@dexterity-sms/csv",
 	"private": true,
 	"scripts": {
 		"build": "tsc"
@@ -9,14 +8,14 @@
 		"papaparse": "^5.5.3"
 	},
 	"devDependencies": {
-		"@repo/typescript-config": "workspace:*",
+		"@dexterity-sms/typescript-config": "workspace:*",
 		"@types/papaparse": "^5.3.16",
 		"typescript": "^5.9.2"
 	},
 	"exports": {
 		".": {
-			"types": "./src/parser.ts",
-			"default": "./dist/parser.js"
+			"types": "./src/index.ts",
+			"default": "./dist/index.js"
 		}
 	}
 }

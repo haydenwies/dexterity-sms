@@ -1,7 +1,7 @@
 "use client"
 
-import { Button } from "@repo/ui/components/button"
-import { Icon, IconName } from "@repo/ui/components/icon"
+import { Button } from "@dexterity-sms/ui/components/button"
+import { Icon, IconName } from "@dexterity-sms/ui/components/icon"
 
 import { useCreateCampaign } from "~/features/campaign/hooks/use-create-campaign"
 

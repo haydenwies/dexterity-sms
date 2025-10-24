@@ -1,7 +1,7 @@
 import { Clock8Icon } from "lucide-react"
 
-import { Input } from "@repo/ui/components/input"
-import { cn } from "@repo/ui/lib/utils"
+import { Input } from "@dexterity-sms/ui/components/input"
+import { cn } from "@dexterity-sms/ui/lib/utils"
 
 type TimeInputProps = Omit<React.ComponentProps<"input">, "onChange" | "value"> & {
 	value?: Date | undefined

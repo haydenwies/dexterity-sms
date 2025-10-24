@@ -3,13 +3,13 @@
 import Link from "next/link"
 import { use, useState } from "react"
 
-import { routes } from "@repo/routes"
-import { type OrganizationModel } from "@repo/types/organization"
-import { Avatar, AvatarFallback } from "@repo/ui/components/avatar"
-import { Button } from "@repo/ui/components/button"
-import { Icon, IconName } from "@repo/ui/components/icon"
-import { Input } from "@repo/ui/components/input"
-import { cn } from "@repo/ui/lib/utils"
+import { type OrganizationModel } from "@dexterity-sms/core/organization"
+import { routes } from "@dexterity-sms/routes"
+import { Avatar, AvatarFallback } from "@dexterity-sms/ui/components/avatar"
+import { Button } from "@dexterity-sms/ui/components/button"
+import { Icon, IconName } from "@dexterity-sms/ui/components/icon"
+import { Input } from "@dexterity-sms/ui/components/input"
+import { cn } from "@dexterity-sms/ui/lib/utils"
 
 import { CreateOrganizationDialog } from "~/features/organization/components/create-organization-dialog"
 

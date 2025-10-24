@@ -1,4 +1,4 @@
-import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
+import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@dexterity-sms/ui/components/page"
 import Image from "next/image"
 
 import { getManyOrganizations } from "~/data/organization/get-many-organizations"

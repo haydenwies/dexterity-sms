@@ -3,8 +3,8 @@ import { useParams } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { type SendTestCampaignDto, sendTestCampaignDtoSchema } from "@repo/types/campaign"
-import { toast } from "@repo/ui/components/sonner"
+import { type SendTestCampaignDto, sendTestCampaignDtoSchema } from "@dexterity-sms/core/campaign"
+import { toast } from "@dexterity-sms/ui/components/sonner"
 
 import { sendTestCampaign } from "~/actions/campaign/send-test-campaign"
 

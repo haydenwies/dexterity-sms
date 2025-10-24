@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Inject, Injectable, Logger } from "@nest
 import { ConfigService } from "@nestjs/config"
 import { type Request } from "express"
 
-import { routes } from "@repo/routes"
+import { routes } from "@dexterity-sms/routes"
 
 import { SMS_PROVIDER, type SmsProvider } from "~/sms/sms.module"
 

@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 
-import { Button } from "@repo/ui/components/button"
+import { Button } from "@dexterity-sms/ui/components/button"
 import {
 	Dialog,
 	DialogContent,
@@ -10,11 +10,11 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle
-} from "@repo/ui/components/dialog"
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@repo/ui/components/form"
-import { Icon, IconName } from "@repo/ui/components/icon"
-import { PhoneInput } from "@repo/ui/components/phone-input"
-import { Spinner } from "@repo/ui/components/spinner"
+} from "@dexterity-sms/ui/components/dialog"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@dexterity-sms/ui/components/form"
+import { Icon, IconName } from "@dexterity-sms/ui/components/icon"
+import { PhoneInput } from "@dexterity-sms/ui/components/phone-input"
+import { Spinner } from "@dexterity-sms/ui/components/spinner"
 
 import { useSendTestCampaign } from "~/features/campaign/hooks/use-send-test-campaign"
 import { PLACEHOLDERS } from "~/lib/placeholders"

@@ -1,7 +1,7 @@
 import "server-only"
 
-import { routes } from "@repo/routes"
-import { type ConversationModel } from "@repo/types/conversation"
+import { type ConversationModel } from "@dexterity-sms/core/conversation"
+import { routes } from "@dexterity-sms/routes"
 
 import { getSessionToken } from "~/lib/session"
 import { getBackendPrivateUrl } from "~/lib/url"

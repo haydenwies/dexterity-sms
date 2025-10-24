@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { cn } from "@repo/ui/lib/utils"
+import { cn } from "@dexterity-sms/ui/lib/utils"
 
 // #region Card
 
@@ -99,4 +99,4 @@ const CardFooter = ({ className, ...props }: CardFooterProps) => {
 	)
 }
 
-export { Card, CardHeader, CardFooter, CardTitle, CardAction, CardDescription, CardContent }
+export { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }

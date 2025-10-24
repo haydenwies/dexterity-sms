@@ -6,7 +6,7 @@ import {
 	type CreateOrganizationDto,
 	type OrganizationModel,
 	type UpdateOrganizationDto
-} from "@repo/types/organization"
+} from "@dexterity-sms/core/organization"
 
 import { User } from "~/auth/auth.decorator"
 import { AuthGuard } from "~/auth/auth.guard"

@@ -1,4 +1,4 @@
-import { type OrganizationModel } from "@repo/types/organization"
+import { type OrganizationModel } from "@dexterity-sms/core/organization"
 
 import { OrganizationCreatedEvent, type OrganizationUpdatedEvent } from "~/common/event.types"
 import { type Organization } from "~/organization/entities/organization.entity"

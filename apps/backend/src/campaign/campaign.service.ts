@@ -8,7 +8,7 @@ import {
 	type SendCampaignDto,
 	type SendTestCampaignDto,
 	type UpdateCampaignDto
-} from "@repo/types/campaign"
+} from "@dexterity-sms/core/campaign"
 
 import { CAMPAIGN_QUEUE, CampaignQueueJobName, type CampaignQueueJob } from "~/campaign/campaign.queue"
 import { Campaign } from "~/campaign/entities/campaign.entity"

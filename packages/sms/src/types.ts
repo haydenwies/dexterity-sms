@@ -1,4 +1,4 @@
-import { MessageErrorCode, MessageStatus } from "@repo/types/message"
+import { MessageErrorCode, MessageStatus } from "@dexterity-sms/core/message"
 
 type SmsPayload = {
 	from: string

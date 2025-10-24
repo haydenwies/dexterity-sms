@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation"
 
-import { routes } from "@repo/routes"
+import { routes } from "@dexterity-sms/routes"
 
 import { actionError, ActionResult } from "~/lib/actions"
 import { deleteSessionToken, getSessionToken } from "~/lib/session"

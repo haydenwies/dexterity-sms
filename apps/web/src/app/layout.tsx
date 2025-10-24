@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 
-import { Toaster } from "@repo/ui/components/sonner"
-import "@repo/ui/globals.css"
+import { Toaster } from "@dexterity-sms/ui/components/sonner"
+import "@dexterity-sms/ui/globals.css"
 
 import { MobileGuard } from "~/components/mobile-guard"
 import { APP_INFO } from "~/lib/app"

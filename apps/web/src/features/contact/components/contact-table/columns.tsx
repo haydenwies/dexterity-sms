@@ -1,7 +1,7 @@
 import { type ColumnDef } from "@tanstack/react-table"
 
-import { type ContactModel } from "@repo/types/contact"
-import { Checkbox } from "@repo/ui/components/checkbox"
+import { type ContactModel } from "@dexterity-sms/core/contact"
+import { Checkbox } from "@dexterity-sms/ui/components/checkbox"
 
 import { formatDate } from "date-fns"
 import { ContactTableActions } from "~/features/contact/components/contact-table/actions"

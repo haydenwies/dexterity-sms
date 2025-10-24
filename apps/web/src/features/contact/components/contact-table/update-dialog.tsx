@@ -2,8 +2,8 @@
 
 import { useId } from "react"
 
-import { type ContactModel } from "@repo/types/contact"
-import { Button } from "@repo/ui/components/button"
+import { type ContactModel } from "@dexterity-sms/core/contact"
+import { Button } from "@dexterity-sms/ui/components/button"
 import {
 	Dialog,
 	DialogContent,
@@ -11,12 +11,12 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle
-} from "@repo/ui/components/dialog"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
-import { Icon, IconName } from "@repo/ui/components/icon"
-import { Input } from "@repo/ui/components/input"
-import { PhoneInput } from "@repo/ui/components/phone-input"
-import { Spinner } from "@repo/ui/components/spinner"
+} from "@dexterity-sms/ui/components/dialog"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@dexterity-sms/ui/components/form"
+import { Icon, IconName } from "@dexterity-sms/ui/components/icon"
+import { Input } from "@dexterity-sms/ui/components/input"
+import { PhoneInput } from "@dexterity-sms/ui/components/phone-input"
+import { Spinner } from "@dexterity-sms/ui/components/spinner"
 
 import { useUpdateContact } from "~/features/contact/hooks/use-update-contact"
 import { PLACEHOLDERS } from "~/lib/placeholders"

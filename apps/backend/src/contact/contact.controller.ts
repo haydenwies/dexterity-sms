@@ -22,7 +22,7 @@ import {
 	type DeleteManyContactsDto,
 	type UpdateContactDto,
 	type UploadContactCsvDto
-} from "@repo/types/contact"
+} from "@dexterity-sms/core/contact"
 
 import { AuthGuard } from "~/auth/auth.guard"
 import { ZodValidationPipe } from "~/common/zod-validation.pipe"

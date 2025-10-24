@@ -3,8 +3,8 @@ import { Inject, Logger, NotFoundException } from "@nestjs/common"
 import { ConfigService } from "@nestjs/config"
 import { Job } from "bullmq"
 
-import { routes } from "@repo/routes"
-import { MessageStatus } from "@repo/types/message"
+import { MessageStatus } from "@dexterity-sms/core/message"
+import { routes } from "@dexterity-sms/routes"
 
 import { MessageRepository } from "~/message/repositories/message.repository"
 import { SMS_PROVIDER, type SmsProvider } from "~/sms/sms.module"

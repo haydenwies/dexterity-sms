@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common"
 
-import { type SessionDto } from "@repo/types/auth"
+import { type SessionDto } from "@dexterity-sms/core/auth"
 
 import { Session, SessionCreateParams } from "~/auth/session/session.entity"
 import { SessionRepository } from "~/auth/session/session.repository"

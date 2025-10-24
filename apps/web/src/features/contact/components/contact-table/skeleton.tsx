@@ -1,6 +1,6 @@
-import { Input } from "@repo/ui/components/input"
-import { Skeleton } from "@repo/ui/components/skeleton"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/components/table"
+import { Input } from "@dexterity-sms/ui/components/input"
+import { Skeleton } from "@dexterity-sms/ui/components/skeleton"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@dexterity-sms/ui/components/table"
 
 import { getContactTableColumns } from "~/features/contact/components/contact-table/columns"
 

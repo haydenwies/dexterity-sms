@@ -2,8 +2,8 @@
 
 import { redirect } from "next/navigation"
 
-import { routes } from "@repo/routes"
-import { type SignInDto } from "@repo/types/auth"
+import { type SignInDto } from "@dexterity-sms/core/auth"
+import { routes } from "@dexterity-sms/routes"
 
 import { actionError, ActionResult } from "~/lib/actions"
 import { setSessionToken } from "~/lib/session"

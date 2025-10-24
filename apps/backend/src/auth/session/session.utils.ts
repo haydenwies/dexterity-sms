@@ -1,4 +1,4 @@
-import { SessionDto } from "@repo/types/auth"
+import { SessionDto } from "@dexterity-sms/core/auth"
 
 import { Session } from "~/auth/session/session.entity"
 

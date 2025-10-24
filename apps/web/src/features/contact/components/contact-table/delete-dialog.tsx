@@ -1,6 +1,6 @@
 "use client"
 
-import { type ContactModel } from "@repo/types/contact"
+import { type ContactModel } from "@dexterity-sms/core/contact"
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -10,8 +10,8 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle
-} from "@repo/ui/components/alert-dialog"
-import { Spinner } from "@repo/ui/components/spinner"
+} from "@dexterity-sms/ui/components/alert-dialog"
+import { Spinner } from "@dexterity-sms/ui/components/spinner"
 
 import { useDeleteContact } from "~/features/contact/hooks/use-delete-contact"
 

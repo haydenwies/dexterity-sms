@@ -1,8 +1,8 @@
 import { Body, Controller, Get, MessageEvent, Param, Post, Sse, UseGuards } from "@nestjs/common"
 import { map, type Observable } from "rxjs"
 
-import { type ConversationModel, type SendMessageDto, sendMessageDtoSchema } from "@repo/types/conversation"
-import { type MessageModel } from "@repo/types/message"
+import { type ConversationModel, type SendMessageDto, sendMessageDtoSchema } from "@dexterity-sms/core/conversation"
+import { type MessageModel } from "@dexterity-sms/core/message"
 
 import { AuthGuard } from "~/auth/auth.guard"
 import { SubscriptionGuard } from "~/billing/guards/subscription.guard"

@@ -11,7 +11,7 @@ import {
 	type SignUpDto,
 	signUpDtoSchema,
 	type UserDto
-} from "@repo/types/auth"
+} from "@dexterity-sms/core/auth"
 
 import { Session, User } from "~/auth/auth.decorator"
 import { AuthGuard } from "~/auth/auth.guard"

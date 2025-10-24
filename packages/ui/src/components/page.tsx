@@ -1,4 +1,4 @@
-import { cn } from "@repo/ui/lib/utils"
+import { cn } from "@dexterity-sms/ui/lib/utils"
 
 // #region Page
 

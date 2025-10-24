@@ -1,9 +1,9 @@
 "use client"
 
-import * as React from "react"
 import * as SeparatorPrimitive from "@radix-ui/react-separator"
+import * as React from "react"
 
-import { cn } from "@repo/ui/lib/utils"
+import { cn } from "@dexterity-sms/ui/lib/utils"
 
 type SeparatorProps = React.ComponentProps<typeof SeparatorPrimitive.Root>
 const Separator = ({ className, orientation = "horizontal", decorative = true, ...props }: SeparatorProps) => {

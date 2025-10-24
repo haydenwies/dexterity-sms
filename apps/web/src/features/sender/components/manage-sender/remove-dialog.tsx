@@ -1,6 +1,6 @@
 "use client"
 
-import { type SenderModel } from "@repo/types/sender"
+import { type SenderModel } from "@dexterity-sms/core/sender"
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -10,8 +10,8 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle
-} from "@repo/ui/components/alert-dialog"
-import { Spinner } from "@repo/ui/components/spinner"
+} from "@dexterity-sms/ui/components/alert-dialog"
+import { Spinner } from "@dexterity-sms/ui/components/spinner"
 
 import { useRemoveSender } from "~/features/sender/hooks/use-remove-sender"
 

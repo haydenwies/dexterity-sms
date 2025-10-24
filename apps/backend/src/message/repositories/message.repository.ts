@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common"
 import { and, asc, count as drizzleCount, eq, inArray } from "drizzle-orm"
 
-import { MessageStatus } from "@repo/types/message"
+import { MessageStatus } from "@dexterity-sms/core/message"
 
 import { Phone } from "~/common/phone.vo"
 import { DATABASE_PROVIDER, type DatabaseProvider } from "~/database/database.module"

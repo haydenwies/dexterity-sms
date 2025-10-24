@@ -2,18 +2,18 @@
 
 import { useState } from "react"
 
-import { CampaignModel, CampaignStatus } from "@repo/types/campaign"
-import { Button } from "@repo/ui/components/button"
+import { CampaignModel, CampaignStatus } from "@dexterity-sms/core/campaign"
+import { Button } from "@dexterity-sms/ui/components/button"
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger
-} from "@repo/ui/components/dropdown-menu"
-import { Icon, IconName } from "@repo/ui/components/icon"
+} from "@dexterity-sms/ui/components/dropdown-menu"
+import { Icon, IconName } from "@dexterity-sms/ui/components/icon"
 
-import { routes } from "@repo/routes"
+import { routes } from "@dexterity-sms/routes"
 import Link from "next/link"
 import { CampaignTableDeleteDialog } from "~/features/campaign/components/campaign-table/delete-dialog"
 import { CampaignTableCancelDialog } from "./candel-dialog"

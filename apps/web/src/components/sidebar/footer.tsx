@@ -4,18 +4,18 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { use } from "react"
 
-import { routes } from "@repo/routes"
-import { type UserDto } from "@repo/types/auth"
-import { OrganizationModel } from "@repo/types/organization"
-import { Avatar, AvatarFallback } from "@repo/ui/components/avatar"
+import { type UserDto } from "@dexterity-sms/core/auth"
+import { OrganizationModel } from "@dexterity-sms/core/organization"
+import { routes } from "@dexterity-sms/routes"
+import { Avatar, AvatarFallback } from "@dexterity-sms/ui/components/avatar"
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger
-} from "@repo/ui/components/dropdown-menu"
-import { Icon, IconName } from "@repo/ui/components/icon"
-import * as SidebarPrimitive from "@repo/ui/components/sidebar"
+} from "@dexterity-sms/ui/components/dropdown-menu"
+import { Icon, IconName } from "@dexterity-sms/ui/components/icon"
+import * as SidebarPrimitive from "@dexterity-sms/ui/components/sidebar"
 
 import { signOut } from "~/actions/auth/sign-out"
 import { isPathActive } from "~/components/sidebar/utils"

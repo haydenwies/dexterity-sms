@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { cn } from "@repo/ui/lib/utils"
+import { cn } from "@dexterity-sms/ui/lib/utils"
 
 type AnnotatedProps = React.ComponentProps<"div">
 const Annotated = ({ className, ...props }: AnnotatedProps) => {

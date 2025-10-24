@@ -1,8 +1,8 @@
 "use client"
 
-import * as React from "react"
 import * as LabelPrimitive from "@radix-ui/react-label"
 import { Slot } from "@radix-ui/react-slot"
+import * as React from "react"
 import {
 	Controller,
 	FormProvider,
@@ -13,8 +13,8 @@ import {
 	type FieldValues
 } from "react-hook-form"
 
-import { cn } from "@repo/ui/lib/utils"
-import { Label } from "@repo/ui/components/label"
+import { Label } from "@dexterity-sms/ui/components/label"
+import { cn } from "@dexterity-sms/ui/lib/utils"
 
 // #region Form
 
@@ -166,4 +166,4 @@ const FormMessage = ({ className, ...props }: FormMessageProps) => {
 	)
 }
 
-export { useFormField, Form, FormItem, FormLabel, FormControl, FormDescription, FormMessage, FormField }
+export { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, useFormField }

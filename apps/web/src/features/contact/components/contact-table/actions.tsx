@@ -2,16 +2,16 @@
 
 import { useState } from "react"
 
-import { type ContactModel } from "@repo/types/contact"
-import { Button } from "@repo/ui/components/button"
+import { type ContactModel } from "@dexterity-sms/core/contact"
+import { Button } from "@dexterity-sms/ui/components/button"
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger
-} from "@repo/ui/components/dropdown-menu"
-import { Icon, IconName } from "@repo/ui/components/icon"
+} from "@dexterity-sms/ui/components/dropdown-menu"
+import { Icon, IconName } from "@dexterity-sms/ui/components/icon"
 
 import { ContactTableDeleteDialog } from "~/features/contact/components/contact-table/delete-dialog"
 import { ContactTableUpdateDialog } from "~/features/contact/components/contact-table/update-dialog"

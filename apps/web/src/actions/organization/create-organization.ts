@@ -1,7 +1,7 @@
 "use server"
 
-import { routes } from "@repo/routes"
-import { OrganizationModel, type CreateOrganizationDto } from "@repo/types/organization"
+import { OrganizationModel, type CreateOrganizationDto } from "@dexterity-sms/core/organization"
+import { routes } from "@dexterity-sms/routes"
 import { redirect } from "next/navigation"
 
 import { actionError, type ActionResult } from "~/lib/actions"

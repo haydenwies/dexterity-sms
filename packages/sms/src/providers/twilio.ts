@@ -1,6 +1,6 @@
 import twilio, { validateRequest, type Twilio } from "twilio"
 
-import { MessageErrorCode, MessageStatus } from "@repo/types/message"
+import { MessageErrorCode, MessageStatus } from "@dexterity-sms/core/message"
 import type { InboundWebhookEvent, Message, Sender, SmsPayload, SmsProvider, StatusWebhookEvent } from "../types"
 
 type TwilioConfig = {

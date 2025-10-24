@@ -1,8 +1,8 @@
 "use client"
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
-import { Input } from "@repo/ui/components/input"
-import { Textarea } from "@repo/ui/components/textarea"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@dexterity-sms/ui/components/form"
+import { Input } from "@dexterity-sms/ui/components/input"
+import { Textarea } from "@dexterity-sms/ui/components/textarea"
 
 import { useUpdateCampaign } from "~/features/campaign/hooks/use-update-campaign"
 

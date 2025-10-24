@@ -1,6 +1,6 @@
 import * as IconsPrimitive from "lucide-react"
 
-import { cn } from "@repo/ui/lib/utils"
+import { cn } from "@dexterity-sms/ui/lib/utils"
 
 enum IconName {
 	ALERT_CIRCLE = "alert-circle",

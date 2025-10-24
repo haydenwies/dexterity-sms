@@ -1,6 +1,5 @@
 {
-	"name": "@repo/sms",
-	"version": "1.0.0",
+	"name": "@dexterity-sms/sms",
 	"private": true,
 	"scripts": {
 		"build": "tsc"
@@ -9,8 +8,8 @@
 		"twilio": "^5.9.0"
 	},
 	"devDependencies": {
-		"@repo/types": "workspace:*",
-		"@repo/typescript-config": "workspace:*",
+		"@dexterity-sms/core": "workspace:*",
+		"@dexterity-sms/typescript-config": "workspace:*",
 		"typescript": "^5.9.2"
 	},
 	"exports": {

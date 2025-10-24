@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { use } from "react"
 
-import { Avatar, AvatarFallback } from "@repo/ui/components/avatar"
+import { Avatar, AvatarFallback } from "@dexterity-sms/ui/components/avatar"
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -11,12 +11,12 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger
-} from "@repo/ui/components/dropdown-menu"
-import { Icon, IconName } from "@repo/ui/components/icon"
-import * as SidebarPrimitive from "@repo/ui/components/sidebar"
+} from "@dexterity-sms/ui/components/dropdown-menu"
+import { Icon, IconName } from "@dexterity-sms/ui/components/icon"
+import * as SidebarPrimitive from "@dexterity-sms/ui/components/sidebar"
 
-import { routes } from "@repo/routes"
-import { OrganizationModel } from "@repo/types/organization"
+import { OrganizationModel } from "@dexterity-sms/core/organization"
+import { routes } from "@dexterity-sms/routes"
 
 type SidebarHeaderProps = Readonly<{
 	allOrganizationsPromise: Promise<OrganizationModel[]>

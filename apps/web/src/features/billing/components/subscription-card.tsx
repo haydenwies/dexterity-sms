@@ -2,11 +2,11 @@
 
 import { use } from "react"
 
-import { SubscriptionModel } from "@repo/types/billing"
-import { Button } from "@repo/ui/components/button"
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@repo/ui/components/card"
-import { Icon, IconName } from "@repo/ui/components/icon"
-import { Spinner } from "@repo/ui/components/spinner"
+import { SubscriptionModel } from "@dexterity-sms/core/billing"
+import { Button } from "@dexterity-sms/ui/components/button"
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@dexterity-sms/ui/components/card"
+import { Icon, IconName } from "@dexterity-sms/ui/components/icon"
+import { Spinner } from "@dexterity-sms/ui/components/spinner"
 
 import { useCreateCheckoutSession } from "~/features/billing/hooks/use-create-checkout-session"
 

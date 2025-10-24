@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable, Logger } from "@nestjs/common"
 
-import { SubscriptionStatus } from "@repo/types/billing"
+import { SubscriptionStatus } from "@dexterity-sms/core/billing"
 
 import { AuthRequest } from "~/auth/auth.guard"
 import { BillingService } from "~/billing/billing.service"

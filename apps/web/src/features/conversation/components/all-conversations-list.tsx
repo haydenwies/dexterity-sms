@@ -3,11 +3,11 @@
 import Link from "next/link"
 import { use, useMemo, useState } from "react"
 
-import { routes } from "@repo/routes"
-import { type ContactModel } from "@repo/types/contact"
-import { type ConversationModel } from "@repo/types/conversation"
-import { Badge } from "@repo/ui/components/badge"
-import { cn } from "@repo/ui/lib/utils"
+import { type ContactModel } from "@dexterity-sms/core/contact"
+import { type ConversationModel } from "@dexterity-sms/core/conversation"
+import { routes } from "@dexterity-sms/routes"
+import { Badge } from "@dexterity-sms/ui/components/badge"
+import { cn } from "@dexterity-sms/ui/lib/utils"
 
 import { readConversation } from "~/actions/conversation/read-conversation"
 import { streamManyConversations } from "~/data/conversation/stream-many-conversations"

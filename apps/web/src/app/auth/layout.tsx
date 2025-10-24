@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 
-import { routes } from "@repo/routes"
+import { routes } from "@dexterity-sms/routes"
 
 import Image from "next/image"
 import { getSession } from "~/data/auth/get-session"

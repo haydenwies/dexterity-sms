@@ -2,8 +2,8 @@ import "server-only"
 
 import { cookies } from "next/headers"
 
-import { SESSION_COOKIE } from "@repo/types/auth"
-import { eTLD } from "@repo/utils"
+import { SESSION_COOKIE } from "@dexterity-sms/core/auth"
+import { eTLD } from "@dexterity-sms/utils"
 
 import { getWebPublicUrl } from "~/lib/url"
 
