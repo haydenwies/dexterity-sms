@@ -1,5 +1,5 @@
-import { SubscriptionStatus } from "@repo/types/billing"
-import { isEnumValue } from "@repo/utils"
+import { SubscriptionStatus } from "@dexterity-sms/core/billing"
+import { isEnumValue } from "@dexterity-sms/utils"
 
 interface ISubscription {
 	organizationId: string

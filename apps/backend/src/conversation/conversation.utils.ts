@@ -1,4 +1,4 @@
-import { type ConversationModel } from "@repo/types/conversation"
+import { type ConversationModel } from "@dexterity-sms/core/conversation"
 
 import { ConversationUpdatedEvent, type ConversationCreatedEvent } from "~/common/event.types"
 import { type Conversation } from "~/conversation/entities/conversation.entity"

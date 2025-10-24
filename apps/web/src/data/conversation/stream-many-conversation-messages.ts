@@ -1,4 +1,4 @@
-import { routes } from "@repo/routes"
+import { routes } from "@dexterity-sms/routes"
 
 import { getBackendPublicUrl } from "~/lib/url"
 

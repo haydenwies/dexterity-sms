@@ -9,7 +9,7 @@ import {
 	type CreateCheckoutSessionDto,
 	createCheckoutSessionDtoSchema,
 	SubscriptionModel
-} from "@repo/types/billing"
+} from "@dexterity-sms/core/billing"
 
 import { AuthGuard } from "~/auth/auth.guard"
 import { BillingService, BillingWebhookService } from "~/billing/billing.service"

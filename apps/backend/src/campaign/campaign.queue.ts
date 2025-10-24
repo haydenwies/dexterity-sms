@@ -2,7 +2,7 @@ import { InjectQueue, Processor, WorkerHost } from "@nestjs/bullmq"
 import { NotFoundException } from "@nestjs/common"
 import { Job, Queue } from "bullmq"
 
-import { MessageStatus } from "@repo/types/message"
+import { MessageStatus } from "@dexterity-sms/core/message"
 
 import { CampaignRepository } from "~/campaign/repositories/campaign.repository"
 import { ContactService } from "~/contact/contact.service"

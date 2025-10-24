@@ -1,4 +1,4 @@
-import { type UserDto } from "@repo/types/auth"
+import { type UserDto } from "@dexterity-sms/core/auth"
 
 import { type User } from "~/auth/user/user.entity"
 

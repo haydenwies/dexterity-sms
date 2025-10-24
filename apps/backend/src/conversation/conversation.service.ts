@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from "@nestjs/comm
 import { EventEmitter2 } from "@nestjs/event-emitter"
 import { filter, fromEvent, map, merge, mergeMap, Observable } from "rxjs"
 
-import { type SendMessageDto } from "@repo/types/conversation"
+import { type SendMessageDto } from "@dexterity-sms/core/conversation"
 
 import {
 	Event,

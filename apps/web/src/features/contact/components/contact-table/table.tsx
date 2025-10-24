@@ -9,10 +9,10 @@ import {
 } from "@tanstack/react-table"
 import { use, useState } from "react"
 
-import { type ContactModel } from "@repo/types/contact"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/components/table"
+import { type ContactModel } from "@dexterity-sms/core/contact"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@dexterity-sms/ui/components/table"
 
-import { Input } from "@repo/ui/components/input"
+import { Input } from "@dexterity-sms/ui/components/input"
 import { getContactTableColumns } from "~/features/contact/components/contact-table/columns"
 
 type ContactTableProps = {

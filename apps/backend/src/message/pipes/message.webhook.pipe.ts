@@ -1,6 +1,6 @@
 import { Inject, Injectable, Logger, PipeTransform } from "@nestjs/common"
 
-import { type InboundWebhookEvent, type StatusWebhookEvent } from "@repo/sms"
+import { type InboundWebhookEvent, type StatusWebhookEvent } from "@dexterity-sms/sms"
 
 import { SMS_PROVIDER, type SmsProvider } from "~/sms/sms.module"
 

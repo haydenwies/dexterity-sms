@@ -2,7 +2,7 @@
 
 import { useId } from "react"
 
-import { Button } from "@repo/ui/components/button"
+import { Button } from "@dexterity-sms/ui/components/button"
 import {
 	Dialog,
 	DialogContent,
@@ -10,10 +10,10 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle
-} from "@repo/ui/components/dialog"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
-import { Input } from "@repo/ui/components/input"
-import { Spinner } from "@repo/ui/components/spinner"
+} from "@dexterity-sms/ui/components/dialog"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@dexterity-sms/ui/components/form"
+import { Input } from "@dexterity-sms/ui/components/input"
+import { Spinner } from "@dexterity-sms/ui/components/spinner"
 
 import { useCreateOrganization } from "~/features/organization/hooks/use-create-organization"
 import { PLACEHOLDERS } from "~/lib/placeholders"

@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common"
 import { ConfigService } from "@nestjs/config"
 
-import { TwilioProvider, type SmsProvider as SmsProviderType } from "@repo/sms"
+import { TwilioProvider, type SmsProvider as SmsProviderType } from "@dexterity-sms/sms"
 
 const SMS_PROVIDER = "sms-provider"
 type SmsProvider = SmsProviderType

@@ -1,4 +1,4 @@
-import { type MessageDirection, type MessageStatus } from "@repo/types/message"
+import { type MessageDirection, type MessageStatus } from "@dexterity-sms/core/message"
 
 import { Phone } from "~/common/phone.vo"
 

@@ -2,8 +2,8 @@
 
 import { use, useEffect, useRef, useState } from "react"
 
-import { MessageDirection, type MessageModel } from "@repo/types/message"
-import { cn } from "@repo/ui/lib/utils"
+import { MessageDirection, type MessageModel } from "@dexterity-sms/core/message"
+import { cn } from "@dexterity-sms/ui/lib/utils"
 
 import { readConversation } from "~/actions/conversation/read-conversation"
 import { streamManyConversationMessages } from "~/data/conversation/stream-many-conversation-messages"

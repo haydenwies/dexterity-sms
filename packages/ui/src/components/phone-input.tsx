@@ -7,7 +7,7 @@ import * as React from "react"
 import * as RPNInput from "react-phone-number-input"
 import flags from "react-phone-number-input/flags"
 
-import { Button } from "@repo/ui/components/button"
+import { Button } from "@dexterity-sms/ui/components/button"
 import {
 	Command,
 	CommandEmpty,
@@ -17,11 +17,11 @@ import {
 	CommandInputWrapper,
 	CommandItem,
 	CommandList
-} from "@repo/ui/components/command"
-import { Input } from "@repo/ui/components/input"
-import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover"
-import { ScrollArea } from "@repo/ui/components/scroll-area"
-import { cn } from "@repo/ui/lib/utils"
+} from "@dexterity-sms/ui/components/command"
+import { Input } from "@dexterity-sms/ui/components/input"
+import { Popover, PopoverContent, PopoverTrigger } from "@dexterity-sms/ui/components/popover"
+import { ScrollArea } from "@dexterity-sms/ui/components/scroll-area"
+import { cn } from "@dexterity-sms/ui/lib/utils"
 
 // #region PhoneInput
 

@@ -9,10 +9,10 @@ import {
 } from "@tanstack/react-table"
 import { use, useState } from "react"
 
-import { CampaignModel } from "@repo/types/campaign"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@repo/ui/components/table"
+import { CampaignModel } from "@dexterity-sms/core/campaign"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@dexterity-sms/ui/components/table"
 
-import { Input } from "@repo/ui/components/input"
+import { Input } from "@dexterity-sms/ui/components/input"
 import { getCampaignTableColumns } from "~/features/campaign/components/campaign-table/columns"
 
 type CampaignTableProps = Readonly<{

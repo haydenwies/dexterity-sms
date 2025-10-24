@@ -3,7 +3,11 @@ import { ConfigService } from "@nestjs/config"
 import { type Request } from "express"
 import { Stripe } from "stripe"
 
-import { CreateBillingPortalSessionDto, type CreateCheckoutSessionDto, SubscriptionStatus } from "@repo/types/billing"
+import {
+	CreateBillingPortalSessionDto,
+	type CreateCheckoutSessionDto,
+	SubscriptionStatus
+} from "@dexterity-sms/core/billing"
 
 import {
 	Subscription,

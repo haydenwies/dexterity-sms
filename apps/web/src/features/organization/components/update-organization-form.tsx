@@ -2,15 +2,15 @@
 
 import { use } from "react"
 
-import { type OrganizationModel } from "@repo/types/organization"
-import { Field, FieldGroup, FieldLabel, FieldSet } from "@repo/ui/components/field"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/components/form"
-import { Input } from "@repo/ui/components/input"
-import { cn } from "@repo/ui/lib/utils"
+import { type OrganizationModel } from "@dexterity-sms/core/organization"
+import { Field, FieldGroup, FieldLabel, FieldSet } from "@dexterity-sms/ui/components/field"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@dexterity-sms/ui/components/form"
+import { Input } from "@dexterity-sms/ui/components/input"
+import { cn } from "@dexterity-sms/ui/lib/utils"
 
-import { Button } from "@repo/ui/components/button"
-import { Skeleton } from "@repo/ui/components/skeleton"
-import { Spinner } from "@repo/ui/components/spinner"
+import { Button } from "@dexterity-sms/ui/components/button"
+import { Skeleton } from "@dexterity-sms/ui/components/skeleton"
+import { Spinner } from "@dexterity-sms/ui/components/spinner"
 import { useUpdateOrganization } from "~/features/organization/hooks/use-update-organization"
 import { PLACEHOLDERS } from "~/lib/placeholders"
 

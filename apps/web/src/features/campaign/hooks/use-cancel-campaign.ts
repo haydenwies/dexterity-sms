@@ -1,8 +1,8 @@
 import { useParams } from "next/navigation"
 import { useState } from "react"
 
-import { type CampaignModel } from "@repo/types/campaign"
-import { toast } from "@repo/ui/components/sonner"
+import { type CampaignModel } from "@dexterity-sms/core/campaign"
+import { toast } from "@dexterity-sms/ui/components/sonner"
 
 import { cancelCampaign } from "~/actions/campaign/cancel-campaign"
 

@@ -1,5 +1,5 @@
-import { MessageDirection, MessageErrorCode, MessageStatus } from "@repo/types/message"
-import { isEnumValue } from "@repo/utils"
+import { MessageDirection, MessageErrorCode, MessageStatus } from "@dexterity-sms/core/message"
+import { isEnumValue } from "@dexterity-sms/utils"
 
 import { Phone } from "~/common/phone.vo"
 

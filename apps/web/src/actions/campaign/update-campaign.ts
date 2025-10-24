@@ -2,8 +2,8 @@
 
 import { revalidateTag } from "next/cache"
 
-import { routes } from "@repo/routes"
-import { type UpdateCampaignDto } from "@repo/types/campaign"
+import { type UpdateCampaignDto } from "@dexterity-sms/core/campaign"
+import { routes } from "@dexterity-sms/routes"
 
 import { actionError, type ActionResult, actionSuccess } from "~/lib/actions"
 import { CACHE_TAGS } from "~/lib/cache"

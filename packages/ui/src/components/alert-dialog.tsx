@@ -3,8 +3,8 @@
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
 import * as React from "react"
 
-import { ButtonProps, buttonVariants } from "@repo/ui/components/button"
-import { cn } from "@repo/ui/lib/utils"
+import { ButtonProps, buttonVariants } from "@dexterity-sms/ui/components/button"
+import { cn } from "@dexterity-sms/ui/lib/utils"
 
 type AlertDialogProps = React.ComponentProps<typeof AlertDialogPrimitive.Root>
 const AlertDialog = ({ ...props }: AlertDialogProps) => {

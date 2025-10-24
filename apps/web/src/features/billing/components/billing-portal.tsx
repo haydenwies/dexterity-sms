@@ -1,8 +1,8 @@
 "use client"
 
-import { Button } from "@repo/ui/components/button"
-import { Icon, IconName } from "@repo/ui/components/icon"
-import { Spinner } from "@repo/ui/components/spinner"
+import { Button } from "@dexterity-sms/ui/components/button"
+import { Icon, IconName } from "@dexterity-sms/ui/components/icon"
+import { Spinner } from "@dexterity-sms/ui/components/spinner"
 
 import { useCreateBillingPortalSession } from "~/features/billing/hooks/use-create-billing-portal-session"
 

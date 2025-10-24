@@ -1,7 +1,7 @@
 "use client"
 
-import { Icon, IconName } from "@repo/ui/components/icon"
-import { cn } from "@repo/ui/lib/utils"
+import { Icon, IconName } from "@dexterity-sms/ui/components/icon"
+import { cn } from "@dexterity-sms/ui/lib/utils"
 
 import { SaveState } from "~/features/campaign/components/update-campaign/provider"
 import { useUpdateCampaign } from "~/features/campaign/hooks/use-update-campaign"

@@ -1,7 +1,7 @@
 "use server"
 
-import { routes } from "@repo/routes"
-import { type UpdateOrganizationDto } from "@repo/types/organization"
+import { type UpdateOrganizationDto } from "@dexterity-sms/core/organization"
+import { routes } from "@dexterity-sms/routes"
 
 import { actionError, actionSuccess, type ActionResult } from "~/lib/actions"
 import { getSessionToken } from "~/lib/session"

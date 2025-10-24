@@ -2,10 +2,10 @@
 
 import { useState } from "react"
 
-import { CAMPAIGN_MAX_SCHEDULE_DAYS } from "@repo/types/campaign"
-import { Button } from "@repo/ui/components/button"
-import { Calendar } from "@repo/ui/components/calendar"
-import { Checkbox } from "@repo/ui/components/checkbox"
+import { CAMPAIGN_MAX_SCHEDULE_DAYS } from "@dexterity-sms/core/campaign"
+import { Button } from "@dexterity-sms/ui/components/button"
+import { Calendar } from "@dexterity-sms/ui/components/calendar"
+import { Checkbox } from "@dexterity-sms/ui/components/checkbox"
 import {
 	Dialog,
 	DialogContent,
@@ -13,13 +13,13 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle
-} from "@repo/ui/components/dialog"
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@repo/ui/components/form"
-import { Icon, IconName } from "@repo/ui/components/icon"
-import { Popover, PopoverContent, PopoverTrigger } from "@repo/ui/components/popover"
-import { Spinner } from "@repo/ui/components/spinner"
-import { TimeInput } from "@repo/ui/components/time-input"
-import { cn } from "@repo/ui/lib/utils"
+} from "@dexterity-sms/ui/components/dialog"
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@dexterity-sms/ui/components/form"
+import { Icon, IconName } from "@dexterity-sms/ui/components/icon"
+import { Popover, PopoverContent, PopoverTrigger } from "@dexterity-sms/ui/components/popover"
+import { Spinner } from "@dexterity-sms/ui/components/spinner"
+import { TimeInput } from "@dexterity-sms/ui/components/time-input"
+import { cn } from "@dexterity-sms/ui/lib/utils"
 
 import { useSendCampaign } from "~/features/campaign/hooks/use-send-campaign"
 

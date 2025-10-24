@@ -1,4 +1,4 @@
-import { cn } from "@repo/ui/lib/utils"
+import { cn } from "@dexterity-sms/ui/lib/utils"
 
 type SkeletonProps = React.ComponentProps<"div">
 const Skeleton = ({ className, ...props }: SkeletonProps) => {

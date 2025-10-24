@@ -1,6 +1,6 @@
 import { Body, Controller, Logger, Post, UseGuards } from "@nestjs/common"
 
-import { type InboundWebhookEvent, type StatusWebhookEvent } from "@repo/sms"
+import { type InboundWebhookEvent, type StatusWebhookEvent } from "@dexterity-sms/sms"
 
 import { MessageInboundWebhookGuard, MessageStatusWebhookGuard } from "~/message/guards/message.webhook.guard"
 import { MessageWebhookService } from "~/message/message.service"

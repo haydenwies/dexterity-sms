@@ -3,7 +3,7 @@
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
 import * as React from "react"
 
-import { cn } from "@repo/ui/lib/utils"
+import { cn } from "@dexterity-sms/ui/lib/utils"
 
 // #region ScrollArea
 

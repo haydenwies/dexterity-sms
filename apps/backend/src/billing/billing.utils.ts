@@ -1,6 +1,10 @@
 import { type Stripe } from "stripe"
 
-import { type BillingPortalSessionDto, type CheckoutSessionDto, type SubscriptionModel } from "@repo/types/billing"
+import {
+	type BillingPortalSessionDto,
+	type CheckoutSessionDto,
+	type SubscriptionModel
+} from "@dexterity-sms/core/billing"
 
 import { type Subscription } from "~/billing/entities/subscription.entity"
 

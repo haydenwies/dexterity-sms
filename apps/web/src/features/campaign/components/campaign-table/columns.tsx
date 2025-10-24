@@ -1,12 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table"
-
-import { CampaignStatus, type CampaignModel } from "@repo/types/campaign"
-import { Badge } from "@repo/ui/components/badge"
-import { Checkbox } from "@repo/ui/components/checkbox"
-
-import { routes } from "@repo/routes"
 import { formatDate } from "date-fns"
 import Link from "next/link"
+
+import { CampaignStatus, type CampaignModel } from "@dexterity-sms/core/campaign"
+import { routes } from "@dexterity-sms/routes"
+import { Badge } from "@dexterity-sms/ui/components/badge"
+import { Checkbox } from "@dexterity-sms/ui/components/checkbox"
+
 import { CampaignTableActions } from "~/features/campaign/components/campaign-table/actions"
 
 const getCampaignTableColumns = (): ColumnDef<CampaignModel>[] => [
@@ -67,7 +67,7 @@ const getCampaignTableColumns = (): ColumnDef<CampaignModel>[] => [
 
 			if (!campaign.body) return <p className="text-muted-foreground">--</p>
 
-			return <p className="max-w-lg whitespace-normal break-words">{campaign.body}</p>
+			return <p className="wrap-break-words max-w-lg whitespace-normal">{campaign.body}</p>
 		}
 	},
 	{

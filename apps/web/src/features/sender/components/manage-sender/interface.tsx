@@ -2,9 +2,9 @@
 
 import { use, useState } from "react"
 
-import { SenderModel } from "@repo/types/sender"
-import { Button } from "@repo/ui/components/button"
-import { Icon, IconName } from "@repo/ui/components/icon"
+import { SenderModel } from "@dexterity-sms/core/sender"
+import { Button } from "@dexterity-sms/ui/components/button"
+import { Icon, IconName } from "@dexterity-sms/ui/components/icon"
 
 import { AddSenderDialog } from "~/features/sender/components/manage-sender/add-dialog"
 import { RemoveSenderDialog } from "~/features/sender/components/manage-sender/remove-dialog"

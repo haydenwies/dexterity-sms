@@ -1,7 +1,7 @@
 "use server"
 
-import { routes } from "@repo/routes"
-import { type DeleteManyCampaignsDto } from "@repo/types/campaign"
+import { type DeleteManyCampaignsDto } from "@dexterity-sms/core/campaign"
+import { routes } from "@dexterity-sms/routes"
 import { revalidateTag } from "next/cache"
 
 import { actionError, type ActionResult, actionSuccess } from "~/lib/actions"

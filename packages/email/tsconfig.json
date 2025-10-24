@@ -1,5 +1,5 @@
 {
-	"extends": "@repo/typescript-config/tsconfig.reactlib",
+	"extends": "@dexterity-sms/typescript-config/tsconfig.reactlib",
 	"compilerOptions": {
 		"outDir": "dist",
 		"rootDir": "src",

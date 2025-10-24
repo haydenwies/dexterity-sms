@@ -1,4 +1,4 @@
-import * as SidebarPrimitive from "@repo/ui/components/sidebar"
+import * as SidebarPrimitive from "@dexterity-sms/ui/components/sidebar"
 
 type SidebarProps = Readonly<{
 	children: React.ReactNode

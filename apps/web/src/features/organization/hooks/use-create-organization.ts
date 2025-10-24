@@ -2,8 +2,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { type CreateOrganizationDto, createOrganizationDtoSchema } from "@repo/types/organization"
-import { toast } from "@repo/ui/components/sonner"
+import { type CreateOrganizationDto, createOrganizationDtoSchema } from "@dexterity-sms/core/organization"
+import { toast } from "@dexterity-sms/ui/components/sonner"
 
 import { createOrganization } from "~/actions/organization/create-organization"
 

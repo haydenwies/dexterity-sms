@@ -1,9 +1,9 @@
 import { Injectable, Logger } from "@nestjs/common"
 import { ConfigService } from "@nestjs/config"
 
-import { type EmailProvider } from "@repo/email"
-import { ResendProvider } from "@repo/email/providers/resend"
-import { resetPassword, type ResetPasswordProps } from "@repo/email/templates"
+import { type EmailProvider } from "@dexterity-sms/email"
+import { ResendProvider } from "@dexterity-sms/email/providers/resend"
+import { resetPassword, type ResetPasswordProps } from "@dexterity-sms/email/templates"
 
 @Injectable()
 class EmailService {

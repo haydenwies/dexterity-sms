@@ -1,12 +1,12 @@
 {
-	"extends": "@repo/typescript-config/tsconfig.reactlib",
+	"extends": "@dexterity-sms/typescript-config/tsconfig.reactlib",
 	"compilerOptions": {
 		"baseUrl": ".",
 		"outDir": "dist",
 		"rootDir": "src",
 		"tsBuildInfoFile": "dist/tsconfig.tsbuildinfo",
 		"paths": {
-			"@repo/ui/*": ["./src/*"]
+			"@dexterity-sms/ui/*": ["./src/*"]
 		}
 	},
 	"include": ["src"],

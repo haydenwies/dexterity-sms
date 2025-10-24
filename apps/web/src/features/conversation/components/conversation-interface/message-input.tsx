@@ -3,13 +3,13 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 
-import { SendMessageDto, sendMessageDtoSchema } from "@repo/types/conversation"
-import { Button } from "@repo/ui/components/button"
-import { Form, FormControl, FormField, FormItem } from "@repo/ui/components/form"
-import { Icon, IconName } from "@repo/ui/components/icon"
-import { Input } from "@repo/ui/components/input"
-import { toast } from "@repo/ui/components/sonner"
-import { cn } from "@repo/ui/lib/utils"
+import { SendMessageDto, sendMessageDtoSchema } from "@dexterity-sms/core/conversation"
+import { Button } from "@dexterity-sms/ui/components/button"
+import { Form, FormControl, FormField, FormItem } from "@dexterity-sms/ui/components/form"
+import { Icon, IconName } from "@dexterity-sms/ui/components/icon"
+import { Input } from "@dexterity-sms/ui/components/input"
+import { toast } from "@dexterity-sms/ui/components/sonner"
+import { cn } from "@dexterity-sms/ui/lib/utils"
 
 import { sendMessage } from "~/actions/conversation/send-message"
 

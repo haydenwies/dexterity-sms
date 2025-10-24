@@ -12,7 +12,7 @@ import {
 	type SendCampaignDto,
 	type SendTestCampaignDto,
 	type UpdateCampaignDto
-} from "@repo/types/campaign"
+} from "@dexterity-sms/core/campaign"
 
 import { AuthGuard } from "~/auth/auth.guard"
 import { SubscriptionGuard } from "~/billing/guards/subscription.guard"

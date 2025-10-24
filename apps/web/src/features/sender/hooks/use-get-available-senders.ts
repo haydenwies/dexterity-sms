@@ -1,7 +1,7 @@
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
-import { toast } from "@repo/ui/components/sonner"
+import { toast } from "@dexterity-sms/ui/components/sonner"
 
 import { getAvailableSenders } from "~/actions/sender/get-available-phones"
 

@@ -1,5 +1,5 @@
 {
-	"extends": "@repo/typescript-config/tsconfig.nextjs",
+	"extends": "@dexterity-sms/typescript-config/tsconfig.nextjs",
 	"compilerOptions": {
 		"baseUrl": ".",
 		"paths": { "~/*": ["./src/*"] }

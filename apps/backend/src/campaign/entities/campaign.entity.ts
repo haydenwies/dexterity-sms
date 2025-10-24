@@ -1,7 +1,7 @@
 import z from "zod"
 
-import { CAMPAIGN_MAX_SCHEDULE_DAYS, CampaignStatus } from "@repo/types/campaign"
-import { isEnumValue } from "@repo/utils"
+import { CAMPAIGN_MAX_SCHEDULE_DAYS, CampaignStatus } from "@dexterity-sms/core/campaign"
+import { isEnumValue } from "@dexterity-sms/utils"
 
 interface ICampaign {
 	id: string

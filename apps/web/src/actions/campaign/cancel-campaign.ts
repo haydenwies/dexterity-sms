@@ -2,7 +2,7 @@
 
 import { revalidateTag } from "next/cache"
 
-import { routes } from "@repo/routes"
+import { routes } from "@dexterity-sms/routes"
 
 import { actionError, actionSuccess, type ActionResult } from "~/lib/actions"
 import { CACHE_TAGS } from "~/lib/cache"

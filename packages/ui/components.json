@@ -11,10 +11,10 @@
 	},
 	"iconLibrary": "lucide",
 	"aliases": {
-		"components": "@repo/ui/components",
-		"utils": "@repo/ui/lib/utils",
-		"hooks": "@repo/ui/hooks",
-		"lib": "@repo/ui/lib",
-		"ui": "@repo/ui/components"
+		"components": "@dexterity-sms/ui/components",
+		"utils": "@dexterity-sms/ui/lib/utils",
+		"hooks": "@dexterity-sms/ui/hooks",
+		"lib": "@dexterity-sms/ui/lib",
+		"ui": "@dexterity-sms/ui/components"
 	}
 }

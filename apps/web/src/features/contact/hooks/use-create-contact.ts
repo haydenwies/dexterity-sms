@@ -3,8 +3,8 @@ import { useParams } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { type CreateContactDto, createContactDtoSchema } from "@repo/types/contact"
-import { toast } from "@repo/ui/components/sonner"
+import { type CreateContactDto, createContactDtoSchema } from "@dexterity-sms/core/contact"
+import { toast } from "@dexterity-sms/ui/components/sonner"
 
 import { createContact } from "~/actions/contact/create-contact"
 

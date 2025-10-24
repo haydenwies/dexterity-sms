@@ -1,7 +1,7 @@
 import "server-only"
 
-import { routes } from "@repo/routes"
-import { type SubscriptionModel } from "@repo/types/billing"
+import { type SubscriptionModel } from "@dexterity-sms/core/billing"
+import { routes } from "@dexterity-sms/routes"
 
 import { getSessionToken } from "~/lib/session"
 import { getBackendPrivateUrl } from "~/lib/url"

@@ -1,7 +1,7 @@
 "use server"
 
-import { routes } from "@repo/routes"
-import { type ForgotPasswordDto } from "@repo/types/auth"
+import { type ForgotPasswordDto } from "@dexterity-sms/core/auth"
+import { routes } from "@dexterity-sms/routes"
 
 import { actionError, actionSuccess, type ActionResult } from "~/lib/actions"
 import { getBackendPrivateUrl } from "~/lib/url"

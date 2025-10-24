@@ -1,7 +1,7 @@
 "use server"
 
-import { routes } from "@repo/routes"
-import { type SendTestCampaignDto } from "@repo/types/campaign"
+import { type SendTestCampaignDto } from "@dexterity-sms/core/campaign"
+import { routes } from "@dexterity-sms/routes"
 
 import { actionError, type ActionResult, actionSuccess } from "~/lib/actions"
 import { getSessionToken } from "~/lib/session"

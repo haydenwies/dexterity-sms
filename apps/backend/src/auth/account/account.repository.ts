@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common"
 import { and, eq } from "drizzle-orm"
 
-import { AccountProvider } from "@repo/types/auth"
+import { AccountProvider } from "@dexterity-sms/core/auth"
 
 import { Account } from "~/auth/account/account.entity"
 import { DATABASE_PROVIDER, type DatabaseProvider } from "~/database/database.module"

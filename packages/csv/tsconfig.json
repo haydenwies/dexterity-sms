@@ -1,5 +1,5 @@
 {
-	"extends": "@repo/typescript-config/tsconfig.base",
+	"extends": "@dexterity-sms/typescript-config/tsconfig.base",
 	"compilerOptions": {
 		"outDir": "dist",
 		"rootDir": "src",

@@ -1,3 +1,3 @@
-import { reactInternalConfig } from "@repo/eslint-config/react-internal"
+import { reactInternalConfig } from "@dexterity-sms/eslint-config/react-internal"
 
 export default reactInternalConfig

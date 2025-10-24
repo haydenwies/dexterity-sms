@@ -1,6 +1,6 @@
 "use client"
 
-import { type CampaignModel } from "@repo/types/campaign"
+import { type CampaignModel } from "@dexterity-sms/core/campaign"
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -10,8 +10,8 @@ import {
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle
-} from "@repo/ui/components/alert-dialog"
-import { Spinner } from "@repo/ui/components/spinner"
+} from "@dexterity-sms/ui/components/alert-dialog"
+import { Spinner } from "@dexterity-sms/ui/components/spinner"
 
 import { useDeleteCampaign } from "~/features/campaign/hooks/use-delete-campaign"
 

@@ -1,9 +1,9 @@
 "use client"
 
-import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@repo/ui/components/empty"
-import { Icon, IconName } from "@repo/ui/components/icon"
-import { Page, PageContent } from "@repo/ui/components/page"
-import { useIsMobile } from "@repo/ui/hooks/use-mobile"
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@dexterity-sms/ui/components/empty"
+import { Icon, IconName } from "@dexterity-sms/ui/components/icon"
+import { Page, PageContent } from "@dexterity-sms/ui/components/page"
+import { useIsMobile } from "@dexterity-sms/ui/hooks/use-mobile"
 
 type MobileGuardProps = {
 	children: React.ReactNode

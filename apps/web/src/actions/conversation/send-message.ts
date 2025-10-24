@@ -1,7 +1,7 @@
 "use server"
 
-import { routes } from "@repo/routes"
-import { type SendMessageDto } from "@repo/types/conversation"
+import { type SendMessageDto } from "@dexterity-sms/core/conversation"
+import { routes } from "@dexterity-sms/routes"
 
 import { actionError, actionSuccess, type ActionResult } from "~/lib/actions"
 import { getSessionToken } from "~/lib/session"

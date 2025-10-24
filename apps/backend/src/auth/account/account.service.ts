@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common"
 
-import { AccountProvider } from "@repo/types/auth"
+import { AccountProvider } from "@dexterity-sms/core/auth"
 
 import { Account, type AccountCreateParams } from "~/auth/account/account.entity"
 import { AccountRepository } from "~/auth/account/account.repository"

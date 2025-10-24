@@ -1,4 +1,4 @@
-import { type MessageModel } from "@repo/types/message"
+import { type MessageModel } from "@dexterity-sms/core/message"
 import { MessageCreatedEvent, MessageUpdatedEvent } from "~/common/event.types"
 
 import { Message } from "~/message/entities/message.entity"

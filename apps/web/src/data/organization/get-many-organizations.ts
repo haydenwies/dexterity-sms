@@ -1,7 +1,7 @@
 import "server-only"
 
-import { routes } from "@repo/routes"
-import { type OrganizationModel } from "@repo/types/organization"
+import { type OrganizationModel } from "@dexterity-sms/core/organization"
+import { routes } from "@dexterity-sms/routes"
 
 import { getSessionToken } from "~/lib/session"
 import { getBackendPrivateUrl } from "~/lib/url"

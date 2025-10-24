@@ -1,5 +1,5 @@
+import { SESSION_COOKIE } from "@dexterity-sms/core/auth"
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common"
-import { SESSION_COOKIE } from "@repo/types/auth"
 import { type Request } from "express"
 
 import { Session } from "~/auth/session/session.entity"

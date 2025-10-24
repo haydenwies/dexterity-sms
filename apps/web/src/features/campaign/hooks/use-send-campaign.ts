@@ -3,9 +3,9 @@ import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { routes } from "@repo/routes"
-import { type SendCampaignDto } from "@repo/types/campaign"
-import { toast } from "@repo/ui/components/sonner"
+import { type SendCampaignDto } from "@dexterity-sms/core/campaign"
+import { routes } from "@dexterity-sms/routes"
+import { toast } from "@dexterity-sms/ui/components/sonner"
 
 import z from "zod"
 import { sendCampaign } from "~/actions/campaign/send-campaign"

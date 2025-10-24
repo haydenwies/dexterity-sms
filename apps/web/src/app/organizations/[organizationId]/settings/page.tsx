@@ -5,12 +5,12 @@ import {
 	AnnotatedHeader,
 	AnnotatedSection,
 	AnnotatedTitle
-} from "@repo/ui/components/annotated"
-import { Card, CardContent } from "@repo/ui/components/card"
-import { Icon, IconName } from "@repo/ui/components/icon"
-import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@repo/ui/components/page"
-import { Separator } from "@repo/ui/components/separator"
-import { Skeleton } from "@repo/ui/components/skeleton"
+} from "@dexterity-sms/ui/components/annotated"
+import { Card, CardContent } from "@dexterity-sms/ui/components/card"
+import { Icon, IconName } from "@dexterity-sms/ui/components/icon"
+import { Page, PageContent, PageHeader, PageHeaderGroup, PageHeaderRow } from "@dexterity-sms/ui/components/page"
+import { Separator } from "@dexterity-sms/ui/components/separator"
+import { Skeleton } from "@dexterity-sms/ui/components/skeleton"
 import { Suspense } from "react"
 
 import { getSubscription } from "~/data/billing/get-subscription"

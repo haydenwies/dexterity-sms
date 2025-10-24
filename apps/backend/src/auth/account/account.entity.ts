@@ -1,7 +1,7 @@
 import { compare, hash } from "bcrypt"
 
-import { AccountProvider } from "@repo/types/auth"
-import { isEnumValue } from "@repo/utils"
+import { AccountProvider } from "@dexterity-sms/core/auth"
+import { isEnumValue } from "@dexterity-sms/utils"
 
 type AccountConstructorParams = {
 	id: string

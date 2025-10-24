@@ -6,8 +6,8 @@ import {
 	type OrganizationModel,
 	type UpdateOrganizationDto,
 	updateOrganizationDtoSchema
-} from "@repo/types/organization"
-import { toast } from "@repo/ui/components/sonner"
+} from "@dexterity-sms/core/organization"
+import { toast } from "@dexterity-sms/ui/components/sonner"
 
 import { updateOrganization } from "~/actions/organization/update-organization"
 

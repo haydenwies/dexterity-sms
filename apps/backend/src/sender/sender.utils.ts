@@ -1,4 +1,4 @@
-import { SenderModel } from "@repo/types/sender"
+import { SenderModel } from "@dexterity-sms/core/sender"
 
 import { SenderRemovedEvent, type SenderAddedEvent } from "~/common/event.types"
 import { Sender } from "~/sender/entities/sender.entity"

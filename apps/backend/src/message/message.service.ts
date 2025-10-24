@@ -2,10 +2,10 @@ import { InjectQueue } from "@nestjs/bullmq"
 import { Injectable, Logger, NotFoundException } from "@nestjs/common"
 import { Queue } from "bullmq"
 
-import { MessageDirection, MessageErrorCode, MessageStatus } from "@repo/types/message"
+import { MessageDirection, MessageErrorCode, MessageStatus } from "@dexterity-sms/core/message"
 
+import { InboundWebhookEvent, StatusWebhookEvent } from "@dexterity-sms/sms"
 import { EventEmitter2 } from "@nestjs/event-emitter"
-import { InboundWebhookEvent, StatusWebhookEvent } from "@repo/sms"
 import { Event, type MessageCreatedEvent } from "~/common/event.types"
 import { Phone } from "~/common/phone.vo"
 import { Message } from "~/message/entities/message.entity"

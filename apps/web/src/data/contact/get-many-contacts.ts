@@ -1,7 +1,7 @@
 import "server-only"
 
-import { routes } from "@repo/routes"
-import { type ContactModel } from "@repo/types/contact"
+import { type ContactModel } from "@dexterity-sms/core/contact"
+import { routes } from "@dexterity-sms/routes"
 
 import { CACHE_TAGS } from "~/lib/cache"
 import { getSessionToken } from "~/lib/session"

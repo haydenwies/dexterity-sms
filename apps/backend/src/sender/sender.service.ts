@@ -9,8 +9,8 @@ import {
 import { ConfigService } from "@nestjs/config"
 import { EventEmitter2 } from "@nestjs/event-emitter"
 
-import { routes } from "@repo/routes"
-import { type AddSenderDto } from "@repo/types/sender"
+import { type AddSenderDto } from "@dexterity-sms/core/sender"
+import { routes } from "@dexterity-sms/routes"
 
 import { Event } from "~/common/event.types"
 import { Phone } from "~/common/phone.vo"
